@@ -40,8 +40,10 @@ AddArtComponent.prototype = {
         Policy = result.exports.Policy;
         
         // if everything is OK we continue 
-        if (!Policy)
+        if (!Policy) {
+        	dump("no Policy")
             return false;
+		}
         
         this.loadImgArray();
 
@@ -73,7 +75,9 @@ AddArtComponent.prototype = {
             	true :  Policy.oldprocessNode(wnd, node, contentType, location, collapse);
         }       
         
-        if (node.hasAttribute("NOAD")) return true;
+        if (node.hasAttribute("NOAD")) {
+        	return true;
+        }
             
         if (contentType == Ci.nsIContentPolicy.TYPE_STYLESHEET ||
                 contentType == Ci.nsIContentPolicy.TYPE_DOCUMENT ||
@@ -85,15 +89,14 @@ AddArtComponent.prototype = {
                 node.ownerDocument.getElementsByTagName('HTML')[0].getAttribute('inAdScript') == 'true') {
             
             // Here possible should be done some work with script-based ads
-            
             return true;
             
         } else {
         	
             if (Policy.oldprocessNode(wnd, node, contentType, location, collapse) == 1)
                 return true;
+                
             if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT) {
-            	
                 //Here possible should be done some work with script-based ads 
                 return true;
             }
@@ -103,36 +106,40 @@ AddArtComponent.prototype = {
             // Replacing Ad Node to Node with Art
             var RNode = this.findAdNode(node,contentType);
             
-            if (this.checkDanger(RNode)) 
+            if (this.checkDanger(RNode))  {
             	return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
+            }
+
 
             if (RNode.parentNode) {
+            	
                 var newNode = this.transform(RNode, wnd);
-
                 if (newNode) {
                     RNode.parentNode.replaceChild(newNode, RNode);  
                 }
                 else {
                     return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
                 }
+                
             }
+
         } 
         catch(e) {
             dump("Error in: " + e.fileName +", line number: " + e.lineNumber +", " + e);
         }
-        
+
         return false;
     },
 
     findAdNode : function(node, contentType) {
-    	
+
         var adNode = node;
 
         while(adNode.parentNode && 
             (adNode.parentNode.tagName == 'A' ||
                 adNode.parentNode.tagName == 'OBJECT' ||
                 adNode.parentNode.tagName == 'IFRAME' ||
-                (adNode.hasAttribute && adNode.hasAttribute('onclick')))){    
+                (adNode.hasAttribute && adNode.hasAttribute('onclick')))) {    
             adNode = adNode.parentNode;
         }
             
@@ -276,22 +283,24 @@ AddArtComponent.prototype = {
     },
 
     transform : function(ToReplace, wnd) {
+    	
         try {
-            var Larg = this.getSize("height", ToReplace);
-            var Long = this.getSize("width", ToReplace);
+            var Larg = this.getSize("height", ToReplace), Long = this.getSize("width", ToReplace);
 
-            if(Larg < 10 || Long < 10) {
-                return null;
+            if (Larg < 10 || Long < 10) {
+            	dump("\n\n [WARN]large or long too small!!");
+            	return null;
             }
         }
         catch(e) {
-            dump(e.lineNumber + ', ' + e);
+            dump("\n\n [WARN]"+e.lineNumber + ', ' + e);
         }
+ 
 
         var placeholder = ToReplace.ownerDocument.createElement("div");
 
-        if (Long == 0 || Larg == 0) {
-        	
+        if (Long == 0 || Larg == 0) { 
+        	dump("\n\n [WARN] creating place-holder div");
             // placeholder = ToReplace.ownerDocument.createElement("div");
             placeholder.setAttribute("NOAD", "true");
             
@@ -299,12 +308,13 @@ AddArtComponent.prototype = {
                 placeholder.setAttribute("style", ToReplace.getAttribute("style"));
             if (placeholder.style.background)
                 placeholder.style.background = "";
+                
             var Nodes = ToReplace.childNodes;
             for ( var i = 0; i < Nodes.length; i++) {
                 if (Nodes[i].nodeType == Ci.nsIContentPolicy.TYPE_OTHER)
-
                     placeholder.appendChild(this.transform(Nodes[i]));
             }
+            
             if (ToReplace.hasAttribute("id"))
                 placeholder.setAttribute("id", ToReplace.getAttribute("id"));
             if (ToReplace.hasAttribute("name"))
@@ -313,7 +323,9 @@ AddArtComponent.prototype = {
                 placeholder.setAttribute("class", ToReplace.getAttribute("class"));
             if (ToReplace.style.display == 'none')
                 placeholder.style.display = 'none';
-        } else {
+        } 
+        else {
+        	
             placeholder = this.createConteneur(ToReplace, wnd, Larg, Long);
         }
 
@@ -357,14 +369,18 @@ AddArtComponent.prototype = {
 
         // This replaces Ad element to element with art
         var newElt = null, ele = OldElt.wrappedJSObject;
+        
+        //if (!ele) dump("\n\n[ERROR] Null ELE: "+OldElt);
 
-        var isA = (ele.tagName+"") == 'A';
+        var isA = ele.tagName == 'A';
+        
         if (isA) {
             //dump("\n[AN] Click: "+ele);
             var toClick = ele.getAttribute("href");
             Clicker.add(toClick); // follow redirects
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
         }
+        //else dump("\n[AN] Ignoring: "+ele.tagName);
         
         return null; // skip this if hiding ads
 
@@ -461,6 +477,7 @@ var XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 let Clicker =
 {
+	first : true,
 	busy : false,
 	initd : false,
     queue : [],
@@ -504,10 +521,45 @@ let Clicker =
         	dump("\nClicker.waiting()");
     },
     
+    test : function(url) {
+    	
+    	if (!this.first) return;
+    	this.first = false;
+    	//url = 'http://en.wikipedia.org/wiki/Internet';
+    	
+    	
+	    var doc = this.hiddenWindow.document, iframe = doc.getElementById("my-iframe");
+	    if (!iframe) {
+	        // Always use html. The hidden window might be XUL (Mac)
+	        // or just html (other platforms).
+	        iframe = doc.createElementNS("http://www.w3.org/1999/xhtml", "iframe");
+	        iframe.wrappedJSObject = iframe;
+	        iframe.setAttribute("id", "my-iframe");
+	        iframe.addEventListener("DOMContentLoaded", function (e) {
+	            dump("\n\nDOMContentLoaded: " +e.originalTarget.location);
+	            dump("\n\n");
+	            var html = e.originalTarget.documentElement.innerHTML;
+	            dump(html);
+	            dump("\n\n");
+	            // var u = urls.pop();
+	            // // Make sure there actually was something left to load.
+	            // if (u) {
+	                // visitPage(u);
+	            // }
+	        });
+	        doc.documentElement.appendChild(iframe);
+	    }
+	    iframe.setAttribute("src", url);
+    },
     
 	visit : function(url) {
 
 		if (!url) return;
+		
+		if (1) {
+			this.test(url);
+			return;
+		}
 		
 		//dump("\nXMLHttpRequest.visit("+url+")");
 					

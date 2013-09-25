@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!-- This Source Code is subject to the terms of the Mozilla Public License
+	 - version 2.0 (the "License"). You can obtain a copy of the License at
+	 - http://mozilla.org/MPL/2.0/. 
+	 
+	 - Thanks to AdBlockPlus for the source code
+	-->
+
+<subscriptions>
+	<subscription title="Add-Art Feed"
+								description="The default feed. Usually test images."
+								url="http://add-art.org/extension/image_set.xml"
+								homepage="https://add-art.org/"
+								author="The Add-Art Team"/>
+	<subscription title="Rhizome.org"
+								description="Images from the archives of Rhizome, an organization supporting technological experimentation since 1996"
+								url="http://add-art.org/extension/rh/rh.xml"
+								homepage="https://rhizome.org/"
+								author="Rhizome.org"/>
+	<subscription title="Eyebeam Artists"
+								description="New media art from the Eyebeam Art and Technology Center's fellows and artists."
+								url="http://add-art.org/extension/ey/ey.xml"
+								homepage="https://eyebeam.org/"
+								author="Eyebeam Center for Art and Technology"/>
+	<subscription title="Brooklyn Museum Feed"
+								description="From the collection of the Brooklyn Museum."
+								url="http://add-art.org/extension/bm/bm.xml"
+								homepage="http://brooklynmuseum.org"
+								author="The Brooklyn Museum"/>
+</subscriptions>

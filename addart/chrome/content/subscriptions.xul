@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+
+<!-- This Source Code is subject to the terms of the Mozilla Public License
+	 - version 2.0 (the "License"). You can obtain a copy of the License at
+	 - http://mozilla.org/MPL/2.0/. -->
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://adblockplus/skin/filters.css" type="text/css"?>
+
+<!DOCTYPE dialog SYSTEM "chrome://addart/locale/addartOptions.dtd">
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&dialog.title;"
+	id="addArtSubscriptionsbpFiltersWindow"
+	onload="onLoad()"
+	ondialogaccept="onClose()"
+	buttons="accept"
+	width="950"
+	height="450"
+	persist="screenX screenY width height sizemode"
+	windowtype="abp:filters">
+
+<script type="application/x-javascript;version=1.7" src="utils.js"/>
+<script type="application/x-javascript;version=1.7" src="subscriptions.js"/>
+
+<command id="subscription-add-command" oncommand="addSubscription();"/>
+	
+<hbox id="content" flex="1" orient="vertical">
+
+				<hbox pack="end">
+					<button id="selectSubscriptionButton" label="&addSubscription.label;…" accesskey="&addSubscription.accesskey;" command="subscription-add-command"/>
+				</hbox>
+
+				<panel id="selectSubscriptionPanel" type="arrow" position="bottomcenter topleft"
+							 orient="vertical" onkeypress="SelectSubscription.keyPress(event);">
+					<menuitem id="selectSubscriptionTemplate" hidden="true"
+							class="{localePrefix ? 'localeMatch' : ''}"
+							label="{node.getAttribute('title')}"
+							value="{node.getAttribute('url')}">
+						<label class="selectSubscriptionItem" value="{node.getAttribute('title')}"/>
+						<label class="selectSubscriptionItem" value=" ("/>
+						<label class="selectSubscriptionItem" value="{node.getAttribute('specialization')}"/>
+						<label class="selectSubscriptionItem" value=")"/>
+					</menuitem>
+					<menulist id="selectSubscription">
+						<menupopup/>
+					</menulist>
+					<hbox align="baseline">
+						<label class="text-link" value="&addSubscriptionOther.label;" onclick="E('subscription-addOther-command').doCommand();"/>
+						<spacer flex="1"/>
+						<button id="selectSubscriptionAccept" default="true" label="&addSubscriptionAdd.label;" command="subscription-addSelected-command"/>
+						<spacer flex="1"/>
+						<button label="&addSubscriptionCancel.label;" oncommand="E('selectSubscriptionPanel').hidePopup();"/>
+					</hbox>
+				</panel>
+ 
+				<richlistitem id="subscriptionTemplate" class="subscription" hidden="true" orient="vertical">
+					<vbox class="''">
+						<hbox align="center">
+							<description class="titleBox" flex="1">
+								<description class="header" value="{subscription.title}" flex="1" crop="end"/>
+								<hbox align="baseline">
+									<description value=" - "/>
+										<description class="text-link" value="&subscription.info.label;"
+											_url="{subscription.homepage}" tooltiptext="{subscription.homepage}"
+											onclick="if (event.button == 0) { event.stopPropagation();loadInBrowser(this.getAttribute('_url')); }"/>
+								</hbox>
+							</description>
+							<radiogroup>
+								<radio label="&subscription.enabled.label;" class="tabable" tabindex="-1"
+								selected="false" oncommand="onCheck(this);"/>
+							</radiogroup>
+						</hbox>
+            <description value="{subscription.author}" flex="1" crop="end"/>
+            <description value="{subscription.description}" flex="1" crop="end"/>
+						<hbox align="center">
+							<description flex="1" class="status">
+								<description value="&subscription.lastDownload.label;"/>
+								<description value=" "/>
+								<if condition="{downloading}">
+									<description value="&subscription.lastDownload.inProgress;"/>
+								<elif condition="{!subscription.lastDownload}"/>
+									<description value="&subscription.lastDownload.unknown;"/>
+								<else/>
+									<description value="{formatTime(subscription.lastDownload * 1000)}"/>
+									<description value=" "/>
+									<if condition="{subscription.downloadStatus}">
+										<hbox>
+											<description value=" ("/>
+											<if condition="{subscription.downloadStatus == 'synchronize_invalid_url'}">
+												<description value="&subscription.lastDownload.invalidURL;"/>
+											<elif condition="{subscription.downloadStatus == 'synchronize_connection_error'}"/>
+												<description value="&subscription.lastDownload.connectionError;"/>
+											<elif condition="{subscription.downloadStatus == 'synchronize_invalid_data'}"/>
+												<description value="&subscription.lastDownload.invalidData;"/>
+											<elif condition="{subscription.downloadStatus == 'synchronize_checksum_mismatch'}"/>
+												<description value="&subscription.lastDownload.checksumMismatch;"/>
+											<else/>   <!-- synchronize_ok -->
+												<description value="&subscription.lastDownload.success;"/>
+											</if>
+											<description value=")"/>
+										</hbox>
+									</if>
+								</if>
+							</description>
+						</hbox>
+					</vbox>
+				</richlistitem>
+
+				<richlistbox id="subscriptions" class="initialFocus" flex="1"></richlistbox>
+
+				<hbox orient="vertical">
+					<description>
+						<checkbox id="enableMoreAdToHide" label="&enableMoreAdToHide.label;" accesskey="&enableMoreAdToHide.accesskey;"/>
+						<label class="text-link" value="&enableMoreAdToHide.urltext;"
+											_url="&enableMoreAdToHide.url;" tooltiptext="&enableMoreAdToHide.url;"
+											onclick="if (event.button == 0) { event.stopPropagation();loadInBrowser(this.getAttribute('_url')); }"/>
+					</description>
+					<description>
+						<checkbox id="expandImages" label="&expand.label;" accesskey="&expand.accesskey;"/>
+					</description>
+				</hbox>
+</hbox>
+
+<findbar id="findbar"/>
+
+<hbox id="buttons" pack="end">
+	<button id="close" dlgtype="accept" label="&close.label;"/>
+</hbox>
+
+</dialog>

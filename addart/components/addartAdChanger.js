@@ -1,7 +1,8 @@
 // Main Add-Art JavaScript Component
 const Ci = Components.interfaces;
-const prefs = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch).QueryInterface(
-        Components.interfaces.nsIPrefBranchInternal);
+const Cc = Components.classes;
+const prefs = Cc["@mozilla.org/preferences-service;1"].getService
+	(Ci.nsIPrefBranch).QueryInterface(Ci.nsIPrefBranchInternal);
 
 var Policy = null;
 
@@ -9,9 +10,6 @@ Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
 
 dump("\n[AN] Loading AddArtComponent");
-/*******************************************************************************
- * class definition
- ******************************************************************************/
 
 // class constructor
 function AddArtComponent() {
@@ -20,33 +18,16 @@ function AddArtComponent() {
 
 // class definition
 AddArtComponent.prototype = {
+	
     // properties required for XPCOM registration: 
     classID : Components.ID("{741b4765-dbc0-c44e-9682-a3182f8fa1cc}"),
     contractID : "@eyebeam.org/addartadchanger;1",
     classDescription : "Banner to art converter",
 
-    QueryInterface : XPCOMUtils.generateQI( [ Ci.nsIObserver ]),
+    QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]),
 
     // add to category manager
-    _xpcom_categories : [ {
-        category : "profile-after-change"
-    }
-    ],
-
-    // This will help to write debug messages to console
-    myDump : function(aMessage) {
-        // var consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
-        // consoleService.logStringMessage("add-art: " + aMessage);
-    },
-    
-    myDumpObject: function(object,label) {
-        stuff = [];
-        for (s in object) {
-            stuff.push(s);
-        }
-        stuff.sort();
-        this.myDump(label+': '+stuff);
-    },
+    _xpcom_categories : [ { category : "profile-after-change" } ],
 
     init : function() {
     	
@@ -64,11 +45,8 @@ AddArtComponent.prototype = {
         
         this.loadImgArray();
 
-        // Installing our hook
-        // does Policy.processNode exist?
-        if (!Policy.processNode) {
-            this.myDump("no processNode");
-        }
+        // Installing our hook: does Policy.processNode exist?
+        if (!Policy.processNode) dump("no processNode");
         
         Policy.oldprocessNode = Policy.processNode;
         Policy.processNode = this.processNodeForAdBlock;
@@ -79,49 +57,43 @@ AddArtComponent.prototype = {
     },
 
     processNodeForAdBlock : function(wnd, node, contentType, location, collapse) {
+    	
         //this will be run in context of AdBlock Plus
-        //Components.classes['@eyebeam.org/addartadchanger;1'].getService()
-        	//.wrappedJSObject.processNodeForAddArt(wnd, node, contentType, location, collapse);
-        return Components.classes['@eyebeam.org/addartadchanger;1'].getService()
+        return Cc['@eyebeam.org/addartadchanger;1'].getService()
         	.wrappedJSObject.processNodeForAddArt(wnd, node, contentType, location, collapse);
     },
     
     processNodeForAddArt : function(wnd, node, contentType, location, collapse) {
-    	
-        if (!Policy)
-            return true;
-        if (/^chrome:\//i.test(location))
-            return true;
+
+        if (!Policy || /^chrome:\//i.test(location)) return true;
 
         if (!node || !node.ownerDocument || !node.tagName) {
-            if (this.getPref("extensions.add-art.enableMoreAds") == false) {
-                if (!node || !node.ownerDocument || !node.tagName) {
-                    return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
-                } else {
-                    return false;
-                }
-            } else {
-                return true;
-            }
+        	
+            return (this.getPref("extensions.add-art.enableMoreAds")) ? 
+            	true :  Policy.oldprocessNode(wnd, node, contentType, location, collapse);
         }       
         
-        if (node.hasAttribute("NOAD"))
-            return true;
+        if (node.hasAttribute("NOAD")) return true;
             
-        if (contentType == Components.interfaces.nsIContentPolicy.TYPE_STYLESHEET ||
-                contentType == Components.interfaces.nsIContentPolicy.TYPE_DOCUMENT ||
-                contentType > Components.interfaces.nsIContentPolicy.TYPE_SUBDOCUMENT   )
+        if (contentType == Ci.nsIContentPolicy.TYPE_STYLESHEET ||
+                contentType == Ci.nsIContentPolicy.TYPE_DOCUMENT ||
+                contentType > Ci.nsIContentPolicy.TYPE_SUBDOCUMENT   )
             return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
             
-        if (contentType == Components.interfaces.nsIContentPolicy.TYPE_SCRIPT &&
+        if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT &&
                 node.ownerDocument.getElementsByTagName('HTML')[0] &&
                 node.ownerDocument.getElementsByTagName('HTML')[0].getAttribute('inAdScript') == 'true') {
-            //Here possible should be done some work with script-based ads
+            
+            // Here possible should be done some work with script-based ads
+            
             return true;
+            
         } else {
+        	
             if (Policy.oldprocessNode(wnd, node, contentType, location, collapse) == 1)
                 return true;
-            if (contentType == Components.interfaces.nsIContentPolicy.TYPE_SCRIPT) {
+            if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT) {
+            	
                 //Here possible should be done some work with script-based ads 
                 return true;
             }
@@ -130,42 +102,47 @@ AddArtComponent.prototype = {
         try {
             // Replacing Ad Node to Node with Art
             var RNode = this.findAdNode(node,contentType);
-            if(this.checkDanger(RNode)) {
-                return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
-            }
+            
+            if (this.checkDanger(RNode)) 
+            	return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
 
             if (RNode.parentNode) {
                 var newNode = this.transform(RNode, wnd);
 
-                if(newNode) {
+                if (newNode) {
                     RNode.parentNode.replaceChild(newNode, RNode);  
                 }
                 else {
                     return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
                 }
             }
-        } catch(e) {
-            this.myDump("Error in: " + e.fileName +", line number: " + e.lineNumber +", " + e);
+        } 
+        catch(e) {
+            dump("Error in: " + e.fileName +", line number: " + e.lineNumber +", " + e);
         }
+        
         return false;
     },
 
-    findAdNode : function(node,contentType) {
-        var ad_node = node;
+    findAdNode : function(node, contentType) {
+    	
+        var adNode = node;
 
-        while(ad_node.parentNode && 
-            (ad_node.parentNode.tagName == 'A' ||
-                ad_node.parentNode.tagName == 'OBJECT' ||
-                ad_node.parentNode.tagName == 'IFRAME' ||
-                (ad_node.hasAttribute && ad_node.hasAttribute('onclick')))){    
-            ad_node = ad_node.parentNode;
+        while(adNode.parentNode && 
+            (adNode.parentNode.tagName == 'A' ||
+                adNode.parentNode.tagName == 'OBJECT' ||
+                adNode.parentNode.tagName == 'IFRAME' ||
+                (adNode.hasAttribute && adNode.hasAttribute('onclick')))){    
+            adNode = adNode.parentNode;
         }
             
-        return ad_node;
+        return adNode;
     },
     
     loadImgArray : function() {
-        this.ImgArray = new Array();
+    	
+        this.ImgArray = [];
+        
         // taken from: https://en.wikipedia.org/wiki/Web_banner
         // 19 images sizes total
 
@@ -201,6 +178,7 @@ AddArtComponent.prototype = {
     },
 
     askLink : function(width, height) {
+    	
         // Find this.ImgArray with minimal waste (or need - in this case it will be shown in full while mouse over it) of space
         var optimalbanners = null;
         var minDiff = Number.POSITIVE_INFINITY;
@@ -227,9 +205,11 @@ AddArtComponent.prototype = {
         }
         return this.ImgArray[optimalBanner[Math.floor(Math.random() * optimalBanner.length)]];
     },
+    
     checkDanger: function(element) {
+    	
         // if we try to replace elements of this kind, firefox crashes.
-        return typeof(element.wrappedJSObject) == 'function';
+        return typeof (element.wrappedJSObject) == 'function';
     },
 
     
@@ -305,12 +285,13 @@ AddArtComponent.prototype = {
             }
         }
         catch(e) {
-            this.myDump(e.lineNumber + ', ' + e);
+            dump(e.lineNumber + ', ' + e);
         }
 
         var placeholder = ToReplace.ownerDocument.createElement("div");
 
         if (Long == 0 || Larg == 0) {
+        	
             // placeholder = ToReplace.ownerDocument.createElement("div");
             placeholder.setAttribute("NOAD", "true");
             
@@ -320,7 +301,7 @@ AddArtComponent.prototype = {
                 placeholder.style.background = "";
             var Nodes = ToReplace.childNodes;
             for ( var i = 0; i < Nodes.length; i++) {
-                if (Nodes[i].nodeType == Components.interfaces.nsIContentPolicy.TYPE_OTHER)
+                if (Nodes[i].nodeType == Ci.nsIContentPolicy.TYPE_OTHER)
 
                     placeholder.appendChild(this.transform(Nodes[i]));
             }
@@ -363,7 +344,7 @@ AddArtComponent.prototype = {
     
     // nsIObserver interface implementation
     observe : function(aSubject, aTopic, aData) {
-        var observerService = Components.classes["@mozilla.org/observer-service;1"].getService(Components.interfaces.nsIObserverService);
+        var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
         switch (aTopic) {
         case "profile-after-change":
             // Doing initialization stuff on FireFox start
@@ -371,15 +352,11 @@ AddArtComponent.prototype = {
             break;
         }
     },
+    
     createConteneur : function(OldElt, wnd, l, L) {
 
         // This replaces Ad element to element with art
-        var newElt = null;
-
-
-        var ele = OldElt.wrappedJSObject;
-
-        //dump("\n[AD]: '"+ele.tagName+"'");
+        var newElt = null, ele = OldElt.wrappedJSObject;
 
         var isA = (ele.tagName+"") == 'A';
         if (isA) {
@@ -391,12 +368,9 @@ AddArtComponent.prototype = {
         
         return null; // skip this if hiding ads
 
-        if(this.checkDanger(OldElt)) {          
-            return null;
-        }
-        else {
-            newElt = OldElt.ownerDocument.createElement("div"); 
-        }
+        if (this.checkDanger(OldElt)) return null;
+        
+        newElt = OldElt.ownerDocument.createElement("div"); 
         
         newElt.setAttribute("NOAD", "true");
 
@@ -442,12 +416,12 @@ AddArtComponent.prototype = {
         img.setAttribute("NOAD", "true");
         img.setAttribute("border", "0");
         var Img = this.askLink(L, l);
-        this.myDump('Img:'+Img);
+        dump('Img:'+Img);
         
         // Select banner URL
         // use the URL in a top window to generate a number b/w 1 and 8 (to maintain some persistence)
-        var win = Components.classes['@mozilla.org/appshell/window-mediator;1']
-        .getService(Components.interfaces.nsIWindowMediator)
+        var win = Cc['@mozilla.org/appshell/window-mediator;1']
+        .getService(Ci.nsIWindowMediator)
         .getMostRecentWindow('navigator:browser');
         if (win != null) {
             var el = win.document.getElementById('content');
@@ -481,6 +455,8 @@ AddArtComponent.prototype = {
     }
 };
 
+/* Clicks on recognized ads in the background */
+
 var XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 
 let Clicker =
@@ -492,11 +468,11 @@ let Clicker =
 	init: function() {
 		
 		try {
-			this.hiddenWindow = Components.classes["@mozilla.org/appshell/appShellService;1"].getService
-			  (Components.interfaces.nsIAppShellService).hiddenDOMWindow;
+			this.hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"].getService
+			  (Ci.nsIAppShellService).hiddenDOMWindow;
 			  
-			 //this.xmlhttp = Components.classes["@mozilla.org/xmlextras/xmlhttprequest;1"]
-               ///         .createInstance(Components.interfaces.nsIXMLHttpRequest);
+			 //this.xmlhttp = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
+               ///         .createInstance(Ci.nsIXMLHttpRequest);
 		}
 		catch (e) {
 			dump("\n[AN] FAILED on hiddenWindow: "+e);
@@ -525,7 +501,7 @@ let Clicker =
 			 this.visit(next);
         }
         else 
-        	dump("\nClicker.ready()");
+        	dump("\nClicker.waiting()");
     },
     
     
@@ -547,7 +523,7 @@ let Clicker =
 				httpRequest.channel.priority = Ci.nsISupportsPriority.PRIORITY_LOWEST;
 			}
 
-			dump("\nXMLHttpRequest.fetching("+url+")");
+			//dump("\nXMLHttpRequest.fetching("+url+")");
 
 			httpRequest.send(null);
 
@@ -592,8 +568,10 @@ let Clicker =
 				else if (httpRequest.status == 200) {
 					
 					//var click_url = httpRequest.getResponseHeader("Location");
-					dump("\n[Clicker] httpRequest.clicked:" + url);
+					dump("\n\n[Clicker] httpRequest.clicked:" + url);
+					dump("\n\n------------------------------------------------\n");
 					dump(httpRequest.responseText);
+					dump("\n------------------------------------------------\n");
 					try {
 						var hdoc = clicker.hiddenWindow.document;
 						if (!hdoc) dump("\nNO hdoc");
@@ -604,8 +582,7 @@ let Clicker =
 						// var div = hdoc.createElement('div');
 						// if (!iframe) dump("\nNO div");
 					    // div.innerHTML = httpRequest.responseText;
-					    dump(iframeDoc.firstChild.nodeName); 
-					    iframeDoc=null;
+					    iframeDoc = null;
 				    }
 				    catch(e) {
 						dump("\n[WARN]  no=div(" + url + ")\n" + "  " + e.message);

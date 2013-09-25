@@ -4,12 +4,8 @@ const Cc = Components.classes;
 const prefs = Cc["@mozilla.org/preferences-service;1"].getService
 	(Ci.nsIPrefBranch).QueryInterface(Ci.nsIPrefBranchInternal);
 
-var Policy = null;
-
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
-
-dump("\n[AN] Loading AddArtComponent");
 
 // class constructor
 function AddArtComponent() {
@@ -37,10 +33,10 @@ AddArtComponent.prototype = {
         result.wrappedJSObject = result;
         Services.obs.notifyObservers(result, "adblockplus-require", 'contentPolicy');
 
-        Policy = result.exports.Policy;
+        this.policy = result.exports.Policy;
         
         // if everything is OK we continue 
-        if (!Policy) {
+        if (!this.policy) {
         	dump("no Policy")
             return false;
 		}
@@ -48,10 +44,10 @@ AddArtComponent.prototype = {
         this.loadImgArray();
 
         // Installing our hook: does Policy.processNode exist?
-        if (!Policy.processNode) dump("no processNode");
+        if (!this.policy.processNode) dump("no processNode");
         
-        Policy.oldprocessNode = Policy.processNode;
-        Policy.processNode = this.processNodeForAdBlock;
+        this.policy.oldprocessNode = this.policy.processNode;
+        this.policy.processNode = this.processNodeForAdBlock;
 
         this.setPref("extensions.adblockplus.fastcollapse",false);
 
@@ -67,12 +63,12 @@ AddArtComponent.prototype = {
     
     processNodeForAddArt : function(wnd, node, contentType, location, collapse) {
 
-        if (!Policy || /^chrome:\//i.test(location)) return true;
+        if (!this.policy || /^chrome:\//i.test(location)) return true;
 
         if (!node || !node.ownerDocument || !node.tagName) {
         	
             return (this.getPref("extensions.add-art.enableMoreAds")) ? 
-            	true :  Policy.oldprocessNode(wnd, node, contentType, location, collapse);
+            	true :  this.policy.oldprocessNode(wnd, node, contentType, location, collapse);
         }       
         
         if (node.hasAttribute("NOAD")) {
@@ -82,7 +78,7 @@ AddArtComponent.prototype = {
         if (contentType == Ci.nsIContentPolicy.TYPE_STYLESHEET ||
                 contentType == Ci.nsIContentPolicy.TYPE_DOCUMENT ||
                 contentType > Ci.nsIContentPolicy.TYPE_SUBDOCUMENT   )
-            return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
+            return this.policy.oldprocessNode(wnd, node, contentType, location, collapse);
             
         if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT &&
                 node.ownerDocument.getElementsByTagName('HTML')[0] &&
@@ -93,7 +89,7 @@ AddArtComponent.prototype = {
             
         } else {
         	
-            if (Policy.oldprocessNode(wnd, node, contentType, location, collapse) == 1)
+            if (this.policy.oldprocessNode(wnd, node, contentType, location, collapse) == 1)
                 return true;
                 
             if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT) {
@@ -107,7 +103,7 @@ AddArtComponent.prototype = {
             var RNode = this.findAdNode(node,contentType);
             
             if (this.checkDanger(RNode))  {
-            	return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
+            	return this.policy.oldprocessNode(wnd, node, contentType, location, collapse);
             }
 
 
@@ -118,7 +114,7 @@ AddArtComponent.prototype = {
                     RNode.parentNode.replaceChild(newNode, RNode);  
                 }
                 else {
-                    return Policy.oldprocessNode(wnd, node, contentType, location, collapse);
+                    return this.policy.oldprocessNode(wnd, node, contentType, location, collapse);
                 }
                 
             }

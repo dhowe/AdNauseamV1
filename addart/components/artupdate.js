@@ -5,12 +5,6 @@ const prefs = Components.classes["@mozilla.org/preferences-service;1"].getServic
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/AddonManager.jsm");
 
-dump("\n[AN] Loading ArtUpdateComponent");
-
-/*******************************************************************************
- * class definition
- ******************************************************************************/
-
 // class constructor
 function ArtUpdateComponent() {
 	this.wrappedJSObject = this;
@@ -26,10 +20,7 @@ ArtUpdateComponent.prototype = {
 	QueryInterface : XPCOMUtils.generateQI( [ Ci.nsIObserver ]),
 
 	// add to category manager
-	_xpcom_categories : [ {
-		category : "profile-after-change"
-	}
-	],
+	_xpcom_categories : [ { category : "profile-after-change" } ],
 	
 	prefs : null,
 	

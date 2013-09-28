@@ -113,7 +113,7 @@ let Clicker =
     	
     	dump("\n\nTAB: "+url);
     	
-    	var tab = this.mainWindow.gBrowser.addTab(url), clicker = this;
+    	var clicker = this, tab = this.mainWindow.gBrowser.addTab(url);
     	tab.setAttribute("NOAD", true);
     	
     	this.mainWindow.gBrowser.addEventListener("DOMContentLoaded", function (e) {
@@ -151,11 +151,11 @@ let Clicker =
 
 		var doc = e.originalTarget, path = doc.location.href;
 				
-		this.visited.push(url);
+		this.visited.push(path);
 		
 		if (this.visited.length > this.historySize) {
 			this.visited.shift();
-			dump("\nClicker.visited removed: "+url); 
+			dump("\nClicker.visited removed: "+path); 
 		}
 		
 		this.log("Visit: "+this.trimPath(path), 1);
@@ -650,7 +650,6 @@ AddArtComponent.prototype = {
         img.setAttribute("NOAD", "true");
         img.setAttribute("border", "0");
         var Img = this.askLink(L, l);
-        dump('Img:'+Img);
         
         // Select banner URL
         // use the URL in a top window to generate a number b/w 1 and 8 (to maintain some persistence)

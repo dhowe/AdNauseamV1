@@ -6,7 +6,7 @@ cp -r addart addart_renamed
 cd addart
 
 # package things up
-echo "Zippin..."
+echo "Zipping..."
 cd chrome
 rm -f addart.jar
 zip -rq addart.jar content skin locale
@@ -16,7 +16,7 @@ rm -f ../addart-build.xpi
 zip -rq ../addart-build.xpi .
 
 # revert & back out
-echo "Cleaning up..."
+echo "Cleaning..."
 cd ..
 rm -rf addart
 mv addart_renamed addart

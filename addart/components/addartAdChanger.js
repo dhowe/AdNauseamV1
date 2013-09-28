@@ -4,13 +4,14 @@
 
 /* 
  * TODO:
- *  -- Check for no-user activity (using nsiObserver) and then print, compare: visited and history (sort).
+ *  -- implement http-reuqest listener, and check 'visited' before each get...
+ *  -- Check for no-user activity (using nsiObserver) 
  * 	-- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
  */
 
 // Main Add-Art JavaScript Component
-const Ci = Components.interfaces;
-const Cc = Components.classes;
+const Ci = Components.interfaces; // is this deprecated?
+const Cc = Components.classes; // is this deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const prefs = Cc["@mozilla.org/preferences-service;1"].getService
 	(Ci.nsIPrefBranch).QueryInterface(Ci.nsIPrefBranchInternal);
@@ -27,11 +28,12 @@ let Clicker =
 	first : true,
 	busy : false,
 	initd : false,
-    historySize : 100,
+    qsize : 100,
     total : 0,
-
+    
 	init: function() {
 		
+		dump("\n[ADN] Clicker.init");
 		try {
 	
 			this.queue = [];
@@ -44,16 +46,36 @@ let Clicker =
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
 
+			//observerService.addObserver(this, "http-on-modify-request", false);
 			// dump("\nTABS="+this.mainWindow.gBrowser.mTabs.length); 
 		}
 		catch (e) {
-			dump("\n[AN] FAILED on hiddenWindow: "+e);
+			dump("\n[ADN] FAILED on hiddenWindow: "+e);
 		}
    				
 		this.initd = true;
 	},
 	
-	
+	shutdown : function() {
+    	
+        this.log("Shutdown", 1);
+        
+        //this.observerService.removeObserver(this, "http-on-modify-request");
+        
+        //this.history.sort();this.visited.sort();
+        
+        var s = "\nHistory("+this.history.length+"):\n";
+        for (var i=0; i < this.history.length; i++)
+          s += "  "+i+") "+this.trimPath(this.history[i]) +"\n";
+        dump("\n"+s);
+        
+		s = "Visited("+this.visited.length+"):\n";
+        for (var i=0; i < this.visited.length; i++)
+          s += "  "+i+") "+this.trimPath(this.visited[i]) +"\n";
+        dump("\n"+s);
+        
+        if (this.ostream) this.ostream.close();	
+    },
 	
     add : function(url) {
 				
@@ -68,7 +90,7 @@ let Clicker =
 			
 			this.history.push(url);
 			
-			if (this.history.length > this.historySize) {
+			if (this.history.length > this.qsize) {
 				this.history.shift();
 				dump("\nClicker.history removed: "+url); 
 			}
@@ -97,7 +119,7 @@ let Clicker =
 			
 			var doRealFetch = true;
 			if (doRealFetch)
-				this.fetchInTab(theNext);
+				this.fetchInHidden(theNext);
 			else
 				this.next(); // tmp
         }
@@ -108,16 +130,16 @@ let Clicker =
     
     fetchInTab : function(url) {
         
-        if (!this.first) return;
-    	this.first = false;
+        //if (!this.first) return;
+    	//this.first = false;
     	
     	dump("\n\nTAB: "+url);
     	
-    	var clicker = this, tab = this.mainWindow.gBrowser.addTab(url);
+    	var clicker = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);
     	tab.setAttribute("NOAD", true);
     	
-    	this.mainWindow.gBrowser.addEventListener("DOMContentLoaded", function (e) {
-			clicker.postClick(e);
+    	gBrowser.addEventListener("DOMContentLoaded", function (e) {
+			clicker.afterLoad(e);
     	});
     },
     
@@ -129,16 +151,17 @@ let Clicker =
 	    	iframe = doc.getElementById("adn-iframe"), clicker = this;
 
 	    if (!iframe) {
+	    	
 	        // Always use html. The hidden window might be XUL (Mac)
 	        // or just html (other platforms).
 	        iframe = doc.createElementNS("http://www.w3.org/1999/xhtml", "iframe");
 	        iframe.wrappedJSObject = iframe;
 	        
-	        iframe.setAttribute("NOAD", true);
+	        iframe.setAttribute("NOAD", "ADN");
 	        iframe.setAttribute("id", "adn-iframe");
 	        
 	        iframe.addEventListener("DOMContentLoaded", function (e) {
-	            clicker.postClick(e);
+	            clicker.afterLoad(e);
 	        });
 	        
 	        doc.documentElement.appendChild(iframe);
@@ -147,18 +170,75 @@ let Clicker =
 	    iframe.setAttribute("src", url);
     },
     
-    postClick : function(e) {
+    beforeLoad : function(httpChannel, request) {
+    	
+    	// NEXT: Working here, need to identify requests from hiddenWindow:
+    	// 		just check, this.hddenWindow.document.location.spec === httpChannel.originalURI.spec ???
+    	
+    	if (!this.initd) return;
+    	
+		// Ignore requests without context and top-level documents
+		if (!node || contentType == Policy.type.DOCUMENT)
+			return;
+
+		// Ignore standalone objects
+		//if (contentType == Policy.type.OBJECT && node.ownerDocument && !/^text\/|[+\/]xml$/.test(node.ownerDocument.contentType))
+			//return;
+
+    	// TODO: filter by content-type, ignore images, css, scripts, etc.
+    	
+		//this.log("httpChannel: "+httpChannel,1);
+		if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
+	    	this.log("originalURI: "+httpChannel.originalURI.spec+" != URI: "+httpChannel.URI.spec,1);
+	    }
+    	
+    	var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
+       	var DOMWindow = interfaceRequestor.getInterface(Ci.nsIDOMWindow);
+    	//this.log("DOMWindow: "+DOMWindow+"\n",1);
+        //this.log("DOMWindow: "+DOMWindow.document+"\n",1);
+        
+    	//var tab = tabForHttpChannel(DOMWindow);
+    	
+        //this.log("Request: "+request+"\n",1);
+		if (0) request.cancel(Components.results.NS_BINDING_ABORTED);
+
+        //getElementById("adn-iframe")
+        //if (DOMWindow.document) 
+    },
+    
+    tabForHttpChannel : function(domWindow) { // unused for now
+    	
+       	var tab, tIndex = -1, gBrowser = this.mainWindow.gBrowser;
+
+        if (!gBrowser) {
+        	this.log("no gBrowser");
+        	return;
+        }
+                
+        tIndex = gBrowser.getBrowserIndexForDocument(DOMWindow.document);
+		
+        // handle the case where there was
+        if (tIndex > -1) {
+            tab = gBrowser.tabContainer.childNodes[tIndex];
+			this.log("Found tab: "+tab);
+		}
+		//else no tab associated with the request (rss, etc)
+			
+		return tab;
+    },
+    
+    afterLoad : function(e) {
 
 		var doc = e.originalTarget, path = doc.location.href;
 				
 		this.visited.push(path);
 		
-		if (this.visited.length > this.historySize) {
+		if (0 && this.visited.length > this.qsize) { // re-add to control log size?
 			this.visited.shift();
 			dump("\nClicker.visited removed: "+path); 
 		}
 		
-		this.log("Visit: "+this.trimPath(path), 1);
+		this.log("Visit: "+this.trimPath(path), 0);
 
         //var html = doc.documentElement.innerHTML; // keep
          
@@ -177,7 +257,7 @@ let Clicker =
 				if (!file.exists()) {
 
 					file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
-					dump("\n[AN] Created " + file.path);
+					dump("\n[ADN] Created " + file.path);
 				}
 
 				// Then, we need an output stream to our output file.
@@ -187,7 +267,7 @@ let Clicker =
 				this.ostream.init(file, -1, -1, 0); // truncate
 				
 				if (file.exists() && this.ostream) 
-					this.log("Logging to " + this.trimPath(file.path));				
+					this.log("Log: " + this.trimPath(file.path));				
 			}
 			catch(e) {
 				dump("\n\n[ERROR] " + e);
@@ -198,8 +278,8 @@ let Clicker =
 		var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
 	    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
  
-		msg = "[" + now  + ":" + ms + "] " + msg + 
-			"\r\n------------------------------------------------------------\r\n";
+		msg = "[" + now  + ":" + ms + "] " + msg + "\r\n-------------"
+			+ "------------------------------------------------------\r\n";
 			
 		if ( typeof this.ostream === 'undefined' || !this.ostream) {
 			dump("\n\n[ERROR] NO IO!");
@@ -212,7 +292,7 @@ let Clicker =
 	},
 	
 	trimPath : function(u, max) {
-		max = max || 50;
+		max = max || 60;
 		if (u && u.length > max) 
 			u = u.substring(0,max/2)+"..."+u.substring(u.length-max/2);
 		return u;
@@ -242,7 +322,7 @@ AddArtComponent.prototype = {
 
     init : function() {
     	
-        dump("\n[AN] AddArtComponent.init");
+        dump("\n[AA] AddArtComponent.init");
         
         let result = {};
         result.wrappedJSObject = result;
@@ -259,19 +339,68 @@ AddArtComponent.prototype = {
         this.loadImgArray();
 
         // Installing our hook: does Policy.processNode exist?
-        if (!this.policy.processNode) dump("no processNode");
+        if (!this.policy.processNode) dump("no processNode()");
         
         this.policy.oldprocessNode = this.policy.processNode;
         this.policy.processNode = this.processNodeABP;
-
-        this.setPref("extensions.adblockplus.fastcollapse",false);
         
+        // Installing our hook: does Policy.shouldLoad exist?
+        // if (!this.policy.shouldLoad) dump("no shouldLoad()");
+//         
+        // Clicker.shouldLoadABP = this.policy.shouldLoad;
+        // this.policy.shouldLoad = Clicker.shouldLoad;
+
+        this.setPref("extensions.adblockplus.fastcollapse", false);
+   
+		dump("\n[AA] AddArtComponent.initd");
+
         return true;
     },
+    
+        // nsIObserver interface implementation
+    observe : function(aSubject, aTopic, aData) {
+    	
+        var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
+        
+        //dump("\n[AA] observer("+aSubject+", "+aTopic+", "+aData+")");
+        
+        switch (aTopic) {
+	        
+	        case "profile-after-change":
+	            // Doing initialization stuff on FireFox start
+	            observerService.addObserver(this, "http-on-modify-request", false);
+	            observerService.addObserver(this, "quit-application", false);
+	            this.init();
+	            break;
+	            
+			case "quit-application":
+			
+	            // Doing shutdown stuff on FireFox quit
+	            observerService.removeObserver(this, "quit-application");
+	            observerService.removeObserver(this, "http-on-modify-request");
 
+	            Clicker.shutdown();
+	            break;
+	            
+	        case "http-on-modify-request":
+	        
+	        	//dump("\n\nhttp-on-modify-request\n\n");
+	        	var httpChannel = aSubject.QueryInterface(Ci.nsIHttpChannel);
+	        	var request = aSubject.QueryInterface(Components.interfaces.nsIRequest);
+	        	Clicker.beforeLoad(httpChannel, request);
+	        	break;
+		}
+    },
+
+    // shutdown : function() {
+//     	
+        // dump("\n[ADN] AddArtComponent.shutdown");
+        // Clicker.shutdown();
+    // },
+        
     processNodeABP : function(wnd, node, contentType, location, collapse) {
     	
-        //this will be run in context of AdBlock Plus
+        // NOTE: this will be run in context of AdBlockPlus
         return Cc['@eyebeam.org/addartadchanger;1'].getService()
         	.wrappedJSObject.processNodeADN(wnd, node, contentType, location, collapse);
     },
@@ -286,10 +415,9 @@ AddArtComponent.prototype = {
             	true :  this.policy.oldprocessNode(wnd, node, contentType, location, collapse);
         }       
         
-        if (node.hasAttribute("NOAD")) {
+        if (node.hasAttribute("NOAD")) { 
         	
-        	dump("\n\nSkipping NOAD: "+node);
-        	
+        	// dump("\n\nSkipping NOAD: "+node.getAttribute("NOAD"));
         	return true;
         }
             
@@ -351,11 +479,12 @@ AddArtComponent.prototype = {
 
         var adNode = node;
 
-        while(adNode.parentNode && 
-            (adNode.parentNode.tagName == 'A' ||
-                adNode.parentNode.tagName == 'OBJECT' ||
-                adNode.parentNode.tagName == 'IFRAME' ||
-                (adNode.hasAttribute && adNode.hasAttribute('onclick')))) {    
+        while (adNode.parentNode && (
+        	adNode.parentNode.tagName == 'A' ||
+			adNode.parentNode.tagName == 'OBJECT' ||
+            adNode.parentNode.tagName == 'IFRAME' ||
+            (adNode.hasAttribute && adNode.hasAttribute('onclick')))) 
+		{    
             adNode = adNode.parentNode;
         }
             
@@ -573,18 +702,6 @@ AddArtComponent.prototype = {
         }
     },
     
-    // nsIObserver interface implementation
-    observe : function(aSubject, aTopic, aData) {
-    	dump("\n\nobserver: "+aSubject+", "+aTopic+", "+aData);
-        var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
-        switch (aTopic) {
-	        case "profile-after-change":
-	            // Doing initialization stuff on FireFox start
-	            this.init();
-	            break;
-		}
-    },
-    
     createConteneur : function(OldElt, wnd, l, L) {
 
         // This replaces Ad element to element with art
@@ -599,7 +716,7 @@ AddArtComponent.prototype = {
             Clicker.add(toClick); // follow redirects
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
         }
-        //else dump("\n[AN] Ignoring: "+ele.tagName);
+        //else dump("\n[ADN] Ignoring: "+ele.tagName);
         
         return null; // skip this if hiding ads
 

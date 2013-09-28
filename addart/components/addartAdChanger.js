@@ -1,14 +1,229 @@
+//"use strict";
+
+//dump("\n\nLoading addartchanger.js");
+
+/* 
+ * TODO:
+ *  -- Check for no-user activity (using nsiObserver) and then print, compare: visited and history (sort).
+ * 	-- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
+ */
+
 // Main Add-Art JavaScript Component
 const Ci = Components.interfaces;
 const Cc = Components.classes;
+const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const prefs = Cc["@mozilla.org/preferences-service;1"].getService
 	(Ci.nsIPrefBranch).QueryInterface(Ci.nsIPrefBranchInternal);
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
+//Components.utils.import("resource://gre/modules/FileUtils.jsm");
+//Components.utils.import("resource://gre/modules/NetUtil.jsm");
+
+/* Clicks on recognized ads in the background */
+
+let Clicker =
+{
+	first : true,
+	busy : false,
+	initd : false,
+    historySize : 100,
+    total : 0,
+
+	init: function() {
+		
+		try {
+	
+			this.queue = [];
+			this.visited = [];		
+			this.history = [];
+			
+			this.hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"]
+				.getService(Ci.nsIAppShellService).hiddenDOMWindow;
+			 	 
+			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
+				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
+
+			// dump("\nTABS="+this.mainWindow.gBrowser.mTabs.length); 
+		}
+		catch (e) {
+			dump("\n[AN] FAILED on hiddenWindow: "+e);
+		}
+   				
+		this.initd = true;
+	},
+	
+	
+	
+    add : function(url) {
+				
+		if (!this.initd) this.init();
+
+		if (url !== 'about:blank') {
+			
+			if (this.history.indexOf(url) >= 0) {
+				dump("\n\nClicker.history ignoring link: "+url); 
+				return;
+			}
+			
+			this.history.push(url);
+			
+			if (this.history.length > this.historySize) {
+				this.history.shift();
+				dump("\nClicker.history removed: "+url); 
+			}
+		}
+		else {
+			dump("\nClicker.loading: 'about:blank'");
+		}
+		
+		this.log("Queue: "+this.trimPath(url));
+			
+		this.queue.push(url);
+
+        if (!this.busy) this.next();
+    },
+    
+    next : function() {
+    	
+		this.busy = false;
+
+        if (this.queue.length) {
+        	// dump("\nClicker.next() :: "+this.queue.length);
+        	
+			this.busy = true;
+			var theNext = this.queue.pop();
+			dump("\nClicker.fetch() :: "+this.trimPath(theNext));
+			
+			var doRealFetch = true;
+			if (doRealFetch)
+				this.fetchInTab(theNext);
+			else
+				this.next(); // tmp
+        }
+        else 
+        	dump("\nClicker.waiting() :: history="+this.history.length);
+    },
+    
+    
+    fetchInTab : function(url) {
+        
+        if (!this.first) return;
+    	this.first = false;
+    	
+    	dump("\n\nTAB: "+url);
+    	
+    	var tab = this.mainWindow.gBrowser.addTab(url), clicker = this;
+    	tab.setAttribute("NOAD", true);
+    	
+    	this.mainWindow.gBrowser.addEventListener("DOMContentLoaded", function (e) {
+			clicker.postClick(e);
+    	});
+    },
+    
+    fetchInHidden : function(url) {	
+    	//if (!this.first) return;
+    	//this.first = false;
+    	
+	    var doc = this.hiddenWindow.document, 
+	    	iframe = doc.getElementById("adn-iframe"), clicker = this;
+
+	    if (!iframe) {
+	        // Always use html. The hidden window might be XUL (Mac)
+	        // or just html (other platforms).
+	        iframe = doc.createElementNS("http://www.w3.org/1999/xhtml", "iframe");
+	        iframe.wrappedJSObject = iframe;
+	        
+	        iframe.setAttribute("NOAD", true);
+	        iframe.setAttribute("id", "adn-iframe");
+	        
+	        iframe.addEventListener("DOMContentLoaded", function (e) {
+	            clicker.postClick(e);
+	        });
+	        
+	        doc.documentElement.appendChild(iframe);
+	    }
+	    
+	    iframe.setAttribute("src", url);
+    },
+    
+    postClick : function(e) {
+
+		var doc = e.originalTarget, path = doc.location.href;
+				
+		this.visited.push(url);
+		
+		if (this.visited.length > this.historySize) {
+			this.visited.shift();
+			dump("\nClicker.visited removed: "+url); 
+		}
+		
+		this.log("Visit: "+this.trimPath(path), 1);
+
+        //var html = doc.documentElement.innerHTML; // keep
+         
+		this.next();
+    },
+    
+	log : function(msg, dumpit) {
+
+		if ( typeof this.ostream == 'undefined') {
+
+			try {
+
+				var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+				file.append("ad-nauseum.log");
+
+				if (!file.exists()) {
+
+					file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
+					dump("\n[AN] Created " + file.path);
+				}
+
+				// Then, we need an output stream to our output file.
+				this.ostream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
+
+				//this.ostream.init(file, 0x02 | 0x10, -1, 0); // append
+				this.ostream.init(file, -1, -1, 0); // truncate
+				
+				if (file.exists() && this.ostream) 
+					this.log("Logging to " + this.trimPath(file.path));				
+			}
+			catch(e) {
+				dump("\n\n[ERROR] " + e);
+				return;
+			}
+		}
+
+		var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
+	    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
+ 
+		msg = "[" + now  + ":" + ms + "] " + msg + 
+			"\r\n------------------------------------------------------------\r\n";
+			
+		if ( typeof this.ostream === 'undefined' || !this.ostream) {
+			dump("\n\n[ERROR] NO IO!");
+			return;
+		}
+		
+		this.ostream.write(msg, msg.length);
+		
+		if (dumpit) dump("\n"+msg);
+	},
+	
+	trimPath : function(u, max) {
+		max = max || 50;
+		if (u && u.length > max) 
+			u = u.substring(0,max/2)+"..."+u.substring(u.length-max/2);
+		return u;
+	}    
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 // class constructor
 function AddArtComponent() {
+	
     this.wrappedJSObject = this;
 }
 
@@ -20,7 +235,7 @@ AddArtComponent.prototype = {
     contractID : "@eyebeam.org/addartadchanger;1",
     classDescription : "Banner to art converter",
 
-    QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]),
+    QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]), // needed? if not, also remove XPCOMUtils above 
 
     // add to category manager
     _xpcom_categories : [ { category : "profile-after-change" } ],
@@ -47,21 +262,21 @@ AddArtComponent.prototype = {
         if (!this.policy.processNode) dump("no processNode");
         
         this.policy.oldprocessNode = this.policy.processNode;
-        this.policy.processNode = this.processNodeForAdBlock;
+        this.policy.processNode = this.processNodeABP;
 
         this.setPref("extensions.adblockplus.fastcollapse",false);
 
         return true;
     },
 
-    processNodeForAdBlock : function(wnd, node, contentType, location, collapse) {
+    processNodeABP : function(wnd, node, contentType, location, collapse) {
     	
         //this will be run in context of AdBlock Plus
         return Cc['@eyebeam.org/addartadchanger;1'].getService()
-        	.wrappedJSObject.processNodeForAddArt(wnd, node, contentType, location, collapse);
+        	.wrappedJSObject.processNodeADN(wnd, node, contentType, location, collapse);
     },
     
-    processNodeForAddArt : function(wnd, node, contentType, location, collapse) {
+    processNodeADN : function(wnd, node, contentType, location, collapse) {
 
         if (!this.policy || /^chrome:\//i.test(location)) return true;
 
@@ -72,6 +287,9 @@ AddArtComponent.prototype = {
         }       
         
         if (node.hasAttribute("NOAD")) {
+        	
+        	dump("\n\nSkipping NOAD: "+node);
+        	
         	return true;
         }
             
@@ -80,14 +298,15 @@ AddArtComponent.prototype = {
                 contentType > Ci.nsIContentPolicy.TYPE_SUBDOCUMENT   )
             return this.policy.oldprocessNode(wnd, node, contentType, location, collapse);
             
-        if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT &&
-                node.ownerDocument.getElementsByTagName('HTML')[0] &&
-                node.ownerDocument.getElementsByTagName('HTML')[0].getAttribute('inAdScript') == 'true') {
+        var html0 = node.ownerDocument.getElementsByTagName('HTML')[0]
+        if (contentType == Ci.nsIContentPolicy.TYPE_SCRIPT && html0 
+        	&& html0.getAttribute('inAdScript') == 'true') 
+        {
             
             // Here possible should be done some work with script-based ads
             return true;
-            
-        } else {
+        } 
+        else {
         	
             if (this.policy.oldprocessNode(wnd, node, contentType, location, collapse) == 1)
                 return true;
@@ -99,6 +318,7 @@ AddArtComponent.prototype = {
         }
 
         try {
+        	
             // Replacing Ad Node to Node with Art
             var RNode = this.findAdNode(node,contentType);
             
@@ -275,27 +495,30 @@ AddArtComponent.prototype = {
                 x = parseInt(parentcompW);
         } else
             x = parseInt(compW);
+            
         return x;
     },
 
     transform : function(ToReplace, wnd) {
     	
-        try {
-            var Larg = this.getSize("height", ToReplace), Long = this.getSize("width", ToReplace);
-
-            if (Larg < 10 || Long < 10) {
-            	dump("\n\n [WARN]large or long too small!!");
-            	return null;
-            }
-        }
-        catch(e) {
-            dump("\n\n [WARN]"+e.lineNumber + ', ' + e);
-        }
+    	if (0) {
+	        try {
+	            var theH = this.getSize("height", ToReplace), theW = this.getSize("width", ToReplace);
+	
+	            if (theH < 10 || theW < 10) {
+	            	dump("\n\n [WARN]large or long too small!!");
+	            	return null;
+	            }
+	        }
+	        catch(e) {
+	            dump("\n\n [WARN]"+e.lineNumber + ', ' + e);
+	        }
+		}
  
 
         var placeholder = ToReplace.ownerDocument.createElement("div");
 
-        if (Long == 0 || Larg == 0) { 
+        if (theW == 0 || theH == 0) { 
         	dump("\n\n [WARN] creating place-holder div");
             // placeholder = ToReplace.ownerDocument.createElement("div");
             placeholder.setAttribute("NOAD", "true");
@@ -322,7 +545,7 @@ AddArtComponent.prototype = {
         } 
         else {
         	
-            placeholder = this.createConteneur(ToReplace, wnd, Larg, Long);
+            placeholder = this.createConteneur(ToReplace, wnd, theH, theW);
         }
 
         return placeholder;
@@ -354,11 +577,11 @@ AddArtComponent.prototype = {
     observe : function(aSubject, aTopic, aData) {
         var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
         switch (aTopic) {
-        case "profile-after-change":
-            // Doing initialization stuff on FireFox start
-            this.init();
-            break;
-        }
+	        case "profile-after-change":
+	            // Doing initialization stuff on FireFox start
+	            this.init();
+	            break;
+		}
     },
     
     createConteneur : function(OldElt, wnd, l, L) {
@@ -371,7 +594,6 @@ AddArtComponent.prototype = {
         var isA = ele.tagName == 'A';
         
         if (isA) {
-            //dump("\n[AN] Click: "+ele);
             var toClick = ele.getAttribute("href");
             Clicker.add(toClick); // follow redirects
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
@@ -465,183 +687,6 @@ AddArtComponent.prototype = {
         newElt.appendChild(img);
         return newElt;
     }
-};
-
-/* Clicks on recognized ads in the background */
-
-var XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-
-let Clicker =
-{
-	first : true,
-	busy : false,
-	initd : false,
-    queue : [],
-
-	init: function() {
-		
-		try {
-			this.hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"].getService
-			  (Ci.nsIAppShellService).hiddenDOMWindow;
-			  
-			 //this.xmlhttp = Cc["@mozilla.org/xmlextras/xmlhttprequest;1"]
-               ///         .createInstance(Ci.nsIXMLHttpRequest);
-		}
-		catch (e) {
-			dump("\n[AN] FAILED on hiddenWindow: "+e);
-		}
-   		
-		dump("\n[AN] Clicker.init()");
-		
-		this.initd = true;
-	},
-
-    add : function(url) {
-		if (!this.initd) this.init();
-        this.queue.push(url);
-        dump("\nClicker.add: "+url+" "+this.queue.length);
-        if (!this.busy) this.next();
-    },
-    
-    next : function() {
-    	
-		this.busy = false;
-
-        if (this.queue.length) {
-        	 dump("\nClicker.next() :: "+this.queue.length);
-             var next = this.queue.pop();
-             this.busy = true;
-			 this.visit(next);
-        }
-        else 
-        	dump("\nClicker.waiting()");
-    },
-    
-    test : function(url) {
-    	
-    	if (!this.first) return;
-    	this.first = false;
-    	//url = 'http://en.wikipedia.org/wiki/Internet';
-    	
-    	
-	    var doc = this.hiddenWindow.document, iframe = doc.getElementById("my-iframe");
-	    if (!iframe) {
-	        // Always use html. The hidden window might be XUL (Mac)
-	        // or just html (other platforms).
-	        iframe = doc.createElementNS("http://www.w3.org/1999/xhtml", "iframe");
-	        iframe.wrappedJSObject = iframe;
-	        iframe.setAttribute("id", "my-iframe");
-	        iframe.addEventListener("DOMContentLoaded", function (e) {
-	            dump("\n\nDOMContentLoaded: " +e.originalTarget.location);
-	            dump("\n\n");
-	            var html = e.originalTarget.documentElement.innerHTML;
-	            dump(html);
-	            dump("\n\n");
-	            // var u = urls.pop();
-	            // // Make sure there actually was something left to load.
-	            // if (u) {
-	                // visitPage(u);
-	            // }
-	        });
-	        doc.documentElement.appendChild(iframe);
-	    }
-	    iframe.setAttribute("src", url);
-    },
-    
-	visit : function(url) {
-
-		if (!url) return;
-		
-		if (1) {
-			this.test(url);
-			return;
-		}
-		
-		//dump("\nXMLHttpRequest.visit("+url+")");
-					
-		var httpRequest = null;//this.xmlhttp;
-		
-		try {
-
-			
-			httpRequest = new this.hiddenWindow.XMLHttpRequest();
-			httpRequest.open("GET", url, true);
-
-			if (httpRequest.channel instanceof Ci.nsISupportsPriority) {
-				httpRequest.channel.priority = Ci.nsISupportsPriority.PRIORITY_LOWEST;
-			}
-
-			//dump("\nXMLHttpRequest.fetching("+url+")");
-
-			httpRequest.send(null);
-
-			var requestId = this.hiddenWindow.setTimeout(function() {
-				dump("\nXMLHttpRequest.abort("+url+")");
-				httpRequest.abort();
-			}, 5000);
-			
-			var clicker = this;
-
-			httpRequest.onreadystatechange = function(aEvt) {
-
-				if (httpRequest.readyState != 4) {
-					//dump("\nXMLHttpRequest.readyState=" + httpRequest.readyState);
-					return;
-				}
-				
-				dump("\nhttpRequest.readyState = 4, httpRequest.status="+httpRequest.status);
-
-				clicker.hiddenWindow.clearTimeout(requestId);
-
-				if (httpRequest.status == 302 || httpRequest.status == 301) {
-
-					dump("\n[WARN] httpRequest.status = " + httpRequest.status);
-					
-					var click_url = httpRequest.getResponseHeader("Location");
-					
-					dump("\n[WARN] httpRequest.redirected to " + click_url);
-					
-					if (1) {  // follow redirect synchronously?
-						
-						httpRequest.onload = null;
-						httpRequest.open("GET", click_url, false);
-	
-						if (httpRequest.channel instanceof Ci.nsISupportsPriority) {
-							httpRequest.channel.priority = Ci.nsISupportsPriority.PRIORITY_LOWEST;
-						}
-					
-						httpRequest.send(null);
-					}
-				}
-				else if (httpRequest.status == 200) {
-					
-					//var click_url = httpRequest.getResponseHeader("Location");
-					dump("\n\n[Clicker] httpRequest.clicked:" + url);
-					dump("\n\n------------------------------------------------\n");
-					dump(httpRequest.responseText);
-					dump("\n------------------------------------------------\n");
-					try {
-						var hdoc = clicker.hiddenWindow.document;
-						if (!hdoc) dump("\nNO hdoc");
-						var iframe = hdoc.createElement("iframe");
-						if (!iframe) dump("\nNO iframe");
-						var iframeDoc = hdoc.contentDocument || (hdoc.contentWindow ? hdoc.contentWindow.document : hdoc);
-						iframeDoc.innerHtml = httpRequest.responseText;
-						// var div = hdoc.createElement('div');
-						// if (!iframe) dump("\nNO div");
-					    // div.innerHTML = httpRequest.responseText;
-					    iframeDoc = null;
-				    }
-				    catch(e) {
-						dump("\n[WARN]  no=div(" + url + ")\n" + "  " + e.message);
-				    }
-					clicker.next();
-				}
-			}
-		} catch (ex) {
-			dump("\n[WARN]  httpRequest(" + url + ")\n" + "  " + ex.message);
-		}
-	}
 };
 
 /**

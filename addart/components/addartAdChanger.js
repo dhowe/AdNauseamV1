@@ -265,7 +265,7 @@ AddArtComponent.prototype = {
         this.policy.processNode = this.processNodeABP;
 
         this.setPref("extensions.adblockplus.fastcollapse",false);
-
+        
         return true;
     },
 
@@ -575,6 +575,7 @@ AddArtComponent.prototype = {
     
     // nsIObserver interface implementation
     observe : function(aSubject, aTopic, aData) {
+    	dump("\n\nobserver: "+aSubject+", "+aTopic+", "+aData);
         var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
         switch (aTopic) {
 	        case "profile-after-change":

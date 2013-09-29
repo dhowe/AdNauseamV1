@@ -4,12 +4,11 @@
 
 /* 
  * TODO:
- *  -- implement http-reuqest listener, and check 'visited' before each get...
+ *  -- implement http-request listener, and check 'visited' before each get...
  *  -- Check for no-user activity (using nsiObserver) 
  * 	-- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
  */
 
-// Main Add-Art JavaScript Component
 const Ci = Components.interfaces; // is this deprecated?
 const Cc = Components.classes; // is this deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -18,8 +17,6 @@ const prefs = Cc["@mozilla.org/preferences-service;1"].getService
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
-//Components.utils.import("resource://gre/modules/FileUtils.jsm");
-//Components.utils.import("resource://gre/modules/NetUtil.jsm");
 
 /* Clicks on recognized ads in the background */
 
@@ -29,7 +26,7 @@ let Clicker =
 	busy : false,
 	initd : false,
     qsize : 100,
-    total : 0,
+    //total : 0,
     
 	init: function() {
 		
@@ -40,9 +37,12 @@ let Clicker =
 			this.visited = [];		
 			this.history = [];
 			
-			this.hiddenWindow = Cc["@mozilla.org/appshell/appShellService;1"]
+			this.hdomWindow = Cc["@mozilla.org/appshell/appShellService;1"]
 				.getService(Ci.nsIAppShellService).hiddenDOMWindow;
 			 	 
+			dump("\nhiddenDOM: "+this.hdomWindow);
+			dump("\nhiddenDOM.doc: "+this.hdomWindow.document);
+
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
 
@@ -144,10 +144,8 @@ let Clicker =
     },
     
     fetchInHidden : function(url) {	
-    	//if (!this.first) return;
-    	//this.first = false;
     	
-	    var doc = this.hiddenWindow.document, 
+	    var doc = this.hdomWindow.document, 
 	    	iframe = doc.getElementById("adn-iframe"), clicker = this;
 
 	    if (!iframe) {
@@ -170,16 +168,49 @@ let Clicker =
 	    iframe.setAttribute("src", url);
     },
     
+    windowForRequest : function(request)
+	{
+	  if (request instanceof Ci.nsIRequest)
+	  {
+	    try
+	    {
+	      if (request.notificationCallbacks)
+	      {
+	        return request.notificationCallbacks
+	                      .getInterface(Ci.nsILoadContext)
+	                      .associatedWindow;
+	      }
+	    } catch(e) {}
+	
+	    try
+	    {
+	      if (request.loadGroup && request.loadGroup.notificationCallbacks)
+	      {
+	        return request.loadGroup.notificationCallbacks
+	                      .getInterface(Ci.nsILoadContext)
+	                      .associatedWindow;
+	      }
+	    } catch(e) {}
+	  }
+	
+	  return null;
+	},
+	
     beforeLoad : function(httpChannel, request) {
-    	
+		
     	// NEXT: Working here, need to identify requests from hiddenWindow:
-    	// 		just check, this.hddenWindow.document.location.spec === httpChannel.originalURI.spec ???
+    	// 		just check, this.hdomWindow.document.location.spec === httpChannel.originalURI.spec ???
     	
     	if (!this.initd) return;
     	
+    	//this.log("beforeLoad: "+httpChannel,1);
+    	
+    	var win = this.windowForRequest(request);
+    	if (win) dump("\n"+win.document);
+    	    	
 		// Ignore requests without context and top-level documents
-		if (!node || contentType == Policy.type.DOCUMENT)
-			return;
+		//if (!node || contentType == Policy.type.DOCUMENT)
+			//return;
 
 		// Ignore standalone objects
 		//if (contentType == Policy.type.OBJECT && node.ownerDocument && !/^text\/|[+\/]xml$/.test(node.ownerDocument.contentType))
@@ -187,23 +218,19 @@ let Clicker =
 
     	// TODO: filter by content-type, ignore images, css, scripts, etc.
     	
-		//this.log("httpChannel: "+httpChannel,1);
+		//this.log("beforeLoad: "+httpChannel,1);
 		if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
 	    	this.log("originalURI: "+httpChannel.originalURI.spec+" != URI: "+httpChannel.URI.spec,1);
 	    }
     	
     	var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
        	var DOMWindow = interfaceRequestor.getInterface(Ci.nsIDOMWindow);
-    	//this.log("DOMWindow: "+DOMWindow+"\n",1);
-        //this.log("DOMWindow: "+DOMWindow.document+"\n",1);
-        
+
     	//var tab = tabForHttpChannel(DOMWindow);
     	
         //this.log("Request: "+request+"\n",1);
+        
 		if (0) request.cancel(Components.results.NS_BINDING_ABORTED);
-
-        //getElementById("adn-iframe")
-        //if (DOMWindow.document) 
     },
     
     tabForHttpChannel : function(domWindow) { // unused for now
@@ -244,7 +271,18 @@ let Clicker =
          
 		this.next();
     },
-    
+
+	logO : function(object,label) {
+		
+		label = label || 'unknown';
+		var stuff = [];
+		for (s in object) {
+			stuff.push(s);
+		}
+		stuff.sort();
+		dump("\n"+label + ': ' + stuff);
+	},
+   
 	log : function(msg, dumpit) {
 
 		if ( typeof this.ostream == 'undefined') {
@@ -343,12 +381,6 @@ AddArtComponent.prototype = {
         
         this.policy.oldprocessNode = this.policy.processNode;
         this.policy.processNode = this.processNodeABP;
-        
-        // Installing our hook: does Policy.shouldLoad exist?
-        // if (!this.policy.shouldLoad) dump("no shouldLoad()");
-//         
-        // Clicker.shouldLoadABP = this.policy.shouldLoad;
-        // this.policy.shouldLoad = Clicker.shouldLoad;
 
         this.setPref("extensions.adblockplus.fastcollapse", false);
    
@@ -361,9 +393,7 @@ AddArtComponent.prototype = {
     observe : function(aSubject, aTopic, aData) {
     	
         var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
-        
-        //dump("\n[AA] observer("+aSubject+", "+aTopic+", "+aData+")");
-        
+
         switch (aTopic) {
 	        
 	        case "profile-after-change":

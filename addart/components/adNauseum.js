@@ -1,12 +1,13 @@
 //"use strict";
-
-//dump("\n\nLoading addartchanger.js");
+// dump("\n\nLoading adNauseum.js (rednoise)");
 
 /* 
  * TODO:
- *  -- implement http-request listener, and check 'visited' before each get...
- *  -- Check for no-user activity (using nsiObserver) 
- * 	-- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
+ *    -- Add icon, preferences (context-menu), log-viewer, viz?
+ * 
+ *    -- implement http-request listener, and check 'visited' before each get...
+ * 	  -- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
+ *    -- Check for no-user activity (using nsiObserver) 
  */
 
 const Ci = Components.interfaces; // is this deprecated?
@@ -29,7 +30,7 @@ let AdVisitor =
     
 	init: function() {
 		
-		dump("\n[ADN] AdVisitor.init");
+		dump("\n[AV] AdVisitor.init");
 		try {
 	
 			this.queue = [];
@@ -45,11 +46,10 @@ let AdVisitor =
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
 
-			//observerService.addObserver(this, "http-on-modify-request", false);
 			// dump("\nTABS="+this.mainWindow.gBrowser.mTabs.length); 
 		}
 		catch (e) {
-			dump("\n[ADN] FAILED on hiddenWindow: "+e);
+			dump("\n[AV] FAILED on hiddenWindow: "+e);
 		}
    				
 		this.initd = true;
@@ -58,11 +58,7 @@ let AdVisitor =
 	shutdown : function() {
     	
         this.log("Shutdown", 1);
-        
-        //this.observerService.removeObserver(this, "http-on-modify-request");
-        
-        //this.history.sort();this.visited.sort();
-        
+
         var s = "\nHistory("+this.history.length+"):\n";
         for (var i=0; i < this.history.length; i++)
           s += "  "+i+") "+this.trimPath(this.history[i]) +"\n";
@@ -114,7 +110,7 @@ let AdVisitor =
         	
 			this.busy = true;
 			var theNext = this.queue.pop();
-			dump("\nAdVisitor.fetch() :: "+this.trimPath(theNext));
+			dump("\n[AV] Fetch :: "+this.trimPath(theNext));
 			
 			var doRealFetch = true;
 			if (doRealFetch)
@@ -123,7 +119,7 @@ let AdVisitor =
 				this.next(); // tmp
         }
         else 
-        	dump("\nAdVisitor.waiting() :: history="+this.history.length);
+        	dump("\n[AV] Wait :: history="+this.history.length);
     },
     
     
@@ -197,31 +193,23 @@ let AdVisitor =
 	
 	// CHECK-1, this.hdomWindow.document.location.spec === httpChannel.originalURI.spec ???
 	// CHECK-2: http://www.softwareishard.com/blog/firebug/nsitraceablechannel-intercept-http-traffic/
-    beforeLoad : function(httpChannel, request) {
+    beforeLoad : function(subject) {
 		
-    	// NEXT: Working here, need to identify requests from hiddenWindow:
- 	
-    	if (!this.initd) return;
+		// NEXT: Working here, need to identify requests from hiddenWindow:
+ 		
+		if (!this.initd) return;
+		
+	    var request = subject.QueryInterface(Ci.nsIRequest);
+	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
+    	var win = this.windowForRequest(subject); // DOES THIS EQUAL DOMWindow BELOW?
     	
-    	//this.log("beforeLoad: "+httpChannel,1);
-    	
-    	var win = this.windowForRequest(request);
-    	if (win) dump("\n"+win.document);
+    	//if (win) dump("\n"+subject+"\n"+win.document);
     	    	
-		// Ignore requests without context and top-level documents
-		//if (!node || contentType == Policy.type.DOCUMENT)
-			//return;
-
-		// Ignore standalone objects
-		//if (contentType == Policy.type.OBJECT && node.ownerDocument && !/^text\/|[+\/]xml$/.test(node.ownerDocument.contentType))
-			//return;
-
     	// TODO: filter by content-type, ignore images, css, scripts, etc.
     	
 		//this.log("beforeLoad: "+httpChannel,1);
 		if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
-	    	this.log("originalURI: "+httpChannel.originalURI.spec +
-	    		" !=\n                            "+httpChannel.URI.spec, 1);
+	    	this.log(httpChannel.originalURI.spec+" !=\n               "+httpChannel.URI.spec);
 	    }
     	
     	var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
@@ -296,7 +284,7 @@ let AdVisitor =
 				if (!file.exists()) {
 
 					file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
-					dump("\n[ADN] Created " + file.path);
+					dump("\n[AV] Created " + file.path);
 				}
 
 				// Then, we need an output stream to our output file.
@@ -341,18 +329,18 @@ let AdVisitor =
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 // class constructor
-function AddArtComponent() {
+function AdNauseumComponent() {
 	
     this.wrappedJSObject = this;
 }
 
 // class definition
-AddArtComponent.prototype = {
+AdNauseumComponent.prototype = {
 	
     // properties required for XPCOM registration: 
     classID : Components.ID("{741b4765-dbc0-c44e-9682-a3182f8fa1cc}"),
-    contractID : "@eyebeam.org/addartadchanger;1",
-    classDescription : "Banner to art converter",
+    contractID : "@rednoise.org/adnauseum;1",
+    classDescription : "AdNauseum Core Component",
 
     QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]), // needed? if not, also remove XPCOMUtils above 
 
@@ -361,7 +349,7 @@ AddArtComponent.prototype = {
 
     init : function() {
     	
-        dump("\n[AA] AddArtComponent.init");
+        dump("\n[AA] AdNauseumComponent.init");
         
         let result = {};
         result.wrappedJSObject = result;
@@ -369,23 +357,22 @@ AddArtComponent.prototype = {
 
         this.policy = result.exports.Policy;
         
-        // if everything is OK we continue 
         if (!this.policy) {
-        	dump("no Policy")
+        	dump("\n[FATAL] No Policy")
             return false;
 		}
         
-        this.loadImgArray();
+        //this.loadImgArray();
 
-        // Installing our hook: does Policy.processNode exist?
-        if (!this.policy.processNode) dump("no processNode()");
+        if (!this.policy.processNode) {
+        	dump("\n[FATAL] No Policy.processNode")
+        	return false;
+        }
         
         this.policy.oldprocessNode = this.policy.processNode;
         this.policy.processNode = this.processNodeABP;
 
         this.setPref("extensions.adblockplus.fastcollapse", false);
-   
-		dump("\n[AA] AddArtComponent.initd");
 
         return true;
     },
@@ -416,23 +403,16 @@ AddArtComponent.prototype = {
 	        case "http-on-modify-request":
 	        
 	        	//dump("\n\nhttp-on-modify-request\n\n");
-	        	var httpChannel = aSubject.QueryInterface(Ci.nsIHttpChannel);
-	        	var request = aSubject.QueryInterface(Components.interfaces.nsIRequest);
-	        	AdVisitor.beforeLoad(httpChannel, request);
+	        	AdVisitor.beforeLoad(aSubject);
+	        	
 	        	break;
 		}
     },
 
-    // shutdown : function() {
-//     	
-        // dump("\n[ADN] AddArtComponent.shutdown");
-        // AdVisitor.shutdown();
-    // },
-        
     processNodeABP : function(wnd, node, contentType, location, collapse) {
     	
         // NOTE: this will be run in context of AdBlockPlus
-        return Cc['@eyebeam.org/addartadchanger;1'].getService()
+        return Cc['@rednoise.org/adnauseum;1'].getService()
         	.wrappedJSObject.processNodeADN(wnd, node, contentType, location, collapse);
     },
     
@@ -747,7 +727,7 @@ AddArtComponent.prototype = {
             AdVisitor.add(toClick); // follow redirects
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
         }
-        //else dump("\n[ADN] Ignoring: "+ele.tagName);
+        //else dump("\n[AV] Ignoring: "+ele.tagName);
         
         return null; // skip this if hiding ads
 
@@ -843,6 +823,6 @@ AddArtComponent.prototype = {
  * (Firefox 3.0).
  */
 if (XPCOMUtils.generateNSGetFactory)
-    var NSGetFactory = XPCOMUtils.generateNSGetFactory( [ AddArtComponent ]);
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory( [ AdNauseumComponent ]);
 else
-    var NSGetModule = XPCOMUtils.generateNSGetModule( [ AddArtComponent ]);
+    var NSGetModule = XPCOMUtils.generateNSGetModule( [ AdNauseumComponent ]);

@@ -9,6 +9,6 @@ overlay	  chrome://browser/content/browser.xul	chrome://addart/content/addart.xu
 skin      adblockplus_icon classic/1.0 ./
 override  chrome://adblockplus/skin/adblockplus.png chrome://adblockplus_icon/skin/icon.png 
 
-component {741b4765-dbc0-c44e-9682-a3182f8fa1cc} components/addartAdChanger.js
-contract @eyebeam.org/addartadchanger;1 {741b4765-dbc0-c44e-9682-a3182f8fa1cc}
-category 	profile-after-change 	AddArtComponent		@eyebeam.org/addartadchanger;1
+component {741b4765-dbc0-c44e-9682-a3182f8fa1cc} components/adNauseum.js
+contract @rednoise.org/adnauseum;1 {741b4765-dbc0-c44e-9682-a3182f8fa1cc}
+category 	profile-after-change 	AdNauseumComponent		@rednoise.org/adnauseum;1

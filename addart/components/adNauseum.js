@@ -203,6 +203,18 @@ let AdVisitor =
 	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
     	var win = this.windowForRequest(subject); // DOES THIS EQUAL DOMWindow BELOW?
     	
+    	var chromeEventHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
+    		.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
+    		.chromeEventHandler;
+    	
+    	if (chromeEventHandler) {
+    		var obj = chromeEventHandler.attributes;
+    		dump("\n"+chromeEventHandler+":");
+			for (var i = 0, len = obj.length; i < len; ++i)
+            	dump("\n  "+obj[i].name+": "+obj[i]);
+           	dump("\n==================================\n");
+    	}
+    	
     	//if (win) dump("\n"+subject+"\n"+win.document);
     	    	
     	// TODO: filter by content-type, ignore images, css, scripts, etc.
@@ -221,7 +233,7 @@ let AdVisitor =
         
 		if (0) request.cancel(Components.results.NS_BINDING_ABORTED);
     },
-    
+
     tabForHttpChannel : function(domWindow) { // unused for now
     	
        	var tab, tIndex = -1, gBrowser = this.mainWindow.gBrowser;

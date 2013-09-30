@@ -20,17 +20,16 @@ Components.utils.import("resource://gre/modules/Services.jsm");
 
 /* Clicks on recognized ads in the background */
 
-let Clicker =
+let AdVisitor =
 {
 	first : true,
 	busy : false,
 	initd : false,
     qsize : 100,
-    //total : 0,
     
 	init: function() {
 		
-		dump("\n[ADN] Clicker.init");
+		dump("\n[ADN] AdVisitor.init");
 		try {
 	
 			this.queue = [];
@@ -84,7 +83,7 @@ let Clicker =
 		if (url !== 'about:blank') {
 			
 			if (this.history.indexOf(url) >= 0) {
-				dump("\n\nClicker.history ignoring link: "+url); 
+				dump("\n\nAdVisitor.history ignoring link: "+url); 
 				return;
 			}
 			
@@ -92,11 +91,11 @@ let Clicker =
 			
 			if (this.history.length > this.qsize) {
 				this.history.shift();
-				dump("\nClicker.history removed: "+url); 
+				dump("\nAdVisitor.history removed: "+url); 
 			}
 		}
 		else {
-			dump("\nClicker.loading: 'about:blank'");
+			dump("\nAdVisitor.loading: 'about:blank'");
 		}
 		
 		this.log("Queue: "+this.trimPath(url));
@@ -111,11 +110,11 @@ let Clicker =
 		this.busy = false;
 
         if (this.queue.length) {
-        	// dump("\nClicker.next() :: "+this.queue.length);
+        	// dump("\nAdVisitor.next() :: "+this.queue.length);
         	
 			this.busy = true;
 			var theNext = this.queue.pop();
-			dump("\nClicker.fetch() :: "+this.trimPath(theNext));
+			dump("\nAdVisitor.fetch() :: "+this.trimPath(theNext));
 			
 			var doRealFetch = true;
 			if (doRealFetch)
@@ -124,7 +123,7 @@ let Clicker =
 				this.next(); // tmp
         }
         else 
-        	dump("\nClicker.waiting() :: history="+this.history.length);
+        	dump("\nAdVisitor.waiting() :: history="+this.history.length);
     },
     
     
@@ -135,18 +134,18 @@ let Clicker =
     	
     	dump("\n\nTAB: "+url);
     	
-    	var clicker = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);
+    	var AdVisitor = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);
     	tab.setAttribute("NOAD", true);
     	
     	gBrowser.addEventListener("DOMContentLoaded", function (e) {
-			clicker.afterLoad(e);
+			AdVisitor.afterLoad(e);
     	});
     },
     
     fetchInHidden : function(url) {	
     	
 	    var doc = this.hdomWindow.document, 
-	    	iframe = doc.getElementById("adn-iframe"), clicker = this;
+	    	iframe = doc.getElementById("adn-iframe"), AdVisitor = this;
 
 	    if (!iframe) {
 	    	
@@ -159,7 +158,7 @@ let Clicker =
 	        iframe.setAttribute("id", "adn-iframe");
 	        
 	        iframe.addEventListener("DOMContentLoaded", function (e) {
-	            clicker.afterLoad(e);
+	            AdVisitor.afterLoad(e);
 	        });
 	        
 	        doc.documentElement.appendChild(iframe);
@@ -196,11 +195,12 @@ let Clicker =
 	  return null;
 	},
 	
+	// CHECK-1, this.hdomWindow.document.location.spec === httpChannel.originalURI.spec ???
+	// CHECK-2: http://www.softwareishard.com/blog/firebug/nsitraceablechannel-intercept-http-traffic/
     beforeLoad : function(httpChannel, request) {
 		
     	// NEXT: Working here, need to identify requests from hiddenWindow:
-    	// 		just check, this.hdomWindow.document.location.spec === httpChannel.originalURI.spec ???
-    	
+ 	
     	if (!this.initd) return;
     	
     	//this.log("beforeLoad: "+httpChannel,1);
@@ -220,7 +220,8 @@ let Clicker =
     	
 		//this.log("beforeLoad: "+httpChannel,1);
 		if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
-	    	this.log("originalURI: "+httpChannel.originalURI.spec+" != URI: "+httpChannel.URI.spec,1);
+	    	this.log("originalURI: "+httpChannel.originalURI.spec +
+	    		" !=\n                            "+httpChannel.URI.spec, 1);
 	    }
     	
     	var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
@@ -262,7 +263,7 @@ let Clicker =
 		
 		if (0 && this.visited.length > this.qsize) { // re-add to control log size?
 			this.visited.shift();
-			dump("\nClicker.visited removed: "+path); 
+			dump("\nAdVisitor.visited removed: "+path); 
 		}
 		
 		this.log("Visit: "+this.trimPath(path), 0);
@@ -409,7 +410,7 @@ AddArtComponent.prototype = {
 	            observerService.removeObserver(this, "quit-application");
 	            observerService.removeObserver(this, "http-on-modify-request");
 
-	            Clicker.shutdown();
+	            AdVisitor.shutdown();
 	            break;
 	            
 	        case "http-on-modify-request":
@@ -417,7 +418,7 @@ AddArtComponent.prototype = {
 	        	//dump("\n\nhttp-on-modify-request\n\n");
 	        	var httpChannel = aSubject.QueryInterface(Ci.nsIHttpChannel);
 	        	var request = aSubject.QueryInterface(Components.interfaces.nsIRequest);
-	        	Clicker.beforeLoad(httpChannel, request);
+	        	AdVisitor.beforeLoad(httpChannel, request);
 	        	break;
 		}
     },
@@ -425,7 +426,7 @@ AddArtComponent.prototype = {
     // shutdown : function() {
 //     	
         // dump("\n[ADN] AddArtComponent.shutdown");
-        // Clicker.shutdown();
+        // AdVisitor.shutdown();
     // },
         
     processNodeABP : function(wnd, node, contentType, location, collapse) {
@@ -743,7 +744,7 @@ AddArtComponent.prototype = {
         
         if (isA) {
             var toClick = ele.getAttribute("href");
-            Clicker.add(toClick); // follow redirects
+            AdVisitor.add(toClick); // follow redirects
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
         }
         //else dump("\n[ADN] Ignoring: "+ele.tagName);

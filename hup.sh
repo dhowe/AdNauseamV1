@@ -1,6 +1,6 @@
 #!/bin/sh
 
-killall firefox-bin
+/bin/ps -ef | grep DEV-AddArt | grep -v grep | awk '{print $2}' | xargs kill -9
 
 ./compile.sh
 

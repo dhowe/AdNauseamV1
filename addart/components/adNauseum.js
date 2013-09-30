@@ -34,14 +34,12 @@ let AdVisitor =
 		try {
 	
 			this.queue = [];
+			this.tosnap = [];
 			this.visited = [];		
 			this.history = [];
 			
 			this.hdomWindow = Cc["@mozilla.org/appshell/appShellService;1"]
 				.getService(Ci.nsIAppShellService).hiddenDOMWindow;
-			 	 
-			dump("\nhiddenDOM: "+this.hdomWindow);
-			dump("\nhiddenDOM.doc: "+this.hdomWindow.document);
 
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
@@ -56,8 +54,6 @@ let AdVisitor =
 	},
 	
 	shutdown : function() {
-    	
-        this.log("Shutdown", 1);
 
         var s = "\nHistory("+this.history.length+"):\n";
         for (var i=0; i < this.history.length; i++)
@@ -68,6 +64,17 @@ let AdVisitor =
         for (var i=0; i < this.visited.length; i++)
           s += "  "+i+") "+this.trimPath(this.visited[i]) +"\n";
         dump("\n"+s);
+        
+        var sdiff = this.diff(this.visited, this.history);
+        this.remove(sdiff, "about:blank");
+        //dump(xx.length == sdiff.length ? "FAIL!!! ");
+        
+        s = "Real-Ads("+sdiff.length+"):\n";
+        for (var i=0; i < sdiff.length; i++)
+          s += "  "+i+") "+this.trimPath(sdiff[i]) +"\n";
+        dump("\n"+s);
+        
+        this.log("Shutdown", 1);
         
         if (this.ostream) this.ostream.close();	
     },
@@ -91,7 +98,7 @@ let AdVisitor =
 			}
 		}
 		else {
-			dump("\nAdVisitor.loading: 'about:blank'");
+			dump("\n\nAdVisitor.adding: 'about:blank'\n\n");
 		}
 		
 		this.log("Queue: "+this.trimPath(url));
@@ -136,26 +143,32 @@ let AdVisitor =
     	gBrowser.addEventListener("DOMContentLoaded", function (e) {
 			AdVisitor.afterLoad(e);
     	});
+    	
+		gBrowser.addEventListener("load", function (e) {
+			AdVisitor.afterFullLoad(e);
+    	});
     },
     
     fetchInHidden : function(url) {	
     	
-	    var doc = this.hdomWindow.document, 
-	    	iframe = doc.getElementById("adn-iframe"), AdVisitor = this;
+	    var doc = this.hdomWindow.document, AdVisitor = this,
+	    	iframe = doc.getElementById("adn-iframe");
 
 	    if (!iframe) {
 	    	
-	        // Always use html. The hidden window might be XUL (Mac)
-	        // or just html (other platforms).
 	        iframe = doc.createElementNS("http://www.w3.org/1999/xhtml", "iframe");
 	        iframe.wrappedJSObject = iframe;
 	        
 	        iframe.setAttribute("NOAD", "ADN");
-	        iframe.setAttribute("id", "adn-iframe");
+	        iframe.setAttribute("id", "adn-iframe"); // need both of these? think so
 	        
 	        iframe.addEventListener("DOMContentLoaded", function (e) {
-	            AdVisitor.afterLoad(e);
-	        });
+	        	AdVisitor.afterLoad(e);
+	        }, true);
+	        
+	        iframe.addEventListener('load', function (e) {
+	            AdVisitor.afterFullLoad(e);
+	        }, true);
 	        
 	        doc.documentElement.appendChild(iframe);
 	    }
@@ -163,77 +176,242 @@ let AdVisitor =
 	    iframe.setAttribute("src", url);
     },
     
-    windowForRequest : function(request)
-	{
-	  if (request instanceof Ci.nsIRequest)
-	  {
-	    try
-	    {
-	      if (request.notificationCallbacks)
-	      {
-	        return request.notificationCallbacks
-	                      .getInterface(Ci.nsILoadContext)
-	                      .associatedWindow;
-	      }
-	    } catch(e) {}
-	
-	    try
-	    {
-	      if (request.loadGroup && request.loadGroup.notificationCallbacks)
-	      {
-	        return request.loadGroup.notificationCallbacks
-	                      .getInterface(Ci.nsILoadContext)
-	                      .associatedWindow;
-	      }
-	    } catch(e) {}
-	  }
-	
-	  return null;
-	},
-	
 	// CHECK-1, this.hdomWindow.document.location.spec === httpChannel.originalURI.spec ???
 	// CHECK-2: http://www.softwareishard.com/blog/firebug/nsitraceablechannel-intercept-http-traffic/
     beforeLoad : function(subject) {
-		
-		// NEXT: Working here, need to identify requests from hiddenWindow:
- 		
+
 		if (!this.initd) return;
 		
-	    var request = subject.QueryInterface(Ci.nsIRequest);
 	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
-    	var win = this.windowForRequest(subject); // DOES THIS EQUAL DOMWindow BELOW?
+
+    	if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
+	    	this.log(httpChannel.originalURI.spec+" != "+httpChannel.URI.spec, 1);
+	    }
+	    
+	    var win = this.windowForRequest(subject); // DOES THIS EQUAL DOMWindow BELOW? do we need this?
     	
-    	var chromeEventHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
+    	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
     		.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
     		.chromeEventHandler;
     	
-    	if (chromeEventHandler) {
-    		var obj = chromeEventHandler.attributes;
-    		dump("\n"+chromeEventHandler+":");
-			for (var i = 0, len = obj.length; i < len; ++i)
-            	dump("\n  "+obj[i].name+": "+obj[i]);
-           	dump("\n==================================\n");
+    	if (cHandler) {
+    		
+    		var kind = this.type(cHandler);
+    		
+    		if (kind === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
+				
+	    		var loc = cHandler.getAttribute("src");
+	    		dump("\n[AV] Request (adn-iframe) :: " +this.trimPath(loc)); 
+	    			
+	    		if (!loc) {
+	    			dump("\n[AV] NO LOC!!!");
+	    			return;
+	    		}
+	    		
+	    		if (this.visited.indexOf(loc) > -1) {
+	    			//this.log("Cancel? :: "+this.trimPath(loc),1);
+					var request = subject.QueryInterface(Ci.nsIRequest);
+	    			//request.cancel(Components.results.NS_BINDING_ABORTED);
+	    			return;
+	    		}
+	    	}
+    	    else {
+	    		if (kind === 'xul:browser' || kind === 'browser') 
+	    			kind += ": "+this.trimPath(cHandler.currentURI.spec);
+	    		var obj = cHandler.attributes;
+	    		dump("\n"+cHandler+" ("+kind+")");
+				for (var i = 0, len = obj.length; i < len; ++i)
+	            	dump("\n  "+obj[i].name+": "+obj[i].value);
+	           	dump("\n==============================================================\n");
+			}
+    	}
+    	else {
+    		var msg = "\n[AV] No cHandler :: "+httpChannel.originalURI.spec;
+    		if (httpChannel.originalURI.spec !== httpChannel.URI.spec)
+    			msg += "\n                    "+httpChannel.URI.spec;
+			dump(msg);
     	}
     	
-    	//if (win) dump("\n"+subject+"\n"+win.document);
-    	    	
     	// TODO: filter by content-type, ignore images, css, scripts, etc.
-    	
-		//this.log("beforeLoad: "+httpChannel,1);
-		if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
-	    	this.log(httpChannel.originalURI.spec+" !=\n               "+httpChannel.URI.spec);
-	    }
-    	
-    	var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
-       	var DOMWindow = interfaceRequestor.getInterface(Ci.nsIDOMWindow);
-
-    	//var tab = tabForHttpChannel(DOMWindow);
-    	
-        //this.log("Request: "+request+"\n",1);
-        
-		if (0) request.cancel(Components.results.NS_BINDING_ABORTED);
+    	//var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
+       	//var DOMWindow = interfaceRequestor.getInterface(Ci.nsIDOMWindow);
     },
 
+    afterLoad : function(e) {
+
+		var doc = e.originalTarget, win = doc.defaultView,
+			path = doc.location.href, tpath = this.trimPath(path);
+		
+		this.visited.push(path);
+		
+		if (0 && this.visited.length > this.qsize) { 
+			this.visited.shift(); // TODO: re-add to fix log size? timeout-cache?
+			dump("\nAdVisitor.visited removed: "+path); 
+		}
+		
+		this.log("Visited :: "+tpath, 1);
+
+        if (this.history.indexOf(path) < 0 && path !== 'about:blank') {
+        	this.log("Queing snapshot :: "+tpath,1);
+        	this.tosnap.push(path);
+        	this.history.push(path);
+        }
+        else
+			this.next();
+        //var html = doc.documentElement.innerHTML; // keep
+    },
+
+    afterFullLoad : function(e) {
+
+		this.log("afterFullLoad("+e+")", 1);
+		
+		var doc = e.originalTarget, win = doc.defaultView,
+			path = doc.location.href, tpath = this.trimPath(path);
+
+		this.log("FullLoad :: "+tpath, 1);
+
+		var idx = this.tosnap.indexOf(path);
+		
+        if (this.tosnap.indexOf(path) > -1) {  
+        	
+        	this.log("Snapshot :: "+tpath,1);
+
+        	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
+    			.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
+    			.chromeEventHandler, cwin = cHandler.contentWindow;
+    			
+    		if (cHandler && this.is(cHandler, 'iframe') && cHandler.getAttribute("id") === 'adn-iframe') {
+					
+					var file = this.getSnapshot(doc, cwin);
+					if (file) {
+						this.log("Snap-complete: "+file.spec);
+						this.tosnap.splice(idx, 1);
+					}
+					this.log("tosnap: "+tosnap);
+	    	}
+	    	else {
+				dump("\n[AV] No cHandler :: "+path);
+	    	}
+	    	this.next();
+		}
+    },
+    
+   	getSnapshot : function(document, contentWindow) {
+   		
+   		var window = document.defaultView;
+   		
+		//this.log("getSnapshot("+window+", "+document+", "+contentWindow+")",1);
+
+        var width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+        var height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        
+        var canvas, x=0, y=0;
+        
+        try {
+            canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "html:canvas");
+            canvas.height = height;
+            canvas.width = width;
+
+            // maybe https://bugzil.la/729026#c10 ?
+            var ctx = canvas.getContext("2d");
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.drawWindow(contentWindow, x, y, width, height, "rgb(255,255,255)");
+        } 
+        catch(err) {
+
+            canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "html:canvas");
+            var scale = Math.min(1, Math.min(8192 / height, 8192 / width));
+            canvas.height = height * scale;
+            canvas.width = width * scale;
+
+            var ctx = canvas.getContext("2d");
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.scale(scale, scale);
+            ctx.save();
+            ctx.drawWindow(contentWindow, x, y, width, height, "rgb(255,255,255)");
+        }
+ 
+		return this.saveDataToDisk(window, canvas.toDataURL("image/png", ""));
+  	},
+
+    saveDataToDisk : function(window, data) {
+    	    	
+    	var fp, dialog=0, fileName = 'AdNauseum'+'_'+
+    		(new Date()).toISOString().replace(/:/g, '-')+'.png'
+    	
+    	if (dialog) {
+    		
+	        fp = Cc['@mozilla.org/filepicker;1'].createInstance(Ci.nsIFilePicker);
+	        fp.init(window.parent, "Select a File", Ci.nsIFilePicker.modeSave);
+	        fp.appendFilter('PNG Image', '*.png');
+	        fp.defaultString = fileName;
+        
+        	if (fp.show() != Ci.nsIFilePicker.returnCancel) {
+        	
+	            var file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
+	            var path = fp.file.path;
+	            file.initWithPath(path + (/\.png$/.test(path) ? '' : '.png'));
+	
+	            var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
+	            var source = ios.newURI(data, 'utf8', null);
+	            var target = ios.newFileURI(file);
+	
+	            var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
+	            	.createInstance(Ci.nsIWebBrowserPersist);
+	            persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+	
+	            var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
+	            transfer.init(source, target, '', null, null, null, persist, false);
+	            persist.progressListener = transfer;
+	
+	            persist.saveURI(source, null, null, null, null, file, null);
+	            
+	            return file;
+	        }
+	        return null;
+		}
+		else {
+			
+			this.log("Snapping...",1);
+			
+			var file = Cc["@mozilla.org/file/directory_service;1"]
+				.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+				
+			file.append("snaps");
+			
+			this.log("Snapping2: "+file.path,1);
+
+
+			if (!file.exists())
+  				file.create(file.DIRECTORY_TYPE, 0775)
+  				
+  			file.append(fileName);
+			
+            this.log("File: "+file,1);
+
+            var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
+            var source = ios.newURI(data, 'utf8', null);
+            var target = ios.newFileURI(file);
+
+            var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
+            	.createInstance(Ci.nsIWebBrowserPersist);
+            persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+
+            var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
+            transfer.init(source, target, '', null, null, null, persist, false);
+            persist.progressListener = transfer;
+
+            persist.saveURI(source, null, null, null, null, file, null);
+	            
+			this.log("Snapped: "+path, 1);
+	        return file;
+		}
+        
+        return null;
+    },
+	
     tabForHttpChannel : function(domWindow) { // unused for now
     	
        	var tab, tIndex = -1, gBrowser = this.mainWindow.gBrowser;
@@ -255,27 +433,82 @@ let AdVisitor =
 		return tab;
     },
     
-    afterLoad : function(e) {
+	// Utils
+     
+	windowForRequest : function(request) {
 
-		var doc = e.originalTarget, path = doc.location.href;
-				
-		this.visited.push(path);
-		
-		if (0 && this.visited.length > this.qsize) { // re-add to control log size?
-			this.visited.shift();
-			dump("\nAdVisitor.visited removed: "+path); 
+		if ( request instanceof Ci.nsIRequest) {
+			try {
+				if (request.notificationCallbacks) {
+					return request.notificationCallbacks.getInterface
+						(Ci.nsILoadContext).associatedWindow;
+				}
+			} catch(e) {}
+
+			try {
+				if (request.loadGroup && request.loadGroup.notificationCallbacks) {
+					return request.loadGroup.notificationCallbacks.getInterface
+						(Ci.nsILoadContext).associatedWindow;
+				}
+			} catch(e) {}
 		}
-		
-		this.log("Visit: "+this.trimPath(path), 0);
 
-        //var html = doc.documentElement.innerHTML; // keep
-         
-		this.next();
+		return null;
+	},
+
+	
+    type : function(ele) {
+    	if (typeof ele.tagName != 'undefined') return ele.tagName;
+    	else if (typeof ele.nodeName != 'undefined') return ele.nodeName;
+    	return ele+"";	
     },
+    
+	is : function(ele, name) {
+    	return this.type(ele) === name;	
+    },
+    
+	diff : function(s1, s2) { // set difference of 2 arrays
+    
+        var result = []; 
+        for (var i=0,j=s1.length; i<j; i++) {
+			if (s2.indexOf(s1[i]) < 0)
+				result.push(s1[i]);
+        }
+        return result;
+	},
+	
+	remove : function(arr, ele) { // arr.remove(ele)
+    
+		 var index = arr.indexOf(ele);
+		 while (index > -1) {
+		 	arr.splice(index, 1);
+		 	index = arr.indexOf(ele);
+		 }
+		 return arr;
+	},
+	
+	trimPath : function(u, max) {
+		max = max || 60;
+		if (u && u.length > max) 
+			u = u.substring(0,max/2)+"..."+u.substring(u.length-max/2);
+		return u;
+	},
+	
+	logAll : function(obj) {
+
+        dump("\nLogO==============================================================\n");
+		this.logO(obj);
+		dump("\n==================================================================\n");
+		var atts = obj.attributes;
+		dump("\nAtts: "+obj+" ("+this.type(obj)+")");
+		for (var i = 0, len = atts.length; i < len; ++i)
+        	dump("\n  "+atts[i].name+": "+atts[i].value);
+       	dump("\n==================================================================\n");
+ 	},	
 
 	logO : function(object,label) {
 		
-		label = label || 'unknown';
+		label = label || this.type(object);
 		var stuff = [];
 		for (s in object) {
 			stuff.push(s);
@@ -284,13 +517,16 @@ let AdVisitor =
 		dump("\n"+label + ': ' + stuff);
 	},
    
-	log : function(msg, dumpit) {
+	log : function(msg, dumpit) { // dumpit: [0=log-only -1=dump-only 1=both]
 
-		if ( typeof this.ostream == 'undefined') {
+		dumpit = dumpit || 0;
+		
+		if (typeof this.ostream == 'undefined') {
 
 			try {
 
-				var file = Cc["@mozilla.org/file/directory_service;1"].getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+				var file = Cc["@mozilla.org/file/directory_service;1"]
+					.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 				file.append("ad-nauseum.log");
 
 				if (!file.exists()) {
@@ -300,7 +536,8 @@ let AdVisitor =
 				}
 
 				// Then, we need an output stream to our output file.
-				this.ostream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
+				this.ostream = Cc["@mozilla.org/network/file-output-stream;1"]
+					.createInstance(Ci.nsIFileOutputStream);
 
 				//this.ostream.init(file, 0x02 | 0x10, -1, 0); // append
 				this.ostream.init(file, -1, -1, 0); // truncate
@@ -314,28 +551,24 @@ let AdVisitor =
 			}
 		}
 
-		var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
-	    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
- 
-		msg = "[" + now  + ":" + ms + "] " + msg + "\r\n-------------"
-			+ "------------------------------------------------------\r\n";
+		if (dumpit) dump("\n[AV] "+msg); // 1(both) or -1(only dump)
+		
+		if (dumpit != -1) {
 			
-		if ( typeof this.ostream === 'undefined' || !this.ostream) {
-			dump("\n\n[ERROR] NO IO!");
-			return;
+			var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
+		    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
+	 
+			msg = "[" + now  + ":" + ms + "] " + msg + "\r\n-------------"
+				+ "------------------------------------------------------\r\n";
+				
+			if ( typeof this.ostream === 'undefined' || !this.ostream) {
+				dump("\n\n[ERROR] NO IO!");
+				return;
+			}
+			
+			this.ostream.write(msg, msg.length);
 		}
-		
-		this.ostream.write(msg, msg.length);
-		
-		if (dumpit) dump("\n"+msg);
-	},
-	
-	trimPath : function(u, max) {
-		max = max || 60;
-		if (u && u.length > max) 
-			u = u.substring(0,max/2)+"..."+u.substring(u.length-max/2);
-		return u;
-	}    
+	}  
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

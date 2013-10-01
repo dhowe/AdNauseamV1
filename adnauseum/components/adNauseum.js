@@ -5,6 +5,7 @@
  * TODO:
  *    -- Add icon, preferences (context-menu), log-viewer, vizualization?
  *    -- Cleanout adsnaps images on startup/shutdown
+ *    -- Strip cookies/headers from all adn requests ?
  *    -- Test Test Test
  ********************
  * 	  -- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
@@ -60,28 +61,14 @@ let AdVisitor =
 	},
 	
 	shutdown : function() {
+        
+		this.dumpQ(this.history, "History");
+		this.dumpQ(this.visited, "Visited");
+		this.dumpQ(this.snapped, "Captured");
+        
+		this.snapDir(false); // delete
 
-        var s = "\nHistory("+this.history.length+"):\n";
-        for (var i=0; i < this.history.length; i++)
-          s += "  "+i+") "+this.trimPath(this.history[i]) +"\n";
-        dump("\n"+s);
-        
-		s = "Visited("+this.visited.length+"):\n";
-        for (var i=0; i < this.visited.length; i++)
-          s += "  "+i+") "+this.trimPath(this.visited[i]) +"\n";
-        dump("\n"+s);
-        
-        //var sdiff = this.diff(this.visited, this.history);
-        ///this.remove(sdiff, "about:blank");
-        
-        s = "Snapped("+this.snapped.length+"):\n";
-        for (var i=0; i < this.snapped.length; i++)
-          s += "  "+i+") "+this.trimPath(this.snapped[i]) +"\n";
-        dump("\n"+s);
-        
-		this.snapDir(false);
-
-		this.log("Shutdown", 1);
+		this.log("Shutdown complete.\n\n", 1);
 		        
         if (this.ostream) this.ostream.close();	
     },
@@ -99,10 +86,10 @@ let AdVisitor =
 			
 			try {
 				file.remove(true);
-				this.log("Deleted: "+file.path, 1);
+				this.log("Removed: "+this.trimPath(file.path), 1);
 			}
 			catch(e) {
-				this.log("[FAIL] "+strings.snapdir+" not removed!!\n"+e,1);
+				this.log("[FAIL] "+strings.snapdir+" not removed!\n"+e,1);
 			}
 		}
 
@@ -257,7 +244,7 @@ let AdVisitor =
 			}
     	}
     	else {
-    		var msg = "\n[AV] beforeLoad->No Handler :: "+httpChannel.originalURI.spec;
+    		var msg = "\n[AV] BeforeLoad->No Handler :: "+httpChannel.originalURI.spec;
     		if (httpChannel.originalURI.spec !== httpChannel.URI.spec)
     			msg += "\n                    "+httpChannel.URI.spec;
 			dump(msg);
@@ -323,7 +310,7 @@ let AdVisitor =
 					}
 	    	}
 	    	else {
-				dump("\n[AV] afterFullLoad->No Handler :: "+path);
+				dump("\n[AV] AfterFullLoad->No Handler :: "+path);
 	    	}
 		}
 		else {
@@ -401,7 +388,7 @@ let AdVisitor =
     
     saveFile : function(file, data) {
     	
-    	this.log("saveFile("+file+", data);",1);
+    	//this.log("saveFile("+file.path+", data);",1);
 
     	try {
 		    var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
@@ -507,6 +494,14 @@ let AdVisitor =
 		return u;
 	},
 	
+	dumpQ : function(queue, label) {
+		
+    	var s = label+"("+queue.length+"):\n";
+        for (var i=0; i < queue.length; i++)
+          s += "  "+(i+1)+") "+this.trimPath(queue[i]) +"\n";
+        this.log(s,1);
+	},
+	
 	logAll : function(obj) {
 
         dump("\nLogO==============================================================\n");
@@ -540,7 +535,7 @@ let AdVisitor =
 
 				var file = Cc["@mozilla.org/file/directory_service;1"]
 					.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
-				file.append("ad-nauseum.log");
+				file.append("adnauseum.log");
 
 				if (!file.exists()) {
 

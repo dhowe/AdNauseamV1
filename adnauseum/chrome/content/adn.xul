@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://adnauseum/skin/adn.css" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://adnauseum/locale/adn.dtd">
+
+<overlay id="adnauseum-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/javascript" src="chrome://adnauseum/content/adn.js"/>
+
+	<statusbar id="status-bar">
+		<statusbarpanel id="adnauseum-panel" label="&adnauseum.title;" />
+	</statusbar>
+	
+	<toolbarpalette id="BrowserToolbarPalette">
+		<!--toolbarbutton id="adnauseum-button"/-->
+		<toolbarbutton id="myextension-button"/>
+	</toolbarpalette>
+	
+	<!--toolbarbutton id="adnauseum-button"
+	  label="FUCKME"
+	  tooltiptext="Bastard"
+	  oncommand="alert('button1');"
+	  class="toolbarbutton-1 chromeclass-toolbar-additional custombutton"
+	/-->
+	
+	<toolbarbutton id="myextension-button" class="toolbarbutton-1"
+    	label="toolbarbutton.label" tooltiptext="&adnauseum.title;"
+    	oncommand="alert('ADN');"
+    />
+
+</overlay>
+
+

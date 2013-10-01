@@ -11,7 +11,7 @@
                    em:name="AdNauseum-Package"
 				   em:version="1.001"
 				   em:type="32" >
-  		<em:targetApplication RDF:resource="rdf:#$hFzg+"/>
+		<em:targetApplication RDF:resource="rdf:#$hFzg+"/>
   </RDF:Description>
 </RDF:RDF>
 				  

@@ -1,0 +1,10 @@
+
+  
+  
+#myextension-button {
+  list-style-image: url("chrome://adnauseum/skin/default.png");
+}
+
+toolbar[iconsize="small"] #myextension-button {
+  list-style-image: url("chrome://adnauseum/skin/default.png");
+}

@@ -5,14 +5,13 @@
   <RDF:Description RDF:about="rdf:#$hFzg+"
                    em:id="{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
                    em:minVersion="3.6"
-                   em:maxVersion="21.*" />
+                   em:maxVersion="24.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
-                   em:id="development@add-art.org"
-                   em:name="add-art-package"
-				           em:version="1.0b13910062013"
-				           em:type="32"
-                   >
-    <em:targetApplication RDF:resource="rdf:#$hFzg+"/>
+                   em:id="development@rednoise.org"
+                   em:name="AdNauseum-Package"
+				   em:version="1.001"
+				   em:type="32" >
+  		<em:targetApplication RDF:resource="rdf:#$hFzg+"/>
   </RDF:Description>
 </RDF:RDF>
 				  

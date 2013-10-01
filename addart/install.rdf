@@ -8,14 +8,13 @@
                    em:maxVersion="24.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="development@rednoise.org"
-                   em:name="Ad-Nauseum"
-                   em:version="1.0b13910062013"
-                   em:creator="Daniel C. Howe,Helen Nissenbaum"
-                   em:description="Ad Visitor Addon"
+                   em:name="AdNauseum"
+                   em:version="1.001"
+                   em:creator="Daniel C. Howe, Helen Nissenbaum"
+                   em:description="Ad Nauseum Ad Visitor"
                    em:homepageURL="http://rednoise.org/adnauseum"
                    em:iconURL="chrome://addart/content/addart.png"
-                   em:unpack="true"
-                   >
+                   em:unpack="true" >
     <em:targetApplication RDF:resource="rdf:#$hFzg+"/>
     <em:optionsURL>chrome://addart/content/subscriptions.xul</em:optionsURL>
   </RDF:Description>

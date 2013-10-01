@@ -22,6 +22,10 @@ Components.utils.import("resource://gre/modules/Services.jsm");
 
 /* Clicks on recognized ads in the background */
 
+let strings = {
+	snapdir: "adsnaps"
+}
+
 let AdVisitor =
 {
 	first : true,
@@ -36,6 +40,7 @@ let AdVisitor =
 	
 			this.queue = [];
 			this.tosnap = [];
+			this.snapped = [];
 			this.visited = [];		
 			this.history = [];
 			
@@ -66,18 +71,42 @@ let AdVisitor =
           s += "  "+i+") "+this.trimPath(this.visited[i]) +"\n";
         dump("\n"+s);
         
-        var sdiff = this.diff(this.visited, this.history);
-        this.remove(sdiff, "about:blank");
-        //dump(xx.length == sdiff.length ? "FAIL!!! ");
+        //var sdiff = this.diff(this.visited, this.history);
+        ///this.remove(sdiff, "about:blank");
         
-        s = "Real-Ads("+sdiff.length+"):\n";
-        for (var i=0; i < sdiff.length; i++)
-          s += "  "+i+") "+this.trimPath(sdiff[i]) +"\n";
+        s = "Snapped("+this.snapped.length+"):\n";
+        for (var i=0; i < this.snapped.length; i++)
+          s += "  "+i+") "+this.trimPath(this.snapped[i]) +"\n";
         dump("\n"+s);
         
-        this.log("Shutdown", 1);
-        
+		this.snapDir(false);
+
+		this.log("Shutdown", 1);
+		        
         if (this.ostream) this.ostream.close();	
+    },
+    
+    snapDir : function(val) { // create if true, else delete recursively
+    	
+		var file = Cc["@mozilla.org/file/directory_service;1"].getService
+			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+		file.append(strings.snapdir);
+		
+		if (val && !file.exists())
+			file.create(file.DIRECTORY_TYPE, 0775);
+  				
+		else if (!val && file.exists()) {
+			
+			try {
+				file.remove(true);
+				this.log("Deleted: "+file.path, 1);
+			}
+			catch(e) {
+				this.log("[FAIL] "+strings.snapdir+" not removed!!\n"+e,1);
+			}
+		}
+
+		return file;
     },
 	
     add : function(url) {
@@ -202,7 +231,7 @@ let AdVisitor =
     		if (kind === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
 				
 	    		var loc = cHandler.getAttribute("src");
-	    		dump("\n[AV] Request (adn-iframe) :: " +this.trimPath(loc)); 
+	    		dump("\n[AV] Request :: " +this.trimPath(loc)); 
 	    			
 	    		if (!loc) {
 	    			dump("\n[AV] NO LOC!!!");
@@ -220,14 +249,15 @@ let AdVisitor =
 	    		if (kind === 'xul:browser' || kind === 'browser') 
 	    			kind += ": "+this.trimPath(cHandler.currentURI.spec);
 	    		var obj = cHandler.attributes;
-	    		dump("\n"+cHandler+" ("+kind+")");
+	    		var s = ("\n"+cHandler+" ("+kind+")");
 				for (var i = 0, len = obj.length; i < len; ++i)
-	            	dump("\n  "+obj[i].name+": "+obj[i].value);
-	           	dump("\n==============================================================\n");
+	            	s += ("\n  "+obj[i].name+": "+obj[i].value);
+	            	
+	           	//dump(s+"\n==============================================================\n");
 			}
     	}
     	else {
-    		var msg = "\n[AV] No cHandler :: "+httpChannel.originalURI.spec;
+    		var msg = "\n[AV] beforeLoad->No Handler :: "+httpChannel.originalURI.spec;
     		if (httpChannel.originalURI.spec !== httpChannel.URI.spec)
     			msg += "\n                    "+httpChannel.URI.spec;
 			dump(msg);
@@ -255,7 +285,6 @@ let AdVisitor =
         if (this.history.indexOf(path) < 0 && path !== 'about:blank') {
         	this.log("Queing snapshot :: "+tpath,1);
         	this.tosnap.push(path);
-        	this.history.push(path);
         }
         else
 			this.next();
@@ -285,30 +314,31 @@ let AdVisitor =
     		{
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
-						this.log("  to "+file.path,1);
+						this.log("  to "+this.trimPath(file.path), 1);
+						
+						// remove from tosnap, add to history,snapped
 						this.tosnap.splice(idx, 1);
-						this.snapped.push(path, 1);
+						this.history.push(path);
+						this.snapped.push(path);
 					}
 	    	}
 	    	else {
-				dump("\n[AV] No cHandler :: "+path);
+				dump("\n[AV] afterFullLoad->No Handler :: "+path);
 	    	}
 		}
 		else {
-			this.log("NO Snapshot for "+tpath,1);
+			this.log("No snapshot for: "+tpath,1);
 		}
     },
     
    	getSnapshot : function(document, contentWindow) {
    		
-   		var window = document.defaultView;
+   		var window = document.defaultView, canvas, x=0, y=0;
    		
-		//this.log("getSnapshot("+window+", "+document+", "+contentWindow+")",1);
+		//this.log("getSnapshot("+window+", "+document+", "+contentWindow+");",1);
 
         var width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
         var height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
-        
-        var canvas, x=0, y=0;
         
         try {
             canvas = document.createElementNS("http://www.w3.org/1999/xhtml", "html:canvas");
@@ -336,13 +366,15 @@ let AdVisitor =
             ctx.drawWindow(contentWindow, x, y, width, height, "rgb(255,255,255)");
         }
  
-		return this.saveDataToDisk(window, canvas.toDataURL("image/png", ""));
+		return this.saveToDisk(window, canvas.toDataURL("image/png", ""));
   	},
 
-    saveDataToDisk : function(window, data) {
+    saveToDisk : function(window, data) {
     	    	
-    	var file, dialog=0, fileName = 'AdNauseum'+'_'+
-    		(new Date()).toISOString().replace(/:/g, '-')+'.png'
+		//this.log("saveToDisk("+window+", data);",1);
+
+    	var file, dialog=0, fileName = 'Adn'+'_'+
+    		(new Date()).toISOString().replace(/:/g,'-')+'.png'
     	
     	if (dialog) {
     		
@@ -360,12 +392,7 @@ let AdVisitor =
 		}
 		else {
 			
-			file = Cc["@mozilla.org/file/directory_service;1"]
-				.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
-			file.append("adsnaps");
-			
-			(!file.exists()) && (file.create(file.DIRECTORY_TYPE, 0775));
-  				
+			file = this.snapDir(true);
   			file.append(fileName);
 		}
 
@@ -374,19 +401,26 @@ let AdVisitor =
     
     saveFile : function(file, data) {
     	
-	    var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
-	    var source = ios.newURI(data, 'utf8', null);
-	    var target = ios.newFileURI(file);
-	
-	    var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
-	    	.createInstance(Ci.nsIWebBrowserPersist);
-	    persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-	
-	    var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
-	    transfer.init(source, target, '', null, null, null, persist, false);
-	    persist.progressListener = transfer;
-	
-	    persist.saveURI(source, null, null, null, null, file, null);
+    	this.log("saveFile("+file+", data);",1);
+
+    	try {
+		    var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
+		    var source = ios.newURI(data, 'utf8', null);
+		    var target = ios.newFileURI(file);
+		
+		    var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
+		    	.createInstance(Ci.nsIWebBrowserPersist);
+		    persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+		
+		    var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
+		    transfer.init(source, target, '', null, null, null, persist, false);
+		    persist.progressListener = transfer;
+		
+		    persist.saveURI(source, null, null, null, null, file, null);
+	    }
+	    catch (e) {
+	    	this.log("SaveFile: "+e);
+	    }
 	    
 	    return file;
     },

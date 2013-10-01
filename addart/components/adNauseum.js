@@ -3,9 +3,10 @@
 
 /* 
  * TODO:
- *    -- Add icon, preferences (context-menu), log-viewer, viz?
- * 
- *    -- implement http-request listener, and check 'visited' before each get...
+ *    -- Add icon, preferences (context-menu), log-viewer, vizualization?
+ *    -- Cleanout adsnaps images on startup/shutdown
+ *    -- Test Test Test
+ ********************
  * 	  -- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
  *    -- Check for no-user activity (using nsiObserver) 
  */
@@ -263,12 +264,11 @@ let AdVisitor =
 
     afterFullLoad : function(e) {
 
-		this.log("afterFullLoad("+e+")", 1);
-		
+		//this.log("afterFullLoad("+e+")", 1);
 		var doc = e.originalTarget, win = doc.defaultView,
 			path = doc.location.href, tpath = this.trimPath(path);
 
-		this.log("FullLoad :: "+tpath, 1);
+		this.log("OnLoad :: "+tpath, 1);
 
 		var idx = this.tosnap.indexOf(path);
 		
@@ -280,19 +280,22 @@ let AdVisitor =
     			.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
     			.chromeEventHandler, cwin = cHandler.contentWindow;
     			
-    		if (cHandler && this.is(cHandler, 'iframe') && cHandler.getAttribute("id") === 'adn-iframe') {
-					
+    		if (cHandler && this.is(cHandler, 'iframe') && 
+    			cHandler.getAttribute("id") === 'adn-iframe') 
+    		{
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
-						this.log("Snap-complete: "+file.spec);
+						this.log("  to "+file.path,1);
 						this.tosnap.splice(idx, 1);
+						this.snapped.push(path, 1);
 					}
-					this.log("tosnap: "+tosnap);
 	    	}
 	    	else {
 				dump("\n[AV] No cHandler :: "+path);
 	    	}
-	    	this.next();
+		}
+		else {
+			this.log("NO Snapshot for "+tpath,1);
 		}
     },
     
@@ -338,101 +341,56 @@ let AdVisitor =
 
     saveDataToDisk : function(window, data) {
     	    	
-    	var fp, dialog=0, fileName = 'AdNauseum'+'_'+
+    	var file, dialog=0, fileName = 'AdNauseum'+'_'+
     		(new Date()).toISOString().replace(/:/g, '-')+'.png'
     	
     	if (dialog) {
     		
-	        fp = Cc['@mozilla.org/filepicker;1'].createInstance(Ci.nsIFilePicker);
+	        var fp = Cc['@mozilla.org/filepicker;1'].createInstance(Ci.nsIFilePicker);
 	        fp.init(window.parent, "Select a File", Ci.nsIFilePicker.modeSave);
 	        fp.appendFilter('PNG Image', '*.png');
 	        fp.defaultString = fileName;
         
         	if (fp.show() != Ci.nsIFilePicker.returnCancel) {
         	
-	            var file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
+	            file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
 	            var path = fp.file.path;
-	            file.initWithPath(path + (/\.png$/.test(path) ? '' : '.png'));
-	
-	            var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
-	            var source = ios.newURI(data, 'utf8', null);
-	            var target = ios.newFileURI(file);
-	
-	            var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
-	            	.createInstance(Ci.nsIWebBrowserPersist);
-	            persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-	
-	            var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
-	            transfer.init(source, target, '', null, null, null, persist, false);
-	            persist.progressListener = transfer;
-	
-	            persist.saveURI(source, null, null, null, null, file, null);
-	            
-	            return file;
+	            file.initWithPath(path+(/\.png$/.test(path) ? '' : '.png'));
 	        }
-	        return null;
 		}
 		else {
 			
-			this.log("Snapping...",1);
-			
-			var file = Cc["@mozilla.org/file/directory_service;1"]
+			file = Cc["@mozilla.org/file/directory_service;1"]
 				.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
-				
-			file.append("snaps");
+			file.append("adsnaps");
 			
-			this.log("Snapping2: "+file.path,1);
-
-
-			if (!file.exists())
-  				file.create(file.DIRECTORY_TYPE, 0775)
+			(!file.exists()) && (file.create(file.DIRECTORY_TYPE, 0775));
   				
   			file.append(fileName);
-			
-            this.log("File: "+file,1);
-
-            var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
-            var source = ios.newURI(data, 'utf8', null);
-            var target = ios.newFileURI(file);
-
-            var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
-            	.createInstance(Ci.nsIWebBrowserPersist);
-            persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
-
-            var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
-            transfer.init(source, target, '', null, null, null, persist, false);
-            persist.progressListener = transfer;
-
-            persist.saveURI(source, null, null, null, null, file, null);
-	            
-			this.log("Snapped: "+path, 1);
-	        return file;
 		}
-        
-        return null;
-    },
-	
-    tabForHttpChannel : function(domWindow) { // unused for now
-    	
-       	var tab, tIndex = -1, gBrowser = this.mainWindow.gBrowser;
 
-        if (!gBrowser) {
-        	this.log("no gBrowser");
-        	return;
-        }
-                
-        tIndex = gBrowser.getBrowserIndexForDocument(DOMWindow.document);
-		
-        // handle the case where there was
-        if (tIndex > -1) {
-            tab = gBrowser.tabContainer.childNodes[tIndex];
-			this.log("Found tab: "+tab);
-		}
-		//else no tab associated with the request (rss, etc)
-			
-		return tab;
+	    return file ? this.saveFile(file, data) : null;
     },
     
+    saveFile : function(file, data) {
+    	
+	    var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
+	    var source = ios.newURI(data, 'utf8', null);
+	    var target = ios.newFileURI(file);
+	
+	    var persist = Cc['@mozilla.org/embedding/browser/nsWebBrowserPersist;1']
+	    	.createInstance(Ci.nsIWebBrowserPersist);
+	    persist.persistFlags = Ci.nsIWebBrowserPersist.PERSIST_FLAGS_AUTODETECT_APPLY_CONVERSION;
+	
+	    var transfer = Cc['@mozilla.org/transfer;1'].createInstance(Ci.nsITransfer);
+	    transfer.init(source, target, '', null, null, null, persist, false);
+	    persist.progressListener = transfer;
+	
+	    persist.saveURI(source, null, null, null, null, file, null);
+	    
+	    return file;
+    },
+	
 	// Utils
      
 	windowForRequest : function(request) {
@@ -455,16 +413,37 @@ let AdVisitor =
 
 		return null;
 	},
-
 	
+    tabForHttpChannel : function(domWindow) { // unused for now
+    	
+       	var tab, tIndex = -1, gBrowser = this.mainWindow.gBrowser;
+
+        if (!gBrowser) {
+        	this.log("no gBrowser");
+        	return;
+        }
+                
+        tIndex = gBrowser.getBrowserIndexForDocument(DOMWindow.document);
+		
+        // handle the case where there was
+        if (tIndex > -1) {
+            tab = gBrowser.tabContainer.childNodes[tIndex];
+			this.log("Found tab: "+tab);
+		}
+		//else no tab associated with the request (rss, etc)
+			
+		return tab;
+    },
+    
     type : function(ele) {
-    	if (typeof ele.tagName != 'undefined') return ele.tagName;
-    	else if (typeof ele.nodeName != 'undefined') return ele.nodeName;
+
+    	if (typeof ele.tagName !== 'undefined') return ele.tagName;
+    	if (typeof ele.nodeName !== 'undefined') return ele.nodeName;
     	return ele+"";	
     },
     
 	is : function(ele, name) {
-    	return this.type(ele) === name;	
+    	return ele && this.type(ele) === name;	
     },
     
 	diff : function(s1, s2) { // set difference of 2 arrays

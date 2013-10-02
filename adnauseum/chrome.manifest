@@ -13,6 +13,7 @@
 
 content adnauseum chrome/content/
 overlay chrome://browser/content/browser.xul chrome://adnauseum/content/adn.xul
+style chrome://global/content/customizeToolbar.xul chrome://adnauseum/skin/adn.css
 skin adnauseum classic/1.0 chrome/skin/
 locale adnauseum en-US chrome/locale/en-US/
 

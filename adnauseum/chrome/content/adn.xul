@@ -6,28 +6,35 @@
 
 <overlay id="adnauseum-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-	<script type="application/javascript" src="chrome://adnauseum/content/adn.js"/>
-
-	<statusbar id="status-bar">
-		<statusbarpanel id="adnauseum-panel" label="&adnauseum.title;" />
-	</statusbar>
+	<script type="application/x-javascript" src="chrome://adnauseum/content/adn.js"/>
 	
 	<toolbarpalette id="BrowserToolbarPalette">
-		<!--toolbarbutton id="adnauseum-button"/-->
-		<toolbarbutton id="myextension-button"/>
+		<toolbarbutton id="adnauseum-button"/>
 	</toolbarpalette>
 	
-	<!--toolbarbutton id="adnauseum-button"
-	  label="FUCKME"
-	  tooltiptext="Bastard"
-	  oncommand="alert('button1');"
-	  class="toolbarbutton-1 chromeclass-toolbar-additional custombutton"
-	/-->
-	
-	<toolbarbutton id="myextension-button" class="toolbarbutton-1"
-    	label="toolbarbutton.label" tooltiptext="&adnauseum.title;"
-    	oncommand="alert('ADN');"
-    />
+	<!--toolbarbutton id="adnauseum-button2" class="toolbarbutton-1 chromeclass-toolbar-additional"
+    	label="&adnauseum.title;" tooltiptext="&adnauseum.title;"
+    	oncommand="AdNauseum.UI.myAlert('OK2!!');"
+    /-->
+    
+    <toolbarbutton id="adnauseum-button" label="&adnauseum.title;"
+				type="menu-button" tooltiptext="&adnauseum.title;"
+				oncommand="AdNauseum.UI.toggleEnabled();">
+               
+  		<menupopup>
+  			
+    		<menuitem id="adnauseum-viewLog" label="View Log" class="menuitem-iconic"
+            	oncommand="AdNauseum.UI.viewLog(); event.stopPropagation();" />
+
+	    	<menuitem id="adnauseum-viewSnaps" label="View Captures" class="menuitem-iconic"
+				oncommand="AdNauseum.UI.viewSnaps(); event.stopPropagation();" />
+				
+			<menuitem id="adnauseum-toggleSnaps" type="checkbox" label="Save Captures" class="menuitem-iconic"
+				oncommand="AdNauseum.UI.toggleSnaps(); event.stopPropagation();" />
+				
+	  	</menupopup>
+	  	
+	</toolbarbutton>
 
 </overlay>
 

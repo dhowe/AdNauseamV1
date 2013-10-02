@@ -12,8 +12,7 @@
  *    -- Check for no-user activity (using nsiObserver) 
  */
 
-const Ci = Components.interfaces; // is this deprecated?
-const Cc = Components.classes; // is this deprecated?
+const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
 const prefs = Cc["@mozilla.org/preferences-service;1"].getService
 	(Ci.nsIPrefBranch).QueryInterface(Ci.nsIPrefBranchInternal);
@@ -37,6 +36,7 @@ let AdVisitor =
 	init: function() {
 		
 		dump("\n[AV] AdVisitor.init");
+		
 		try {
 	
 			this.queue = [];
@@ -945,25 +945,27 @@ AdNauseumComponent.prototype = {
     },
     
     getPref: function(PrefName) {
-        var Type = prefs.getPrefType(PrefName);
-        if(Type == prefs.PREF_BOOL)
-            return prefs.getBoolPref(PrefName);
-        else if (Type==prefs.PREF_STRING)
-            return prefs.getCharPref(PrefName);
-        else if (Type==prefs.PREF_INT)
-            return prefs.getIntPref(PrefName);
+
+		var Type = prefs.getPrefType(PrefName);
+		if (Type == prefs.PREF_BOOL)
+			return prefs.getBoolPref(PrefName);
+		else if (Type == prefs.PREF_STRING)
+			return prefs.getCharPref(PrefName);
+		else if (Type == prefs.PREF_INT)
+			return prefs.getIntPref(PrefName);
     },
     
     setPref: function(PrefName, prefValue) {
-        if(this.getPref(PrefName)!==prefValue) {
-            var Type = prefs.getPrefType(PrefName);
-            if (Type==prefs.PREF_BOOL)
-                prefs.setBoolPref(PrefName, prefValue);
-            else if (Type==prefs.PREF_STRING)
-                prefs.setCharPref(PrefName, prefValue);
-            else if (Type==prefs.PREF_INT)
-                prefs.setIntPref(PrefName, prefValue);
-        }
+ 
+		if (this.getPref(PrefName) !== prefValue) {
+			var Type = prefs.getPrefType(PrefName);
+			if (Type == prefs.PREF_BOOL)
+				prefs.setBoolPref(PrefName, prefValue);
+			else if (Type == prefs.PREF_STRING)
+				prefs.setCharPref(PrefName, prefValue);
+			else if (Type == prefs.PREF_INT)
+				prefs.setIntPref(PrefName, prefValue);
+		}
     },
     
     createConteneur : function(OldElt, wnd, l, L) {

@@ -15,22 +15,39 @@
 	<!--toolbarbutton id="adnauseum-button2" class="toolbarbutton-1 chromeclass-toolbar-additional"
     	label="&adnauseum.title;" tooltiptext="&adnauseum.title;"
     	oncommand="AdNauseum.UI.myAlert('OK2!!');"
-    /-->
+     /-->
     
+    <preferences>
+	  <preference id="adnauseum-enabled-pref" name="extensions.adnauseum.enabled" type="boolean"/>
+	  <preference id="adnauseum-savesnaps-pref" name="extensions.adnauseum.savesnaps" type="boolean"/>
+	  <preference id="adnauseum-snapdir-pref" name="extensions.adnauseum.snapdir" type="string"/>
+	</preferences>
+	
     <toolbarbutton id="adnauseum-button" label="&adnauseum.title;"
 				type="menu-button" tooltiptext="&adnauseum.title;"
 				oncommand="AdNauseum.UI.toggleEnabled();">
                
   		<menupopup>
   			
-    		<menuitem id="adnauseum-viewLog" label="View Log" class="menuitem-iconic"
-            	oncommand="AdNauseum.UI.viewLog(); event.stopPropagation();" />
+    		<menuitem label="Enabled" id="adnauseum-enabled-checkbox"  type="checkbox" class="menuitem-iconic"
+				preference="extensions.adnauseum.savesnaps"
+            	oncommand="AdNauseum.UI.toggleEnabled(); event.stopPropagation();"/>
 
-	    	<menuitem id="adnauseum-viewSnaps" label="View Captures" class="menuitem-iconic"
-				oncommand="AdNauseum.UI.viewSnaps(); event.stopPropagation();" />
-				
-			<menuitem id="adnauseum-toggleSnaps" type="checkbox" label="Save Captures" class="menuitem-iconic"
+			<menuitem label="Save Captures" id="adnauseum-saveSnaps-checkbox" type="checkbox" class="menuitem-iconic"
+				preference="extensions.adnauseum.enabled"
 				oncommand="AdNauseum.UI.toggleSnaps(); event.stopPropagation();" />
+				
+	    	<menuitem label="View Captures" id="adnauseum-viewSnaps-menu" class="menuitem-iconic"
+				oncommand="AdNauseum.UI.viewSnaps(); event.stopPropagation();" />				
+						
+    		<menuitem label="View Log" id="adnauseum-viewLog-menu" class="menuitem-iconic"
+            	oncommand="AdNauseum.UI.viewLog(); event.stopPropagation();"  />
+
+			<menuitem label="Help/FAQ" id="adnauseum-viewHelp-menu" class="menuitem-iconic"
+				oncommand="AdNauseum.UI.viewHelp(); event.stopPropagation();" />
+			
+			<menuitem label="Home" id="adnauseum-viewHome-menu" class="menuitem-iconic"
+				oncommand="AdNauseum.UI.viewHome(); event.stopPropagation();" />
 				
 	  	</menupopup>
 	  	

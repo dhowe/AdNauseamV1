@@ -9,31 +9,81 @@ if ("undefined" == typeof(AdNauseum)) {
 
 AdNauseum.UI = {
 	
-    myVariable: "value",
+    website: 'http://rednoise.org/adnauseum', // label
     mySettingOne: false,
     mySettingTwo: true,
 
-    viewLog: function()
-    {
-    },
-    
-    viewSnaps: function()
-    {
-    },
-    
-    toggleSnaps: function()
-    {
-    	this.myAlert('d:toggleSnaps');
-    },
-    
-    toggleEnabled: function()
-    {
-    },
-    
-    myAlert: function(param1)
-    {
-		window.alert("\n[ADN] "+param1);
-    }
+	viewHome : function()
+	{
+		this.openInTab(this.website);
+	},
+	 
+	viewHelp : function()
+	{
+		this.openInTab(this.website+'/help.html');
+	}, 
+	
+	viewLog : function()
+	{
+		var file = this.getProfDir();
+		file.append('adnauseum.log');
+		this.openInTab(file.path);
+	}, 
+	
+	viewSnaps : function()
+	{
+		this.openInTab("chrome://adnauseum/content/display/index.html");
+	},
+	
+	viewSnapsOld : function()
+	{
+		var file = this.getProfDir();
+		file.append('adsnaps');
+		
+		var children = file.directoryEntries;
+		var child, leaf, list = [];
+		while (children.hasMoreElements()) {
+		  child = children.getNext().QueryInterface(Ci.nsILocalFile);
+		  leaf = child.leafName// + (child.isDirectory() ? ' [DIR]' : ''));
+		  if (leaf && /\.png$/.test(leaf))
+		  	list.push(child.leafName);
+		}
+		
+		alert(list.join('\n'));
+		//this.openInTab(file.path);
+		//file.reveal();
+	}, 
+	
+	toggleSnaps : function()
+	{
+		this.myAlert("toggleSnaps");
+	}, 
+	
+	toggleEnabled : function()
+	{
+		this.myAlert("toggleEnabled");
+	},
+	
+	getProfDir : function() {
+		
+		return Cc["@mozilla.org/file/directory_service;1"].getService
+			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+	},
+	
+	openInTab : function(url)
+	{
+		var tB = (top && top.document) ? top.document.getElementById('content') : 0;
+		if (!tB) {
+			this.myAlert('No tBrowser!!');
+			return;
+		}
+		tB.selectedTab = tB.addTab(url);
+	},
+	 
+	myAlert : function(param1) {
+		window.alert('\n[ADN] ' + param1);
+	}
+
 };
    
 	/**

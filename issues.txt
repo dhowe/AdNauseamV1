@@ -1,0 +1,33 @@
+
+********************************************************* 
+TODO 
+*********************************************************
+
+    -- add alive timer
+    -- New York Times***
+    -- Is every URL getting visited (are next calls happening correctly!) 
+    
+    -- Get prefs working
+    -- Add localization labels
+    -- Cleanout adsnaps images on startup/shutdown, also logs (add persist pref)
+    -- Strip cookies/headers from all adn requests ?
+    *******************
+    -- Check for no-user activity (using nsiObserver) 
+
+
+********************************************************* 
+ISSUES 
+*********************************************************
+
+
+  -- Links to iTunes store (see nytimes)
+  
+  
+  
+  
+  
+*********************************************************
+BUGS
+*********************************************************
+  
+  -- Duplicates in Visited Q   ???  (maybe cause of broken onload)

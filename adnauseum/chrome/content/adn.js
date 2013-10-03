@@ -1,10 +1,14 @@
 
 
-/** AdNauseum namespace         */
-if ("undefined" == typeof(AdNauseum)) {
-  if (typeof dump === 'function') 
-  	dump('\n[ADN] Initializing Namespace');
-  var AdNauseum = {};
+
+// AdNauseum Namespace         
+
+if ("undefined" == typeof (AdNauseum)) {
+	
+	if ( typeof dump === 'function')
+		dump('\n[UI] Initializing Namespace');
+		
+	var AdNauseum = {};
 };
 
 AdNauseum.UI = {
@@ -32,7 +36,25 @@ AdNauseum.UI = {
 	
 	viewSnaps : function()
 	{
-		this.openInTab("chrome://adnauseum/content/display/index.html");
+		var gallery = "chrome://adnauseum/content/display/index.html";
+		
+		var file = this.getProfDir();
+		file.append('adsnaps');
+		
+		if (0) {
+			var children = file.directoryEntries;
+			var child, leaf, list = [];
+			while (children.hasMoreElements()) {
+			  child = children.getNext().QueryInterface(Ci.nsILocalFile);
+			  leaf = child.leafName// + (child.isDirectory() ? ' [DIR]' : ''));
+			  if (leaf && /\.png$/.test(leaf))
+			  	list.push(child.leafName);
+			}
+		}
+		
+		// TODO: write out the divs to 'gallery' (after open or before?)
+		
+		this.openInTab(gallery); // label
 	},
 	
 	viewSnapsOld : function()

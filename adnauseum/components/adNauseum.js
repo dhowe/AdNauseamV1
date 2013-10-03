@@ -1,16 +1,6 @@
 //"use strict";
-// dump("\n\nLoading adNauseum.js (rednoise)");
 
-/* 
- * TODO:
- *    -- Add icon, preferences (context-menu), log-viewer, vizualization?
- *    -- Cleanout adsnaps images on startup/shutdown
- *    -- Strip cookies/headers from all adn requests ?
- *    -- Test Test Test
- ********************
- * 	  -- Tab-mode: disable recursive loading (and processing of user-nav: eg refresh)
- *    -- Check for no-user activity (using nsiObserver) 
- */
+dump("\n[AN] Loading adNauseum.js (4)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -26,16 +16,21 @@ let strings = {
 	snapdir: "adsnaps"
 }
 
+const DEBUG = true;
+
 let AdVisitor =
 {
 	first : true,
 	busy : false,
 	initd : false,
     qsize : 100,
+    checkMs : 5000,
+    activity : 0,
+
     
 	init: function() {
 		
-		dump("\n[AV] AdVisitor.init");
+		this.log("AdVisitor.init: "+this.activity);
 		
 		try {
 	
@@ -54,21 +49,32 @@ let AdVisitor =
 			// dump("\nTABS="+this.mainWindow.gBrowser.mTabs.length); 
 		}
 		catch (e) {
-			dump("\n[AV] FAILED on hiddenWindow: "+e);
+			this.err("Failed on hiddenWindow: "+e);
 		}
-   				
+
 		this.initd = true;
 	},
 	
+	ms : function() { return new Date().valueOf(); },
+	
+	checker : function() {
+		dump("\nCHECKER!!!!!: \n");
+		//var now = 10;//this.ms();
+		//this.log("checker: "+now+" / "+this.checkMs);
+		//if (!this.activity) this.activity = now;
+	},
+		
 	shutdown : function() {
+        
+        // remove all listeners!
         
 		this.dumpQ(this.history, "History");
 		this.dumpQ(this.visited, "Visited");
 		this.dumpQ(this.snapped, "Captured");
         
-		this.snapDir(false); // delete
+		if (0) this.snapDir(false); // delete   ????????
 
-		this.log("Shutdown complete.\n\n", 1);
+		this.log("Shutdown complete.\n\n");
 		        
         if (this.ostream) this.ostream.close();	
     },
@@ -77,6 +83,7 @@ let AdVisitor =
     	
 		var file = Cc["@mozilla.org/file/directory_service;1"].getService
 			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+			
 		file.append(strings.snapdir);
 		
 		if (val && !file.exists())
@@ -86,10 +93,10 @@ let AdVisitor =
 			
 			try {
 				file.remove(true);
-				this.log("Removed: "+this.trimPath(file.path), 1);
+				this.log("Removed: "+this.trimPath(file.path));
 			}
 			catch(e) {
-				this.log("[FAIL] "+strings.snapdir+" not removed!\n"+e,1);
+				this.warn(strings.snapdir+" not removed!\n"+e);
 			}
 		}
 
@@ -103,7 +110,7 @@ let AdVisitor =
 		if (url !== 'about:blank') {
 			
 			if (this.history.indexOf(url) >= 0) {
-				dump("\n\nAdVisitor.history ignoring link: "+url); 
+				this.log("History :: ignoring link: "+url); 
 				return;
 			}
 			
@@ -111,14 +118,15 @@ let AdVisitor =
 			
 			if (this.history.length > this.qsize) {
 				this.history.shift();
-				dump("\nAdVisitor.history removed: "+url); 
+				this.log("History :: removed: "+url); 
 			}
 		}
 		else {
-			dump("\n\nAdVisitor.adding: 'about:blank'\n\n");
+			
+			this.log("History :: adding: 'about:blank'");
 		}
 		
-		this.log("Queue: "+this.trimPath(url));
+		this.log("Queing: "+this.trimPath(url));
 			
 		this.queue.push(url);
 
@@ -130,11 +138,10 @@ let AdVisitor =
 		this.busy = false;
 
         if (this.queue.length) {
-        	// dump("\nAdVisitor.next() :: "+this.queue.length);
-        	
+        	        	
 			this.busy = true;
 			var theNext = this.queue.pop();
-			dump("\n[AV] Fetch :: "+this.trimPath(theNext));
+			this.log("Request(next) :: "+this.trimPath(theNext));
 			
 			var doRealFetch = true;
 			if (doRealFetch)
@@ -143,17 +150,15 @@ let AdVisitor =
 				this.next(); // tmp
         }
         else 
-        	dump("\n[AV] Wait :: history="+this.history.length);
+        	this.log("Waiting :: history="+this.history.length);
     },
     
     
-    fetchInTab : function(url) {
+    fetchInTab : function(url) { // not used
         
         //if (!this.first) return;
     	//this.first = false;
-    	
-    	dump("\n\nTAB: "+url);
-    	
+
     	var AdVisitor = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);
     	tab.setAttribute("NOAD", true);
     	
@@ -162,12 +167,12 @@ let AdVisitor =
     	});
     	
 		gBrowser.addEventListener("load", function (e) {
-			AdVisitor.afterFullLoad(e);
+			AdVisitor.loadComplete(e);
     	});
     },
     
     fetchInHidden : function(url) {	
-    	
+	
 	    var doc = this.hdomWindow.document, AdVisitor = this,
 	    	iframe = doc.getElementById("adn-iframe");
 
@@ -179,17 +184,39 @@ let AdVisitor =
 	        iframe.setAttribute("NOAD", "ADN");
 	        iframe.setAttribute("id", "adn-iframe"); // need both of these? think so
 	        
-	        iframe.addEventListener("DOMContentLoaded", function (e) {
-	        	AdVisitor.afterLoad(e);
-	        }, true);
-	        
-	        iframe.addEventListener('load', function (e) {
-	            AdVisitor.afterFullLoad(e);
-	        }, true);
-	        
 	        doc.documentElement.appendChild(iframe);
+	        
+	        iframe.addEventListener("DOMContentLoaded", function (e) {
+	        	
+	        	AdVisitor.afterLoad(e);
+	        	
+	        }, true);
+	        
+			iframe.onload = function(e){
+			 
+				dump("\niFrame fully loaded.\n");
+				AdVisitor.loadComplete(e);
+			};
+			
+	        iframe.addEventListener('load', iframe.onload, true);	
+			
+//iframe.setAttribute("src", "http://rednoise.org/adnauseum");
+//return;
 	    }
-	    
+
+
+		if (!url) {
+			this.warn("Null Url: "+url);
+			return;	
+		}
+		
+		if (!/^http:\/\//.test(url)) {
+			this.warn("Non-HTTP Url: "+url);
+			return;	
+		}
+		
+dump("\nURL: '"+url+"'\n");
+//return;
 	    iframe.setAttribute("src", url);
     },
     
@@ -201,11 +228,10 @@ let AdVisitor =
 		
 	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
 
-    	if (httpChannel.originalURI.spec != httpChannel.URI.spec) {
-	    	this.log(httpChannel.originalURI.spec+" != "+httpChannel.URI.spec, 1);
-	    }
+    	if (httpChannel.originalURI.spec != httpChannel.URI.spec) // redirect
+	    	this.log("Redirect :: "+httpChannel.originalURI.spec+" -> "+httpChannel.URI.spec);
 	    
-	    var win = this.windowForRequest(subject); // DOES THIS EQUAL DOMWindow BELOW? do we need this?
+	    var win = this.windowForRequest(subject); 
     	
     	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
     		.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
@@ -215,44 +241,42 @@ let AdVisitor =
     		
     		var kind = this.type(cHandler);
     		
-    		if (kind === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
+    		if (this.type(cHandler) === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
 				
-	    		var loc = cHandler.getAttribute("src");
-	    		dump("\n[AV] Request :: " +this.trimPath(loc)); 
-	    			
-	    		if (!loc) {
-	    			dump("\n[AV] NO LOC!!!");
-	    			return;
-	    		}
+	    		var loc = httpChannel.URI.spec ;// cHandler.getAttribute("src");
 	    		
-	    		if (this.visited.indexOf(loc) > -1) {
-	    			//this.log("Cancel? :: "+this.trimPath(loc),1);
+	    		if (!/\.(css|jpg|png|js)$/.test(loc))
+	    			this.log("Preload :: " +this.trimPath(loc));//+"\n           "+httpChannel.URI.spec); 
+
+return;
+
+	    		if (loc && this.visited.indexOf(loc) > -1) {  // DO WE EVER WANT TO CANCEL?
+	    			//this.log("Cancel? :: "+this.trimPath(loc));
 					var request = subject.QueryInterface(Ci.nsIRequest);
 	    			//request.cancel(Components.results.NS_BINDING_ABORTED);
 	    			return;
 	    		}
 	    	}
     	    else {
-	    		if (kind === 'xul:browser' || kind === 'browser') 
+    	    	
+    	    	// USER REQUESTS...
+    	    	
+	    		/* var kind = this.type(cHandler);
+	    		 if (kind === 'xul:browser' || kind === 'browser') 
 	    			kind += ": "+this.trimPath(cHandler.currentURI.spec);
 	    		var obj = cHandler.attributes;
 	    		var s = ("\n"+cHandler+" ("+kind+")");
 				for (var i = 0, len = obj.length; i < len; ++i)
-	            	s += ("\n  "+obj[i].name+": "+obj[i].value);
-	            	
-	           	//dump(s+"\n==============================================================\n");
+	            	s += ("\n  "+obj[i].name+": "+obj[i].value);	            	
+	           	dump(s+"\n"+this.line());*/
 			}
     	}
     	else {
-    		var msg = "\n[AV] BeforeLoad->No Handler :: "+httpChannel.originalURI.spec;
+    		var msg = "BeforeLoad->No Handler :: "+httpChannel.originalURI.spec;
     		if (httpChannel.originalURI.spec !== httpChannel.URI.spec)
     			msg += "\n                    "+httpChannel.URI.spec;
-			dump(msg);
+			this.log(msg);
     	}
-    	
-    	// TODO: filter by content-type, ignore images, css, scripts, etc.
-    	//var interfaceRequestor = httpChannel.notificationCallbacks.QueryInterface(Ci.nsIInterfaceRequestor);
-       	//var DOMWindow = interfaceRequestor.getInterface(Ci.nsIDOMWindow);
     },
 
     afterLoad : function(e) {
@@ -267,30 +291,30 @@ let AdVisitor =
 			dump("\nAdVisitor.visited removed: "+path); 
 		}
 		
-		this.log("Visited :: "+tpath, 1);
+		this.log("Visited :: "+tpath);
 
         if (this.history.indexOf(path) < 0 && path !== 'about:blank') {
-        	this.log("Queing snapshot :: "+tpath,1);
+        	this.log("QueueSnap :: "+tpath);
         	this.tosnap.push(path);
         }
-        else
-			this.next();
+        
+        //this.next();
+		
         //var html = doc.documentElement.innerHTML; // keep
     },
 
-    afterFullLoad : function(e) {
-
-		//this.log("afterFullLoad("+e+")", 1);
+    loadComplete : function(e) {
+	
 		var doc = e.originalTarget, win = doc.defaultView,
 			path = doc.location.href, tpath = this.trimPath(path);
 
-		this.log("OnLoad :: "+tpath, 1);
+		this.log("Complete :: "+tpath);
 
 		var idx = this.tosnap.indexOf(path);
 		
-        if (this.tosnap.indexOf(path) > -1) {  
+        if (idx > -1) {  
         	
-        	this.log("Snapshot :: "+tpath,1);
+        	this.log("Snapshot :: "+tpath);
 
         	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
     			.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
@@ -301,7 +325,7 @@ let AdVisitor =
     		{
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
-						this.log("  to "+this.trimPath(file.path), 1);
+						this.log("  to "+this.trimPath(file.path));
 						
 						// remove from tosnap, add to history,snapped
 						this.tosnap.splice(idx, 1);
@@ -310,19 +334,21 @@ let AdVisitor =
 					}
 	    	}
 	    	else {
-				dump("\n[AV] AfterFullLoad->No Handler :: "+path);
+				this.log("AfterFullLoad->No Handler :: "+path);
 	    	}
 		}
 		else {
-			this.log("No snapshot for: "+tpath,1);
+			this.log("No snapshot for: "+tpath);
 		}
+	
+		this.next(); // TODO: where does this go??
     },
     
    	getSnapshot : function(document, contentWindow) {
    		
    		var window = document.defaultView, canvas, x=0, y=0;
    		
-		//this.log("getSnapshot("+window+", "+document+", "+contentWindow+");",1);
+		//this.log("getSnapshot("+window+", "+document+", "+contentWindow+");");
 
         var width = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
         var height = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
@@ -358,7 +384,7 @@ let AdVisitor =
 
     saveToDisk : function(window, data) {
     	    	
-		//this.log("saveToDisk("+window+", data);",1);
+		//this.log("saveToDisk("+window+", data);");
 
     	var file, dialog=0, fileName = 'Adn'+'_'+
     		(new Date()).toISOString().replace(/:/g,'-')+'.png'
@@ -388,7 +414,7 @@ let AdVisitor =
     
     saveFile : function(file, data) {
     	
-    	//this.log("saveFile("+file.path+", data);",1);
+    	//this.log("saveFile("+file.path+", data);");
 
     	try {
 		    var ios = Cc['@mozilla.org/network/io-service;1'].getService(Ci.nsIIOService);
@@ -499,22 +525,31 @@ let AdVisitor =
     	var s = label+"("+queue.length+"):\n";
         for (var i=0; i < queue.length; i++)
           s += "  "+(i+1)+") "+this.trimPath(queue[i]) +"\n";
-        this.log(s,1);
+        this.log(s);
 	},
 	
-	logAll : function(obj) {
+	line : function(sep, num) {
+		var s = '';
+		num = num || 50;
+		sep = sep || '=';
+		for (var i=0; i < num; i++) 
+		  s += sep;
+		return s+'\n';
+	},
 
-        dump("\nLogO==============================================================\n");
+	logAll : function(obj) { // not used
+
+        dump("\n"+this.line());
 		this.logO(obj);
-		dump("\n==================================================================\n");
 		var atts = obj.attributes;
-		dump("\nAtts: "+obj+" ("+this.type(obj)+")");
+		var s= "\n"+this.line();
+		s += "\nAtts: "+obj+" ("+this.type(obj)+")";
 		for (var i = 0, len = atts.length; i < len; ++i)
-        	dump("\n  "+atts[i].name+": "+atts[i].value);
-       	dump("\n==================================================================\n");
+        	s += "\n  "+atts[i].name+": "+atts[i].value;
+       	dump(s+"\n"+this.line());
  	},	
 
-	logO : function(object,label) {
+	logO : function(object,label) { // not used
 		
 		label = label || this.type(object);
 		var stuff = [];
@@ -525,9 +560,19 @@ let AdVisitor =
 		dump("\n"+label + ': ' + stuff);
 	},
    
+   	warn : function(msg, dumpit) { 
+   		
+   		this.log("[WARN]\n     "+msg, dumpit);
+   	},
+   	
+   	err : function(msg) { 
+   		
+   		this.log("[ERROR]"+this.line()+msg+"\n");
+   	},
+
 	log : function(msg, dumpit) { // dumpit: [0=log-only -1=dump-only 1=both]
 
-		dumpit = dumpit || 0;
+		dumpit = dumpit || 1;
 		
 		if (typeof this.ostream == 'undefined') {
 
@@ -540,7 +585,7 @@ let AdVisitor =
 				if (!file.exists()) {
 
 					file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
-					dump("\n[AV] Created " + file.path);
+					DEBUG && (dump("\n[AV] Created " + file.path));
 				}
 
 				// Then, we need an output stream to our output file.
@@ -559,15 +604,14 @@ let AdVisitor =
 			}
 		}
 
-		if (dumpit) dump("\n[AV] "+msg); // 1(both) or -1(only dump)
+		if (DEBUG && dumpit) dump("\n[AV] "+msg + "\n"); 
 		
 		if (dumpit != -1) {
 			
 			var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
 		    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
 	 
-			msg = "[" + now  + ":" + ms + "] " + msg + "\r\n-------------"
-				+ "------------------------------------------------------\r\n";
+			msg = "[" + now  + ":" + ms + "] " + msg + "\n" + this.line();
 				
 			if ( typeof this.ostream === 'undefined' || !this.ostream) {
 				dump("\n\n[ERROR] NO IO!");
@@ -595,7 +639,7 @@ AdNauseumComponent.prototype = {
     contractID : "@rednoise.org/adnauseum;1",
     classDescription : "AdNauseum Core Component",
 
-    QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]), // needed? if not, also remove XPCOMUtils above 
+    QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]), 
 
     // add to category manager
     _xpcom_categories : [ { category : "profile-after-change" } ],
@@ -626,6 +670,21 @@ AdNauseumComponent.prototype = {
         this.policy.processNode = this.processNodeABP;
 
         this.setPref("extensions.adblockplus.fastcollapse", false);
+        
+		var fun = AdVisitor.checker;
+		dump("fun="+fun);
+		var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+		if (timer) {
+			timer.initWithCallback(function() {
+				dump("TIMER: ready!");
+				try {
+					fun.call();
+				}
+				catch(e) { dump("checker fail: "+e); }
+				
+			}, 2000, Ci.nsITimer.TYPE_REPEATING_SLACK);
+		}
+		dump("\ntimer.installed");
 
         return true;
     },
@@ -894,17 +953,17 @@ AdNauseumComponent.prototype = {
 
     transform : function(ToReplace, wnd) {
     	
-    	if (0) {
+    	if (0) { // treat small ads like others ?
 	        try {
 	            var theH = this.getSize("height", ToReplace), theW = this.getSize("width", ToReplace);
 	
 	            if (theH < 10 || theW < 10) {
-	            	dump("\n\n [WARN]large or long too small!!");
+	            	dump("Ad too small...");
 	            	return null;
 	            }
 	        }
 	        catch(e) {
-	            dump("\n\n [WARN]"+e.lineNumber + ', ' + e);
+	            this.err(e.lineNumber + ', ' + e);
 	        }
 		}
  
@@ -912,7 +971,7 @@ AdNauseumComponent.prototype = {
         var placeholder = ToReplace.ownerDocument.createElement("div");
 
         if (theW == 0 || theH == 0) { 
-        	dump("\n\n [WARN] creating place-holder div");
+        	this.warn("Creating place-holder div");
             // placeholder = ToReplace.ownerDocument.createElement("div");
             placeholder.setAttribute("NOAD", "true");
             
@@ -1007,6 +1066,7 @@ AdNauseumComponent.prototype = {
             newElt.style.float = EltStyle.getPropertyValue('float');
             newElt.style.clear = EltStyle.getPropertyValue('clear');
         }
+        
 
         newElt.style.background = "";
         if (OldElt.hasAttribute("id"))
@@ -1038,8 +1098,9 @@ AdNauseumComponent.prototype = {
         // Select banner URL
         // use the URL in a top window to generate a number b/w 1 and 8 (to maintain some persistence)
         var win = Cc['@mozilla.org/appshell/window-mediator;1']
-        .getService(Ci.nsIWindowMediator)
-        .getMostRecentWindow('navigator:browser');
+        	.getService(Ci.nsIWindowMediator)
+        	.getMostRecentWindow('navigator:browser');
+        	
         if (win != null) {
             var el = win.document.getElementById('content');
             if (el != null) {

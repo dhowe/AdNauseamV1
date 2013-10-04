@@ -49,7 +49,7 @@ let AdVisitor =
 			this.intervalId = this.mainWindow.setInterval // start checker
 				(function(v) { v.checker(); }, this.checkMs, this); 
 				
-			this.log("[AV] Enabled: "+this.getPref("extensions.adnauseum.enabled"));
+			this.log("AdVisitor.Enabled: "+this.getPref("extensions.adnauseum.enabled"));
 			
 			this.initd = true;
 		}
@@ -239,10 +239,9 @@ let AdVisitor =
     	    	// USER REQUEST HERE...
     	    	
 	    		var kind = this.type(cHandler);
-	    		if (kind === 'xul:browser' || kind === 'browser' && this.isResource(url)) {
-	    			kind += ": "+this.trimPath(url);
-					dump("\n("+kind+")\n");
-	    		}
+	    		if (/browser$/.test(kind) && !this.isResource(url)) 
+					tihs.log(kind+" -> "+this.trimPath(url));
+
 	    		/*var obj = cHandler.attributes;
 	    		var s = ("\n"+cHandler+" ("+kind+")");
 				for (var i = 0, len = obj.length; i < len; ++i)
@@ -676,14 +675,14 @@ AdNauseumComponent.prototype = {
 
         this.setPref("extensions.adblockplus.fastcollapse", false);
         
-		dump("\n[AN] Enabled: " + this.getPref("extensions.adnauseum.enabled")
+		AdVisitor.log("Enabled: " + this.getPref("extensions.adnauseum.enabled")
 			+ ", capturing: " + this.getPref("extensions.adnauseum.savecaptures"));
 		//dump("\nAdNauseumComponent.initd")
         
         return true;
     },
     
-        // nsIObserver interface implementation
+    // nsIObserver interface implementation
     observe : function(aSubject, aTopic, aData) {
     	
         var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);

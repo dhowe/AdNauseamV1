@@ -29,8 +29,16 @@ AdNauseum.UI = {
  		this.prefs.QueryInterface(Ci.nsIPrefBranch2);
  		this.prefs.addObserver("", this, false);
  		
- 		//this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;	
-     	
+ 		//this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+
+     	if (!this.prefs.getBoolPref("firstrundone")) {
+			dump('\n[UI] Installing menu-button');
+    		this.prefs.setBoolPref("firstrundone", true);
+		    this.installButton("nav-bar", "adnauseum-button");	
+		    this.installButton("addon-bar", "adnauseum-button");
+		    dump('\n[UI] Button installed');
+  		}
+  		
      	this.refresh();
 	},
 	
@@ -95,12 +103,13 @@ AdNauseum.UI = {
 	
 	observe: function(subject, topic, data) {
 
-		if (topic != "nsPref:changed")
-			return;
+		if (topic != "nsPref:changed") return;
 
 		dump("\n[UI] Pref-change: " + data + "="+this.prefs.getBoolPref(data));
+		
 		this.refresh();
-		//this.prefs.getBoolPref(data);
+		
+		// this.component.observer(subject, topic, data); // ???
 	},
 
 	viewHome : function()
@@ -172,16 +181,34 @@ AdNauseum.UI = {
 	{
 		var tB = (top && top.document) ? top.document.getElementById('content') : 0;
 		if (!tB) {
-			this.myAlert('No tBrowser!!');
+			dump('Error: No tBrowser!!');
 			return;
 		}
 		tB.selectedTab = tB.addTab(url);
 	},
-	 
-	myAlert : function(param1) {
-		window.alert('\n[ADN] ' + param1);
+	
+	installButton : function(toolbarId, id, afterId) {
+		
+	    if (!document.getElementById(id)) {
+	        var toolbar = document.getElementById(toolbarId);
+	
+	        // If no afterId is given, then append the item to the toolbar
+	        var before = null;
+	        
+	        if (afterId) {
+	            let elem = document.getElementById(afterId);
+	            if (elem && elem.parentNode == toolbar)
+	                before = elem.nextElementSibling;
+	        }
+	
+	        toolbar.insertItem(id, before);
+	        toolbar.setAttribute("currentset", toolbar.currentSet);
+	        document.persist(toolbar.id, "currentset");
+	
+	        if (toolbarId == "addon-bar")
+	            toolbar.collapsed = false;
+	    }
 	}
-
 };
 
 window.addEventListener("load", function(e)   { AdNauseum.UI.init() }, false);

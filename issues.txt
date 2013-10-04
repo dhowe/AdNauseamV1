@@ -2,21 +2,25 @@
 ********************************************************* 
 TODO 
 *********************************************************
-
-	-- toSnap-queue is upgfuct
-    -- New York Times***
-    
-    
-    -- Is every URL getting visited (are next calls happening correctly!) 
-    
-    -- Get prefs working
-    
+	-- move trimPath to log() -- always write full url to the log (always dump shortened) 
+	
+	-- MENU: noLogs, persistLogs, clearLogs, clearSnaps, clearHistory?  :: tooltips***
+	
+	-- PREFS: 
+		capturedir (default=null),
+		logmode(def:no-persist),
+		flashui:true, flashcaptures
+		stripheaders:1,   
+	
+	-- toSnap-queue is upgfuct, are valid ads getting overwritten ?!?
+        
 	-- Dynamic divs for gallery-view
 
     -- Add localization labels
-    -- Cleanout adsnaps images on startup/shutdown, also logs (add persist pref)
     
     -- Strip cookies/headers from all adn requests ? (might this break everything?)
+    
+    -- Cleanout adsnaps images on startup/shutdown, also logs (add persist pref) ??
     
     *******************
     
@@ -27,18 +31,14 @@ TODO
 ISSUES 
 *********************************************************
 
-  -- Don't snap same domain that user has visited ***
+  -- Don't snap same domain that user has visited ? ***
   
-  -- Links to iTunes store (see nytimes)
+  -- Links to iTunes store (see nytimes) -- ignore ?
   
-  -- Links from plugin itself : rednoise.org/adnauseum etc
-  
-  -- Avoid dups images in snapdir
-  
+  -- Howe to avoid dups images in snapdir
   
   
 *********************************************************
 BUGS
 *********************************************************
   
-  -- Duplicates in Visited Q   ???  (maybe cause of broken onload)

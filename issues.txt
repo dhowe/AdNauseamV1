@@ -3,15 +3,23 @@
 TODO 
 *********************************************************
 
-    -- add alive timer
+	-- toSnap-queue is upgfuct
     -- New York Times***
+    
+    
     -- Is every URL getting visited (are next calls happening correctly!) 
     
     -- Get prefs working
+    
+	-- Dynamic divs for gallery-view
+
     -- Add localization labels
     -- Cleanout adsnaps images on startup/shutdown, also logs (add persist pref)
-    -- Strip cookies/headers from all adn requests ?
+    
+    -- Strip cookies/headers from all adn requests ? (might this break everything?)
+    
     *******************
+    
     -- Check for no-user activity (using nsiObserver) 
 
 

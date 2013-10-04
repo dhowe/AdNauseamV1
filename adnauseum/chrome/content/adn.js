@@ -1,6 +1,4 @@
 
-
-
 // AdNauseum Namespace         
 
 if ("undefined" == typeof (AdNauseum)) {
@@ -8,14 +6,102 @@ if ("undefined" == typeof (AdNauseum)) {
 	if ( typeof dump === 'function')
 		dump('\n[UI] Initializing Namespace');
 		
-	var AdNauseum = {};
+	var AdNauseum = {}; 
 };
 
 AdNauseum.UI = {
 	
-    website: 'http://rednoise.org/adnauseum', // label
-    mySettingOne: false,
-    mySettingTwo: true,
+	prefs : null,
+	initd : false,
+	skin : 'chrome://adnauseum/skin',
+    website : 'http://rednoise.org/adnauseum', // label
+    
+	init : function() {
+		
+		if (this.initd) return; 
+		
+		dump('\n[UI] AdNauseum.UI.init()');
+
+		 // Register to receive notifications of preference changes
+     
+     	this.prefs = Cc["@mozilla.org/preferences-service;1"]
+        	.getService(Ci.nsIPrefService).getBranch("extensions.adnauseum.");
+ 		this.prefs.QueryInterface(Ci.nsIPrefBranch2);
+ 		this.prefs.addObserver("", this, false);
+ 		
+ 		//this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;	
+     	
+     	this.refresh();
+	},
+	
+	/*toggleEnabled : function() {
+		
+		// untested
+		
+		//this.prefs.setBoolPref("enabled",!this.prefs.getBoolPref("enabled",v));
+		 
+		// OR
+		var cb = document.getElementById("adnauseum-enabled-checkbox");
+		cb.setAttribute("checked", !cb.hasAttribute("checked"));
+		this.onCheckChange();
+	},*/
+	
+	enabled : function(v) {
+		if (arguments.length) {
+			this.prefs.setBoolPref("enabled",v);
+			//this.refresh();
+			return this;	
+		}
+		return this.prefs.getBoolPref("enabled");	
+	},
+	
+	capturing : function(v) {
+		if (arguments.length) {
+			this.prefs.setBoolPref("savecaptures",v);
+			//this.refresh();
+			return this;	
+		}
+		return this.prefs.getBoolPref("savecaptures");	
+	},
+	
+	refresh : function() {
+
+		var e = this.enabled(), c = this.capturing();
+		
+		document.getElementById("adnauseum-enabled-checkbox").setAttribute("checked", e);
+			
+		document.getElementById("adnauseum-savecaptures-checkbox").setAttribute("checked", c);
+			
+		//dump("button: "+
+		document.getElementById("adnauseum-button").style.listStyleImage = 
+			'url('+this.skin+(e ? "/adn.png" : "/adng.png"); 
+			
+		//dump("\nRefreshed :: enabled="+this.enabled()+" snaps="+this.capturing());	
+	},
+	
+	onCheckChange : function()
+	{
+		this.capturing(document.getElementById
+			("adnauseum-savecaptures-checkbox").hasAttribute("checked"));
+			
+		this.enabled(document.getElementById
+			("adnauseum-enabled-checkbox").hasAttribute("checked"));			
+	}, 
+	
+	shutdown : function() {
+		
+		dump('\n[UI] AdNauseum.UI.shutdown()');
+	},
+	
+	observe: function(subject, topic, data) {
+
+		if (topic != "nsPref:changed")
+			return;
+
+		dump("\n[UI] Pref-change: " + data + "="+this.prefs.getBoolPref(data));
+		this.refresh();
+		//this.prefs.getBoolPref(data);
+	},
 
 	viewHome : function()
 	{
@@ -75,17 +161,7 @@ AdNauseum.UI = {
 		//this.openInTab(file.path);
 		//file.reveal();
 	}, 
-	
-	toggleSnaps : function()
-	{
-		this.myAlert("toggleSnaps");
-	}, 
-	
-	toggleEnabled : function()
-	{
-		this.myAlert("toggleEnabled");
-	},
-	
+
 	getProfDir : function() {
 		
 		return Cc["@mozilla.org/file/directory_service;1"].getService
@@ -107,42 +183,8 @@ AdNauseum.UI = {
 	}
 
 };
-   
-	/**
-	 * Installs the toolbar button with the given ID into the given
-	 * toolbar, if it is not already present in the document.
-	 *
-	 * @param {string} toolbarId The ID of the toolbar to install to.
-	 * @param {string} id The ID of the button to install.
-	 * @param {string} afterId The ID of the element to insert after. @optional
 
-	 installButton : function(toolbarId, id, afterId) {
-	 	
-		setTimeout(function(){window.alert("[ADN] installButton();")},3000);
-		
-	    if (!document.getElementById(id)) {
-	    	
-	        var toolbar = document.getElementById(toolbarId);
-	        // If no afterId is given, then append the item to the toolbar
-	        var before = null;
-	        if (afterId) {
-	            let elem = document.getElementById(afterId);
-	            if (elem && elem.parentNode == toolbar)
-	                before = elem.nextElementSibling;
-	        }
-	
-	        toolbar.insertItem(id, before);
-	        toolbar.setAttribute("currentset", toolbar.currentSet);
-	        document.persist(toolbar.id, "currentset");
-	
-	        if (toolbarId == "addon-bar")
-	            toolbar.collapsed = false;
-	    }
-	}
+window.addEventListener("load", function(e)   { AdNauseum.UI.init() }, false);
+window.addEventListener("unload", function(e) { AdNauseum.UI.shutdown(); }, false);
 
-if (firstRun) {
-    // installButton("nav-bar", "my-extension-navbar-button");
-    // The "addon-bar" is available since Firefox 4
-    AdNauseum.UI.installButton("addon-bar", "adnauseum-button");
-}   */ 
 	

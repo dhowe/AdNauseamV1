@@ -1,81 +1,67 @@
 //"use strict";
 
-dump("\n[AN] Loading adNauseum.js (5)");
+dump("\n[AN] Loading adNauseum.js (2)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-const prefs = Cc["@mozilla.org/preferences-service;1"].getService
-	(Ci.nsIPrefBranch).QueryInterface(Ci.nsIPrefBranchInternal);
+const prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBranch)
+	.QueryInterface(Ci.nsIPrefBranch2);
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
-
-/* Clicks on recognized ads in the background */
-
-let strings = {
-	snapdir: "adsnaps"
-}
 
 const DEBUG = true;
 
 let AdVisitor =
 {
-	first : true,
 	busy : false,
 	initd : false,
     qsize : 100,
     checkMs : 5000,
     activity : 0,
-
+	queue : [],
+	tosnap : [], // ?
+	snapped : [],
+	visited : [],	
+	//adnprefs : null,
     
 	init: function() {
 		
-		this.log("AdVisitor.init()");
+		this.activity = +new Date();
 		
 		try {
-	
-			this.queue = [];
-			this.tosnap = [];
-			this.snapped = [];
-			this.visited = [];		
-			//this.history = [];
-			
+
 			this.hdomWindow = Cc["@mozilla.org/appshell/appShellService;1"]
 				.getService(Ci.nsIAppShellService).hiddenDOMWindow;
 
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
-
+				
+			this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+			
+			// Register to receive notifications of preference changes
+	     	// this.adnprefs = Cc["@mozilla.org/preferences-service;1"]
+	        	// .getService(Ci.nsIPrefService).getBranch("extensions.adnauseum.");
+// 	        	
+     		// this.adnprefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
+     		// this.adnprefs.addObserver("", this, false);
+//      
 			this.intervalId = this.mainWindow.setInterval // start checker
 				(function(v) { v.checker(); }, this.checkMs, this); 
+				
+			this.log("[AV] Enabled: "+this.getPref("extensions.adnauseum.enabled"));
+			
+			this.initd = true;
 		}
 		catch (e) {
-			this.err("Failed on hiddenWindow: "+e);
-		}
-
-		this.initd = true;
-	},
-	
-	ms : function() { return new Date().valueOf(); },
-	
-	checker : function() {
-		
-		var now = this.ms();
-		
-		(!this.activity) && (this.activity = now);
-
-		//dump("\nCHECK: "+now+"\n");
-		
-		if ((now - this.activity) > (this.checkMs*3)) {
-			dump("\nCHECK=NEXT: "+this.ms()+" queue="+this.queue.length+" elapsed="+((now - this.activity)/1000)+"s\n");
-			this.next();
-			this.activity = now;
+			this.err("Failed on init: "+e);
 		}
 	},
-		
+
 	shutdown : function() {
         
         // remove all listeners!
+		this.adnprefs.removeObserver("", this);
         
 		//this.dumpQ(this.history, "History");
 		this.dumpQ(this.visited, "Visited");
@@ -94,7 +80,7 @@ let AdVisitor =
 		var file = Cc["@mozilla.org/file/directory_service;1"].getService
 			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 			
-		file.append(strings.snapdir);
+		file.append(this.snapdir);
 		
 		if (val && !file.exists())
 			file.create(file.DIRECTORY_TYPE, 0775);
@@ -106,7 +92,7 @@ let AdVisitor =
 				this.log("Removed: "+this.trimPath(file.path));
 			}
 			catch(e) {
-				this.warn(strings.snapdir+" not removed!\n"+e);
+				this.warn(this.snapdir+" not removed!\n"+e);
 			}
 		}
 
@@ -131,9 +117,9 @@ let AdVisitor =
     
     next : function() {
 
+		this.activity = this.ms();
+		
         if (this.queue.length) {
-        	
-			this.activity = this.ms();
         	        	
 			this.busy = true;
 			var theNext = this.queue.pop();
@@ -191,7 +177,6 @@ let AdVisitor =
 	        
 			iframe.onload = function(e){
 			 
-				dump("\niFrame fully loaded.\n");
 				AdVisitor.loadComplete(e);
 			};
 			
@@ -235,7 +220,8 @@ let AdVisitor =
     		
     		if (this.type(cHandler) === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
 					    		
-	    		if (!/\.(css|jpg|png|js|gif|swf)[\?$]/i.test(url))  {
+	    		if (!this.isResource(url))  {
+	    			
 	    			this.log("Preload :: " +this.trimPath(url));
 	    			
 	    			// abort request if not capturing and they are images?
@@ -253,13 +239,15 @@ let AdVisitor =
     	    	// USER REQUEST HERE...
     	    	
 	    		var kind = this.type(cHandler);
-	    		if (kind === 'xul:browser' || kind === 'browser') 
-	    			kind += ": "+this.trimPath(cHandler.currentURI.spec);
-	    		var obj = cHandler.attributes;
+	    		if (kind === 'xul:browser' || kind === 'browser' && this.isResource(url)) {
+	    			kind += ": "+this.trimPath(url);
+					dump("\n("+kind+")\n");
+	    		}
+	    		/*var obj = cHandler.attributes;
 	    		var s = ("\n"+cHandler+" ("+kind+")");
 				for (var i = 0, len = obj.length; i < len; ++i)
 	            	s += ("\n  "+obj[i].name+": "+obj[i].value);	            	
-	           	dump(s+"\n"+this.line());
+	           	dump(s+"\n"+this.line());*/
 			}
     	}
     	else {
@@ -477,6 +465,8 @@ let AdVisitor =
 		return tab;
     },
     
+    isResource : function(url) { return /\.(css|jpg|png|js|gif|swf|xml)(\?|$)/i.test(url); },
+    
     type : function(ele) {
 
     	if (typeof ele.tagName !== 'undefined') return ele.tagName;
@@ -515,6 +505,22 @@ let AdVisitor =
 		return u;
 	},
 	
+	ms : function() { return new Date().valueOf(); },
+	
+	getPref : function(x) { return this.component.getPref(x); },
+	
+	setPref : function(x,y) { return this.component.setPref(x,y); },
+	
+	checker : function() {
+		
+		var now = this.ms();
+
+		if ((now - this.activity) > (this.checkMs*3)) {
+			this.log("Checker: "+this.ms()+" queue="+this.queue.length+" elapsed="+((now - this.activity)/1000)+"s");
+			this.next();
+		}
+	},
+		
 	dumpQ : function(queue, label) {
 		
     	var s = label+"("+queue.length+"):\n";
@@ -620,6 +626,9 @@ let AdVisitor =
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // class constructor
 function AdNauseumComponent() {
 	
@@ -641,8 +650,8 @@ AdNauseumComponent.prototype = {
 
     init : function() {
     	
-        dump("\n[AA] AdNauseumComponent.init");
-        
+		//dump("\nAdNauseumComponent.init")
+    	    	        
         let result = {};
         result.wrappedJSObject = result;
         Services.obs.notifyObservers(result, "adblockplus-require", 'contentPolicy');
@@ -661,24 +670,16 @@ AdNauseumComponent.prototype = {
         	return false;
         }
         
+        // this should be in the 'enabled' observer?
         this.policy.oldprocessNode = this.policy.processNode;
         this.policy.processNode = this.processNodeABP;
 
         this.setPref("extensions.adblockplus.fastcollapse", false);
         
-		var fun = AdVisitor.checker;
-		var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-		if (0 && timer) {
-			timer.initWithCallback(function() {
-				try {
-					fun.call();
-				}
-				catch(e) { dump("checker fail: "+e); }
-				
-			}, 2000, Ci.nsITimer.TYPE_REPEATING_SLACK);
-			dump("\nNsiTimer.installed");
-		}
-
+		dump("\n[AN] Enabled: " + this.getPref("extensions.adnauseum.enabled")
+			+ ", capturing: " + this.getPref("extensions.adnauseum.savecaptures"));
+		//dump("\nAdNauseumComponent.initd")
+        
         return true;
     },
     
@@ -693,6 +694,7 @@ AdNauseumComponent.prototype = {
 	            // Doing initialization stuff on FireFox start
 	            observerService.addObserver(this, "http-on-modify-request", false);
 	            observerService.addObserver(this, "quit-application", false);
+	            //observerService.addObserver(this, "nsPref:changed", false);
 	            
 	            this.init();
 	            
@@ -701,16 +703,20 @@ AdNauseumComponent.prototype = {
 			case "quit-application":
 			
 	            // Doing shutdown stuff on FireFox quit
+	            //observerService.removeObserver(this, "nsPref:changed");
 	            observerService.removeObserver(this, "quit-application");
 	            observerService.removeObserver(this, "http-on-modify-request");
 
-	            AdVisitor.shutdown();
+	            AdVisitor && (AdVisitor.shutdown());
+	            
+	            dump("\nAdNauseumComponent.shutdown");
 	            
 	            break;
 	            
 	        case "http-on-modify-request":
 	        
-	        	//dump("\n\nhttp-on-modify-request\n\n");
+				// Called before each Http request 
+
 	        	AdVisitor.beforeLoad(aSubject);
 	        	
 	        	break;
@@ -718,10 +724,13 @@ AdNauseumComponent.prototype = {
     },
 
     processNodeABP : function(wnd, node, contentType, location, collapse) {
-    	
-        // NOTE: this will be run in context of AdBlockPlus
-        return Cc['@rednoise.org/adnauseum;1'].getService()
-        	.wrappedJSObject.processNodeADN(wnd, node, contentType, location, collapse);
+
+    	    // return this.getPref("extensions.adnauseum.enabled") ?
+
+    		return Cc['@rednoise.org/adnauseum;1'].getService() // NOTE: this will be run in context of AdBlockPlus
+        		.wrappedJSObject.processNodeADN(wnd, node, contentType, location, collapse) ;
+        		  
+    		// : this.policy.oldprocessNode(wnd, node, contentType, location, collapse); 
     },
     
     processNodeADN : function(wnd, node, contentType, location, collapse) {

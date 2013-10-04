@@ -10,7 +10,7 @@
 		<em:type>2</em:type>
         <em:version>1.001</em:version>
         <em:creator>Daniel C. Howe, Helen Nissenbaum</em:creator>
-        <em:description>AdNauseum browser extension.</em:description>
+        <em:description>Visits all add links in the background as you browse...</em:description>
         <em:homepageURL>http://rednoise.org/adnauseum</em:homepageURL>
 
         <em:targetApplication>

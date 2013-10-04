@@ -22,7 +22,9 @@ ISSUES
 
   -- Links to iTunes store (see nytimes)
   
+  -- Links from plugin itself : rednoise.org/adnauseum etc
   
+  -- Avoid dups images in snapdir
   
   
   

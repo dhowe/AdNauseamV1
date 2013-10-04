@@ -46,6 +46,9 @@ let AdVisitor =
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
 
+			this.interval = this.mainWindow.setInterval
+				(function(v) { v.checker(); }, this.checkMs, this); 
+
 			// dump("\nTABS="+this.mainWindow.gBrowser.mTabs.length); 
 		}
 		catch (e) {
@@ -58,10 +61,17 @@ let AdVisitor =
 	ms : function() { return new Date().valueOf(); },
 	
 	checker : function() {
-		dump("\nCHECKER!!!!!: \n");
-		//var now = 10;//this.ms();
-		//this.log("checker: "+now+" / "+this.checkMs);
-		//if (!this.activity) this.activity = now;
+		
+		var now = this.ms();
+		
+		(!this.activity) && (this.activity = now);
+
+		dump("\nCHECK: "+now+"\n");
+		
+		if ((now - this.activity) > this.checkMs*3) {
+			dump("\nCHECK=NEXT: "+this.ms()+"\n");
+			this.next();
+		}
 	},
 		
 	shutdown : function() {
@@ -72,7 +82,7 @@ let AdVisitor =
 		this.dumpQ(this.visited, "Visited");
 		this.dumpQ(this.snapped, "Captured");
         
-		if (0) this.snapDir(false); // delete   ????????
+		if (0) this.snapDir(false); // delete snapdir ?
 
 		this.log("Shutdown complete.\n\n");
 		        
@@ -134,13 +144,13 @@ let AdVisitor =
     },
     
     next : function() {
-    	
-		this.busy = false;
 
         if (this.queue.length) {
         	        	
 			this.busy = true;
+			this.activity = this.ms();
 			var theNext = this.queue.pop();
+			
 			this.log("Request(next) :: "+this.trimPath(theNext));
 			
 			var doRealFetch = true;
@@ -149,8 +159,11 @@ let AdVisitor =
 			else
 				this.next(); // tmp
         }
-        else 
-        	this.log("Waiting :: history="+this.history.length);
+        else {
+        	this.busy = false;
+        	this.log("Waiting :: history="+this.history.length+" visited="
+        		+ this.visited.length+" captured="+this.snapped.length);
+        }
     },
     
     
@@ -199,19 +212,16 @@ let AdVisitor =
 			};
 			
 	        iframe.addEventListener('load', iframe.onload, true);	
-			
-//iframe.setAttribute("src", "http://rednoise.org/adnauseum");
-//return;
 	    }
 
 
-		if (!url) {
-			this.warn("Null Url: "+url);
+		if (!url || /^https?:\/\/rednoise.org/.test(url)) {
+			this.warn("Ignoring Url(null or app): "+url);
 			return;	
 		}
 		
 		if (!/^http:\/\//.test(url)) {
-			this.warn("Non-HTTP Url: "+url);
+			this.warn("Non-Http Url: "+url);
 			return;	
 		}
 		
@@ -341,7 +351,7 @@ return;
 			this.log("No snapshot for: "+tpath);
 		}
 	
-		this.next(); // TODO: where does this go??
+		this.next();
     },
     
    	getSnapshot : function(document, contentWindow) {
@@ -672,19 +682,17 @@ AdNauseumComponent.prototype = {
         this.setPref("extensions.adblockplus.fastcollapse", false);
         
 		var fun = AdVisitor.checker;
-		dump("fun="+fun);
 		var timer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
-		if (timer) {
+		if (0 && timer) {
 			timer.initWithCallback(function() {
-				dump("TIMER: ready!");
 				try {
 					fun.call();
 				}
 				catch(e) { dump("checker fail: "+e); }
 				
 			}, 2000, Ci.nsITimer.TYPE_REPEATING_SLACK);
+			dump("\nNsiTimer.installed");
 		}
-		dump("\ntimer.installed");
 
         return true;
     },
@@ -700,7 +708,9 @@ AdNauseumComponent.prototype = {
 	            // Doing initialization stuff on FireFox start
 	            observerService.addObserver(this, "http-on-modify-request", false);
 	            observerService.addObserver(this, "quit-application", false);
+	            
 	            this.init();
+	            
 	            break;
 	            
 			case "quit-application":
@@ -710,6 +720,7 @@ AdNauseumComponent.prototype = {
 	            observerService.removeObserver(this, "http-on-modify-request");
 
 	            AdVisitor.shutdown();
+	            
 	            break;
 	            
 	        case "http-on-modify-request":

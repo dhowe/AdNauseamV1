@@ -2,7 +2,8 @@
 ********************************************************* 
 TODO 
 *********************************************************
-	-- move trimPath to log() -- always write full url to the log (always dump shortened) 
+
+	-- Move trimPath to log() -- always write full url to the log (always dump shortened) 
 	
 	-- MENU: noLogs, persistLogs, clearLogs, clearSnaps, clearHistory?  :: tooltips***
 	
@@ -25,6 +26,7 @@ TODO
     *******************
     
     -- Check for no-user activity (using nsiObserver) 
+
 
 
 ********************************************************* 

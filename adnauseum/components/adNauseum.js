@@ -1,6 +1,6 @@
 //"use strict";
 
-dump("\n[AN] Loading adNauseum.js (4)");
+dump("\n[AN] Loading adNauseum.js (5)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -30,7 +30,7 @@ let AdVisitor =
     
 	init: function() {
 		
-		this.log("AdVisitor.init: "+this.activity);
+		this.log("AdVisitor.init()");
 		
 		try {
 	
@@ -38,7 +38,7 @@ let AdVisitor =
 			this.tosnap = [];
 			this.snapped = [];
 			this.visited = [];		
-			this.history = [];
+			//this.history = [];
 			
 			this.hdomWindow = Cc["@mozilla.org/appshell/appShellService;1"]
 				.getService(Ci.nsIAppShellService).hiddenDOMWindow;
@@ -46,10 +46,8 @@ let AdVisitor =
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
 
-			this.interval = this.mainWindow.setInterval
+			this.intervalId = this.mainWindow.setInterval // start checker
 				(function(v) { v.checker(); }, this.checkMs, this); 
-
-			// dump("\nTABS="+this.mainWindow.gBrowser.mTabs.length); 
 		}
 		catch (e) {
 			this.err("Failed on hiddenWindow: "+e);
@@ -66,11 +64,12 @@ let AdVisitor =
 		
 		(!this.activity) && (this.activity = now);
 
-		dump("\nCHECK: "+now+"\n");
+		//dump("\nCHECK: "+now+"\n");
 		
-		if ((now - this.activity) > this.checkMs*3) {
-			dump("\nCHECK=NEXT: "+this.ms()+"\n");
+		if ((now - this.activity) > (this.checkMs*3)) {
+			dump("\nCHECK=NEXT: "+this.ms()+" queue="+this.queue.length+" elapsed="+((now - this.activity)/1000)+"s\n");
 			this.next();
+			this.activity = now;
 		}
 	},
 		
@@ -78,8 +77,9 @@ let AdVisitor =
         
         // remove all listeners!
         
-		this.dumpQ(this.history, "History");
+		//this.dumpQ(this.history, "History");
 		this.dumpQ(this.visited, "Visited");
+		this.dumpQ(this.tosnap, "toCapture");
 		this.dumpQ(this.snapped, "Captured");
         
 		if (0) this.snapDir(false); // delete snapdir ?
@@ -117,60 +117,44 @@ let AdVisitor =
 				
 		if (!this.initd) this.init();
 
-		if (url !== 'about:blank') {
-			
-			if (this.history.indexOf(url) >= 0) {
-				this.log("History :: ignoring link: "+url); 
-				return;
-			}
-			
-			this.history.push(url);
-			
-			if (this.history.length > this.qsize) {
-				this.history.shift();
-				this.log("History :: removed: "+url); 
-			}
-		}
-		else {
-			
-			this.log("History :: adding: 'about:blank'");
+		if (this.visited.indexOf(url) >= 0) {
+			this.log("Ignoring (already-visited) :: "+this.trimPath(url));
+			return;
 		}
 		
-		this.log("Queing: "+this.trimPath(url));
+		this.log("Queing("+(this.queue.length+1)+") :: "+this.trimPath(url));
 			
 		this.queue.push(url);
 
-        if (!this.busy) this.next();
+        if (!this.busy) this.next(); // needed?
     },
     
     next : function() {
 
         if (this.queue.length) {
+        	
+			this.activity = this.ms();
         	        	
 			this.busy = true;
-			this.activity = this.ms();
 			var theNext = this.queue.pop();
 			
-			this.log("Request(next) :: "+this.trimPath(theNext));
-			
-			var doRealFetch = true;
-			if (doRealFetch)
-				this.fetchInHidden(theNext);
-			else
-				this.next(); // tmp
+			this.log("Next :: "+this.trimPath(theNext));
+
+			this.fetchInHidden(theNext);
+        }
+        else if (this.tosnap.length) {
+        	
         }
         else {
         	this.busy = false;
-        	this.log("Waiting :: history="+this.history.length+" visited="
-        		+ this.visited.length+" captured="+this.snapped.length);
+        	this.log("Waiting :: visited=" + this.visited.length+"  captured="
+        		+ this.snapped.length + " tosnap=" + this.tosnap.length 
+        		+ " elapsed="+((this.ms() - this.activity)/1000)+"s\n");
         }
     },
     
     
     fetchInTab : function(url) { // not used
-        
-        //if (!this.first) return;
-    	//this.first = false;
 
     	var AdVisitor = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);
     	tab.setAttribute("NOAD", true);
@@ -220,26 +204,24 @@ let AdVisitor =
 			return;	
 		}
 		
-		if (!/^http:\/\//.test(url)) {
+		if (!/^https?:\/\//.test(url)) {
 			this.warn("Non-Http Url: "+url);
 			return;	
 		}
 		
-dump("\nURL: '"+url+"'\n");
-//return;
 	    iframe.setAttribute("src", url);
     },
     
-	// CHECK-1, this.hdomWindow.document.location.spec === httpChannel.originalURI.spec ???
-	// CHECK-2: http://www.softwareishard.com/blog/firebug/nsitraceablechannel-intercept-http-traffic/
     beforeLoad : function(subject) {
+    	
+    	this.activity = this.ms();
 
 		if (!this.initd) return;
 		
-	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
+	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel), 
+	    	url = httpChannel.URI.spec, origUrl = httpChannel.originalURI.spec;
 
-    	if (httpChannel.originalURI.spec != httpChannel.URI.spec) // redirect
-	    	this.log("Redirect :: "+httpChannel.originalURI.spec+" -> "+httpChannel.URI.spec);
+    	(origUrl !== url) && (this.log("Redirect :: "+origUrl+" -> "+url));
 	    
 	    var win = this.windowForRequest(subject); 
     	
@@ -252,15 +234,14 @@ dump("\nURL: '"+url+"'\n");
     		var kind = this.type(cHandler);
     		
     		if (this.type(cHandler) === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
-				
-	    		var loc = httpChannel.URI.spec ;// cHandler.getAttribute("src");
-	    		
-	    		if (!/\.(css|jpg|png|js)$/.test(loc))
-	    			this.log("Preload :: " +this.trimPath(loc));//+"\n           "+httpChannel.URI.spec); 
+					    		
+	    		if (!/\.(css|jpg|png|js|gif|swf)[\?$]/i.test(url))  {
+	    			this.log("Preload :: " +this.trimPath(url));
+	    			
+	    			// abort request if not capturing and they are images?
+				} 
 
-return;
-
-	    		if (loc && this.visited.indexOf(loc) > -1) {  // DO WE EVER WANT TO CANCEL?
+	    		if (0 && url && this.visited.indexOf(url) > -1) {  // DO WE EVER WANT TO CANCEL?
 	    			//this.log("Cancel? :: "+this.trimPath(loc));
 					var request = subject.QueryInterface(Ci.nsIRequest);
 	    			//request.cancel(Components.results.NS_BINDING_ABORTED);
@@ -269,30 +250,33 @@ return;
 	    	}
     	    else {
     	    	
-    	    	// USER REQUESTS...
+    	    	// USER REQUEST HERE...
     	    	
-	    		/* var kind = this.type(cHandler);
-	    		 if (kind === 'xul:browser' || kind === 'browser') 
+	    		var kind = this.type(cHandler);
+	    		if (kind === 'xul:browser' || kind === 'browser') 
 	    			kind += ": "+this.trimPath(cHandler.currentURI.spec);
 	    		var obj = cHandler.attributes;
 	    		var s = ("\n"+cHandler+" ("+kind+")");
 				for (var i = 0, len = obj.length; i < len; ++i)
 	            	s += ("\n  "+obj[i].name+": "+obj[i].value);	            	
-	           	dump(s+"\n"+this.line());*/
+	           	dump(s+"\n"+this.line());
 			}
     	}
     	else {
-    		var msg = "BeforeLoad->No Handler :: "+httpChannel.originalURI.spec;
-    		if (httpChannel.originalURI.spec !== httpChannel.URI.spec)
-    			msg += "\n                    "+httpChannel.URI.spec;
+    		var msg = "BeforeLoad->No Handler :: "+origUrl;
+    		(origUrl !== url) && (msg += "\n                    "+url);
 			this.log(msg);
     	}
     },
 
     afterLoad : function(e) {
 
+		this.activity = this.ms();
+		
 		var doc = e.originalTarget, win = doc.defaultView,
 			path = doc.location.href, tpath = this.trimPath(path);
+			
+		if (path+'' === 'about:blank') return;
 		
 		this.visited.push(path);
 		
@@ -300,21 +284,19 @@ return;
 			this.visited.shift(); // TODO: re-add to fix log size? timeout-cache?
 			dump("\nAdVisitor.visited removed: "+path); 
 		}
-		
+
 		this.log("Visited :: "+tpath);
 
-        if (this.history.indexOf(path) < 0 && path !== 'about:blank') {
-        	this.log("QueueSnap :: "+tpath);
+        if (this.snapped.indexOf(path) < 0) {
+        	this.log("QueueSnap("+(this.tosnap.length+1)+") :: "+tpath);
         	this.tosnap.push(path);
         }
-        
-        //this.next();
-		
-        //var html = doc.documentElement.innerHTML; // keep
     },
 
     loadComplete : function(e) {
 	
+		this.activity = this.ms();
+		
 		var doc = e.originalTarget, win = doc.defaultView,
 			path = doc.location.href, tpath = this.trimPath(path);
 
@@ -330,17 +312,20 @@ return;
     			.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
     			.chromeEventHandler, cwin = cHandler.contentWindow;
     			
-    		if (cHandler && this.is(cHandler, 'iframe') && 
+    		if (cHandler && // this.is(cHandler, 'iframe') && 
     			cHandler.getAttribute("id") === 'adn-iframe') 
     		{
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
 						this.log("  to "+this.trimPath(file.path));
 						
-						// remove from tosnap, add to history,snapped
+						// move from tosnap to snapped
 						this.tosnap.splice(idx, 1);
-						this.history.push(path);
+						//this.history.push(path);
 						this.snapped.push(path);
+					}
+					else {
+						this.warn("Snapshot failed: "+path);
 					}
 	    	}
 	    	else {
@@ -348,7 +333,7 @@ return;
 	    	}
 		}
 		else {
-			this.log("No snapshot for: "+tpath);
+			this.log("Snapshot exists: "+tpath);
 		}
 	
 		this.next();

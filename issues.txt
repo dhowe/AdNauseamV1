@@ -19,7 +19,8 @@ TODO
 ISSUES 
 *********************************************************
 
-
+  -- Don't snap same domain that user has visited ***
+  
   -- Links to iTunes store (see nytimes)
   
   -- Links from plugin itself : rednoise.org/adnauseum etc

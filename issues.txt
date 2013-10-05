@@ -2,8 +2,8 @@
 ********************************************************* 
 TODO 
 *********************************************************
-
-	-- Move trimPath to log() -- always write full url to the log (always dump shortened) 
+   
+    -- ClearHistory
 	
 	-- MENU: noLogs, persistLogs, clearLogs, clearSnaps, clearHistory?  :: tooltips***
 	
@@ -28,19 +28,19 @@ TODO
     -- Check for no-user activity (using nsiObserver) 
 
 
-
 ********************************************************* 
 ISSUES 
 *********************************************************
 
-  -- Don't snap same domain that user has visited ? ***
-  
-  -- Links to iTunes store (see nytimes) -- ignore ?
-  
+  -- Don't snap same domain that user has visited  HOW??? ***
+    
   -- Howe to avoid dups images in snapdir
   
+  -- Don't write hiddenWindow stuff to history
   
 *********************************************************
 BUGS
 *********************************************************
+
+	-- Video playing problem!!
   

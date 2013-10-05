@@ -12,34 +12,42 @@
 	
 	    <toolbarbutton id="adnauseum-button" label="&adnauseum.title;"
 					type="menu-button" tooltiptext="&adnauseum.title;">
+
 					<!--oncommand="AdNauseum.UI.toggleEnabled();"-->
 	               
 	  		<menupopup>
 	  			
 	    		<menuitem label="Enabled" id="adnauseum-enabled-checkbox" class="menuitem-iconic" type="checkbox" 
-	            	oncommand="AdNauseum.UI.onCheckChange(); event.stopPropagation();"/>
+	            	oncommand="AdNauseum.UI.onCheckChange(event);" />
 	
 				<menuitem label="Save Captures" id="adnauseum-savecaptures-checkbox" class="menuitem-iconic" type="checkbox" 
-					oncommand="AdNauseum.UI.onCheckChange(); event.stopPropagation();" />
+					oncommand="AdNauseum.UI.onCheckChange(event);" />
+					
+				<menuitem label="Highlight Ads" id="adnauseum-highlightads-checkbox" class="menuitem-iconic" type="checkbox" 
+	            	oncommand="AdNauseum.UI.onCheckChange(event);"  />
+	            	
+	            	
 					
 		    	<menuitem label="View Captures" id="adnauseum-viewSnaps-menu" class="menuitem-iconic"
-					oncommand="AdNauseum.UI.viewSnaps(); event.stopPropagation();" />				
+					oncommand="AdNauseum.UI.viewSnaps(event);" />				
 							
 	    		<menuitem label="View Log" id="adnauseum-viewLog-menu" class="menuitem-iconic"
-	            	oncommand="AdNauseum.UI.viewLog(); event.stopPropagation();"  />
+	            	oncommand="AdNauseum.UI.viewLog(event);"  />
+	            	
+				<menuitem label="Clear History" id="adnauseum-clearHistory-menu" class="menuitem-iconic"
+	            	oncommand="AdNauseum.UI.clearHistory(event);"  />
 	
 				<menuitem label="Help/FAQ" id="adnauseum-viewHelp-menu" class="menuitem-iconic"
-					oncommand="AdNauseum.UI.viewHelp(); event.stopPropagation();" />
+					oncommand="AdNauseum.UI.viewHelp(event);" />
 				
 				<menuitem label="Home" id="adnauseum-viewHome-menu" class="menuitem-iconic"
-					oncommand="AdNauseum.UI.viewHome(); event.stopPropagation();" />
+					oncommand="AdNauseum.UI.viewHome(event);" />
 					
 		  	</menupopup>
 		  	
 		</toolbarbutton>
 		
 	</toolbarpalette>
-
 
 </overlay>
 

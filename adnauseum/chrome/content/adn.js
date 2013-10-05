@@ -29,35 +29,33 @@ AdNauseum.UI = {
  		this.prefs.QueryInterface(Ci.nsIPrefBranch2);
  		this.prefs.addObserver("", this, false);
  		
- 		//this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+ 		this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+ 		this.component.visitor.init();
+ 		// dump('\n[UI] this.component.visitor.init()');
 
      	if (!this.prefs.getBoolPref("firstrundone")) {
-			dump('\n[UI] Installing menu-button');
+     		
+			dump('\n[UI] FirstRun: Installing menu-button');
     		this.prefs.setBoolPref("firstrundone", true);
 		    this.installButton("nav-bar", "adnauseum-button");	
 		    this.installButton("addon-bar", "adnauseum-button");
-		    dump('\n[UI] Button installed');
   		}
   		
      	this.refresh();
 	},
 	
-	/*toggleEnabled : function() {
-		
-		// untested
-		
-		//this.prefs.setBoolPref("enabled",!this.prefs.getBoolPref("enabled",v));
-		 
-		// OR
-		var cb = document.getElementById("adnauseum-enabled-checkbox");
-		cb.setAttribute("checked", !cb.hasAttribute("checked"));
-		this.onCheckChange();
-	},*/
-	
+	///////////////////////////////////////////////////////////////	
+
+	/* New Checkboxes:
+		-- add to refresh() 
+		-- add to oncheckChange()
+		-- need a setter/getter above
+		-- and an entry in defaults.js
+	*/
+
 	enabled : function(v) {
 		if (arguments.length) {
 			this.prefs.setBoolPref("enabled",v);
-			//this.refresh();
 			return this;	
 		}
 		return this.prefs.getBoolPref("enabled");	
@@ -66,35 +64,48 @@ AdNauseum.UI = {
 	capturing : function(v) {
 		if (arguments.length) {
 			this.prefs.setBoolPref("savecaptures",v);
-			//this.refresh();
 			return this;	
 		}
 		return this.prefs.getBoolPref("savecaptures");	
 	},
 	
-	refresh : function() {
+	highlighting : function(v) {
+		if (arguments.length) {
+			this.prefs.setBoolPref("highlightads",v);
+			return this;	
+		}
+		return this.prefs.getBoolPref("highlightads");	
+	},
+	
+	refresh : function() { 
 
-		var e = this.enabled(), c = this.capturing();
+		var e = this.enabled(), c = this.capturing(), h = this.highlighting();
 		
 		document.getElementById("adnauseum-enabled-checkbox").setAttribute("checked", e);
 			
 		document.getElementById("adnauseum-savecaptures-checkbox").setAttribute("checked", c);
 			
-		//dump("button: "+
-		document.getElementById("adnauseum-button").style.listStyleImage = 
-			'url('+this.skin+(e ? "/adn.png" : "/adng.png"); 
+		document.getElementById("adnauseum-highlightads-checkbox").setAttribute("checked", h);
 			
-		//dump("\nRefreshed :: enabled="+this.enabled()+" snaps="+this.capturing());	
+		document.getElementById("adnauseum-button").style.listStyleImage = 
+				'url('+this.skin+(e ? "/adn.png" : "/adng.png");  // dont touch
 	},
 	
-	onCheckChange : function()
+	onCheckChange : function(e) // new checkboxes go here
 	{
 		this.capturing(document.getElementById
 			("adnauseum-savecaptures-checkbox").hasAttribute("checked"));
 			
 		this.enabled(document.getElementById
-			("adnauseum-enabled-checkbox").hasAttribute("checked"));			
+			("adnauseum-enabled-checkbox").hasAttribute("checked"));	
+			
+		this.highlighting(document.getElementById
+			("adnauseum-highlightads-checkbox").hasAttribute("checked"));
+			
+		e && (e.stopPropagation());		
 	}, 
+	
+	/////////////////////////////////////////////////////////////////////////////////
 	
 	shutdown : function() {
 		
@@ -112,24 +123,42 @@ AdNauseum.UI = {
 		// this.component.observer(subject, topic, data); // ???
 	},
 
-	viewHome : function()
+	viewHome : function(e)
 	{
 		this.openInTab(this.website);
+		e && (e.stopPropagation());
 	},
 	 
-	viewHelp : function()
+	viewHelp : function(e)
 	{
 		this.openInTab(this.website+'/help.html');
+		e && (e.stopPropagation());
 	}, 
 	
-	viewLog : function()
+	viewLog : function(e)
 	{
 		var file = this.getProfDir();
 		file.append('adnauseum.log');
 		this.openInTab(file.path);
+		e && (e.stopPropagation());
+		
 	}, 
 	
-	viewSnaps : function()
+	clearHistory : function(e)
+	{
+		this.component.clearLog();
+		
+		dump('\n[UI] Log cleared');
+
+		// TODO: refresh tab if open!!
+		
+		var file = this.getProfDir();
+		file.append('adsnaps');
+		file.exists() && (file.remove(true));
+		dump('\n[UI] Captured cleared: '+file);
+	},
+	
+	viewSnaps : function(e)
 	{
 		var gallery = "chrome://adnauseum/content/display/index.html";
 		
@@ -150,6 +179,7 @@ AdNauseum.UI = {
 		// TODO: write out the divs to 'gallery' (after open or before?)
 		
 		this.openInTab(gallery); // label
+		e && (e.stopPropagation());
 	},
 	
 	viewSnapsOld : function()
@@ -187,6 +217,18 @@ AdNauseum.UI = {
 		tB.selectedTab = tB.addTab(url);
 	},
 	
+	/*toggleEnabled : function() {
+		
+		// untested
+		
+		//this.prefs.setBoolPref("enabled",!this.prefs.getBoolPref("enabled",v));
+		 
+		// OR
+		var cb = document.getElementById("adnauseum-enabled-checkbox");
+		cb.setAttribute("checked", !cb.hasAttribute("checked"));
+		this.onCheckChange();
+	},*/
+
 	installButton : function(toolbarId, id, afterId) {
 		
 	    if (!document.getElementById(id)) {

@@ -1,6 +1,6 @@
 //"use strict";
 
-dump("\n[AN] Loading adNauseum.js (2)");
+dump("\n[AN] Loading adNauseum.js (3)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -9,8 +9,18 @@ const prefs = Cc["@mozilla.org/preferences-service;1"].getService(Ci.nsIPrefBran
 
 Components.utils.import("resource://gre/modules/XPCOMUtils.jsm");
 Components.utils.import("resource://gre/modules/Services.jsm");
+Components.utils.import("resource://gre/modules/AddonManager.jsm");
 
-const DEBUG = true;
+const DEBUG = false;
+
+
+AddonManager.addAddonListener({
+	onUninstalling : function(addon) {
+		dump("\n [AN] Uninstalling!");
+		Services.prefs.setBoolPref("extensions.adnauseum.firstrundone", false);
+	}
+});
+
 
 let AdVisitor =
 {
@@ -23,11 +33,13 @@ let AdVisitor =
 	tosnap : [], // ?
 	snapped : [],
 	visited : [],	
-	//adnprefs : null,
+	logFile : null,
+	ostream : null,
+	activity : +new Date(),
     
 	init: function() {
 		
-		this.activity = +new Date();
+		//dump("\n[AV] AdVisitor.init()");
 		
 		try {
 
@@ -39,13 +51,6 @@ let AdVisitor =
 				
 			this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
 			
-			// Register to receive notifications of preference changes
-	     	// this.adnprefs = Cc["@mozilla.org/preferences-service;1"]
-	        	// .getService(Ci.nsIPrefService).getBranch("extensions.adnauseum.");
-// 	        	
-     		// this.adnprefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-     		// this.adnprefs.addObserver("", this, false);
-//      
 			this.intervalId = this.mainWindow.setInterval // start checker
 				(function(v) { v.checker(); }, this.checkMs, this); 
 				
@@ -59,10 +64,7 @@ let AdVisitor =
 	},
 
 	shutdown : function() {
-        
-        // remove all listeners!
-		this.adnprefs.removeObserver("", this);
-        
+                
 		//this.dumpQ(this.history, "History");
 		this.dumpQ(this.visited, "Visited");
 		this.dumpQ(this.tosnap, "toCapture");
@@ -70,7 +72,7 @@ let AdVisitor =
         
 		if (0) this.snapDir(false); // delete snapdir ?
 
-		this.log("Shutdown complete.\n\n");
+		this.log("Shutdown complete.\n");
 		        
         if (this.ostream) this.ostream.close();	
     },
@@ -89,7 +91,7 @@ let AdVisitor =
 			
 			try {
 				file.remove(true);
-				this.log("Removed: "+this.trimPath(file.path));
+				this.log("Removed: "+file.path);
 			}
 			catch(e) {
 				this.warn(this.snapdir+" not removed!\n"+e);
@@ -104,11 +106,11 @@ let AdVisitor =
 		if (!this.initd) this.init();
 
 		if (this.visited.indexOf(url) >= 0) {
-			this.log("Ignoring (already-visited) :: "+this.trimPath(url));
+			this.log("Ignoring (already-visited) :: "+url);
 			return;
 		}
 		
-		this.log("Queing("+(this.queue.length+1)+") :: "+this.trimPath(url));
+		this.log("Queing("+(this.queue.length+1)+") :: "+url);
 			
 		this.queue.push(url);
 
@@ -122,9 +124,10 @@ let AdVisitor =
         if (this.queue.length) {
         	        	
 			this.busy = true;
+			
 			var theNext = this.queue.pop();
 			
-			this.log("Next :: "+this.trimPath(theNext));
+			this.log("Next :: "+theNext);
 
 			this.fetchInHidden(theNext);
         }
@@ -133,7 +136,7 @@ let AdVisitor =
         }
         else {
         	this.busy = false;
-        	this.log("Waiting :: visited=" + this.visited.length+"  captured="
+        	this.log("Queue-empty :: visited=" + this.visited.length+"  captured="
         		+ this.snapped.length + " tosnap=" + this.tosnap.length 
         		+ " elapsed="+((this.ms() - this.activity)/1000)+"s\n");
         }
@@ -206,7 +209,7 @@ let AdVisitor =
 	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel), 
 	    	url = httpChannel.URI.spec, origUrl = httpChannel.originalURI.spec;
 
-    	(origUrl !== url) && (this.log("Redirect :: "+origUrl+" -> "+url));
+    	(origUrl !== url) && (this.log("Redirect :: "+origUrl+"\n               => "+url));
 	    
 	    var win = this.windowForRequest(subject); 
     	
@@ -218,29 +221,27 @@ let AdVisitor =
     		
     		var kind = this.type(cHandler);
     		
-    		if (this.type(cHandler) === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
-					    		
+    		if (kind === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
+					    	
+				if (/(itunes\.apple|appstore)\.com/i.test(url))  {
+	    			this.log("CANCEL (itunes) :: "+url);
+					this.cancelRequest(subject);
+	    			return;
+	    		}
+	    			
 	    		if (!this.isResource(url))  {
 	    			
-	    			this.log("Preload :: " +this.trimPath(url));
+	    			this.log("Preload :: " +url);
 	    			
 	    			// abort request if not capturing and they are images?
 				} 
-
-	    		if (0 && url && this.visited.indexOf(url) > -1) {  // DO WE EVER WANT TO CANCEL?
-	    			//this.log("Cancel? :: "+this.trimPath(loc));
-					var request = subject.QueryInterface(Ci.nsIRequest);
-	    			//request.cancel(Components.results.NS_BINDING_ABORTED);
-	    			return;
-	    		}
 	    	}
     	    else {
     	    	
-    	    	// USER REQUEST HERE...
-    	    	
-	    		var kind = this.type(cHandler);
-	    		if (/browser$/.test(kind) && !this.isResource(url)) 
-					tihs.log(kind+" -> "+this.trimPath(url));
+    	    	// USER REQUEST HERE... (is it from a tab?)
+
+	    		//if (/browser/.test(kind) && !this.isResource(url)) 
+					//this.log(kind+" -> "+url);
 
 	    		/*var obj = cHandler.attributes;
 	    		var s = ("\n"+cHandler+" ("+kind+")");
@@ -250,20 +251,51 @@ let AdVisitor =
 			}
     	}
     	else {
-    		var msg = "BeforeLoad->No Handler :: "+origUrl;
-    		(origUrl !== url) && (msg += "\n                    "+url);
-			this.log(msg);
+    		if (!this.isResource(origUrl)) {
+	    		var msg = "BeforeLoad->No Handler :: "+origUrl;
+	    		(origUrl !== url) && (msg += "\n                    "+url);
+				this.log(msg);
+			}
     	}
     },
-
+    
+    cancelRequest : function(subject) {
+    	
+    	this.activity = this.ms();
+    	
+    	try {
+    		var request = subject.QueryInterface(Ci.nsIRequest);
+	    	request && request.cancel(Components.results.NS_BINDING_ABORTED);
+	    	return true;	
+	    }
+	    catch(e) {
+	    	
+	    	this.err(e);
+	    }
+	    return false;
+    },
+    
     afterLoad : function(e) {
 
 		this.activity = this.ms();
 		
-		var doc = e.originalTarget, win = doc.defaultView,
-			path = doc.location.href, tpath = this.trimPath(path);
+		var doc = e.originalTarget, win = doc.defaultView, path = doc.location.href;
+		
+		if (path+'' === 'about:blank') return;	
 			
-		if (path+'' === 'about:blank') return;
+		// Ignore XUL (?) 
+		if (/.xul/.test(path)) {
+			//this.log("IGNORE :: "+path);
+			doc.location.href = '';
+			return;
+		}
+		
+		// Ignore iTunes (?) 
+		if (/(itunes\.apple|appstore)\.com/i.test(path)) {
+			this.log("IGNORE (itunes) :: "+path);
+			doc.location.href = '';
+			return;
+		}
 		
 		this.visited.push(path);
 		
@@ -272,10 +304,11 @@ let AdVisitor =
 			dump("\nAdVisitor.visited removed: "+path); 
 		}
 
-		this.log("Visited :: "+tpath);
+		this.log("Visited :: "+path);
 
         if (this.snapped.indexOf(path) < 0) {
-        	this.log("QueueSnap("+(this.tosnap.length+1)+") :: "+tpath);
+        	tosnap.length>0 && this.warn("snapQ=fuct!");
+        	this.log("QueueSnap (tosnap.length="+(this.tosnap.length+1)+") :: "+path);
         	this.tosnap.push(path);
         }
     },
@@ -284,16 +317,15 @@ let AdVisitor =
 	
 		this.activity = this.ms();
 		
-		var doc = e.originalTarget, win = doc.defaultView,
-			path = doc.location.href, tpath = this.trimPath(path);
+		var doc = e.originalTarget, win = doc.defaultView, path = doc.location.href;
 
-		this.log("Complete :: "+tpath);
+		this.log("Complete :: "+path);
 
 		var idx = this.tosnap.indexOf(path);
 		
         if (idx > -1) {  
         	
-        	this.log("Snapshot :: "+tpath);
+        	this.log("Snapshot :: "+path);
 
         	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
     			.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
@@ -304,11 +336,10 @@ let AdVisitor =
     		{
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
-						this.log("  to "+this.trimPath(file.path));
+						this.log("  to "+file.path);
 						
 						// move from tosnap to snapped
 						this.tosnap.splice(idx, 1);
-						//this.history.push(path);
 						this.snapped.push(path);
 					}
 					else {
@@ -320,10 +351,10 @@ let AdVisitor =
 	    	}
 		}
 		else {
-			this.log("Snapshot exists: "+tpath);
+			this.log("Snapshot exists: "+path+" queue="+this.queue.length);
 		}
 	
-		this.next();
+		// this.next();  TODO: ?? 
     },
     
    	getSnapshot : function(document, contentWindow) {
@@ -368,28 +399,10 @@ let AdVisitor =
     	    	
 		//this.log("saveToDisk("+window+", data);");
 
-    	var file, dialog=0, fileName = 'Adn'+'_'+
-    		(new Date()).toISOString().replace(/:/g,'-')+'.png'
+    	var file, fileName = 'Adn'+'_'+(new Date()).toISOString().replace(/:/g,'-')+'.png'
     	
-    	if (dialog) {
-    		
-	        var fp = Cc['@mozilla.org/filepicker;1'].createInstance(Ci.nsIFilePicker);
-	        fp.init(window.parent, "Select a File", Ci.nsIFilePicker.modeSave);
-	        fp.appendFilter('PNG Image', '*.png');
-	        fp.defaultString = fileName;
-        
-        	if (fp.show() != Ci.nsIFilePicker.returnCancel) {
-        	
-	            file = Cc['@mozilla.org/file/local;1'].createInstance(Ci.nsILocalFile);
-	            var path = fp.file.path;
-	            file.initWithPath(path+(/\.png$/.test(path) ? '' : '.png'));
-	        }
-		}
-		else {
-			
-			file = this.snapDir(true);
-  			file.append(fileName);
-		}
+		file = this.snapDir(true);
+  		file.append(fileName);
 
 	    return file ? this.saveFile(file, data) : null;
     },
@@ -420,8 +433,40 @@ let AdVisitor =
 	    return file;
     },
 	
-	// Utils
+	// Utils ---------------------------------------------------------------------------
      
+    dumpElement : function(ele) {
+    	
+    	if (!ele) return;
+    	
+    	var kind = this.type(ele);
+		var obj = ele.attributes;
+		
+		var s = "ELEMENT: '"+kind+"'";
+		for (var i = 0, len = obj ? obj.length : 0; i < len; ++i)
+        	s += ("\n  "+obj[i].name+": "+obj[i].value);	
+        
+        var style = ele.style, styleStr='';
+        
+        if (style) {
+
+			for (var i in style) {
+				
+				if (! (style[i] && style[i].length && typeof style[i] !== 'function') ) 
+					continue;
+					
+			    // if it's not a number-index, print it out.
+			    if (/^[\d]+/.exec(i) == null) {
+			        styleStr += "\n    "+i+" = '"+style[i]+"'";
+			    }
+			}
+        }
+        
+        if (styleStr.length) s += "\n  styles: " + styleStr;
+	            	
+       	this.log(s);
+    },
+
 	windowForRequest : function(request) {
 
 		if ( request instanceof Ci.nsIRequest) {
@@ -464,7 +509,7 @@ let AdVisitor =
 		return tab;
     },
     
-    isResource : function(url) { return /\.(css|jpg|png|js|gif|swf|xml)(\?|$)/i.test(url); },
+    isResource : function(url) { return /\.(css|jpg|png|js|gif|swf|xml|ico|json)(\?|$|#)/i.test(url); },
     
     type : function(ele) {
 
@@ -515,7 +560,12 @@ let AdVisitor =
 		var now = this.ms();
 
 		if ((now - this.activity) > (this.checkMs*3)) {
-			this.log("Checker: "+this.ms()+" queue="+this.queue.length+" elapsed="+((now - this.activity)/1000)+"s");
+			
+			if (this.queue.length) { // only log if we have a queue
+				
+				this.log("Checking: "+this.ms()+" queue="
+					+this.queue.length+" elapsed="+((now - this.activity)/1000)+"s");
+			}
 			this.next();
 		}
 	},
@@ -528,7 +578,7 @@ let AdVisitor =
         this.log(s);
 	},
 	
-	line : function(sep, num) {
+	line : function(num, sep) {
 		var s = '';
 		num = num || 50;
 		sep = sep || '=';
@@ -567,51 +617,74 @@ let AdVisitor =
    	
    	err : function(msg) { 
    		
-   		this.log("[ERROR]"+this.line()+msg+"\n");
+   		this.log("[ERROR]" + this.line(90) + msg + "\n");
    	},
-
-	log : function(msg, dumpit) { // dumpit: [0=log-only -1=dump-only 1=both]
-
-		dumpit = dumpit || 1;
+   	
+	resetLog : function() { 
 		
-		if (typeof this.ostream == 'undefined') {
+		this.log("Log(Reset) :: " + this.logFile.path);
+
+		if (this.logFile && this.logFile.exists()) {
 
 			try {
-
-				var file = Cc["@mozilla.org/file/directory_service;1"]
-					.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
-				file.append("adnauseum.log");
-
-				if (!file.exists()) {
-
-					file.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
-					DEBUG && (dump("\n[AV] Created " + file.path));
-				}
-
-				// Then, we need an output stream to our output file.
-				this.ostream = Cc["@mozilla.org/network/file-output-stream;1"]
-					.createInstance(Ci.nsIFileOutputStream);
-
-				//this.ostream.init(file, 0x02 | 0x10, -1, 0); // append
-				this.ostream.init(file, -1, -1, 0); // truncate
-				
-				if (file.exists() && this.ostream) 
-					this.log("Log: " + this.trimPath(file.path));				
-			}
+				this.logFile.remove(false);
+				this.ostream = null;
+				this.initLog();	
+			} 
 			catch(e) {
 				dump("\n\n[ERROR] " + e);
 				return;
 			}
 		}
+   	},
+   	
+    initLog : function() {
+    	 
+		dump("\n[AV] Initializing Log");
 
-		if (DEBUG && dumpit) dump("\n[AV] "+msg + "\n"); 
+		try {
+
+			this.logFile = Cc["@mozilla.org/file/directory_service;1"]
+				.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+				
+			this.logFile.append("adnauseum.log");
+
+			if (!this.logFile.exists()) {
+
+				this.logFile.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0666);
+				dump("\n[AV] Created " + this.logFile.path);
+			}
+	
+			if (!this.ostream) {
+				
+				this.ostream = Cc["@mozilla.org/network/file-output-stream;1"]
+						.createInstance(Ci.nsIFileOutputStream);
+				this.ostream.init(this.logFile, -1, -1, 0); // truncate
+				this.log("Log: " + this.logFile.path);			
+			}
+		}
+		catch(e) {
+			
+			dump("\n\n[ERROR] " + e);
+			return;
+		}
+	},
+		
+
+	log : function(msg, dumpit) { // dumpit: [0=log-only -1=dump-only 1=both]
+
+		dumpit = dumpit || 1;
+		
+		if (typeof this.ostream === 'undefined' || !this.ostream) this.initLog();
+
+		if (DEBUG && dumpit) dump("\n[AV] "+this.trimPath(msg) + "\n"); 
 		
 		if (dumpit != -1) {
 			
 			var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
 		    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
 	 
-			msg = "[" + now  + ":" + ms + "] " + msg + "\n" + this.line();
+			msg = "[" + now  + ":" + ms + "] " + msg + "\n" + this.line(90);
 				
 			if ( typeof this.ostream === 'undefined' || !this.ostream) {
 				dump("\n\n[ERROR] NO IO!");
@@ -662,8 +735,6 @@ AdNauseumComponent.prototype = {
             return false;
 		}
         
-        //this.loadImgArray();
-
         if (!this.policy.processNode) {
         	dump("\n[FATAL] No Policy.processNode")
         	return false;
@@ -675,8 +746,11 @@ AdNauseumComponent.prototype = {
 
         this.setPref("extensions.adblockplus.fastcollapse", false);
         
-		AdVisitor.log("Enabled: " + this.getPref("extensions.adnauseum.enabled")
-			+ ", capturing: " + this.getPref("extensions.adnauseum.savecaptures"));
+        this.visitor = AdVisitor;
+        
+		this.visitor.log("State: enabled=" + this.getPref("extensions.adnauseum.enabled")
+			+ ", highlights=" + this.getPref("extensions.adnauseum.highlightads")
+			+ ", capturing=" + this.getPref("extensions.adnauseum.savecaptures"));
 		//dump("\nAdNauseumComponent.initd")
         
         return true;
@@ -690,25 +764,24 @@ AdNauseumComponent.prototype = {
         switch (aTopic) {
 	        
 	        case "profile-after-change":
-	            // Doing initialization stuff on FireFox start
+	        
+	            // Doing init stuff on FireFox start
 	            observerService.addObserver(this, "http-on-modify-request", false);
 	            observerService.addObserver(this, "quit-application", false);
-	            //observerService.addObserver(this, "nsPref:changed", false);
 	            
 	            this.init();
 	            
 	            break;
 	            
 			case "quit-application":
-			
+
 	            // Doing shutdown stuff on FireFox quit
-	            //observerService.removeObserver(this, "nsPref:changed");
 	            observerService.removeObserver(this, "quit-application");
 	            observerService.removeObserver(this, "http-on-modify-request");
 
-	            AdVisitor && (AdVisitor.shutdown());
+	            this.visitor.shutdown();
 	            
-	            dump("\nAdNauseumComponent.shutdown");
+	            dump("\n[AN] AdNauseumComponent.shutdown()");
 	            
 	            break;
 	            
@@ -716,11 +789,16 @@ AdNauseumComponent.prototype = {
 	        
 				// Called before each Http request 
 
-	        	AdVisitor.beforeLoad(aSubject);
+	        	this.visitor.beforeLoad(aSubject);
 	        	
 	        	break;
 		}
     },
+    
+	clearLog : function() {
+		
+		this.visitor.resetLog();
+   	},
 
     processNodeABP : function(wnd, node, contentType, location, collapse) {
 
@@ -796,7 +874,7 @@ AdNauseumComponent.prototype = {
 
         } 
         catch(e) {
-            dump("Error in: " + e.fileName +", line number: " + e.lineNumber +", " + e);
+            this.visitor.err("Error in: " + e.fileName +", line number: " + e.lineNumber +", " + e);
         }
 
         return false;
@@ -819,6 +897,8 @@ AdNauseumComponent.prototype = {
     },
     
     loadImgArray : function() {
+    	
+    	this.visitor.log("loadImgArray");
     	
         this.ImgArray = [];
         
@@ -859,6 +939,9 @@ AdNauseumComponent.prototype = {
     askLink : function(width, height) {
     	
         // Find this.ImgArray with minimal waste (or need - in this case it will be shown in full while mouse over it) of space
+        
+        if (!this.ImgArray) this.loadImgArray();
+
         var optimalbanners = null;
         var minDiff = Number.POSITIVE_INFINITY;
         for ( var i = 0; i < this.ImgArray.length; i++) {
@@ -893,116 +976,138 @@ AdNauseumComponent.prototype = {
 
     
     typeofSize : function(Str_size) {
-        if (Str_size == "auto")
+        
+        if (Str_size === "auto")
             return "auto";
-        if (Str_size == "inherit")
+            
+        if (Str_size === "inherit")
             return "inherit";
-        if (Str_size.indexOf('%') > -1)
+            
+        if (Str_size.indexOf && Str_size.indexOf('%') > -1)
             return "percentage";
+            
         return "pixel";
     },
 
     getSize : function(prop, elt) {
-        if (elt.ownerDocument) {
-            if (elt.ownerDocument.defaultView && elt.ownerDocument.defaultView.getComputedStyle(elt, null)) {
-                var wnd = elt.ownerDocument.defaultView;
-                var compW = wnd.getComputedStyle(elt, null).getPropertyValue(prop);
+    	
 
-                if (elt.parentNode) {
-                    var parentcompW = wnd.getComputedStyle(elt.parentNode, null).getPropertyValue(prop);
-                }
-            }
-        }
+		var wnd=null, compW=null, parentcompW=null;
 
-        if (!compW) {
-            if (elt.style[prop])
-                compW = elt.style[prop];
-            else if (elt[prop])
-                compW = elt[prop];
-            else
-                compW = 0;
-        }
+		if (elt.ownerDocument) {
+			if (elt.ownerDocument.defaultView && elt.ownerDocument.defaultView.getComputedStyle(elt, null)) {
+				wnd = elt.ownerDocument.defaultView;
+				compW = wnd.getComputedStyle(elt, null).getPropertyValue(prop);
 
-        var capital_name = {'width':'Width','height':'Height'}[prop];
+				if (elt.parentNode) {
+					parentcompW = wnd.getComputedStyle(elt.parentNode, null).getPropertyValue(prop);
+				}
+			}
+		}
 
-        if(elt.tagName == 'A') {
-            var size = 0;
-            for(var i=0;i<elt.childNodes.length;i++) {
-                var child = elt.childNodes[i];
-                if(child.nodeType == 1) {
-                    size = Math.max(size,parseInt(wnd.getComputedStyle(child, null).getPropertyValue(prop)));
-                }
-            };
-            return size;
-        }
+		if (!compW) {
+			if (elt.style[prop])
+				compW = elt.style[prop];
+			else if (elt[prop])
+				compW = elt[prop];
+			else
+				compW = 0;
+		}
 
-        var x;
-        if (this.typeofSize(compW) == "percentage") {
-            if (this.typeofSize(parentcompW) !== "pixel")
-                x = 0;
-            else
-                x = parseInt(parseInt(compW) * parseInt(parentcompW) / 100);
-        } else if (this.typeofSize(compW) == "auto")
-            x = elt['offset'+capital_name];
-        else if (this.typeofSize(compW) == "inherit") {
-            if (this.typeofSize(parentcompW) !== "pixel")
-                x = 0;
-            else
-                x = parseInt(parentcompW);
-        } else
-            x = parseInt(compW);
-            
-        return x;
+		var capital_name = {'width':'Width', 'height':'Height'}[prop];
+
+		if (wnd && elt.tagName == 'A') {
+			var size = 0;
+			for (var i = 0; i < elt.childNodes.length; i++) {
+				var child = elt.childNodes[i];
+				if (child.nodeType == 1) {
+					size = Math.max(size, parseInt(wnd.getComputedStyle(child, null).getPropertyValue(prop)));
+				}
+			};
+			return size;
+		}
+
+		var x;
+		if (this.typeofSize(compW) == "percentage") {
+			if (this.typeofSize(parentcompW) !== "pixel")
+				x = 0;
+			else
+				x = parseInt(parseInt(compW) * parseInt(parentcompW) / 100);
+		} else if (this.typeofSize(compW) == "auto") {
+			
+			x = elt['offset' + capital_name];
+		}
+		else if (this.typeofSize(compW) == "inherit") {
+			if (this.typeofSize(parentcompW) !== "pixel") 
+				x = 0;
+			else
+				x = parseInt(parentcompW);
+		} else {
+			x = parseInt(compW);
+		}
+
+		return x;
+
     },
 
     transform : function(ToReplace, wnd) {
     	
-    	if (0) { // treat small ads like others ?
-	        try {
-	            var theH = this.getSize("height", ToReplace), theW = this.getSize("width", ToReplace);
+    	// Ignore small ads...
+        try {
+            var theH = this.getSize("height", ToReplace), theW = this.getSize("width", ToReplace);
+
+            if (theH < 10 || theW < 10) {
+            	
+				var toClick='unknown', ele = ToReplace.wrappedJSObject;
+		        if (ele && ele.tagName === 'A') 
+		        	toClick = ele.getAttribute("href");
+            	
+            	//this.visitor.log("Ignore-small :: "+toClick);
+            	
+            	return null;
+            }
+
+	        var placeholder = ToReplace.ownerDocument.createElement("div");
 	
-	            if (theH < 10 || theW < 10) {
-	            	dump("Ad too small...");
-	            	return null;
+	        if (theW == 0 || theH == 0) {  // WHAT IS THIS DOING?
+	        	
+	        	this.visitor.warn("Creating place-holder div");
+	        	
+	            placeholder = ToReplace.ownerDocument.createElement("div");
+	            placeholder.setAttribute("NOAD", "true");
+	            
+	            if (ToReplace.hasAttribute("style"))
+	                placeholder.setAttribute("style", ToReplace.getAttribute("style"));
+	            if (placeholder.style.background)
+	                placeholder.style.background = "";
+	                
+	            var Nodes = ToReplace.childNodes;
+	            for ( var i = 0; i < Nodes.length; i++) {
+	                if (Nodes[i].nodeType == Ci.nsIContentPolicy.TYPE_OTHER)
+	                    placeholder.appendChild(this.transform(Nodes[i]));
 	            }
+	            
+	            if (ToReplace.hasAttribute("id"))
+	                placeholder.setAttribute("id", ToReplace.getAttribute("id"));
+	            if (ToReplace.hasAttribute("name"))
+	                placeholder.setAttribute("name", ToReplace.getAttribute("name"));
+	            if (ToReplace.hasAttribute("class"))
+	                placeholder.setAttribute("class", ToReplace.getAttribute("class"));
+	            if (ToReplace.style.display == 'none')
+	                placeholder.style.display = 'none';
+	        } 
+	        else {
+	        	
+	        	// normal case
+	            placeholder = this.createConteneur(ToReplace, wnd, theH, theW);
 	        }
-	        catch(e) {
-	            this.err(e.lineNumber + ', ' + e);
-	        }
+        
+        }
+        catch(e) {
+        	
+            this.visitor.err(e.lineNumber + ', ' + e);
 		}
  
-
-        var placeholder = ToReplace.ownerDocument.createElement("div");
-
-        if (theW == 0 || theH == 0) { 
-        	this.warn("Creating place-holder div");
-            // placeholder = ToReplace.ownerDocument.createElement("div");
-            placeholder.setAttribute("NOAD", "true");
-            
-            if (ToReplace.hasAttribute("style"))
-                placeholder.setAttribute("style", ToReplace.getAttribute("style"));
-            if (placeholder.style.background)
-                placeholder.style.background = "";
-                
-            var Nodes = ToReplace.childNodes;
-            for ( var i = 0; i < Nodes.length; i++) {
-                if (Nodes[i].nodeType == Ci.nsIContentPolicy.TYPE_OTHER)
-                    placeholder.appendChild(this.transform(Nodes[i]));
-            }
-            
-            if (ToReplace.hasAttribute("id"))
-                placeholder.setAttribute("id", ToReplace.getAttribute("id"));
-            if (ToReplace.hasAttribute("name"))
-                placeholder.setAttribute("name", ToReplace.getAttribute("name"));
-            if (ToReplace.hasAttribute("class"))
-                placeholder.setAttribute("class", ToReplace.getAttribute("class"));
-            if (ToReplace.style.display == 'none')
-                placeholder.style.display = 'none';
-        } 
-        else {
-        	
-            placeholder = this.createConteneur(ToReplace, wnd, theH, theW);
-        }
 
         return placeholder;
     },
@@ -1031,6 +1136,8 @@ AdNauseumComponent.prototype = {
 		}
     },
     
+	log : function(s,t) { this.visitor.log(s,t); },
+
     createConteneur : function(OldElt, wnd, l, L) {
 
         // This replaces Ad element to element with art
@@ -1042,12 +1149,21 @@ AdNauseumComponent.prototype = {
         
         if (isA) {
             var toClick = ele.getAttribute("href");
-            AdVisitor.add(toClick); // follow redirects
+            
+            this.visitor.add(toClick); // follow redirects DCH: **********
+            
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
+            ele.style.outline = '#D824B7 double medium';
+            //this.visitor.dumpElement(ele);
+            // ele.ownerDocument -> document
         }
-        //else dump("\n[AV] Ignoring: "+ele.tagName);
         
-        return null; // skip this if hiding ads
+        //else dump("\n[AV] Ignoring: "+ele.tagName);
+
+
+        return null; // skip this if hiding ads with add-art
+        
+        
 
         if (this.checkDanger(OldElt)) return null;
         
@@ -1133,6 +1249,7 @@ AdNauseumComponent.prototype = {
             img.style.marginLeft = parseInt((L - Img[0] * l / Img[1]) / 2) + 'px';
         }
         newElt.appendChild(img);
+        
         return newElt;
     }
 };

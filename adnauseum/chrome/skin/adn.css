@@ -2,9 +2,9 @@
   
   
 #adnauseum-button {
-  list-style-image: url("chrome://adnauseum/skin/adn.png");
+  list-style-image: url("chrome://adnauseum/skin/adn.png"); 
 }
 
 toolbar[iconsize="small"] #adnauseum-button {
-  list-style-image: url("chrome://adnauseum/skin/adn.png");
+  list-style-image: url("chrome://adnauseum/skin/adn.png"); 
 }

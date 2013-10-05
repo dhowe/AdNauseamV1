@@ -8,7 +8,7 @@
         <em:id>development@rednoise.org</em:id>
         <em:name>AdNauseum</em:name>
 		<em:type>2</em:type>
-        <em:version>1.001</em:version>
+        <em:version>1.007</em:version>
         <em:creator>Daniel C. Howe, Helen Nissenbaum</em:creator>
         <em:description>Visits all add links in the background as you browse...</em:description>
         <em:homepageURL>http://rednoise.org/adnauseum</em:homepageURL>

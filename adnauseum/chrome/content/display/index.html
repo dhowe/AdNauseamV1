@@ -3,12 +3,10 @@
 <head>
   
   <meta charset="utf-8" />
-  <title>Ad Nauseum Viewer</title>
+  <title>Captures</title>
   
   <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  
   <link rel="stylesheet" href="./style.css" />
-  
   <!-- scripts at bottom of page -->
 
 </head>
@@ -21,68 +19,29 @@
   </section-->
 
 	<!-- Dynamically write the contents of this div -->
-  <div id="container" class="photos clearfix">
+  <div id="adn-container" class="photos clearfix">
     
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013039951/" title="Stanley by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4113/5013039951_3a47ccd509.jpg" alt="Stanley" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013039885/" title="Officer by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4131/5013039885_0d16ac87bc.jpg" alt="Officer" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013039583/" title="Tony by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4086/5013039583_26717f6e89.jpg" alt="Tony" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013646070/" title="Kendra by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4146/5013646070_f1f44b1939.jpg" alt="Kendra" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013039541/" title="Giraffe by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4144/5013039541_17f2579e33.jpg" alt="Giraffe" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013039741/" title="Gavin by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4153/5013039741_d860fb640b.jpg" alt="Gavin" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013039697/" title="Anita by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4113/5013039697_a15e41fcd8.jpg" alt="Anita" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013646314/" title="Take My Portrait by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4124/5013646314_c7eaf84918.jpg"   alt="Take My Portrait" /></a>
-      </div>
-    
-      <div class="photo">
-        <a href="http://www.flickr.com/photos/nemoorange/5013040075/" title="Wonder by Dave DeSandro, on Flickr"><img src="http://farm5.static.flickr.com/4089/5013040075_bac12ff74e.jpg" alt="Wonder" /></a>
-      </div>
-    
-  </div> <!-- #container -->
+	<div id="adn-logo" class="photo"><a href="http://rednoise.org/adnauseum/"><img src="http://rednoise.org/adnauseum/images/adnauseum5_255.png"/></a></div>
+	
+  </div> <!-- #adncontainer -->
   
   <script src="./jquery-1.7.1.min.js"></script>
   <script src="./jquery.isotope.min.js"></script>
   <script>
-    $(function(){
+	$(function() {
 
-      var $container = $('#container');
-    
-      $container.imagesLoaded( function(){
-        $container.isotope({
-          itemSelector : '.photo'
-        });
-      });
-    
-    
-    });
+		var adncont = $('#adn-container');
+		adncont.imagesLoaded(function() {
+			//dump('\nJS: #adn-container.imageLoaded -> calling: adncont.isotope()');
+			adncont.isotope({
+				itemSelector : '.photo'
+			});
+		});
+
+	});
   </script>
     
-    <footer>
-      Isotope by <a href="http://desandro.com">David DeSandro</a> / <a href="http://metafizzy.co">Metafizzy</a>
-    </footer>
-    
-  </section> <!-- #content -->
+  </section>
   
 
 </body>

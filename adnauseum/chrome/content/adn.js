@@ -13,14 +13,19 @@ AdNauseum.UI = {
 	
 	prefs : null,
 	initd : false,
+	snapdir : 'adsnaps',
+	logfile : 'adnauseum.log',
 	skin : 'chrome://adnauseum/skin',
     website : 'http://rednoise.org/adnauseum', // label
+    gallery : "chrome://adnauseum/content/display/index.html",
+    captures : [],
+
     
 	init : function() {
 		
 		if (this.initd) return; 
 		
-		dump('\n[UI] AdNauseum.UI.init()');
+		dump('\n[UI] AdNauseum.UI.init');
 
 		 // Register to receive notifications of preference changes
      
@@ -31,8 +36,11 @@ AdNauseum.UI = {
  		
  		this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
  		this.component.visitor.init();
+ 		this.gBrowser = this.component.getGBrowser();
+ 		// this.gBrowser.addEventListener("load", function(e)   { dump("gBrowser.LOADED"); }, false);
+ 		// window.top.addEventListener("load", function(e)   { dump("window.top.LOADED"); }, false);
  		
- 		// dump('\n[UI] this.component.visitor.init()');
+ 		//dump('\n[UI] this.gBrowser: '+this.gBrowser);
 
      	if (!this.prefs.getBoolPref("firstrundone")) {
      		
@@ -43,6 +51,8 @@ AdNauseum.UI = {
   		}
   		
      	this.refresh();
+     	
+     	//this.viewSnaps();
 	},
 	
 	///////////////////////////////////////////////////////////////	
@@ -139,7 +149,7 @@ AdNauseum.UI = {
 	viewLog : function(e)
 	{
 		var file = this.getProfDir();
-		file.append('adnauseum.log');
+		file.append(this.logfile);
 		this.openInReusableTab("adn-log", file.path);
 		e && (e.stopPropagation());
 	}, 
@@ -150,19 +160,19 @@ AdNauseum.UI = {
 		
 		dump('\n[UI] Logs cleared');
 
-		this.closeTab(/adnauseum\.log$/);
+		this.closeTab(/adnauseum\.log$/); // use 'this.logfile' instead
 		this.viewLog();
 		
 		var file = this.getProfDir();
-		file.append('adsnaps');
+		file.append(this.snapdir);
 		file.exists() && (file.remove(true));
 		
-		dump('\n[UI] Captures cleared');
+		this.component.log('History [logs/captures] cleared');
 	},
 	
 	closeTab : function(urlRegex) {
 		
-		dump('\n[UI] closeTab('+urlRegex+');');
+		//dump('\n[UI] closeTab('+urlRegex+');');
 
 		var gBrowser =this.getBrowser(), tabs = gBrowser.tabs;
 		for (var i = 0; i < tabs.length; i++)
@@ -203,19 +213,18 @@ AdNauseum.UI = {
 
 		return null;
 	},
+	
+	
 
 	openInReusableTab : function(attrName, url) {
 
-		dump('\n[UI] openInReusableTab('+url+');');
-
+		//dump('\n[UI] openInReusableTab('+url+');');
 
 		var tab = this.findTab(attrName, true);
 		
-		dump('\n[UI] tab='+tab);
-		
 		if (!tab) {
 			
-			dump('\n[UI] Creating new tab');
+			dump('\n[UI] New tab: '+url);
 			
 			var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
 			
@@ -233,67 +242,161 @@ AdNauseum.UI = {
 			// Focus *this* browser window in case another one is currently focused
 			tabbrowser.ownerDocument.defaultView.focus();
 		}
-	},
-
-	openInTab : function(url)
-	{
-		var tb = this.getBrowser();
-		var newTab = tB.selectedTab = tB.addTab(url);
-		return newTab;
+		
+		return tab;
 	},
 	
 	viewSnaps : function(e)
-	{
-		var gallery = "chrome://adnauseum/content/display/index.html";
-		
+	{		
 		var file = this.getProfDir();
-		file.append('adsnaps');
+		file.append(this.snapdir);
+		if (!file.exists()) {
+			dump("\n[UI] file.create("+file.path+")");
+			file.create(file.DIRECTORY_TYPE, 0775);
+		}
+		//file.QueryInterface(Ci.nsILocalFile);
 		
-		if (0) {
-			var children = file.directoryEntries;
-			var child, leaf, list = [];
-			while (children.hasMoreElements()) {
-			  child = children.getNext().QueryInterface(Ci.nsILocalFile);
-			  leaf = child.leafName// + (child.isDirectory() ? ' [DIR]' : ''));
-			  if (leaf && /\.png$/.test(leaf))
-			  	list.push(child.leafName);
-			}
+		//dump("\n[UI] viewSnaps("+file.path+")");
+		
+		var children = null;
+		try {
+			children = file.directoryEntries;
+		}
+		catch(e) {
+			dump("\nERROR: "+e)
 		}
 		
+		//dump("\n[UI] viewSnaps2("+children+")");
+		
+		var child, leaf;
+		
+		while (children.hasMoreElements()) {
+		  
+		  child = children.getNext().QueryInterface(Ci.nsILocalFile);
+		  
+		  leaf = child.leafName;// + (child.isDirectory() ? ' [DIR]' : ''));
+		  
+		  if (leaf && /\.png$/.test(leaf))
+		  	this.captures.push(child.path);
+		}
+	
 		// TODO: write out the divs to 'gallery' (after open or before?)
 		
-		var tab = this.openInTab(gallery); // label
+		// HERE: Need to get the document for this page...
+		
+		//dump("\n[UI] openInTab("+this.captures+")");
+
+		var tab = this.openInReusableTab("adn-gallery", this.gallery); // label
+		//var newTabBrowser = this.gBrowser.getBrowserForTab(tab);
+		//dump("\n[UI] viewSnaps4("+newTabBrowser.tagName+")");
 		
 		
-		e && (e.stopPropagation());
+		
+/*		dump("\n[UI] openInTab("+tab+")");
+		tab.addEventListener("load", function(e)   { 
+			var doc = e.originalTarget;
+			dump("\ntab.LOADED: "+doc.tagName);
+		});
+*/
+		
+				// var dc = div.childNodes;
+// 			
+			// dump("\n[UI] Children: " + dc.length);
+			// for (var i = 0, j = dc.length; i < j; i++) {
+				// dump("\n"+i+": "+dc[i]);
+				// //dump("\n id="+dc[i].getAttribute("id"));
+// 
+				// //var html = dc[i].innerHTML;
+				// //dump("\n  "+html+" id="+dc[i].getAttribute("id"));
+				// if (0 && !/rednoise.org/.test(html)) {
+					// dump("\n[UI] REMOVE: " + html);
+					// div.removeChild(dc[i]);
+				// }
+			// };
+// 		
+		//dump("\n[UI] viewSnaps3("+tab.tagName+")");//+		this.getChromeWindow());
+		//dump("\n[UI] viewSnaps3("+tab.linkedPanel+")");//+		this.getChromeWindow());
+
+		// tab.addEventListener("load", function(e)   { 
+			// var doc = e.originalTarget;
+			// dump("\ntab.LOADED: "+doc.tagName);
+			// //dump("\ntab.LOADED: "+doc.tagName);
+			// //var doc = e.originalTarget, path = doc.location.href;// win = doc.defaultView, 
+			// //dump("\ntab.LOADED: "+path);
+			// //dump("\ntab.ele: "+doc.getElementById("adn-container"));
+// 			
+		 // }, false);
+		 
+	
+		//var newTabBrowser = this.gBrowser.getBrowserForTab(tab);
+		//dump("\n[UI] viewSnaps4("+newTabBrowser.tagName+")");
+		
+		// newTabBrowser.addEventListener("load", function() {
+			// var doc = e.originalTarget;
+			// dump("\ntab.LOADED: "+doc.tagName);
+			// //newTabBrowser.contentDocument.body.innerHTML = "<div>hello world</div>";
+		// }, true); 
+// 		
+		// newTabBrowser.addEventListener("DOMContentLoaded", function() {
+			// var doc = e.originalTarget;
+			// dump("\ntab.DOMContentLoaded: "+doc.tagName);
+			// //newTabBrowser.contentDocument.body.innerHTML = "<div>hello world</div>";
+		// }, true); 
+
+		//var doc = tab.contentDocument;
+		
+		//dump("\n[UI] viewSnaps4("+doc+")");
+		
+		//dump("\n[UI] viewSnaps5"+doc.getElementById("adn-container"));
+		
+		
+		//e && (e.stopPropagation());
 	},
 	
-	viewSnapsOld : function()
+	openInTab : function(url)
 	{
-		var file = this.getProfDir();
-		file.append('adsnaps');
+		var tb = this.getBrowser();
+		var newTab = tB.addTab(url);
+		tB.selectedTab = newTab;
+		return newTab;
+	},
+	
+	// getDOMWindow : function() {
+// 
+		// var chromeWindow = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                         // .getInterface(Ci.nsIDOMWindow);
+//                          
+		// dump("\nchromeWindow: "+chromeWindow);
+// 		
+		// chromeWindow.addEventListener("load", function(e)   { alert("LOADED"); }, false);
+// 
+		// return chromeWindow;
+	// },
+// 	
+	getChromeWindow : function() {
+
+		var chromeWindow = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                         .getInterface(Ci.nsIWebNavigation)
+                         .QueryInterface(Ci.nsIDocShellTreeItem)
+                         .rootTreeItem
+                         .QueryInterface(Ci.nsIInterfaceRequestor)
+                         .getInterface(Ci.nsIDOMWindow);
+                         
+		dump("\nchromeWindow: "+chromeWindow);
 		
-		var children = file.directoryEntries;
-		var child, leaf, list = [];
-		while (children.hasMoreElements()) {
-		  child = children.getNext().QueryInterface(Ci.nsILocalFile);
-		  leaf = child.leafName// + (child.isDirectory() ? ' [DIR]' : ''));
-		  if (leaf && /\.png$/.test(leaf))
-		  	list.push(child.leafName);
-		}
-		
-		alert(list.join('\n'));
-		//this.openInTab(file.path);
-		//file.reveal();
-	}, 
+		chromeWindow.addEventListener("load", function(e)   { alert("chromeWindow.LOADED"); }, false);
+
+		return chromeWindow;
+	},
 
 	getProfDir : function() {
 		
 		return Cc["@mozilla.org/file/directory_service;1"].getService
 			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 	},
-
-	getBrowser : function(url) {
+	
+	
+	getBrowser : function() {
 
 		return (top && top.document) ? top.document.getElementById('content') : 0;
 	},
@@ -331,10 +434,111 @@ AdNauseum.UI = {
 	        if (toolbarId == "addon-bar")
 	            toolbar.collapsed = false;
 	    }
+	},
+
+	DOMload : function(event) {
+		return;
+		dump("\n[UI] DOMload: " + event.originalTarget);
+		if (event.originalTarget instanceof HTMLDocument) {
+
+			var doc = event.originalTarget;
+			var url = doc.location.href;
+
+			dump("\n[UI] Url: " + url);
+
+			if (url !== AdNauseum.UI.gallery)
+				return;
+			
+			var div = doc.getElementById("adn-container");
+			var dc = div.children;
+			
+			dump("\n[UI] Children: " + dc.length);
+			for (var i = 0, j = dc.length; i < j; i++) {
+				dump("\n"+i+": "+dc[i]);
+				dump("\n id="+dc[i].getAttribute("id"));
+			}
+		}
+	},
+	
+	loadComplete : function(event) {
+
+		//dump("\n[UI] loadComplete: " + event.originalTarget);
+
+		if (event.originalTarget instanceof HTMLDocument) {
+
+			var doc = event.originalTarget;
+			var url = doc.location.href;
+
+			//dump("\n[UI] Url: " + url);
+
+			if (url !== AdNauseum.UI.gallery) return;
+
+			var div = doc.getElementById("adn-container");
+			
+			if (0) {
+				var dc = div.children;
+				
+				dump("\n[UI] Children: " + dc.length);
+				for (var i = 0, j = dc.length; i < j; i++) {
+					dump("\n"+i+": "+dc[i]);
+					dump("\n id="+dc[i].getAttribute("id"));
+	
+					//var html = dc[i].innerHTML;
+					//dump("\n  "+html+" id="+dc[i].getAttribute("id"));
+					if (0 && !/rednoise.org/.test(html)) {
+						dump("\n[UI] REMOVE: " + html);
+						div.removeChild(dc[i]);
+					}
+				}
+			}
+
+			var caps = AdNauseum.UI.captures;
+			//dump("\n[UI] GALLERY-CAPS: " + caps);
+
+			//var img = "http://rednoise.org/adnauseum/images/adnauseum5_128.png";
+			// var pdiv = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
+			// pdiv.setAttribute("class", "photo");
+			// var img = doc.createElementNS("http://www.w3.org/1999/xhtml", "img");
+			// img.setAttribute("src", img);
+			// pdiv.appendChild(img);
+			// div.appendChild(pdiv);
+	
+			for (var i = 0, j = caps.length; i < j; i++) {
+			
+				var pdiv = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
+				pdiv.setAttribute("class", "photo");
+				var img = doc.createElementNS("http://www.w3.org/1999/xhtml", "img");
+				img.setAttribute("src", "file://"+caps[i]);
+				pdiv.appendChild(img);
+				div.appendChild(pdiv);
+			}
+			
+			//dump("\n[UI] GALLERY-DONE");
+
+			return;
+
+			var win = event.originalTarget.defaultView;
+			if (win.frameElement) {
+				// Frame within a tab was loaded. win should be the top window of
+				// the frameset. If you don't want do anything when frames/iframes
+				// are loaded in this web page, uncomment the following line:
+				// return;
+				// Find the root document:
+				win = win.top;
+				dump("\n[UI] win=" + win);
+			}
+		}
 	}
+
 };
 
-window.addEventListener("load", function(e)   { AdNauseum.UI.init() }, false);
-window.addEventListener("unload", function(e) { AdNauseum.UI.shutdown(); }, false);
-
+window.addEventListener("load", function(e)   {
+	//gBrowser.addEventListener("DOMContentLoaded", AdNauseum.UI.DOMload, true); 
+	gBrowser.addEventListener("load", AdNauseum.UI.loadComplete, true); 
+	AdNauseum.UI.init(); }, false);
 	
+window.addEventListener("unload", function(e) { 
+	gBrowser.removeEventListener("load", AdNauseum.UI.loadComplete, true); 
+	//gBrowser.removeEventListener("DOMContentLoaded", AdNauseum.UI.DOMload, true); 
+	AdNauseum.UI.shutdown(); }, false);
+

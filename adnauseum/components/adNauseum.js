@@ -1,6 +1,6 @@
 //"use strict";
 
-dump("\n[AN] Loading adNauseum.js (3)");
+dump("\n[AN] Loading adNauseum.js (1)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -70,32 +70,47 @@ let AdVisitor =
 		this.dumpQ(this.tosnap, "toCapture");
 		this.dumpQ(this.snapped, "Captured");
         
-		if (0) this.snapDir(false); // delete snapdir ?
-
+		if (0) { // delete snap dir?
+			var file = Cc["@mozilla.org/file/directory_service;1"].getService
+				(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+			// TODO: use preference here??
+			file.append("adsnaps");
+			if (file.exists) {
+				try {
+					file.remove(true);
+					this.log("Removed: "+file.path);
+				}
+				catch(e) {
+					this.warn("Removing: "+file.path+"\n"+e);
+				}
+			}	
+		}
+		
 		this.log("Shutdown complete.\n");
 		        
         if (this.ostream) this.ostream.close();	
     },
     
-    snapDir : function(val) { // create if true, else delete recursively
+    getCaptureDir : function() { 
     	
-		var file = Cc["@mozilla.org/file/directory_service;1"].getService
-			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
+    	var file = null;
+		try {
+
+			file = Cc["@mozilla.org/file/directory_service;1"].getService
+				(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 			
-		file.append(this.snapdir);
-		
-		if (val && !file.exists())
-			file.create(file.DIRECTORY_TYPE, 0775);
-  				
-		else if (!val && file.exists()) {
+			// TODO: use preference here??
 			
-			try {
-				file.remove(true);
-				this.log("Removed: "+file.path);
+			file.append("adsnaps");
+			
+			if (!file.exists()) {
+
+				file.create(file.DIRECTORY_TYPE, 0775);
 			}
-			catch(e) {
-				this.warn(this.snapdir+" not removed!\n"+e);
-			}
+		}	
+		catch(e) {
+
+			this.warn(this.snapdir + " not removed!\n" + e);
 		}
 
 		return file;
@@ -177,11 +192,7 @@ let AdVisitor =
 	        	
 	        }, true);
 	        
-			iframe.onload = function(e){
-			 
-				AdVisitor.loadComplete(e);
-			};
-			
+			iframe.onload = function(e){ AdVisitor.loadComplete(e); };
 	        iframe.addEventListener('load', iframe.onload, true);	
 	    }
 
@@ -284,7 +295,7 @@ let AdVisitor =
 			
 		// Ignore XUL (?) 
 		if (/.xul/.test(path)) {
-			//this.log("IGNORE :: "+path);
+			this.log("IGNORE :: "+path);
 			doc.location.href = '';
 			return;
 		}
@@ -306,7 +317,7 @@ let AdVisitor =
 		this.log("Visited :: "+path);
 
         if (this.snapped.indexOf(path) < 0) {
-        	tosnap.length>0 && this.warn("snapQ=fuct!");
+        	this.tosnap.length>0 && this.warn("snapQ=fuct!");
         	this.log("QueueSnap (tosnap.length="+(this.tosnap.length+1)+") :: "+path);
         	this.tosnap.push(path);
         }
@@ -350,6 +361,7 @@ let AdVisitor =
 	    	}
 		}
 		else {
+			
 			this.log("Snapshot exists: "+path+" queue="+this.queue.length);
 		}
 	
@@ -400,7 +412,7 @@ let AdVisitor =
 
     	var file, fileName = 'Adn'+'_'+(new Date()).toISOString().replace(/:/g,'-')+'.png'
     	
-		file = this.snapDir(true);
+		file = this.getCaptureDir();
   		file.append(fileName);
 
 	    return file ? this.saveFile(file, data) : null;
@@ -1111,7 +1123,12 @@ AdNauseumComponent.prototype = {
         return placeholder;
     },
     
-    getPref: function(PrefName) {
+    getGBrowser : function() {
+
+    	return this.visitor.mainWindow.gBrowser;
+    },
+    
+    getPref : function(PrefName) {
 
 		var Type = prefs.getPrefType(PrefName);
 		if (Type == prefs.PREF_BOOL)

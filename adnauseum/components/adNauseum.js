@@ -621,7 +621,7 @@ let AdVisitor =
    	
 	resetLog : function() { 
 		
-		this.log("Log(Reset) :: " + this.logFile.path);
+		this.log("Log(clear) :: " + this.logFile.path);
 
 		if (this.logFile && this.logFile.exists()) {
 

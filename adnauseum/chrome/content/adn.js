@@ -31,6 +31,7 @@ AdNauseum.UI = {
  		
  		this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
  		this.component.visitor.init();
+ 		
  		// dump('\n[UI] this.component.visitor.init()');
 
      	if (!this.prefs.getBoolPref("firstrundone")) {
@@ -125,13 +126,13 @@ AdNauseum.UI = {
 
 	viewHome : function(e)
 	{
-		this.openInTab(this.website);
+		this.openInReusableTab("adn-home",this.website);
 		e && (e.stopPropagation());
 	},
 	 
 	viewHelp : function(e)
 	{
-		this.openInTab(this.website+'/help.html');
+		this.openInReusableTab("adn-help", this.website+'/help.html');
 		e && (e.stopPropagation());
 	}, 
 	
@@ -139,23 +140,106 @@ AdNauseum.UI = {
 	{
 		var file = this.getProfDir();
 		file.append('adnauseum.log');
-		this.openInTab(file.path);
+		this.openInReusableTab("adn-log", file.path);
 		e && (e.stopPropagation());
-		
 	}, 
 	
 	clearHistory : function(e)
 	{
 		this.component.clearLog();
 		
-		dump('\n[UI] Log cleared');
+		dump('\n[UI] Logs cleared');
 
-		// TODO: refresh tab if open!!
+		this.closeTab(/adnauseum\.log$/);
+		this.viewLog();
 		
 		var file = this.getProfDir();
 		file.append('adsnaps');
 		file.exists() && (file.remove(true));
-		dump('\n[UI] Captured cleared: '+file);
+		
+		dump('\n[UI] Captures cleared');
+	},
+	
+	closeTab : function(urlRegex) {
+		
+		dump('\n[UI] closeTab('+urlRegex+');');
+
+		var gBrowser =this.getBrowser(), tabs = gBrowser.tabs;
+		for (var i = 0; i < tabs.length; i++)
+		{
+		  var tab = tabs[i];
+		  var browser = gBrowser.getBrowserForTab(tab);
+		  if (browser.currentURI && urlRegex.test(browser.currentURI.spec))
+		    gBrowser.removeTab(tab);
+		}
+	},
+	
+	
+	findTab : function(attrName, focus) {
+
+		var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+
+		for (var found = false, index = 0, tabbrowser = wm.getEnumerator('navigator:browser')
+			.getNext().gBrowser; index < tabbrowser.tabContainer.childNodes.length && !found; index++) 
+		{
+			// Get the next tab
+			var currentTab = tabbrowser.tabContainer.childNodes[index];
+
+			// Does this tab contain our custom attribute?
+			if (currentTab && currentTab.hasAttribute(attrName)) {
+
+				if (focus) {
+
+					// Yes--select and focus it.
+					tabbrowser.selectedTab = currentTab;
+
+					// Focus *this* browser window in case another one has focus
+					tabbrowser.ownerDocument.defaultView.focus();
+				}
+
+				return currentTab;
+			}
+		}
+
+		return null;
+	},
+
+	openInReusableTab : function(attrName, url) {
+
+		dump('\n[UI] openInReusableTab('+url+');');
+
+
+		var tab = this.findTab(attrName, true);
+		
+		dump('\n[UI] tab='+tab);
+		
+		if (!tab) {
+			
+			dump('\n[UI] Creating new tab');
+			
+			var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
+			
+			// Our tab isn't open. Open it now.
+			var browserEnumerator = wm.getEnumerator("navigator:browser");
+			var tabbrowser = browserEnumerator.getNext().gBrowser;
+	
+			// Create tab
+			tab = tabbrowser.addTab(url);
+			tab.setAttribute(attrName, true);
+	
+			// Focus tab
+			tabbrowser.selectedTab = tab;
+	
+			// Focus *this* browser window in case another one is currently focused
+			tabbrowser.ownerDocument.defaultView.focus();
+		}
+	},
+
+	openInTab : function(url)
+	{
+		var tb = this.getBrowser();
+		var newTab = tB.selectedTab = tB.addTab(url);
+		return newTab;
 	},
 	
 	viewSnaps : function(e)
@@ -178,7 +262,9 @@ AdNauseum.UI = {
 		
 		// TODO: write out the divs to 'gallery' (after open or before?)
 		
-		this.openInTab(gallery); // label
+		var tab = this.openInTab(gallery); // label
+		
+		
 		e && (e.stopPropagation());
 	},
 	
@@ -206,17 +292,12 @@ AdNauseum.UI = {
 		return Cc["@mozilla.org/file/directory_service;1"].getService
 			(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 	},
-	
-	openInTab : function(url)
-	{
-		var tB = (top && top.document) ? top.document.getElementById('content') : 0;
-		if (!tB) {
-			dump('Error: No tBrowser!!');
-			return;
-		}
-		tB.selectedTab = tB.addTab(url);
+
+	getBrowser : function(url) {
+
+		return (top && top.document) ? top.document.getElementById('content') : 0;
 	},
-	
+
 	/*toggleEnabled : function() {
 		
 		// untested

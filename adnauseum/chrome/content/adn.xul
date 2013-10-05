@@ -25,17 +25,15 @@
 					
 				<menuitem label="Highlight Ads" id="adnauseum-highlightads-checkbox" class="menuitem-iconic" type="checkbox" 
 	            	oncommand="AdNauseum.UI.onCheckChange(event);"  />
-	            	
-	            	
 					
 		    	<menuitem label="View Captures" id="adnauseum-viewSnaps-menu" class="menuitem-iconic"
 					oncommand="AdNauseum.UI.viewSnaps(event);" />				
-							
-	    		<menuitem label="View Log" id="adnauseum-viewLog-menu" class="menuitem-iconic"
-	            	oncommand="AdNauseum.UI.viewLog(event);"  />
-	            	
+	
 				<menuitem label="Clear History" id="adnauseum-clearHistory-menu" class="menuitem-iconic"
 	            	oncommand="AdNauseum.UI.clearHistory(event);"  />
+	            	
+				<menuitem label="View Log" id="adnauseum-viewLog-menu" class="menuitem-iconic"
+	            	oncommand="AdNauseum.UI.viewLog(event);"  />
 	
 				<menuitem label="Help/FAQ" id="adnauseum-viewHelp-menu" class="menuitem-iconic"
 					oncommand="AdNauseum.UI.viewHelp(event);" />

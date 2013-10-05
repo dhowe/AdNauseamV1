@@ -3,9 +3,7 @@
 TODO 
 *********************************************************
    
-    -- ClearHistory
-	
-	-- MENU: noLogs, persistLogs, clearLogs, clearSnaps, clearHistory?  :: tooltips***
+	-- MENU: noLogs, persistLogs, clearHistory?  :: tooltips***
 	
 	-- PREFS: 
 		capturedir (default=null),

@@ -67,10 +67,11 @@ let AdVisitor =
                 
 		//this.dumpQ(this.history, "History");
 		this.dumpQ(this.visited, "Visited");
-		this.dumpQ(this.tosnap, "toCapture");
+		//this.dumpQ(this.tosnap, "toCapture");
 		this.dumpQ(this.snapped, "Captured");
         
-		if (0) { // delete snap dir?
+		if (1) { // delete snap dir?
+			
 			var file = Cc["@mozilla.org/file/directory_service;1"].getService
 				(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 			// TODO: use preference here??
@@ -117,7 +118,7 @@ let AdVisitor =
     },
 	
     add : function(url) {
-				
+    	
 		if (!this.initd) this.init();
 
 		if (this.visited.indexOf(url) >= 0) {
@@ -142,18 +143,16 @@ let AdVisitor =
 			
 			var theNext = this.queue.pop();
 			
-			this.log("Next :: "+theNext);
+			this.log();
+			this.log("Ad-Click! :: "+theNext);
 
 			this.fetchInHidden(theNext);
         }
-        else if (this.tosnap.length) {
-        	
-        }
         else {
         	this.busy = false;
-        	this.log("Queue-empty :: visited=" + this.visited.length+"  captured="
-        		+ this.snapped.length + " tosnap=" + this.tosnap.length 
+        	this.log("Queue-empty :: #visited=" + this.visited.length+"  #captured="+ this.snapped.length
         		+ " elapsed="+((this.ms() - this.activity)/1000)+"s\n");
+        		// + " tosnap=" + this.tosnap.length 
         }
     },
     
@@ -219,7 +218,8 @@ let AdVisitor =
 	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel), 
 	    	url = httpChannel.URI.spec, origUrl = httpChannel.originalURI.spec;
 
-    	(origUrl !== url) && (this.log("Redirect :: "+origUrl+"\n               => "+url));
+    	(origUrl !== url) && (this.log("Redirect :: "
+    		+origUrl+"\n               => "+url+" #waiting="+this.queue.length));
 	    
 	    var win = this.windowForRequest(subject); 
     	
@@ -233,13 +233,19 @@ let AdVisitor =
     		
     		if (kind === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
 					    	
+				if (this.snapped.indexOf(url) > -1) {
+					this.log("Cancelled(exists) :: "+url);
+					return this.cancelRequest(subject);
+				}
+	    	
 				if (/(itunes\.apple|appstore)\.com/i.test(url))  {
-	    			this.log("CANCEL (itunes) :: "+url);
-					this.cancelRequest(subject);
-	    			return;
+	    			this.log("Cancelled(itunes) :: "+url);
+					return this.cancelRequest(subject);
 	    		}
+	    		
+	    		// WE LET THESE GO
 	    			
-	    		if (!this.isResource(url))  {
+	    		if (0 && !this.isResource(url))  {
 	    			
 	    			this.log("Preload :: " +url);
 	    			
@@ -316,11 +322,12 @@ let AdVisitor =
 
 		this.log("Visited :: "+path);
 
-        if (this.snapped.indexOf(path) < 0) {
+        /*if (this.snapped.indexOf(path) < 0) {
         	this.tosnap.length>0 && this.warn("snapQ=fuct!");
         	this.log("QueueSnap (tosnap.length="+(this.tosnap.length+1)+") :: "+path);
         	this.tosnap.push(path);
-        }
+        }*/
+       //this.nextSnap = path;
     },
 
     loadComplete : function(e) {
@@ -331,25 +338,23 @@ let AdVisitor =
 
 		this.log("Complete :: "+path);
 
-		var idx = this.tosnap.indexOf(path);
-		
-        if (idx > -1) {  
-        	
-        	this.log("Snapshot :: "+path);
-
-        	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
-    			.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
-    			.chromeEventHandler, cwin = cHandler.contentWindow;
-    			
-    		if (cHandler && // this.is(cHandler, 'iframe') && 
-    			cHandler.getAttribute("id") === 'adn-iframe') 
-    		{
+       	if (this.snapped.indexOf(path) < 0) {
+    	
+	    	this.log("Captured :: "+path+ " #waiting="+this.queue.length);
+	
+	    	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
+				.getInterface(Ci.nsIWebNavigation).QueryInterface(Ci.nsIDocShell)
+				.chromeEventHandler, cwin = cHandler.contentWindow;
+				
+			if (cHandler && // this.is(cHandler, 'iframe') && 
+				cHandler.getAttribute("id") === 'adn-iframe') 
+			{
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
 						this.log("  to "+file.path);
 						
 						// move from tosnap to snapped
-						this.tosnap.splice(idx, 1);
+						//this.tosnap.splice(idx, 1);
 						this.snapped.push(path);
 					}
 					else {
@@ -410,7 +415,7 @@ let AdVisitor =
     	    	
 		//this.log("saveToDisk("+window+", data);");
 
-    	var file, fileName = 'Adn'+'_'+(new Date()).toISOString().replace(/:/g,'-')+'.png'
+    	var file, fileName = 'adn'+'_'+(new Date()).toISOString().replace(/:/g,'-')+'.png'
     	
 		file = this.getCaptureDir();
   		file.append(fileName);
@@ -570,11 +575,11 @@ let AdVisitor =
 		
 		var now = this.ms();
 
-		if ((now - this.activity) > (this.checkMs*3)) {
+		if ((now - this.activity) > (this.checkMs*2)) {
 			
 			if (this.queue.length) { // only log if we have a queue
 				
-				this.log("Checking: "+this.ms()+" queue="
+				this.log("Status :: #captures="+this.snapped.length+" #waiting="
 					+this.queue.length+" elapsed="+((now - this.activity)/1000)+"s");
 			}
 			this.next();
@@ -692,6 +697,12 @@ let AdVisitor =
 		
 		if (dumpit != -1) {
 			
+			if (!msg || !msg.length) {
+				msg = "\r\n";
+				this.ostream.write(msg, msg.length);
+				return;
+			}
+			
 			var d = new Date(), ms = d.getMilliseconds()+'', now = d.toLocaleTimeString();
 		    ms =  (ms.length < 3) ? ("000"+ms).slice(-3) : ms;
 	 
@@ -732,9 +743,7 @@ AdNauseumComponent.prototype = {
     _xpcom_categories : [ { category : "profile-after-change" } ],
 
     init : function() {
-    	
-		//dump("\nAdNauseumComponent.init")
-    	    	        
+      
         let result = {};
         result.wrappedJSObject = result;
         Services.obs.notifyObservers(result, "adblockplus-require", 'contentPolicy');
@@ -762,7 +771,6 @@ AdNauseumComponent.prototype = {
 		this.visitor.log("State: enabled=" + this.getPref("extensions.adnauseum.enabled")
 			+ ", highlights=" + this.getPref("extensions.adnauseum.highlightads")
 			+ ", capturing=" + this.getPref("extensions.adnauseum.savecaptures"));
-		//dump("\nAdNauseumComponent.initd")
         
         return true;
     },
@@ -811,14 +819,17 @@ AdNauseumComponent.prototype = {
 		this.visitor.resetLog();
    	},
 
-    processNodeABP : function(wnd, node, contentType, location, collapse) {
+	processNodeABP : function(wnd, node, contentType, location, collapse) {
 
-    	    // return this.getPref("extensions.adnauseum.enabled") ?
+		// NOTE: this will be run in context of AdBlockPlus
+		var adn = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+    		
+	    var enabled = adn.getPref("extensions.adnauseum.enabled"); 
+	   	if (!enabled) return true;
 
-    		return Cc['@rednoise.org/adnauseum;1'].getService() // NOTE: this will be run in context of AdBlockPlus
-        		.wrappedJSObject.processNodeADN(wnd, node, contentType, location, collapse) ;
+		return adn.processNodeADN(wnd, node, contentType, location, collapse) ;
         		  
-    		// : this.policy.oldprocessNode(wnd, node, contentType, location, collapse); 
+    	// : this.policy.oldprocessNode(wnd, node, contentType, location, collapse); 
     },
     
     processNodeADN : function(wnd, node, contentType, location, collapse) {
@@ -1156,31 +1167,31 @@ AdNauseumComponent.prototype = {
 
     createConteneur : function(OldElt, wnd, l, L) {
 
+		//dump("\ncreateConteneur: "+OldElt);
+            
         // This replaces Ad element to element with art
         var newElt = null, ele = OldElt.wrappedJSObject;
         
-        //if (!ele) dump("\n\n[ERROR] Null ELE: "+OldElt);
+        if (!ele) dump("\n\n[ERROR] Null ELE: "+OldElt);
 
         var isA = ele.tagName == 'A';
         
         if (isA) {
+        	
             var toClick = ele.getAttribute("href");
             
             this.visitor.add(toClick); // follow redirects DCH: **********
             
             ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
-            ele.style.outline = '#D824B7 double medium';
-            //this.visitor.dumpElement(ele);
-            // ele.ownerDocument -> document
+            ele.style.outline = '#D824B7 none medium'
+            if (this.getPref("extensions.adnauseum.highlightads"))
+            	ele.style.outline = '#D824B7 double medium';
         }
         
         //else dump("\n[AV] Ignoring: "+ele.tagName);
 
-
-        return null; // skip this if hiding ads with add-art
+        return null; // Comment skip this if hiding ads with add-art
         
-        
-
         if (this.checkDanger(OldElt)) return null;
         
         newElt = OldElt.ownerDocument.createElement("div"); 

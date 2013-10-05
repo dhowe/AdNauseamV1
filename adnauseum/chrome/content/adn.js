@@ -67,6 +67,9 @@ AdNauseum.UI = {
 	enabled : function(v) {
 		if (arguments.length) {
 			this.prefs.setBoolPref("enabled",v);
+			
+			// TODO: need to notify component here!!!! (maybe for all prefs? actually should be an observer)
+			
 			return this;	
 		}
 		return this.prefs.getBoolPref("enabled");	
@@ -265,9 +268,7 @@ AdNauseum.UI = {
 		catch(e) {
 			dump("\nERROR: "+e)
 		}
-		
-		//dump("\n[UI] viewSnaps2("+children+")");
-		
+				
 		var child, leaf;
 		
 		while (children.hasMoreElements()) {
@@ -279,78 +280,10 @@ AdNauseum.UI = {
 		  if (leaf && /\.png$/.test(leaf))
 		  	this.captures.push(child.path);
 		}
-	
-		// TODO: write out the divs to 'gallery' (after open or before?)
-		
-		// HERE: Need to get the document for this page...
-		
-		//dump("\n[UI] openInTab("+this.captures+")");
 
 		var tab = this.openInReusableTab("adn-gallery", this.gallery); // label
 		//var newTabBrowser = this.gBrowser.getBrowserForTab(tab);
 		//dump("\n[UI] viewSnaps4("+newTabBrowser.tagName+")");
-		
-		
-		
-/*		dump("\n[UI] openInTab("+tab+")");
-		tab.addEventListener("load", function(e)   { 
-			var doc = e.originalTarget;
-			dump("\ntab.LOADED: "+doc.tagName);
-		});
-*/
-		
-				// var dc = div.childNodes;
-// 			
-			// dump("\n[UI] Children: " + dc.length);
-			// for (var i = 0, j = dc.length; i < j; i++) {
-				// dump("\n"+i+": "+dc[i]);
-				// //dump("\n id="+dc[i].getAttribute("id"));
-// 
-				// //var html = dc[i].innerHTML;
-				// //dump("\n  "+html+" id="+dc[i].getAttribute("id"));
-				// if (0 && !/rednoise.org/.test(html)) {
-					// dump("\n[UI] REMOVE: " + html);
-					// div.removeChild(dc[i]);
-				// }
-			// };
-// 		
-		//dump("\n[UI] viewSnaps3("+tab.tagName+")");//+		this.getChromeWindow());
-		//dump("\n[UI] viewSnaps3("+tab.linkedPanel+")");//+		this.getChromeWindow());
-
-		// tab.addEventListener("load", function(e)   { 
-			// var doc = e.originalTarget;
-			// dump("\ntab.LOADED: "+doc.tagName);
-			// //dump("\ntab.LOADED: "+doc.tagName);
-			// //var doc = e.originalTarget, path = doc.location.href;// win = doc.defaultView, 
-			// //dump("\ntab.LOADED: "+path);
-			// //dump("\ntab.ele: "+doc.getElementById("adn-container"));
-// 			
-		 // }, false);
-		 
-	
-		//var newTabBrowser = this.gBrowser.getBrowserForTab(tab);
-		//dump("\n[UI] viewSnaps4("+newTabBrowser.tagName+")");
-		
-		// newTabBrowser.addEventListener("load", function() {
-			// var doc = e.originalTarget;
-			// dump("\ntab.LOADED: "+doc.tagName);
-			// //newTabBrowser.contentDocument.body.innerHTML = "<div>hello world</div>";
-		// }, true); 
-// 		
-		// newTabBrowser.addEventListener("DOMContentLoaded", function() {
-			// var doc = e.originalTarget;
-			// dump("\ntab.DOMContentLoaded: "+doc.tagName);
-			// //newTabBrowser.contentDocument.body.innerHTML = "<div>hello world</div>";
-		// }, true); 
-
-		//var doc = tab.contentDocument;
-		
-		//dump("\n[UI] viewSnaps4("+doc+")");
-		
-		//dump("\n[UI] viewSnaps5"+doc.getElementById("adn-container"));
-		
-		
-		//e && (e.stopPropagation());
 	},
 	
 	openInTab : function(url)
@@ -361,18 +294,6 @@ AdNauseum.UI = {
 		return newTab;
 	},
 	
-	// getDOMWindow : function() {
-// 
-		// var chromeWindow = window.QueryInterface(Ci.nsIInterfaceRequestor)
-                         // .getInterface(Ci.nsIDOMWindow);
-//                          
-		// dump("\nchromeWindow: "+chromeWindow);
-// 		
-		// chromeWindow.addEventListener("load", function(e)   { alert("LOADED"); }, false);
-// 
-		// return chromeWindow;
-	// },
-// 	
 	getChromeWindow : function() {
 
 		var chromeWindow = window.QueryInterface(Ci.nsIInterfaceRequestor)
@@ -474,35 +395,8 @@ AdNauseum.UI = {
 			if (url !== AdNauseum.UI.gallery) return;
 
 			var div = doc.getElementById("adn-container");
-			
-			if (0) {
-				var dc = div.children;
-				
-				dump("\n[UI] Children: " + dc.length);
-				for (var i = 0, j = dc.length; i < j; i++) {
-					dump("\n"+i+": "+dc[i]);
-					dump("\n id="+dc[i].getAttribute("id"));
-	
-					//var html = dc[i].innerHTML;
-					//dump("\n  "+html+" id="+dc[i].getAttribute("id"));
-					if (0 && !/rednoise.org/.test(html)) {
-						dump("\n[UI] REMOVE: " + html);
-						div.removeChild(dc[i]);
-					}
-				}
-			}
 
 			var caps = AdNauseum.UI.captures;
-			//dump("\n[UI] GALLERY-CAPS: " + caps);
-
-			//var img = "http://rednoise.org/adnauseum/images/adnauseum5_128.png";
-			// var pdiv = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
-			// pdiv.setAttribute("class", "photo");
-			// var img = doc.createElementNS("http://www.w3.org/1999/xhtml", "img");
-			// img.setAttribute("src", img);
-			// pdiv.appendChild(img);
-			// div.appendChild(pdiv);
-	
 			for (var i = 0, j = caps.length; i < j; i++) {
 			
 				var pdiv = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
@@ -517,16 +411,6 @@ AdNauseum.UI = {
 
 			return;
 
-			var win = event.originalTarget.defaultView;
-			if (win.frameElement) {
-				// Frame within a tab was loaded. win should be the top window of
-				// the frameset. If you don't want do anything when frames/iframes
-				// are loaded in this web page, uncomment the following line:
-				// return;
-				// Find the root document:
-				win = win.top;
-				dump("\n[UI] win=" + win);
-			}
 		}
 	}
 

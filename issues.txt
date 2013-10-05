@@ -3,6 +3,12 @@
 TODO 
 *********************************************************
    
+    -- Disable
+    
+    -- Ignore snaps older than some time
+    
+   =====
+   
 	-- MENU: noLogs, persistLogs, clearHistory?  :: tooltips***
 	
 	-- PREFS: 
@@ -10,9 +16,9 @@ TODO
 		logmode(def:no-persist),
 		flashui:true, flashcaptures
 		stripheaders:1,   
-	
-	-- toSnap-queue is upgfuct, are valid ads getting overwritten ?!?
-        
+		
+	-- Refersh page after Disable outline
+	    
 	-- Dynamic divs for gallery-view
 
     -- Add localization labels

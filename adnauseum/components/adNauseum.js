@@ -142,7 +142,6 @@ let AdVisitor =
         }
     },
     
-    
     fetchInTab : function(url) { // not used
 
     	var AdVisitor = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);

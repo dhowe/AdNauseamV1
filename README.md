@@ -1,5 +1,5 @@
 
-## AdNauseam: a lightweight browser extension that helps protect users against surveillance and data-profiling by online advertisers and ad networks
+### AdNauseam: a lightweight browser extension that helps protect users against surveillance and data-profiling by online advertisers and ad networks
 
 
 <a href="http://rednoise.org/adnauseam/js"><img height=120 src="http://rednoise.org/adnauseam/files/images/adnauseam5_128.png"/></a>
@@ -10,7 +10,7 @@
 
 About the project
 --------
-* Original Author:   Daniel C. Howe (http://rednoise.org/~dhowe)
+* Authors:   Daniel C. Howe (http://rednoise.org/~dhowe) & Helen Nissenbaum
 * License: 			 GPL (see included LICENSE file for full license)
 * Maintainers:       See included AUTHORS file for contributor list
 * Web Site:          http://rednoise.org/adnauseam/js

@@ -1,0 +1,334 @@
+/* QUERIES FOR IPAD/TABLETPC  PORTRAIT AND LANDSSCAPE */
+@media only screen and (max-width: 1100px), only screen and (min-device-width: 768px) and (max-device-width: 1100px) {
+
+
+/* Forms
+---------------------------------------- */
+input[type=text], input[type=password] { width: 177px; }		
+textarea { width: 277px; }		/* padding issue (320 + 2*5 = 330) */
+
+/*---------------------------------------------- 
+General ID's or Classes
+------------------------------------------------*/
+.wrapper { width: 640px; }
+.wrapperoverlay {width: 640px; }
+#sidebar { width: 180px; }
+#maincontent { width: 420px; }
+
+
+/*---------------------------------------------- 
+Slider
+------------------------------------------------*/
+#home .slidermain {	width: 700px; }
+
+
+/*---------------------------------------------- 
+Footer
+------------------------------------------------*/
+footer .footer_bottom {	width: 700px; }
+
+
+/*---------------------------------------------- 
+Portfolio
+------------------------------------------------*/
+.columns4 .portfolio-entry { width: 200px; }
+.columns3 .portfolio-entry { width: 200px; }
+.columns2 .portfolio-entry { width: 310px; }
+
+
+/*---------------------------------------------- 
+Animation Section
+------------------------------------------------*/	
+#pageloader { width: 640px;	}
+
+
+/*---------------------------------------------- 
+Map
+------------------------------------------------*/
+#map {	width: 700px;	height: 250px;	}
+	
+
+/*---------------------------------------------- 
+Pagination
+------------------------------------------------*/
+#pagination { width: 300px;	}
+
+/*---------------------------------------------- 
+Entries
+------------------------------------------------*/
+#home .one_third .entry-info {	width: 155px; }
+#home .one_fourth .entry-info {	width: 105px; }
+
+#blog .entry { background: transparent url(../images/seperator.png) no-repeat 260px 0px; }
+#blog .entry-content {width: 300px;}
+	
+/*---------------------------------------------- 
+Comments
+------------------------------------------------*/
+#comments  { background: transparent url(../images/seperator.png) no-repeat 260px 0px; }
+#comments .comment-list  { width: 300px; }
+#comments .comment .comment { margin-left: 30px; }
+
+/*---------------------------------------------- 
+Leave Comments
+------------------------------------------------*/
+#leavecomment { background: transparent url(../images/seperator.png) no-repeat 260px 0px; }
+#leavecomment .leavecomment-form { width: 300px; }
+	
+/*---------------------------------------------- 
+Columns
+------------------------------------------------*/
+.one_full { width: 100%; }
+.one_half  { width: 310px; }
+.one_third { width: 200px; }
+.two_third { width: 420px; }
+.one_fourth { width: 145px; }
+.two_fourth { width: 310px; }
+.three_fourth { width: 475px; }
+
+.last {	margin-right: 0px; }
+
+#maincontent .one_half  { width: 285px; }
+#maincontent .one_third { width: 180px; }
+#maincontent .two_third { width: 390px; }
+
+/*---------------------------------------------- 
+FLICKR WIDGET
+------------------------------------------------*/
+#flickr-widget .flickr-list li { width: 79px !important; }
+footer #flickr-widget .flickr-list li { width: 89px !important; }
+
+/*---------------------------------------------- 
+Pricing Table
+------------------------------------------------*/	
+.col3 .price-col { width: 199px; }
+.col3 .recommended { width: 239px; }
+.col4 .price-col { width: 154px; }
+.col4 .recommended { width: 174px; }
+
+
+/*---------------------------------------------- 
+Flex Slider
+------------------------------------------------*/	
+#main .flex-direction-nav li a { width: 20px; height: 20px; top: 10px; }
+#main .flex-direction-nav li .next {left: 35px;}
+#main .flex-direction-nav li .prev {left: 10px;}
+
+
+/*---------------------------------------------- 
+jPlayer
+------------------------------------------------*/	
+div.jp-audio div.jp-type-single div.jp-progress-container {	width:160px;}
+.one_third div.jp-audio div.jp-type-single div.jp-progress-container { width:60px; }
+.one_fourth div.jp-audio div.jp-type-single div.jp-progress-container {	width:5px; }
+
+
+}
+
+
+/* QUERIES FOR IHONE/SMARTPHONES */
+@media only screen and (max-width: 767px), only screen and (max-device-width: 480px), only screen and (max-width: 767px) {
+
+
+/* Forms
+---------------------------------------- */
+input[type=text], input[type=password] { width: 217px; }		
+textarea { width: 217px;  }		
+
+/*---------------------------------------------- 
+General ID's or Classes
+------------------------------------------------*/
+.wrapper { width: 240px; padding: 40px 20px 0px 20px; }
+.wrapperoverlay {width: 240px; padding: 20px 20px;}
+#sidebar { width: 240px; }
+#maincontent { width: 240px; }
+
+
+/*---------------------------------------------- 
+Top
+------------------------------------------------*/
+#top .showhidetop { right: 30px; }
+
+/*---------------------------------------------- 
+Logo
+------------------------------------------------*/
+#logo	     	{ float: none; width: 100%; text-align:center; margin-bottom: 40px; }
+#logo a	     	{ display: inline-block; }
+
+
+/*---------------------------------------------- 
+Nav
+------------------------------------------------*/
+nav     		{ float: none !important; }
+nav ul     		{ display: none; }
+nav select 		{ display: inline-block; }
+
+
+/*---------------------------------------------- 
+PageTitle
+------------------------------------------------*/
+#pagetitle .tagline { width: 100%; display: inline-block; margin-left: 0px;}
+
+
+/*---------------------------------------------- 
+Slider
+------------------------------------------------*/
+#home .slidermain 				{ width: 280px; }
+
+
+/*---------------------------------------------- 
+Footer
+------------------------------------------------*/
+footer 							{ margin-bottom: 40px; }
+footer .footer_bottom 			{ width: 280px; }
+footer .footer_bottom div		{ float: none; margin-bottom: 5px; }
+
+
+/*---------------------------------------------- 
+Portfolio
+------------------------------------------------*/
+.columns4 .portfolio-entry { width: 240px; }
+.columns3 .portfolio-entry { width: 240px; }
+.columns2 .portfolio-entry { width: 240px; }
+
+/*---------------------------------------------- 
+Animation Section
+------------------------------------------------*/	
+#pageloader { padding: 30px 20px; width: 240px;	}
+
+/*---------------------------------------------- 
+Map
+------------------------------------------------*/
+#map {	width: 280px;	height: 200px;	}
+	
+
+/*---------------------------------------------- 
+Pagination
+------------------------------------------------*/
+#pagination { width: 240px;	}
+
+/*---------------------------------------------- 
+Entries
+------------------------------------------------*/
+#home .one_third .entry-info {	width: 195px; }
+#home .one_fourth .entry-info {	width: 195px; }
+
+#blog .entry { background-position: center top; }
+#blog .entry-content {width: 240px;}
+#blog .entry-meta {	width: 100%; text-align: left; }
+
+/*---------------------------------------------- 
+Meta Datas
+------------------------------------------------*/
+.entry-meta {
+	text-align: center !important;
+	margin-bottom: 15px;
+	}
+	
+.entry-meta div {
+	display: inline-block;
+	margin: 0 5px;
+	}
+	
+.meta_type {
+	width: 100%;
+	margin: 0 0 10px 0!important;
+	}
+	
+.meta_date {
+	width: 100%;
+	margin: 0 !important;
+	}
+	
+.meta_tags {
+	display: none !important;
+	}
+	
+.meta_readmore {
+	display: none !important;
+	}
+	
+/*---------------------------------------------- 
+Comments
+------------------------------------------------*/
+#comments  { background-position: center top; padding-top: 30px; }
+#comments .comment-list  { width: 240px; }
+#comments .comment .comment { margin-left: 30px; }
+#commenticon {	width: 100%; text-align: center; margin-bottom: 30px; }
+
+/*---------------------------------------------- 
+Leave Comments
+------------------------------------------------*/
+#leavecomment { background-position: center top; padding-top: 30px; }
+#leavecomment .leavecomment-form { width: 240px; }
+#leavecommenticon {	width: 100%; text-align: center; margin-bottom: 30px; }
+	
+/*---------------------------------------------- 
+Columns
+------------------------------------------------*/
+.one_full { width: 100%; }
+.one_half  { width: 240px; }
+.one_third { width: 240px; }
+.two_third { width: 240px; }
+.one_fourth { width: 245px; }
+.two_fourth { width: 240px; }
+.three_fourth { width: 240px; }
+
+.last {	margin-right: 0px; }
+
+#maincontent .one_half  { width: 240px; }
+#maincontent .one_third { width: 240px; }
+#maincontent .two_third { width: 240px; }
+
+
+/*---------------------------------------------- 
+Pricing Table
+------------------------------------------------*/
+.price-col { margin: 30px 0 0 0; }
+div .price-col:first-child { margin: 0; }
+.col3 .price-col { width: 240px; }
+.col3 .recommended { width: 240px; }
+.col4 .price-col { width: 240px; }
+.col4 .recommended { width: 240px; }
+
+
+/*---------------------------------------------- 
+17. Widgets
+------------------------------------------------*/
+#top .widget { line-height: 20px; }
+
+
+/*	Twitter Widget
+------------------------------------------------*/
+#bottom #twitter-widget, #top #twitter-widget {	background: url(../images/tweet.png) no-repeat 0px 0px;	}
+	
+
+/*---------------------------------------------- 
+FLICKR WIDGET
+------------------------------------------------*/
+#flickr-widget .flickr-list li { width: 67px !important; }
+footer #flickr-widget .flickr-list li { width: 67px !important; }
+
+/*---------------------------------------------- 
+Animation Section
+------------------------------------------------*/	
+#pageloader #sidebar { padding-top: 20px; }
+#loader .wrapper { padding: 0 20px; }
+
+
+/*---------------------------------------------- 
+Flex Slider
+------------------------------------------------*/	
+.flex-caption { display: none; }
+.flex-direction-nav li a { width: 20px; height: 20px; top: 10px; }
+.flex-direction-nav li .next {left: 35px;}
+.flex-direction-nav li .prev {left: 10px;}
+
+/*---------------------------------------------- 
+jPlayer
+------------------------------------------------*/	
+div.jp-audio div.jp-type-single div.jp-progress-container {	width:100px;}
+.one_third div.jp-audio div.jp-type-single div.jp-progress-container { width:100px; }
+.one_fourth div.jp-audio div.jp-type-single div.jp-progress-container {	width:100px; }
+
+}

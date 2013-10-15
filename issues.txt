@@ -3,31 +3,14 @@
 TODO 
 *********************************************************
    
-    -- Disable
-    
-    -- Ignore snaps older than some time
-    
-   =====
-   
-	-- MENU: noLogs, persistLogs, clearHistory?  :: tooltips***
+	-- MENU: tooltips***
 	
-	-- PREFS: 
-		capturedir (default=null),
+	-- new PREFS: 
 		logmode(def:no-persist),
 		flashui:true, flashcaptures
 		stripheaders:1,   
 		
-	-- Refersh page after Disable outline
-	    
-	-- Dynamic divs for gallery-view
-
-    -- Add localization labels
-    
-    -- Strip cookies/headers from all adn requests ? (might this break everything?)
-    
-    -- Cleanout adsnaps images on startup/shutdown, also logs (add persist pref) ??
-    
-    *******************
+	-- Refresh page after Disable outline  ??
     
     -- Check for no-user activity (using nsiObserver) 
 
@@ -36,15 +19,10 @@ TODO
 ISSUES 
 *********************************************************
 
-  -- Don't snap same domain that user has visited  HOW??? ***
-    
-  -- Howe to avoid dups images in snapdir
-  
-  -- Don't write hiddenWindow stuff to history
   
 *********************************************************
 BUGS
 *********************************************************
 
-	-- Video playing problem!!
+	-- Video playing problem!! iTunes launch problem
   

@@ -2,28 +2,28 @@
 
 # duplicate the working directory
 echo "Duplicating..."
-cp -r adnauseum adnauseum_renamed
-cd adnauseum
+cp -r adnauseam adnauseam_renamed
+cd adnauseam
 
 # package things up
 echo "Zipping..."
 
 #cd chrome
-#rm -f adnauseum.jar
-#zip -rq adnauseum.jar content skin locale
-#jar tf adnauseum.jar
+#rm -f adnauseam.jar
+#zip -rq adnauseam.jar content skin locale
+#jar tf adnauseam.jar
 #rm -rf content skin locale
 #cd ..
 
-rm -f ../adnauseum-only.xpi
-zip -rq ../adnauseum-only.xpi . 
+rm -f ../adnauseam-only.xpi
+zip -rq ../adnauseam-only.xpi . 
 
 # revert & back out
 echo "Cleaning..."
 cd ..
-rm -rf adnauseum
-mv adnauseum_renamed adnauseum
+rm -rf adnauseam
+mv adnauseam_renamed adnauseam
 
-zip -q adnauseum.xpi *.xpi install.rdf 
+zip -q adnauseam.xpi *.xpi install.rdf 
 
 exit 0

@@ -1,0 +1,50 @@
+<!ENTITY adnauseam.about "About...">
+<!ENTITY adnauseam.about.key "A">
+<!ENTITY adnauseam.about.title "About User Agent Switcher">
+<!ENTITY adnauseam.app.code.name "App Code Name:">
+<!ENTITY adnauseam.app.name "App Name:">
+<!ENTITY adnauseam.app.version "App Version:">
+<!ENTITY adnauseam.author "Author">
+<!ENTITY adnauseam.build.date "Build Date">
+<!ENTITY adnauseam.copy "Copy">
+<!ENTITY adnauseam.cut "Cut">
+<!ENTITY adnauseam.default.user.agent "Default User Agent">
+<!ENTITY adnauseam.default.user.agent.key "D">
+<!ENTITY adnauseam.delete "Delete...">
+<!ENTITY adnauseam.description "Description:">
+<!ENTITY adnauseam.download.user.agents "Download lists of user agents to import...">
+<!ENTITY adnauseam.edit "Edit...">
+<!ENTITY adnauseam.edit.user.agents "Edit User Agents...">
+<!ENTITY adnauseam.edit.user.agents.key "E">
+<!ENTITY adnauseam.export "Export...">
+<!ENTITY adnauseam.general "General">
+<!ENTITY adnauseam.help "Help...">
+<!ENTITY adnauseam.help.key "H">
+<!ENTITY adnauseam.home.page "Home Page">
+<!ENTITY adnauseam.import "Import...">
+<!ENTITY adnauseam.import.export "Import/Export">
+<!ENTITY adnauseam.import.overwrite "Overwrite existing user agents when importing">
+<!ENTITY adnauseam.menu.hide "Hide the User Agent Switcher Tools menu">
+<!ENTITY adnauseam.move.down "Move Down">
+<!ENTITY adnauseam.move.up "Move Up">
+<!ENTITY adnauseam.name "User Agent Switcher">
+<!ENTITY adnauseam.name.key "U">
+<!ENTITY adnauseam.name.label "Name:">
+<!ENTITY adnauseam.new "New">
+<!ENTITY adnauseam.new.folder "New Folder...">
+<!ENTITY adnauseam.new.separator "New Separator">
+<!ENTITY adnauseam.new.user.agent "New User Agent...">
+<!ENTITY adnauseam.new.user.agent.description "The default user agent values are displayed below. Add a description and edit any of the values to create a new user agent.">
+<!ENTITY adnauseam.options "Options...">
+<!ENTITY adnauseam.options.key "O">
+<!ENTITY adnauseam.options.title "User Agent Switcher Options">
+<!ENTITY adnauseam.paste "Paste">
+<!ENTITY adnauseam.platform "Platform:">
+<!ENTITY adnauseam.reset.options "Reset Options...">
+<!ENTITY adnauseam.title "Ad Nauseam">
+<!ENTITY adnauseam.test.key "T">
+<!ENTITY adnauseam.user.agent "User Agent">
+<!ENTITY adnauseam.user.agent.label "User Agent:">
+<!ENTITY adnauseam.user.agents "User Agents">
+<!ENTITY adnauseam.vendor "Vendor:">
+<!ENTITY adnauseam.vendor.sub "Vendor Sub:">

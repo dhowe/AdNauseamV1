@@ -1,0 +1,10 @@
+
+  
+  
+#adnauseam-button {
+  list-style-image: url("chrome://adnauseam/skin/adn.png"); 
+}
+
+toolbar[iconsize="small"] #adnauseam-button {
+  list-style-image: url("chrome://adnauseam/skin/adn.png"); 
+}

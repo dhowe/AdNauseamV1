@@ -1,0 +1,16 @@
+
+############################################################
+
+content adnauseam chrome/content/
+overlay chrome://browser/content/browser.xul chrome://adnauseam/content/adn.xul
+style chrome://global/content/customizeToolbar.xul chrome://adnauseam/skin/adn.css
+skin adnauseam classic/1.0 chrome/skin/
+locale adnauseam en-US chrome/locale/en-US/
+
+
+component {741b4765-dbc0-c44e-9682-a3182f8fa1cc} components/adNauseam.js
+contract @rednoise.org/adnauseam;1 {741b4765-dbc0-c44e-9682-a3182f8fa1cc}
+category 	profile-after-change 	AdNauseamComponent		@rednoise.org/adnauseam;1
+
+
+############################################################

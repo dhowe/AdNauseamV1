@@ -8,7 +8,7 @@
                    em:maxVersion="24.*" />
   <RDF:Description RDF:about="urn:mozilla:install-manifest"
                    em:id="development@rednoise.org"
-                   em:name="AdNauseum-Package"
+                   em:name="AdNauseam-Package"
 				   em:version="1.001"
 				   em:type="32" >
 		<em:targetApplication RDF:resource="rdf:#$hFzg+"/>

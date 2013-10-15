@@ -1,23 +1,23 @@
 
-// AdNauseum Namespace         
+// AdNauseam Namespace         
 
-if ("undefined" == typeof (AdNauseum)) {
+if ("undefined" == typeof (AdNauseam)) {
 	
 	if ( typeof dump === 'function')
 		dump('\n[UI] Initializing Namespace');
 		
-	var AdNauseum = {}; 
+	var AdNauseam = {}; 
 };
 
-AdNauseum.UI = {
+AdNauseam.UI = {
 	
 	prefs : null,
 	initd : false,
 	snapdir : 'adsnaps',
-	logfile : 'adnauseum.log',
-	skin : 'chrome://adnauseum/skin',
-    website : 'http://rednoise.org/adnauseum', // label
-    gallery : "chrome://adnauseum/content/display/index.html",
+	logfile : 'adnauseam.log',
+	skin : 'chrome://adnauseam/skin',
+    website : 'http://rednoise.org/adnauseam', // label
+    gallery : "chrome://adnauseam/content/display/index.html",
     captures : [],
 
     
@@ -25,16 +25,25 @@ AdNauseum.UI = {
 		
 		if (this.initd) return; 
 		
-		dump('\n[UI] AdNauseum.UI.init');
+		dump('\n[UI] AdNauseam.UI.init (6)');
 
 		 // Register to receive notifications of preference changes
      
      	this.prefs = Cc["@mozilla.org/preferences-service;1"]
-        	.getService(Ci.nsIPrefService).getBranch("extensions.adnauseum.");
+        	.getService(Ci.nsIPrefService).getBranch("extensions.adnauseam.");
  		this.prefs.QueryInterface(Ci.nsIPrefBranch2);
  		this.prefs.addObserver("", this, false);
+		
+		try {
+			dump('\n[UI] precomp...');
+ 			var adncomp = Cc['@rednoise.org/adnauseam;1'].getService();
+ 			dump('\n[UI] adncomp: '+adncomp);
+ 		}
+ 		catch(e) {
+ 			dump(e);
+ 		}
  		
- 		this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+ 		this.component = adncomp.wrappedJSObject;
  		this.component.visitor.init();
  		this.gBrowser = this.component.getGBrowser();
  		// this.gBrowser.addEventListener("load", function(e)   { dump("gBrowser.LOADED"); }, false);
@@ -46,8 +55,8 @@ AdNauseum.UI = {
      		
 			dump('\n[UI] FirstRun: Installing menu-button');
     		this.prefs.setBoolPref("firstrundone", true);
-		    this.installButton("nav-bar", "adnauseum-button");	
-		    this.installButton("addon-bar", "adnauseum-button");
+		    this.installButton("nav-bar", "adnauseam-button");	
+		    this.installButton("addon-bar", "adnauseam-button");
   		}
   		
      	this.refresh();
@@ -95,26 +104,26 @@ AdNauseum.UI = {
 
 		var e = this.enabled(), c = this.capturing(), h = this.highlighting();
 		
-		document.getElementById("adnauseum-enabled-checkbox").setAttribute("checked", e);
+		document.getElementById("adnauseam-enabled-checkbox").setAttribute("checked", e);
 			
-		document.getElementById("adnauseum-savecaptures-checkbox").setAttribute("checked", c);
+		document.getElementById("adnauseam-savecaptures-checkbox").setAttribute("checked", c);
 			
-		document.getElementById("adnauseum-highlightads-checkbox").setAttribute("checked", h);
+		document.getElementById("adnauseam-highlightads-checkbox").setAttribute("checked", h);
 			
-		document.getElementById("adnauseum-button").style.listStyleImage = 
+		document.getElementById("adnauseam-button").style.listStyleImage = 
 				'url('+this.skin+(e ? "/adn.png" : "/adng.png");  // dont touch
 	},
 	
 	onCheckChange : function(e) // new checkboxes go here
 	{
 		this.capturing(document.getElementById
-			("adnauseum-savecaptures-checkbox").hasAttribute("checked"));
+			("adnauseam-savecaptures-checkbox").hasAttribute("checked"));
 			
 		this.enabled(document.getElementById
-			("adnauseum-enabled-checkbox").hasAttribute("checked"));	
+			("adnauseam-enabled-checkbox").hasAttribute("checked"));	
 			
 		this.highlighting(document.getElementById
-			("adnauseum-highlightads-checkbox").hasAttribute("checked"));
+			("adnauseam-highlightads-checkbox").hasAttribute("checked"));
 			
 		e && (e.stopPropagation());		
 	}, 
@@ -123,7 +132,7 @@ AdNauseum.UI = {
 	
 	shutdown : function() {
 		
-		dump('\n[UI] AdNauseum.UI.shutdown()');
+		dump('\n[UI] AdNauseam.UI.shutdown()');
 	},
 	
 	observe: function(subject, topic, data) {
@@ -163,7 +172,7 @@ AdNauseum.UI = {
 		
 		dump('\n[UI] Logs cleared');
 
-		this.closeTab(/adnauseum\.log$/); // use 'this.logfile' instead
+		this.closeTab(/adnauseam\.log$/); // use 'this.logfile' instead
 		this.viewLog();
 		
 		var file = this.getProfDir();
@@ -329,7 +338,7 @@ AdNauseum.UI = {
 		//this.prefs.setBoolPref("enabled",!this.prefs.getBoolPref("enabled",v));
 		 
 		// OR
-		var cb = document.getElementById("adnauseum-enabled-checkbox");
+		var cb = document.getElementById("adnauseam-enabled-checkbox");
 		cb.setAttribute("checked", !cb.hasAttribute("checked"));
 		this.onCheckChange();
 	},*/
@@ -367,7 +376,7 @@ AdNauseum.UI = {
 
 			dump("\n[UI] Url: " + url);
 
-			if (url !== AdNauseum.UI.gallery)
+			if (url !== AdNauseam.UI.gallery)
 				return;
 			
 			var div = doc.getElementById("adn-container");
@@ -392,11 +401,11 @@ AdNauseum.UI = {
 
 			//dump("\n[UI] Url: " + url);
 
-			if (url !== AdNauseum.UI.gallery) return;
+			if (url !== AdNauseam.UI.gallery) return;
 
 			var div = doc.getElementById("adn-container");
 
-			var caps = AdNauseum.UI.captures;
+			var caps = AdNauseam.UI.captures;
 			for (var i = 0, j = caps.length; i < j; i++) {
 			
 				var pdiv = doc.createElementNS("http://www.w3.org/1999/xhtml", "div");
@@ -417,12 +426,14 @@ AdNauseum.UI = {
 };
 
 window.addEventListener("load", function(e)   {
-	//gBrowser.addEventListener("DOMContentLoaded", AdNauseum.UI.DOMload, true); 
-	gBrowser.addEventListener("load", AdNauseum.UI.loadComplete, true); 
-	AdNauseum.UI.init(); }, false);
+	//gBrowser.addEventListener("DOMContentLoaded", AdNauseam.UI.DOMload, true); 
+	gBrowser.addEventListener("load", AdNauseam.UI.loadComplete, true); 
+	AdNauseam.UI.init(); 
+}, false);
 	
 window.addEventListener("unload", function(e) { 
-	gBrowser.removeEventListener("load", AdNauseum.UI.loadComplete, true); 
-	//gBrowser.removeEventListener("DOMContentLoaded", AdNauseum.UI.DOMload, true); 
-	AdNauseum.UI.shutdown(); }, false);
+	gBrowser.removeEventListener("load", AdNauseam.UI.loadComplete, true); 
+	//gBrowser.removeEventListener("DOMContentLoaded", AdNauseam.UI.DOMload, true); 
+	AdNauseam.UI.shutdown();
+ }, false);
 

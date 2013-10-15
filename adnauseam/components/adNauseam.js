@@ -1,6 +1,6 @@
 //"use strict";
 
-dump("\n[AN] Loading adNauseum.js (1)");
+dump("\n[AN] Loading adNauseam.js (4)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -13,11 +13,10 @@ Components.utils.import("resource://gre/modules/AddonManager.jsm");
 
 const DEBUG = false;
 
-
 AddonManager.addAddonListener({
 	onUninstalling : function(addon) {
 		dump("\n [AN] Uninstalling!");
-		Services.prefs.setBoolPref("extensions.adnauseum.firstrundone", false);
+		Services.prefs.setBoolPref("extensions.adnauseam.firstrundone", false);
 	}
 });
 
@@ -36,6 +35,7 @@ let AdVisitor =
 	logFile : null,
 	ostream : null,
 	activity : +new Date(),
+	logFileName : "adnauseam.log",
     
 	init: function() {
 		
@@ -49,12 +49,12 @@ let AdVisitor =
 			this.mainWindow = Cc['@mozilla.org/appshell/window-mediator;1']
 				.getService(Ci.nsIWindowMediator).getMostRecentWindow('navigator:browser');
 				
-			this.component = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+			this.component = Cc['@rednoise.org/adnauseam;1'].getService().wrappedJSObject;
 			
 			this.intervalId = this.mainWindow.setInterval // start checker
 				(function(v) { v.checker(); }, this.checkMs, this); 
 				
-			this.log("AdVisitor.Enabled: "+this.getPref("extensions.adnauseum.enabled"));
+			this.log("AdVisitor.Enabled: "+this.getPref("extensions.adnauseam.enabled"));
 			
 			this.initd = true;
 		}
@@ -78,8 +78,9 @@ let AdVisitor =
 			file.append("adsnaps");
 			if (file.exists) {
 				try {
+					var fpath = file.path;
 					file.remove(true);
-					this.log("Removed: "+file.path);
+					this.log("Removed: "+fpath);
 				}
 				catch(e) {
 					this.warn("Removing: "+file.path+"\n"+e);
@@ -663,7 +664,7 @@ let AdVisitor =
 			this.logFile = Cc["@mozilla.org/file/directory_service;1"]
 				.getService(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 				
-			this.logFile.append("adnauseum.log");
+			this.logFile.append(this.logFileName);
 
 			if (!this.logFile.exists()) {
 
@@ -724,18 +725,18 @@ let AdVisitor =
 
 
 // class constructor
-function AdNauseumComponent() {
+function AdNauseamComponent() {
 	
     this.wrappedJSObject = this;
 }
 
 // class definition
-AdNauseumComponent.prototype = {
+AdNauseamComponent.prototype = {
 	
     // properties required for XPCOM registration: 
     classID : Components.ID("{741b4765-dbc0-c44e-9682-a3182f8fa1cc}"),
-    contractID : "@rednoise.org/adnauseum;1",
-    classDescription : "AdNauseum Core Component",
+    contractID : "@rednoise.org/adnauseam;1",
+    classDescription : "AdNauseam Core Component",
 
     QueryInterface : XPCOMUtils.generateQI([ Ci.nsIObserver ]), 
 
@@ -768,9 +769,9 @@ AdNauseumComponent.prototype = {
         
         this.visitor = AdVisitor;
         
-		this.visitor.log("State: enabled=" + this.getPref("extensions.adnauseum.enabled")
-			+ ", highlights=" + this.getPref("extensions.adnauseum.highlightads")
-			+ ", capturing=" + this.getPref("extensions.adnauseum.savecaptures"));
+		this.visitor.log("State: enabled=" + this.getPref("extensions.adnauseam.enabled")
+			+ ", highlights=" + this.getPref("extensions.adnauseam.highlightads")
+			+ ", capturing=" + this.getPref("extensions.adnauseam.savecaptures"));
         
         return true;
     },
@@ -800,7 +801,7 @@ AdNauseumComponent.prototype = {
 
 	            this.visitor.shutdown();
 	            
-	            dump("\n[AN] AdNauseumComponent.shutdown()");
+	            dump("\n[AN] AdNauseamComponent.shutdown()");
 	            
 	            break;
 	            
@@ -822,9 +823,9 @@ AdNauseumComponent.prototype = {
 	processNodeABP : function(wnd, node, contentType, location, collapse) {
 
 		// NOTE: this will be run in context of AdBlockPlus
-		var adn = Cc['@rednoise.org/adnauseum;1'].getService().wrappedJSObject;
+		var adn = Cc['@rednoise.org/adnauseam;1'].getService().wrappedJSObject;
     		
-	    var enabled = adn.getPref("extensions.adnauseum.enabled"); 
+	    var enabled = adn.getPref("extensions.adnauseam.enabled"); 
 	   	if (!enabled) return true;
 
 		return adn.processNodeADN(wnd, node, contentType, location, collapse) ;
@@ -1182,9 +1183,9 @@ AdNauseumComponent.prototype = {
             
             this.visitor.add(toClick); // follow redirects DCH: **********
             
-            ele.title = "Ad Nauseum: "+toClick.substring(0,40)+"...";
+            ele.title = "Ad Nauseam: "+toClick.substring(0,40)+"...";
             ele.style.outline = '#D824B7 none medium'
-            if (this.getPref("extensions.adnauseum.highlightads"))
+            if (this.getPref("extensions.adnauseam.highlightads"))
             	ele.style.outline = '#D824B7 double medium';
         }
         
@@ -1286,7 +1287,8 @@ AdNauseumComponent.prototype = {
  * SeaMonkey 2.1). XPCOMUtils.generateNSGetModule was introduced in Mozilla 1.9
  * (Firefox 3.0).
  */
-if (XPCOMUtils.generateNSGetFactory)
-    var NSGetFactory = XPCOMUtils.generateNSGetFactory( [ AdNauseumComponent ]);
-else
-    var NSGetModule = XPCOMUtils.generateNSGetModule( [ AdNauseumComponent ]);
+if (XPCOMUtils.generateNSGetFactory) {
+    var NSGetFactory = XPCOMUtils.generateNSGetFactory( [ AdNauseamComponent ]);
+} else {
+    var NSGetModule = XPCOMUtils.generateNSGetModule( [ AdNauseamComponent ]);
+}

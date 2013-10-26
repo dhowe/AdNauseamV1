@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PROFILE=AdNauseamProf
-PROFDIR=/Users/dhowe/Documents/ff-profs/thg2jar2.AdNauseamProf
+PROFDIR=~/Documents/ff-profs/thg2jar2.AdNauseamProf
 
 /bin/ps -ef | grep $PROFILE | grep -v grep | awk '{print $2}' | xargs kill -9
 

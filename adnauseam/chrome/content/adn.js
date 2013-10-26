@@ -35,21 +35,14 @@ AdNauseam.UI = {
  		this.prefs.addObserver("", this, false);
 		
 		try {
-			dump('\n[UI] precomp...');
  			var adncomp = Cc['@rednoise.org/adnauseam;1'].getService();
- 			dump('\n[UI] adncomp: '+adncomp);
+			this.component = adncomp.wrappedJSObject;
+			this.component.visitor.init();
+			this.gBrowser = this.component.getGBrowser(); 
  		}
  		catch(e) {
  			dump(e);
  		}
- 		
- 		this.component = adncomp.wrappedJSObject;
- 		this.component.visitor.init();
- 		this.gBrowser = this.component.getGBrowser();
- 		// this.gBrowser.addEventListener("load", function(e)   { dump("gBrowser.LOADED"); }, false);
- 		// window.top.addEventListener("load", function(e)   { dump("window.top.LOADED"); }, false);
- 		
- 		//dump('\n[UI] this.gBrowser: '+this.gBrowser);
 
      	if (!this.prefs.getBoolPref("firstrundone")) {
      		

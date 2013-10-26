@@ -76,14 +76,13 @@ let AdVisitor =
 				(Ci.nsIProperties).get("ProfD", Ci.nsIFile);
 			// TODO: use preference here??
 			file.append("adsnaps");
-			if (file.exists) {
+			if (file.exists()) {
 				try {
-					var fpath = file.path;
 					file.remove(true);
-					this.log("Removed: "+fpath);
+					this.log("Removed: "+file.path);
 				}
 				catch(e) {
-					this.warn("Removing: "+file.path+"\n"+e);
+					this.warn("Problem removing: "+file.path+"\n"+e);
 				}
 			}	
 		}
@@ -215,13 +214,10 @@ let AdVisitor =
     	this.activity = this.ms();
 
 		if (!this.initd) return;
-		
+
 	    var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel), 
 	    	url = httpChannel.URI.spec, origUrl = httpChannel.originalURI.spec;
 
-    	(origUrl !== url) && (this.log("Redirect :: "
-    		+origUrl+"\n               => "+url+" #waiting="+this.queue.length));
-	    
 	    var win = this.windowForRequest(subject); 
     	
     	var cHandler = win.QueryInterface(Ci.nsIInterfaceRequestor)
@@ -244,7 +240,15 @@ let AdVisitor =
 					return this.cancelRequest(subject);
 	    		}
 	    		
-	    		// WE LET THESE GO
+	    		if (/videoplayer/i.test(url))  {
+	    			this.log("Cancelled(video) :: "+url);
+					return this.cancelRequest(subject);
+	    		}
+	    		
+	    		// WE LET THESE GO  -- print for resources or no?
+	    		
+	    		(origUrl !== url) && (this.log("Redirect :: "
+    				+origUrl+"\n               => "+url+" #waiting="+this.queue.length));
 	    			
 	    		if (0 && !this.isResource(url))  {
 	    			
@@ -576,7 +580,7 @@ let AdVisitor =
 		
 		var now = this.ms();
 
-		if ((now - this.activity) > (this.checkMs*2)) {
+		if ((now - this.activity) > (this.checkMs)) {
 			
 			if (this.queue.length) { // only log if we have a queue
 				

@@ -1,6 +1,6 @@
 //"use strict";
 
-dump("\n[AN] Loading adNauseam.js (4)");
+dump("\n[AN] Loading adNauseam.js (5)");
 
 const Ci = Components.interfaces, Cc = Components.classes; // deprecated?
 const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
@@ -51,10 +51,11 @@ let AdVisitor =
 				
 			this.component = Cc['@rednoise.org/adnauseam;1'].getService().wrappedJSObject;
 			
-			this.intervalId = this.mainWindow.setInterval // start checker
-				(function(v) { v.checker(); }, this.checkMs, this); 
-				
-			this.log("AdVisitor.Enabled: "+this.getPref("extensions.adnauseam.enabled"));
+			var enabled = this.getPref("extensions.adnauseam.enabled");
+			
+			this.log("AdVisitor.Enabled: "+enabled);
+			
+			this.enableChecker(enabled);
 			
 			this.initd = true;
 		}
@@ -62,12 +63,25 @@ let AdVisitor =
 			this.err("Failed on init: "+e);
 		}
 	},
+	
+	enableChecker : function(val) {
+			
+		if (val) {
+			this.intervalId = this.mainWindow.setInterval // start checker
+				(function(v) { v.checker(); }, this.checkMs, this);
+			this.log("AdVisitor.checkerEnabled");
+		} 
+		
+		else {
+			if (this.intervalId)
+		 		this.mainWindow.clearInterval(this.intervalId); // stop checker
+		 	this.log("AdVisitor :: Disabled");
+		}
+	},
 
 	shutdown : function() {
                 
-		//this.dumpQ(this.history, "History");
 		this.dumpQ(this.visited, "Visited");
-		//this.dumpQ(this.tosnap, "toCapture");
 		this.dumpQ(this.snapped, "Captured");
         
 		if (1) { // delete snap dir?
@@ -156,20 +170,6 @@ let AdVisitor =
         }
     },
     
-    fetchInTab : function(url) { // not used
-
-    	var AdVisitor = this, gBrowser = this.mainWindow.gBrowser, tab = gBrowser.addTab(url);
-    	tab.setAttribute("NOAD", true);
-    	
-    	gBrowser.addEventListener("DOMContentLoaded", function (e) {
-			AdVisitor.afterLoad(e);
-    	});
-    	
-		gBrowser.addEventListener("load", function (e) {
-			AdVisitor.loadComplete(e);
-    	});
-    },
-    
     fetchInHidden : function(url) {	
 	
 	    var doc = this.hdomWindow.document, AdVisitor = this,
@@ -230,8 +230,8 @@ let AdVisitor =
     		
     		if (kind === 'iframe' && cHandler.getAttribute("id") === 'adn-iframe') {
 					    	
-				if (this.snapped.indexOf(url) > -1) {
-					this.log("Cancelled(exists) :: "+url);
+				if (/^(chrome|about):/.test(path)) {
+					this.log("Cancelled(chrome) :: "+url);
 					return this.cancelRequest(subject);
 				}
 	    	
@@ -240,11 +240,15 @@ let AdVisitor =
 					return this.cancelRequest(subject);
 	    		}
 	    		
-	    		if (/videoplayer/i.test(url))  {
+	    		if (/video/i.test(url))  {
 	    			this.log("Cancelled(video) :: "+url);
 					return this.cancelRequest(subject);
 	    		}
 	    		
+	    		if (this.snapped.indexOf(url) > -1) {
+					this.log("Cancelled(exists) :: "+url);
+					return this.cancelRequest(subject);
+				}
 	    		// WE LET THESE GO  -- print for resources or no?
 	    		
 	    		(origUrl !== url) && (this.log("Redirect :: "
@@ -272,6 +276,7 @@ let AdVisitor =
 			}
     	}
     	else {
+    		
     		if (!this.isResource(origUrl)) {
 	    		var msg = "BeforeLoad->No Handler :: "+origUrl;
 	    		(origUrl !== url) && (msg += "\n                    "+url);
@@ -302,8 +307,16 @@ let AdVisitor =
 		
 		var doc = e.originalTarget, win = doc.defaultView, path = doc.location.href;
 		
-		if (path+'' === 'about:blank') return;	
+		if (path+''==='about:blank') return;	
 			
+		// Ignore Chrome  (Remove: should be cancelled in beforeLoad())
+		
+		if (/^(chrome|about):/.test(path)) {
+			//this.log("IGNORE (chrome) :: "+path);
+			doc.location.href = '';
+			return;
+		}
+		
 		// Ignore XUL (?) 
 		if (/.xul/.test(path)) {
 			this.log("IGNORE :: "+path);
@@ -326,24 +339,18 @@ let AdVisitor =
 		}
 
 		this.log("Visited :: "+path);
-
-        /*if (this.snapped.indexOf(path) < 0) {
-        	this.tosnap.length>0 && this.warn("snapQ=fuct!");
-        	this.log("QueueSnap (tosnap.length="+(this.tosnap.length+1)+") :: "+path);
-        	this.tosnap.push(path);
-        }*/
-       //this.nextSnap = path;
     },
-
+	
     loadComplete : function(e) {
 	
 		this.activity = this.ms();
 		
 		var doc = e.originalTarget, win = doc.defaultView, path = doc.location.href;
 
-		this.log("Complete :: "+path);
+		//this.log("Complete("+e.type+") :: "+path);
 
-       	if (this.snapped.indexOf(path) < 0) {
+	    var enabled = adn.getPref("extensions.adnauseam.enabled"); 
+       	if (enabled && this.snapped.indexOf(path) < 0) {
     	
 	    	this.log("Captured :: "+path+ " #waiting="+this.queue.length);
 	
@@ -354,28 +361,47 @@ let AdVisitor =
 			if (cHandler && // this.is(cHandler, 'iframe') && 
 				cHandler.getAttribute("id") === 'adn-iframe') 
 			{
+				if (this.getPref("extensions.adnauseam.savecaptures")) { // check pref
+					
 					var file = this.getSnapshot(doc, cwin);
 					if (file) {
-						this.log("  to "+file.path);
 						
-						// move from tosnap to snapped
-						//this.tosnap.splice(idx, 1);
+						this.log("  to "+file.path);
 						this.snapped.push(path);
 					}
 					else {
 						this.warn("Snapshot failed: "+path);
 					}
+				}
 	    	}
 	    	else {
-				this.log("AfterFullLoad->No Handler :: "+path);
+	    		
+				this.log("loadComplete->No Handler :: "+path);
 	    	}
 		}
 		else {
+			// unload the frame as soon as possible
 			
 			this.log("Snapshot exists: "+path+" queue="+this.queue.length);
 		}
 	
-		// this.next();  TODO: ?? 
+		var iframe, doc = this.hdomWindow.document;
+		if (doc) {
+			iframe = doc.getElementById("adn-iframe");
+			
+			
+			if (0 && iframe) { // NOT WORKING
+				
+				// TODO: How to immediately unload the page here (to avoid audio/video, etc) 
+				this.log("loadComplete->Unloading :: "+path);
+				iframe.setAttribute("src", '');
+			}
+			
+		}
+		if (e) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
     },
     
    	getSnapshot : function(document, contentWindow) {
@@ -530,7 +556,9 @@ let AdVisitor =
 		return tab;
     },
     
-    isResource : function(url) { return /\.(css|jpg|png|js|gif|swf|xml|ico|json)(\?|$|#)/i.test(url); },
+    isResource : function(url) { 
+    	return /\.(css|jpg|png|js|gif|swf|xml|ico|json|mp3|mpg|ogg|wav|aiff|avi|mov|m4a)(\?|$|#)/i.test(url); 
+	},
     
     type : function(ele) {
 
@@ -579,7 +607,7 @@ let AdVisitor =
 	checker : function() {
 		
 		var now = this.ms();
-
+					   	
 		if ((now - this.activity) > (this.checkMs)) {
 			
 			if (this.queue.length) { // only log if we have a queue
@@ -661,7 +689,7 @@ let AdVisitor =
    	
     initLog : function() {
     	 
-		dump("\n[AV] Initializing Log");
+		dump("\n[AV] Initializing Log\n\n");
 
 		try {
 
@@ -773,7 +801,7 @@ AdNauseamComponent.prototype = {
         
         this.visitor = AdVisitor;
         
-		this.visitor.log("State: enabled=" + this.getPref("extensions.adnauseam.enabled")
+		this.dump("\n[AN] State: enabled=" + this.getPref("extensions.adnauseam.enabled")
 			+ ", highlights=" + this.getPref("extensions.adnauseam.highlightads")
 			+ ", capturing=" + this.getPref("extensions.adnauseam.savecaptures"));
         
@@ -785,6 +813,7 @@ AdNauseamComponent.prototype = {
     	
         var observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 
+		
         switch (aTopic) {
 	        
 	        case "profile-after-change":
@@ -816,6 +845,33 @@ AdNauseamComponent.prototype = {
 	        	this.visitor.beforeLoad(aSubject);
 	        	
 	        	break;
+	        	
+	        case "nsPref:changed":
+	        
+	        	//this.log("AdNauseamComponent.nsPref:changed -> "+aData);
+
+	        	if (aData === 'enabled') {
+	        		
+	        		var value = this.getPref("extensions.adnauseam." + aData);
+	        		this.visitor.enableChecker(value);
+	        		
+	        		if (!value) { // disabled
+	        			this.visitor.queue = [];
+	        			var doc = this.hdomWindow.document;
+	        			if (doc) {
+	        				iframe = doc.getElementById("adn-iframe");
+	        				iframe = null;
+	        			}
+	        			// unload the hidden-frame ?
+	        		}
+	        		else { // enabled	        			
+	        		}
+	        	}
+	        	
+				this.log("AdNauseamComponent.observe: " + aData + "="
+					+ this.getPref("extensions.adnauseam." + aData)); 
+				
+ 	        	break;
 		}
     },
     
@@ -826,15 +882,13 @@ AdNauseamComponent.prototype = {
 
 	processNodeABP : function(wnd, node, contentType, location, collapse) {
 
-		// NOTE: this will be run in context of AdBlockPlus
+		// NOTE: runs in context of AdBlockPlus so need to grab the component as a service
 		var adn = Cc['@rednoise.org/adnauseam;1'].getService().wrappedJSObject;
     		
 	    var enabled = adn.getPref("extensions.adnauseam.enabled"); 
 	   	if (!enabled) return true;
 
-		return adn.processNodeADN(wnd, node, contentType, location, collapse) ;
-        		  
-    	// : this.policy.oldprocessNode(wnd, node, contentType, location, collapse); 
+		return adn.processNodeADN(wnd, node, contentType, location, collapse) ;        		  
     },
     
     processNodeADN : function(wnd, node, contentType, location, collapse) {
@@ -964,9 +1018,7 @@ AdNauseamComponent.prototype = {
     },
 
     askLink : function(width, height) {
-    	
-        // Find this.ImgArray with minimal waste (or need - in this case it will be shown in full while mouse over it) of space
-        
+
         if (!this.ImgArray) this.loadImgArray();
 
         var optimalbanners = null;
@@ -1098,15 +1150,15 @@ AdNauseamComponent.prototype = {
 	
 	        if (theW == 0 || theH == 0) {  // WHAT IS THIS DOING?
 	        	
-	        	this.visitor.warn("Creating place-holder div");
+	        	this.visitor.warn('Creating place-holder div');
 	        	
-	            placeholder = ToReplace.ownerDocument.createElement("div");
-	            placeholder.setAttribute("NOAD", "true");
+	            placeholder = ToReplace.ownerDocument.createElement('div');
+	            placeholder.setAttribute('NOAD', 'true');
 	            
-	            if (ToReplace.hasAttribute("style"))
-	                placeholder.setAttribute("style", ToReplace.getAttribute("style"));
+	            if (ToReplace.hasAttribute('style'))
+	                placeholder.setAttribute('style', ToReplace.getAttribute('style'));
 	            if (placeholder.style.background)
-	                placeholder.style.background = "";
+	                placeholder.style.background = '';
 	                
 	            var Nodes = ToReplace.childNodes;
 	            for ( var i = 0; i < Nodes.length; i++) {
@@ -1114,12 +1166,12 @@ AdNauseamComponent.prototype = {
 	                    placeholder.appendChild(this.transform(Nodes[i]));
 	            }
 	            
-	            if (ToReplace.hasAttribute("id"))
-	                placeholder.setAttribute("id", ToReplace.getAttribute("id"));
-	            if (ToReplace.hasAttribute("name"))
-	                placeholder.setAttribute("name", ToReplace.getAttribute("name"));
-	            if (ToReplace.hasAttribute("class"))
-	                placeholder.setAttribute("class", ToReplace.getAttribute("class"));
+	            if (ToReplace.hasAttribute('id'))
+	                placeholder.setAttribute('id', ToReplace.getAttribute('id'));
+	            if (ToReplace.hasAttribute('name'))
+	                placeholder.setAttribute('name', ToReplace.getAttribute('name'));
+	            if (ToReplace.hasAttribute('class'))
+	                placeholder.setAttribute('class', ToReplace.getAttribute('class'));
 	            if (ToReplace.style.display == 'none')
 	                placeholder.style.display = 'none';
 	        } 
@@ -1172,8 +1224,6 @@ AdNauseamComponent.prototype = {
 
     createConteneur : function(OldElt, wnd, l, L) {
 
-		//dump("\ncreateConteneur: "+OldElt);
-            
         // This replaces Ad element to element with art
         var newElt = null, ele = OldElt.wrappedJSObject;
         
@@ -1192,98 +1242,7 @@ AdNauseamComponent.prototype = {
             if (this.getPref("extensions.adnauseam.highlightads"))
             	ele.style.outline = '#D824B7 double medium';
         }
-        
-        //else dump("\n[AV] Ignoring: "+ele.tagName);
-
-        return null; // Comment skip this if hiding ads with add-art
-        
-        if (this.checkDanger(OldElt)) return null;
-        
-        newElt = OldElt.ownerDocument.createElement("div"); 
-        
-        newElt.setAttribute("NOAD", "true");
-
-        // Copying style from old to new element and doing some replacing of it 
-        newElt.setAttribute("style", OldElt.getAttribute("style"));
-        if (OldElt.ownerDocument.defaultView && OldElt.ownerDocument.defaultView.getComputedStyle(OldElt, null)) {
-            EltStyle = OldElt.ownerDocument.defaultView.getComputedStyle(OldElt, null);
-            newElt.style.position = EltStyle.getPropertyValue('position');
-            if (EltStyle.getPropertyValue('display') == 'inline' || EltStyle.getPropertyValue('display') == 'inline-table')
-                newElt.style.display = "inline-block";
-            else
-                newElt.style.display = EltStyle.getPropertyValue('display');
-            newElt.style.visibility = EltStyle.getPropertyValue('visibility');
-            newElt.style.zIndex = EltStyle.getPropertyValue('z-index');
-            newElt.style.clip = EltStyle.getPropertyValue('clip');
-            newElt.style.float = EltStyle.getPropertyValue('float');
-            newElt.style.clear = EltStyle.getPropertyValue('clear');
-        }
-        
-
-        newElt.style.background = "";
-        if (OldElt.hasAttribute("id"))
-            newElt.setAttribute("id", OldElt.getAttribute("id"));
-        if (OldElt.hasAttribute("name"))
-            newElt.setAttribute("name", OldElt.getAttribute("name"));
-        if (OldElt.hasAttribute("class"))
-            newElt.setAttribute("class", OldElt.getAttribute("class"));
-
-        newElt.style.height = l + "px";
-        newElt.style.width = L + "px";
-        newElt.style.overflow = "hidden";
-        newElt.style.cursor = "pointer";
-        newElt.title = "Replaced by Add-Art";
-        
-        // Expanding images
-        // Setting Art to be shown in full while is over it
-        if (this.getPref("extensions.add-art.expandImages")) {
-            newElt.setAttribute("onmouseover","this.style.overflow = 'visible';this.style.zIndex= 100000;");
-            newElt.setAttribute("onmouseout","this.style.overflow = 'hidden';this.style.zIndex= 0;");
-            newElt.setAttribute("onclick","window.top.location = 'http://add-art.org/';");  
-        }
-
-        var img = OldElt.ownerDocument.createElement("img");
-        img.setAttribute("NOAD", "true");
-        img.setAttribute("border", "0");
-        var Img = this.askLink(L, l);
-        
-        // Select banner URL
-        // use the URL in a top window to generate a number b/w 1 and 8 (to maintain some persistence)
-        var win = Cc['@mozilla.org/appshell/window-mediator;1']
-        	.getService(Ci.nsIWindowMediator)
-        	.getMostRecentWindow('navigator:browser');
-        	
-        if (win != null) {
-            var el = win.document.getElementById('content');
-            if (el != null) {
-                var loc = el.mCurrentBrowser.contentWindow.location.href;
-            }
-        }
-
-        if (loc) {
-            var randomImage8 = loc.charCodeAt( loc.length - 6 ) % 8 + 1;
-        } else {
-            var randomImage8 = Math.floor(Math.random()*8);
-        }
-        
-        // pick the image
-        var filename = randomImage8+"artbanner"+Img[0]+"x"+Img[1]+".jpg";
-        var url = "chrome://addart/skin/"+filename;
-        
-        img.setAttribute("src", url);
-
-        // return newElt;
-        if (Img[1] * l / Img[2] < L) {
-            img.style.width = L + "px";
-            img.style.marginTop = parseInt((l - Img[1] * L / Img[0]) / 2) + 'px';
-        } else {
-            img.style.height = l + "px";
-            img.style.marginLeft = parseInt((L - Img[0] * l / Img[1]) / 2) + 'px';
-        }
-        newElt.appendChild(img);
-        
-        return newElt;
-    }
+	}
 };
 
 /**

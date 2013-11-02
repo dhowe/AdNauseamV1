@@ -8,6 +8,7 @@ TODO
 	-- new PREFS: 
 		logmode(def:no-persist),
 		flashui:true, flashcaptures
+		showHiddenTab / Kill Hidden Tab
 		stripheaders:1,   
 		
 	-- Refresh page after Disable outline  ??
@@ -24,5 +25,6 @@ ISSUES
 BUGS
 *********************************************************
 
-	-- Video playing problem!! iTunes launch problem
+	-- Audio/Video autostarting problem! 
+
   

@@ -66,32 +66,7 @@ AdNauseam.UI = {
 		-- and an entry in defaults.js
 	*/
 
-	enabled : function(v) {
-		if (arguments.length) {
-			this.prefs.setBoolPref("enabled",v);
-			
-			// TODO: need to notify component here!!!! (maybe for all prefs? actually should be an observer)
-			
-			return this;	
-		}
-		return this.prefs.getBoolPref("enabled");	
-	},
-	
-	capturing : function(v) {
-		if (arguments.length) {
-			this.prefs.setBoolPref("savecaptures",v);
-			return this;	
-		}
-		return this.prefs.getBoolPref("savecaptures");	
-	},
-	
-	highlighting : function(v) {
-		if (arguments.length) {
-			this.prefs.setBoolPref("highlightads",v);
-			return this;	
-		}
-		return this.prefs.getBoolPref("highlightads");	
-	},
+
 	
 	refresh : function() { 
 
@@ -122,48 +97,40 @@ AdNauseam.UI = {
 	}, 
 	
 	/////////////////////////////////////////////////////////////////////////////////
-	
-	shutdown : function() {
+
+	enabled : function(v) {
 		
-		dump('\n[UI] AdNauseam.UI.shutdown()');
+		if (arguments.length) {
+			this.prefs.setBoolPref("enabled",v);
+			return this;	
+		}
+		return this.prefs.getBoolPref("enabled");	
 	},
 	
-	observe: function(subject, topic, data) {
-
-		if (topic != "nsPref:changed") return;
-
-		dump("\n[UI] Pref-change: " + data + "="+this.prefs.getBoolPref(data));
-		
-		this.refresh();
-		
-		// this.component.observer(subject, topic, data); // ???
+	capturing : function(v) {
+		if (arguments.length) {
+			this.prefs.setBoolPref("savecaptures",v);
+			return this;	
+		}
+		return this.prefs.getBoolPref("savecaptures");	
 	},
-
-	viewHome : function(e)
-	{
-		this.openInReusableTab("adn-home",this.website);
-		e && (e.stopPropagation());
-	},
-	 
-	viewHelp : function(e)
-	{
-		this.openInReusableTab("adn-help", this.website+'/help.html');
-		e && (e.stopPropagation());
-	}, 
 	
-	viewLog : function(e)
+	highlighting : function(v) {
+		if (arguments.length) {
+			this.prefs.setBoolPref("highlightads",v);
+			return this;	
+		}
+		return this.prefs.getBoolPref("highlightads");	
+	},
+	
+	viewCaptures : function(e)
 	{
-		var file = this.getProfDir();
-		file.append(this.logfile);
-		this.openInReusableTab("adn-log", file.path);
-		e && (e.stopPropagation());
-	}, 
+		this.viewSnaps(e);
+	},
 	
 	clearHistory : function(e)
 	{
 		this.component.clearLog();
-		
-		dump('\n[UI] Logs cleared');
 
 		this.closeTab(/adnauseam\.log$/); // use 'this.logfile' instead
 		this.viewLog();
@@ -175,6 +142,48 @@ AdNauseam.UI = {
 		this.component.log('History [logs/captures] cleared');
 	},
 	
+	viewLog : function(e)
+	{
+		var file = this.getProfDir();
+		file.append(this.logfile);
+		this.openInReusableTab("adn-log", file.path);
+		e && (e.stopPropagation());
+	}, 
+	
+	viewHelp : function(e)
+	{
+		this.openInReusableTab("adn-help", this.website+'/help.html');
+		e && (e.stopPropagation());
+	}, 
+	
+	
+	viewHome : function(e)
+	{
+		this.openInReusableTab("adn-home",this.website);
+		e && (e.stopPropagation());
+	},
+
+	
+	/////////////////////////////////////////////////////////////////////////////////
+	
+	shutdown : function() {
+		
+		dump('\n[UI] AdNauseam.UI.shutdown()');
+	},
+	
+	observe: function(subject, topic, data) {
+
+		if (topic != "nsPref:changed") return;
+
+		//dump("\n[UI] Pref-change: " + data + "="+this.prefs.getBoolPref(data));
+		
+		this.component.observe(subject, topic, data);
+		
+		this.refresh();
+		
+		//dump("\n[UI] Pref-change-complete: " +this.prefs.getBoolPref(data)+"\n");
+	},
+
 	closeTab : function(urlRegex) {
 		
 		//dump('\n[UI] closeTab('+urlRegex+');');
@@ -229,7 +238,7 @@ AdNauseam.UI = {
 		
 		if (!tab) {
 			
-			dump('\n[UI] New tab: '+url);
+			//dump('\n[UI] New tab: '+url);
 			
 			var wm = Cc["@mozilla.org/appshell/window-mediator;1"].getService(Ci.nsIWindowMediator);
 			

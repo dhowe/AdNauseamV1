@@ -1,72 +1,32 @@
-var options; 
 
 $(document).ready(function(){
 
-	$("#adn-enabled").click(toggleEnabled);
-	$("#adn-menu-info").click(showAdView);
-	$("#adn-menu-help").click(showHelp);
-	$("#adn-menu-log").click(showLog);
-
+	$("#adn-enabled").click(function()   { msg("ADNToggleEnabled"); });
+	$("#adn-menu-info").click(function() { msg("ADNShowAdView"); });
+	$("#adn-menu-help").click(function() { msg("ADNShowHelp"); });
+	$("#adn-menu-log").click(function()  { msg("ADNShowLog"); });
 });
 
-function showHelp() {
-	
-	//console.log("Menu::showHelp");
-	addon.port.emit("ADNShowHelp");
-	// CHANGE TO: 
-}
+function msg(m) { addon.port.emit(m); }
 
-function showLog() {
-		
-	//var w = window.open("file://"+options.logFile);
-	//console.log("Menu::showLog"); 
-	//addon.port.emit("ADNCloseMenu");
-	// CHANGE TO: 
-	addon.port.emit("ADNShowLog");
-}
+function updateEnabled(options) {
 
-function showAdView() {
+	var enabled = options.enabled;
 	
-	//console.log("Menu::showInfo");
-	addon.port.emit("ADNShowAdView"); // move close-menu into main::showAdView() 
-//	addon.port.emit("ADNCloseMenu");
-}
+	//console.log("Menu::updateMenu(enabled="+enabled+")");
 
-function toggleEnabled() {
-	
-	// move to adnoptions.js
-	
-	//console.log("Menu::toggleOnOff");
-	
-	options.enabled = !options.enabled;
-	
-	var wrapper = { "options" : options };
-	
-	addon.port.emit("ADNSaveOptions", wrapper.options);
-	
-	updateMenu(wrapper);
-	
-	addon.port.emit("ADNCloseMenu");
-}
-
-// ====================================================================
-
-function updateMenu(json) {
-
-	options = json.options;
-	
-	//console.log("Menu::updateMenu()->enabled="+options.enabled);
-
-	if (options.enabled) {
+	if (enabled) {
 
 		$("#adn-enabled").html('disable');
-		$("#adn-img-enabled").attr("src", "img/off_icon.png");
+		
+		$("#adn-img-enabled").attr("src", "img/off_icon.png");		
 	} 
 	else {
 		
 		$("#adn-enabled").html('enable');
+
 		$("#adn-img-enabled").attr("src", "img/on_icon.png");
 	}
 }
 
-addon.port.on("ADNSendOptions", updateMenu);
+addon.port.on("ADNUpdateMenu", updateEnabled);

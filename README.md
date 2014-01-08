@@ -1,7 +1,7 @@
 
 #### Ad Nauseam: a lightweight browser extension that helps protect users against surveillance and data-profiling by advertising networks
 
-<a href="http://rednoise.org/adnauseam/js"><img height=120 src="http://rednoise.org/adnauseam/files/images/adnauseam5_128.png"/></a>
+<a href="http://rednoise.org/adnauseam"><img height=120 src="http://rednoise.org/adnauseam/files/images/adnauseam5_128.png"/></a>
 
 #### <a href="http://rednoise.org/adnauseam">The Ad Nauseam website</a>
 

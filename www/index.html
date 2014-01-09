@@ -16,9 +16,24 @@
 <link href="files/css/fancybox.css" rel="stylesheet" type="text/css" />
 <link href="files/jplayer/jplayer.css" rel="stylesheet" type="text/css"  />
 <link href="files/css/mqueries.css" rel="stylesheet" type="text/css" media="screen" />
+<link rel="icon" href="files/images/adnauseam.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="files/images/adnauseam.ico" type="image/x-icon" />
 
 <script src="files/js/jquery-1.7.1.min.js"></script>
 <script src="files/js/jquery.modernizr.min.js"></script>
+<script type="application/javascript">
+<!--
+function install(link)
+{
+  alert(link);
+  params = {};
+  params[link.getAttribute("addonName")] = {
+    URL: link.href,
+    IconURL: link.getAttribute("iconURL")
+  };
+  InstallTrigger.install(params);
+}
+--></script>
 </head>
 <body id="home">
 <div id="page">
@@ -42,7 +57,8 @@
         <div id="headertext" class="header_tagline seperator-section">
                 <h2><strong>Ad Nauseam</strong></h2>
                 <h3>Created by: Daniel C. Howe, Helen Nissenbaum</h3>
-                <a href="adnauseam.xpi" class="button white">Install Ad Nauseam (alpha) for Firefox*</a><br/>
+                <a href="adnauseam.xpi" class="button white" addonName="AdNauseam" iconURL="files/images/adnauseam5_128.png" 
+                	onclick="install(this); return false;">Install Ad Nauseam (alpha) for Firefox*</a><br/>
                 <div style="font-family: 'PTSansRegular', Helvetica, Arial, sans-serif; font-size:10px; color:#999999; text-align: center; line-height:28px;">
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
                 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 

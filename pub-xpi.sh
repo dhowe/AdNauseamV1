@@ -7,12 +7,15 @@ then
   exit
 fi
 
+
+$ADDON_SDK/bin/cfx xpi
+
 USR="dhowe"
 XPI_DIR="/Library/WebServer/Documents/adnauseam/"
 XPI_FILE="adnauseam-$1.xpi"
 
-echo publishing $XPI_FILE
-echo         to $RED:$XPI_DIR...
+echo Publishing $XPI_FILE
+echo "  to $RED:$XPI_DIR"
 
 #scp adnauseam.xpi$RED:$XPI_DIR/$XPI_FILE
 

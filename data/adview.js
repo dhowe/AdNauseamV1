@@ -16,16 +16,14 @@ function updateAdView(o) {
 	
 	//console.log('AdView::ADNUpdateAdView()');
 	
-	var adlookup = o.lookup, page = o.page, listPages = 0,
-		keys = Object.keys(adlookup), result = '<p>';
+	var ads = o.ads, page = o.page, listPages = 1,
+		result = '<p>Current: ' + page + '<br/>\n';
 		
-	if (!keys.length) {
-		$('#content').html("No ads for page: "+page);
-		return;
-	}
-	result += 'Page: ' + page + '<br/>\n';
+	ads.sort(function(a,b) { 
+		return (a.found > b.found) ? 1 : ((b.found > a.found) ? -1 : 0); 
+	});
 	
-	if (listPages) { // list all stored pages
+	/*if (listPages) { // list all stored pages
 		for (var i = 0, j = keys.length; i < j; i++) {
 			var ads = adlookup[keys[i]];
 			result += '<b>' + keys[i] + ":" + ads.length + "</b><br/>\n";
@@ -34,8 +32,10 @@ function updateAdView(o) {
 	}
 	
 	if (page) { // ads for current page
-		result += formatJSON(adlookup[page]);
-	}
+		
+	}*/
+	
+	result += formatJSON(ads);
 
 	///console.log(result);
 

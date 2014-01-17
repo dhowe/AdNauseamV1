@@ -1,0 +1,43 @@
+	<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="style.css">
+
+	<script type="text/javascript" href="/files/js/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" href="/files/js/jquery.isotope.min.js"></script>
+</head>
+<body>
+	<div id="container">
+	  <div class="item"><span>2</span><img src="http://placehold.it/120x240"></div>
+	  <div class="item"><span>1</span><img src="http://placehold.it/300x100"></div>
+	  <div class="item"><span>3</span><img src="http://placehold.it/728x90"></div>
+	  <div class="item"><span>4</span><img src="http://placehold.it/468x60"></div>
+	  <div class="item"><span>5</span><img src="http://placehold.it/234x60"></div>
+	  <div class="item"><span>6</span><img src="http://placehold.it/300x250"></div>
+	  <div class="item"><span>7</span><img src="http://placehold.it/720x300"></div>
+	  <div class="item"><span>8</span><img src="http://placehold.it/120x90"></div>
+	  <div class="item"><span>9</span><img src="http://placehold.it/120x60"></div>
+	  <div class="item"><span>10</span><img src="http://placehold.it/88x31"></div>
+	  <div class="item"><span>11</span><img src="http://placehold.it/240x400"></div>
+	  <div class="item"><span>12</span><img src="http://placehold.it/300x600"></div>
+	  <div class="item"><span>13</span><img src="http://placehold.it/160x600"></div>
+	  <div class="item"><span>14</span><img src="http://placehold.it/120x600"></div>
+	  <div class="item"><span>15</span><img src="http://placehold.it/250x250"></div>
+	  <div class="item"><span>16</span><img src="http://placehold.it/336x280"></div>
+	  <div class="item"><span>17</span><img src="http://placehold.it/180x150"></div>
+	  <div class="item"><span>18</span><img src="http://placehold.it/125x125"></div>
+	</div>
+
+	<script>
+		var $container = $('#container');
+		// init
+		$container.isotope({
+		  // options
+		  itemSelector: '.item',
+		  layoutMode: 'masonry'
+		});
+	</script>
+</body>
+</html>

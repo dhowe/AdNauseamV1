@@ -1,0 +1,15 @@
+.item{
+	float: left;
+	margin-right: 10px;
+	position: relative;
+}
+	
+.item span {
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	display: block;
+}
+	
+/*.item { width: 25%; }
+.item.w2 { width: 50%; }*/

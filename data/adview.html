@@ -3,39 +3,12 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Ad Nauseam</title>
-		<style media="all" type="text/css">
-			body {
-				font: 100% arial, helvetica, sans-serif;
-				background-color: #F5F5F5;
-			}
-		</style>
-		<link rel="stylesheet" href="./adview.css" />
-		<script src="lib/jquery-1.8.3.min.js"></script>
-		<script src="adview.js"></script>
-		<script>    
-			$(document).ready(function(){
-			    $("body").append('<div id="measurements"></div>');
-			    $("#measurements").css({
-			        'position': 'fixed',
-			        'bottom': '0',
-			        'right': '0',
-			        'background-color': 'black',
-			        'color': 'white',
-			        'padding': '5px',
-			        'font-size': '10px',
-			        'opacity': '0.4'
-			    });
-			    getDimensions = function(){
-			        return $(window).width() + ' (' + $(document).width() + ') x ' + $(window).height() + ' (' + $(document).height() + ')';
-			    }
-			    $("#measurements").text(getDimensions());
-			    $(window).on("resize", function(){
-			        $("#measurements").text(getDimensions());
-			    });
-			});
-    	</script>
+		<link rel="stylesheet" href="style.css">
+		<script src="lib/jquery.js"></script>
+		<script src="lib/jquery.isotope.min.js"></script>
 	</head>
 	<body>
-		<div id='content'>loading</div>
+		<div id='container'>loading</div><p>
+		<div id='json'>json</div>
 	</body>
 </html>

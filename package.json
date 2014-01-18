@@ -26,6 +26,12 @@
 		    "value": false
 		},
 		{
+			"title": "Verbose Notify (show events as notifications)",
+		    "name":  "verboseNotify",
+		    "type":  "bool",
+		    "value":  false
+		},
+		{
 			"title": "Outline Ads (primarily for debugging)",
 		    "name": "outlineAds",
 		    "type": "bool",

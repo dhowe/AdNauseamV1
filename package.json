@@ -5,7 +5,7 @@
     "description": "A blend of software tool and 'artware' intervention to defend against surveillance and tracking by ad networks",
     "author": "Daniel C. Howe",
     "license": "GPL",
-	"version": "0.40",
+	"version": "0.41",
 	"preferences": [
 		{
 			"title": "Enabled",
@@ -29,7 +29,7 @@
 			"title": "Verbose Notify (show events as notifications)",
 		    "name":  "verboseNotify",
 		    "type":  "bool",
-		    "value":  false
+		    "value":  true
 		},
 		{
 			"title": "Outline Ads (primarily for debugging)",

@@ -1,9 +1,10 @@
 
-0.4.0
+0.4.1
 -------------------
 -- Adview now its own html page (currently showing isotope grid)
--- New option: verboseNotify, which shows ADN events as notifications 
+-- Added option: 'verboseNotify', posts ADN-events as notifications (default=true)
 -- Overhauling of notification system
+-- Added icons for addon-manager page 
 -- Favicon added to help page
 
 
@@ -14,7 +15,6 @@
 -- Overhauling of logging and options
 -- No longer outlining ads (by default)
 -- A large number of smaller bug fixes
-
 
 
 0.2

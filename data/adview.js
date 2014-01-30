@@ -8,19 +8,23 @@ function updateAdView(o) {
 	
 	var result, ads = o.ads;
 		
-	ads.sort(function(a,b) { // sort by found-time
+	/*ads.sort(function(a,b) { // sort by found-time
 		
 		return (a.found > b.found) ? 1 : ((b.found > a.found) ? -1 : 0); 
-	});
+	});*/
 
 	result = formatDivs(ads);
-	
-	//console.log(result);
-
 	$('#container').html(result);
-	$('#json').html(formatJSON(ads));
+	
+	// for (var i=0; i < ads.length; i++) {
+	  // console.log(ads[i]);
+	// };
+	
+	result = formatJSON(ads);
+	$('#json').html(result);
 	
 	var $container = $('#container');
+	
 	$container.isotope({
 	  itemSelector: '.item',
 	  layoutMode: 'masonry'

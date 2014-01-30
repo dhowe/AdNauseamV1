@@ -1,11 +1,11 @@
 
-#### Ad Nauseam: a lightweight browser extension that helps protect users against surveillance and data-profiling by advertising networks
+#### AdNauseam: a lightweight browser extension that helps protect users against surveillance and data-profiling by advertising networks
 
 <a href="http://rednoise.org/adnauseam"><img height=120 src="http://rednoise.org/adnauseam/files/images/adnauseam5_128.png"/></a>
 
-#### <a href="http://rednoise.org/adnauseam">The Ad Nauseam website</a>
+#### <a href="http://rednoise.org/adnauseam">The AdNauseam website</a>
 
-Ad Nauseam blends software tool and 'artware' intervention in a browser extension designed to protect users from surveillance and tracking by advertising networks. Ad Nauseam works similarly to an 'Ad Blocker', but in addition to hiding advertisements, it simulates clicks on each identified ad (in a background thread), confusing trackers as to one's real interests. Simultaneously, Ad Nauseam serves as a means of amplifying users' discontent with advertising networks that disregard privacy and facilitate bulk surveillance agendas.
+AdNauseam blends software tool and 'artware' intervention in a browser extension designed to protect users from surveillance and tracking by advertising networks. AdNauseam works similarly to an 'Ad Blocker', but in addition to hiding advertisements, it simulates clicks on each identified ad (in a background thread), confusing trackers as to one's real interests. Simultaneously, AdNauseam serves as a means of amplifying users' discontent with advertising networks that disregard privacy and facilitate bulk surveillance agendas.
 
 #### About the project
 --------

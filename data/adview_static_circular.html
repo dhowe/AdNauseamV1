@@ -2,10 +2,47 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>Ad Nauseam</title>
+		<title>AdNauseam</title>
 		<link rel="stylesheet" href="style.css">
 		<script src="lib/jquery.js"></script>
-		<script src="lib/packery.pkgd.min.js"></script>
+		<script src="lib/packery/bower_components/get-style-property/get-style-property.js"></script>
+		<script src="lib/packery/bower_components/get-size/get-size.js"></script>
+		<script src="lib/packery/bower_components/matches-selector/matches-selector.js"></script>
+		<script src="lib/packery/bower_components/eventEmitter/EventEmitter.js"></script>
+		<script src="lib/packery/bower_components/eventie/eventie.js"></script>
+		<script src="lib/packery/bower_components/doc-ready/doc-ready.js"></script>
+		<script src="lib/packery/bower_components/classie/classie.js"></script>
+		<script src="lib/packery/bower_components/outlayer/item.js"></script>
+		<script src="lib/packery/bower_components/outlayer/outlayer.js"></script>
+		<script src="lib/packery/js/rect.js"></script>
+		<script src="lib/packery/js/packer.js"></script>
+		<script src="lib/packery/js/item.js"></script>
+		<script src="lib/packery/js/packery.js"></script>
+		<script src="lib/packery/examples/examples.js"></script>
+		<script>    
+			// testing viewport measurements
+			$(document).ready(function() {
+			    $("body").append('<div id="measurements"></div>');
+			    $("#measurements").css({
+			        'position': 'fixed',
+			        'bottom': '0',
+			        'left': '0',
+			        'background-color': 'black',
+			        'color': 'white',
+			        'padding': '5px',
+			        'font-size': '10px',
+			        'opacity': '0.4'
+			    });
+			    getDimensions = function(){
+			    	return $('#container').width() + ' x ' +$('#container').height();
+			        //return $(window).width() + ' (' + $(document).width() + ') x ' + $(window).height() + ' (' + $(document).height() + ')';
+			    }
+			    $("#measurements").text(getDimensions());
+			    $(window).on("resize", function(){
+			        $("#measurements").text(getDimensions());
+			    });
+			});
+    	</script>		
 	</head>
 	<body>
 		<div class="stage">
@@ -18,9 +55,11 @@
 				Since January 12, 2014: <strong>2100 ads detected, 1190 visited.</strong>
 			</div>
 			<div id='container'>
-				loading
 				<div class="item"><img src="http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_MS3.jpg" alt="img alt"></div>
+				
+				<!-- this one get stucks in circular layout, or perhaps it is just the largest that gets stuck --> 
 				<div class="item"><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359256/13_2259_INYT_Anon_USD_970x44_ER1.jpg" alt="img alt"></div>
+				
 				<div class="item"><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359251/13_2259_INYT_Anon_USD_163x90_ER1.jpg" alt="img alt"></div>
 				<div class="item"><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/subscribe-200x60.png" alt="img alt"></div>
 				<div class="item"><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/610x90-text-001.gif" alt="img alt"></div>
@@ -70,9 +109,15 @@
 		<script>
 			var container = document.querySelector('#container');
 			var pckry = new Packery( container, {
-			  // options
-			  itemSelector: '.item',
-			  gutter: 1
+				stamp: '.stamp',
+      			// gutter: 10,
+    		  	centered: {
+	        		// x: 400,
+        			y: 300
+      			},
+			  	// options
+			  	itemSelector: '.item',
+			  	gutter: 1
 			});
 		</script>
 	</body>

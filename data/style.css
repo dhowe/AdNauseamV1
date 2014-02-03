@@ -1,15 +1,210 @@
-.item{
-	float: left;
-	margin-right: 10px;
-	position: relative;
+body {
+	background: #000 url(img/project_papper.png);
+	color: #4C4D4C;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin: 0;
 }
-	
-.item span {
+
+
+/* STAGE */
+
+.stage {
+	width: 75%;
+	position: fixed;
+	top:0;
+	bottom: 0;
+	left:0;
+}
+
+.zoom {
 	position: absolute;
-	top: 5px;
-	left: 5px;
+	top: 16px;
+	left: 16px;
+	border: 2px solid #818181;
+	border-radius: 12px;
+	height: 41px;
+	width: 16px;
+	background: #000;
+	z-index: 100;
+}
+
+.zoom a {
+	line-height: 20px;
+	display: block;
+	height: 18px;
+	text-align: center;
+	color: #818181;
+	text-decoration: none;
+	overflow: hidden;
+}
+
+.zoom a:hover {
+	color: #fff;
+}
+
+.zoom a.z-in{
+	border-bottom: 1px solid #818181;
+}
+
+.session-sum {
+	position: absolute;
+	bottom: 16px;
+	left: 16px;
+	z-index: 100;
+	font-size: 12px;
+	color: #4C4D4C;
+}
+
+#logo{
+	position: absolute;
+	z-index: 100;
+	bottom: 16px;
+	right: 16px;
+}
+
+#logo a {
+	width: 75px;
+	height: 75px;
+	background: url(img/ADNAUSEUM_logo.svg);
+	display: block;
+	text-decoration: none;
+}
+
+.item{
+	margin-bottom: -6px; /*UGLY PATCH*/
+}
+
+/* ASIDE */
+
+aside {
+	width: 25%;
+	position: fixed;
+	right: 0;
+	top:0;
+	bottom: 0;
+	background: url(img/bg_panel.png);
+}
+
+aside .panel-resize {
+	position: absolute;
+	top:0;
+	left: 0;
+	bottom: 0;
+	width: 2px;
+	background: #aaa;
+	border: 1px solid #777;
+	border-width: 0 1px;
+	display: block;
+	z-index: 200;
+	cursor: col-resize;
+}
+
+.inspect {
+	top:0;
+	right:0;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	background-image: -o-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
+	background-image: -moz-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
+	background-image: -webkit-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
+	background-image: -ms-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
+	background-image: linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
+}
+
+.inspect ul {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+
+.inspect .carousel li {
+	margin: 0 auto;
+	list-style: none;
+	width: 100%;
+	position: absolute;
+	right: -100%;
+	bottom: 100px;
+	top: 0;
+	text-align: center;
+}
+
+.inspect .carousel li img {
+	-moz-box-shadow:    0px 8px 10px 0px rgba(0,0,0,0.20);
+	-webkit-box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.20);
+	box-shadow:         0px 8px 10px 0px rgba(0,0,0,0.20);
+	right: 0;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	position: absolute;
+}
+
+.inspect .carousel li.active{
+	right: 0;
+	left: 0;
+}
+
+aside .controls {
+	bottom: 110px;
+	margin: 0 auto;
+	z-index: 200;
+	position: absolute;
+	text-align: center;
+}
+
+aside .controls li{
+	margin: 0 auto;
+	list-style: none;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+aside .controls a {
+	width: 4px;
+	height: 4px;
+	border: 2px solid #F2F2F2;
+	border-radius: 4px;
 	display: block;
 }
-	
-/*.item { width: 25%; }
-.item.w2 { width: 50%; }*/
+
+aside .controls li.active a {
+	background: #F2F2F2;
+}
+
+aside .details {
+	position: absolute;
+	left: 4px;
+	right: 0;
+	bottom: 0;
+	height: 100px;
+	background: rgba(220,220,220,0.90);
+	font-size: 12px;
+}
+
+aside .details dl {
+	line-height: 20px;
+	margin: 0;
+	padding: 0;
+}
+
+aside .details dd,
+aside .details dt {
+	margin: 0;
+	padding: 2px 0;
+	border-bottom: 1px solid #BFBFBF;
+	width: 30%;
+	display: inline-block;
+}
+aside .details dd {
+	text-indent: 8px;
+	margin: -4px;
+}
+aside .details dt{
+	min-width: 70%;
+	font-weight: 700;
+}
+aside .details dt a.visited {
+	color: #A020F0;
+}

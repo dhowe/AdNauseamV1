@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Draggabilly</title>
+
+  <link rel="stylesheet" href="css/examples.css" />
+  <style>
+  .item.expanded {
+    width: 100% !important;
+  }
+
+  #horiz {
+    height: 360px;
+  }
+  </style>
+
+</head>
+<body>
+
+  <h1>Draggabilly</h1>
+
+  <div id="ex4" class="container fluid has-padding">
+    <div class="item w4"></div>
+    <div class="item h4"></div>
+    <div class="item w2"></div>
+    <div class="item h4"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item h2"></div>
+    <div class="item w4"></div>
+    <div class="item w2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item w2 h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item h4"></div>
+    <div class="item"></div>
+    <div class="item w4"></div>
+    <div class="item"></div>
+    <div class="item w2"></div>
+    <div class="item"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item h2"></div>
+  </div>
+
+
+  <div id="ex6" class="container fluid has-padding"></div>
+
+  <div id="horiz" class="container has-padding">
+    <div class="item w4"></div>
+    <div class="item h4"></div>
+    <div class="item w2"></div>
+    <div class="item h4"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item h2"></div>
+    <div class="item w4"></div>
+    <div class="item w2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item w2 h2"></div>
+    <div class="item"></div>
+    <div class="item"></div>
+    <div class="item h4"></div>
+    <div class="item"></div>
+    <div class="item w4"></div>
+    <div class="item"></div>
+    <div class="item w2"></div>
+    <div class="item"></div>
+    <div class="item h2"></div>
+    <div class="item"></div>
+    <div class="item h2"></div>
+  </div>
+
+
+<script src="../bower_components/get-style-property/get-style-property.js"></script>
+<script src="../bower_components/get-size/get-size.js"></script>
+<script src="../bower_components/matches-selector/matches-selector.js"></script>
+<script src="../bower_components/eventie/eventie.js"></script>
+<script src="../bower_components/classie/classie.js"></script>
+<script src="../bower_components/eventEmitter/EventEmitter.js"></script>
+<script src="../bower_components/doc-ready/doc-ready.js"></script>
+<script src="../bower_components/draggabilly/draggabilly.js"></script>
+<script src="../bower_components/outlayer/item.js"></script>
+<script src="../bower_components/outlayer/outlayer.js"></script>
+<script src="../js/rect.js"></script>
+<script src="../js/packer.js"></script>
+<script src="../js/item.js"></script>
+<script src="../js/packery.js"></script>
+
+<script src="examples.js"></script>
+<script>
+
+function bindDraggies( packery ) {
+  var draggies = [];
+  var item, draggie;
+
+  for ( var i=0, len = packery.items.length; i < len; i++ ) {
+    item = packery.items[i].element;
+    draggie = new Draggabilly( item );
+    packery.bindDraggabillyEvents( draggie );
+    draggies.push( draggie );
+
+  }
+  return draggies;
+  packery.on( 'dragItemPositioned', function( pckry, item ) {
+    console.log( 'drag item positioned', item.position.x, item.position.y );
+  });
+
+}
+
+
+window.onload = function() {
+
+  var ex4 = document.getElementById('ex4');
+  var packery4 = new Packery( ex4, {
+    columnWidth: 50,
+    rowHeight: 50,
+    transitionDuration: '0.6s',
+    gutter: 15
+  });
+
+  var layoutCount4 = 0;
+
+  packery4.on( 'layoutComplete', function( packery ) {
+    console.log( 'completed layouts', ++layoutCount4 );
+  });
+
+  var ex6 = document.getElementById('ex6');
+  appendRandomSizedItems( ex6 );
+  var packery6 = new Packery( ex6, {
+    itemSelector: '.item',
+    transitionDuration: '0.6s',
+    gutter: 10
+  });
+
+  window.packery4 = packery4;
+
+  ( function() {
+    var draggies = bindDraggies( packery4 );
+
+    // when clicked toggle expanded
+    function onDragEnd( draggie ) {
+      var p1 = draggie.position;
+      var p2 = draggie.startPosition;
+      // only proceed if stuff has moved
+      if ( p1.x !== p2.x || p1.y !== p2.y ) {
+        return;
+      }
+      // dragger didn't move
+      var isExpanded = classie.has( draggie.element, 'expanded' );
+      classie.toggle( draggie.element, 'expanded' );
+      if ( !isExpanded ) {
+        // HACK unplace first
+        packery4.unplace( draggie.element );
+        packery4.fit( draggie.element );
+      } else {
+        packery4.layout();
+      }
+    }
+
+    for ( var i=0, len = draggies.length; i < len; i++ ) {
+      var draggie = draggies[i];
+      draggie.on( 'dragEnd', onDragEnd );
+    }
+  })();
+
+
+  bindDraggies( packery6 );
+
+  ( function() {
+    var pckry = new Packery( '#horiz', {
+      columnWidth: 50,
+      rowHeight: 50,
+      isHorizontal: true,
+      transitionDuration: '0.8s'
+    });
+    bindDraggies( pckry );
+  })();
+
+};
+</script>
+
+</body>
+</html>

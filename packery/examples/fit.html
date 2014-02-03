@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>fit</title>
+
+  <link rel="stylesheet" href="css/examples.css" />
+  <style>
+  #expanding-demo {
+    width: 40%;
+  }
+
+  #expanding-demo .item {
+    height: 40px;
+    width: 25%;
+  }
+
+  #expanding-demo .item.is-expanded {
+    height: 60px;
+    width: 100%;
+    background: #1D6;
+  }
+
+  #position-demo {
+    width: 30%;
+  }
+
+  #position-demo .item {
+    width: 60px;
+    height: 60px;
+  }
+  </style>
+
+</head>
+<body>
+
+  <h1>fit</h1>
+
+<div id="expanding-demo" class="container">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+
+<div id="position-demo" class="container">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</div>
+
+<script src="../bower_components/get-style-property/get-style-property.js"></script>
+<script src="../bower_components/get-size/get-size.js"></script>
+<script src="../bower_components/matches-selector/matches-selector.js"></script>
+<script src="../bower_components/eventEmitter/EventEmitter.js"></script>
+<script src="../bower_components/eventie/eventie.js"></script>
+<script src="../bower_components/doc-ready/doc-ready.js"></script>
+<script src="../bower_components/classie/classie.js"></script>
+<script src="../bower_components/outlayer/item.js"></script>
+<script src="../bower_components/outlayer/outlayer.js"></script>
+<script src="../js/rect.js"></script>
+<script src="../js/packer.js"></script>
+<script src="../js/item.js"></script>
+<script src="../js/packery.js"></script>
+
+<script>
+docReady( function() {
+  ( function() {
+    var container = document.querySelector('#expanding-demo');
+    var pckry = new Packery( container );
+
+    eventie.bind( container, 'click', function( event ) {
+      // don't proceed if item was not clicked on
+      var target = event.target;
+      if ( !classie.has( target, 'item' ) ) {
+        return;
+      }
+
+      var isExpanded = classie.has( target, 'is-expanded' );
+      classie.toggleClass( target, 'is-expanded' );
+
+      if ( isExpanded ) {
+        // if shrinking, just layout
+        pckry.layout();
+      } else {
+        // if expanding, fit it
+        pckry.fit( target );
+      }
+    });
+  })();
+
+
+  ( function() {
+    var container = document.querySelector('#position-demo');
+    var pckry = new Packery( container );
+
+    eventie.bind( container, 'click', function( event ) {
+      // don't proceed if item was not clicked on
+      var target = event.target;
+      if ( !classie.has( target, 'item' ) ) {
+        return;
+      }
+      // position item at 40, 40
+      pckry.fit( target, 40, 40 );
+    });
+  })();
+});
+</script>
+
+</body>
+</html>

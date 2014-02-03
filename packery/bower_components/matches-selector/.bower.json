@@ -1,0 +1,19 @@
+{
+  "name": "matches-selector",
+  "version": "1.0.1",
+  "description": "matchesSelector helper",
+  "main": "matches-selector.js",
+  "devDependencies": {
+    "qunit": "~1.10"
+  },
+  "homepage": "https://github.com/desandro/matches-selector",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.1",
+    "commit": "418b9277a3a634c0323f57b03da413ab48c1e0a7"
+  },
+  "_source": "git://github.com/desandro/matches-selector.git",
+  "_target": ">=0.2.0",
+  "_originalSource": "desandro/matches-selector"
+}

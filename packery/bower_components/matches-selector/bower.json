@@ -1,0 +1,9 @@
+{
+  "name": "matches-selector",
+  "version": "1.0.1",
+  "description": "matchesSelector helper",
+  "main": "matches-selector.js",
+  "devDependencies": {
+    "qunit": "~1.10"
+  }
+}

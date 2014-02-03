@@ -5,10 +5,102 @@
 		<title>AdNauseam</title>
 		<link rel="stylesheet" href="style.css">
 		<script src="lib/jquery.js"></script>
-		<script src="lib/jquery.isotope.min.js"></script>
+		<script src="lib/packery/bower_components/get-style-property/get-style-property.js"></script>
+		<script src="lib/packery/bower_components/get-size/get-size.js"></script>
+		<script src="lib/packery/bower_components/matches-selector/matches-selector.js"></script>
+		<script src="lib/packery/bower_components/eventEmitter/EventEmitter.js"></script>
+		<script src="lib/packery/bower_components/eventie/eventie.js"></script>
+		<script src="lib/packery/bower_components/doc-ready/doc-ready.js"></script>
+		<script src="lib/packery/bower_components/classie/classie.js"></script>
+		<script src="lib/packery/bower_components/outlayer/item.js"></script>
+		<script src="lib/packery/bower_components/outlayer/outlayer.js"></script>
+		<script src="lib/packery/js/rect.js"></script>
+		<script src="lib/packery/js/packer.js"></script>
+		<script src="lib/packery/js/item.js"></script>
+		<script src="lib/packery/js/packery.js"></script>
+		<script src="lib/packery/examples/examples.js"></script>
+		<script>    
+			// testing viewport measurements
+			$(document).ready(function() {
+			    $("body").append('<div id="measurements"></div>');
+			    $("#measurements").css({
+			        'position': 'fixed',
+			        'bottom': '0',
+			        'left': '0',
+			        'background-color': 'black',
+			        'color': 'white',
+			        'padding': '5px',
+			        'font-size': '10px',
+			        'opacity': '0.4'
+			    });
+			    getDimensions = function(){
+			    	return $('#container').width() + ' x ' +$('#container').height();
+			        //return $(window).width() + ' (' + $(document).width() + ') x ' + $(window).height() + ' (' + $(document).height() + ')';
+			    }
+			    $("#measurements").text(getDimensions());
+			    $(window).on("resize", function(){
+			        $("#measurements").text(getDimensions());
+			    });
+			});
+    	</script>		
 	</head>
 	<body>
-		<div id='container'>loading</div><p>
+		<div class="stage">
+			<div id="logo"><a href="#"></a></div>
+			<div class="zoom">
+				<a href="" class="z-in">&#10010;</a>
+				<a href="" class="z-out">&#8211;</a>
+			</div>
+			<div class="session-sum">
+				Since January 12, 2014: <strong>2100 ads detected, 1190 visited.</strong>
+			</div>
+			<div id='container'>loading</div>
+		</div>
+		<aside>
+			<a href="#" class="panel-resize"></a>
+			<div class="inspect">
+				<ul class="carousel">
+					<li class="active"><a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a></li>
+					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
+					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
+					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
+				</ul>
+				<ul class="controls">
+					<li class="active"><a href="#" class="btn circle"></a></li>
+					<li><a href="#" class="btn circle"></a></li>
+					<li><a href="#" class="btn circle"></a></li>
+					<li><a href="#" class="btn circle"></a></li>
+				</ul>
+			</div>
+			<div class="details">
+				<dl>
+					<dd>Detected:</dd>
+						<dt>04:32:18, Jan 22, 2014</dt>
+					<dd>Visited:</dd>
+						<dt>pending</dt>
+					<dd>Leads to:</dd>
+						<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
+					<dd>Viewed On:</dd>
+						<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
+				</dl>
+			</div>
+		</aside>
 		<div id='json'>json</div>
+		<script>
+			window.onload = function() {
+	
+				console.log("starting packery...");
+				var container = document.querySelector('#container');
+				var pckry = new Packery( container, {
+	    		  	centered: {
+		        		// x: 400,
+	        			y: 300
+	      			},
+				  	// options
+				  	itemSelector: '.item',
+				  	gutter: 1
+				});
+	    	}
+		</script>
 	</body>
 </html>

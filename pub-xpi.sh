@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# publishes an XPI to rednoise and links it
+
 if [ $# != 1 ]
 then
   echo

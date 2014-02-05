@@ -1,4 +1,9 @@
 
+0.4.2
+-------------------
+XUL toolbar button 
+various bug fixes
+
 0.4.1
 -------------------
 -- Adview now its own html page (currently showing isotope grid)

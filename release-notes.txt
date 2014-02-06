@@ -1,8 +1,13 @@
 
+0.4.22
+-------------------
+-- Proper handling of disable/enable/remove/etc from AddonManager
+-- Proper handling of case when ABP is not pre-installed
+
 0.4.2
 -------------------
-XUL toolbar button 
-various bug fixes
+-- XUL toolbar button 
+-- Various bug fixes
 
 0.4.1
 -------------------

@@ -1,4 +1,49 @@
-       	
+
+
+try {
+	
+  Cu.import("resource://gre/modules/AddonManager.jsm");
+  
+  AddonManager.addAddonListener({
+	  onUninstalling: function(addon) {
+	  	console.log('onUninstalling');
+	    if (addon.id == addonId) {
+	    	console.log('onUninstalling');
+	      	beingUninstalled = true;
+	    }
+	  },
+	  onUninstalled: function(addon) {
+	  	console.log('onUninstalled');
+	    if (addon.id == addonId) {
+	    	console.log('onUninstalled');
+	    }
+	  },
+	  onEnabled: function(addon) {
+	  	console.log('onEnabled');
+	    if (addon.id == addonId) {
+	    	console.log('onEnabled');
+	    }
+	  }
+  });
+} catch (ex) { throw ex; }
+
+
+require("sdk/system/events").on("em-action-requested", onActionRequested);
+function onActionRequested(event) {
+	console.log("onActionRequested() args=");
+	for (var i=0; i < arguments.length; i++) {
+	  console.log(i+ ") "+arguments[i]);
+	};
+}
+
+isDisabled : function() {
+	
+	AddonManager.getAddonByID(addonId, function(addon) {
+		
+	  return addon ? addon.userDisabled : false;
+	});
+},
+   	
 function xlog(m) {
 	console.log(m);
 	wnd.wrappedJSObject.console.log(m);

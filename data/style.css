@@ -70,9 +70,10 @@ body {
 	text-decoration: none;
 }
 
-.item{
-	margin-bottom: -6px; /*UGLY PATCH*/
-}
+
+/*.item{ // SEEMS TO CAUSE PROBLEMS FOR PACKERY (DH)
+	margin-bottom: -6px; UGLY PATCH
+}*/
 
 /* ASIDE */
 

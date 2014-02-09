@@ -5,6 +5,9 @@ body {
 	margin: 0;
 }
 
+* {
+	transition: opacity 0.5s ease;
+}
 
 /* STAGE */
 
@@ -71,9 +74,66 @@ body {
 }
 
 
-/*.item{ // SEEMS TO CAUSE PROBLEMS FOR PACKERY (DH)
-	margin-bottom: -6px; UGLY PATCH
-}*/
+.item{ 
+	/* margin-bottom: -6px; */
+	background: #000;
+}
+
+.item img {
+	opacity: 0.85;
+}
+
+.item.pending img {
+	opacity: 0.4;
+}
+
+.item .counter{
+	display: block;
+	position: absolute;
+	right: 2px;
+	top: 2px;
+	width: 6px;
+	height: 6px;
+	text-indent: -9999px;
+	overflow: hidden;
+	background: #A020F0;
+	border-radius: 10px;
+	text-align: center;
+	font-size: 12px;
+	box-shadow:   -4px 4px 10px 0px rgba(0,0,0,0.20);
+	z-index: 1000;
+	color: #fff;
+	line-height: 1.5em;
+}
+
+.item.dup-count-1 .counter{
+	display: none;
+}
+
+.item:hover {
+	box-shadow:   0px 0px 20px 0px rgba(0,0,0,0.90);
+	z-index: 100000;
+}
+
+.item:hover .counter {
+	top: -10px;
+	right: -10px;
+	width: 20px;
+	height: 20px;
+	text-indent: 0;
+	overflow: none; 
+}
+
+.item:hover img {
+	opacity: 1;
+	border: 3px solid #A020F0;
+	margin: -3px;
+	border-radius: 3px;
+}
+
+.item.pending:hover img {
+	border: 3px solid #00f;
+}
 
 /* ASIDE */
 

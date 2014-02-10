@@ -78,31 +78,97 @@
 		</div>
 		<aside>
 			<a href="#" class="panel-resize"></a>
-			<div class="inspect">
-				<ul class="carousel">
-					<li class="active"><a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a></li>
-					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
-					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
-					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
+			<div class="inspect carousel">
+				<ul class="panes">
+					<li class="active">
+						<a href="#"><img id="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">1 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Detected:</dd>
+									<dt>04:32:18, Jan 22, 2014</dt>
+								<dd>Visited:</dd>
+									<dt>pending</dt>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">2 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Detected:</dd>
+									<dt>04:32:18, Jan 22, 2014</dt>
+								<dd>Visited:</dd>
+									<dt>pending</dt>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">3 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Detected:</dd>
+									<dt>04:32:18, Jan 22, 2014</dt>
+								<dd>Visited:</dd>
+									<dt>pending</dt>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">4 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Detected:</dd>
+									<dt>04:32:18, Jan 22, 2014</dt>
+								<dd>Visited:</dd>
+									<dt>pending</dt>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">5 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Detected:</dd>
+									<dt>04:32:18, Jan 22, 2014</dt>
+								<dd>Visited:</dd>
+									<dt>pending</dt>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
+							</dl>
+						</div>
+					</li>
 				</ul>
+				<!--
 				<ul class="controls">
 					<li class="active"><a href="#" class="btn circle"></a></li>
 					<li><a href="#" class="btn circle"></a></li>
 					<li><a href="#" class="btn circle"></a></li>
 					<li><a href="#" class="btn circle"></a></li>
 				</ul>
-			</div>
-			<div class="details">
-				<dl>
-					<dd>Detected:</dd>
-						<dt>04:32:18, Jan 22, 2014</dt>
-					<dd>Visited:</dd>
-						<dt>pending</dt>
-					<dd>Leads to:</dd>
-						<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
-					<dd>Viewed On:</dd>
-						<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
-				</dl>
+				-->
 			</div>
 		</aside>
 		<div id='json'>json</div>
@@ -116,6 +182,14 @@
 			  	itemSelector: '.item',
 			  	gutter: 1
 			});
+
+			$( '.item' ).hover(
+			 	function() {
+			   		$( '#inspected' ).replaceWith(($(this)>img).clone());
+			 	}
+			);
+
+			
 		</script>
 	</body>
 </html>

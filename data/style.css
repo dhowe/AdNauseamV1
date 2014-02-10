@@ -115,7 +115,8 @@ body {
 	z-index: 100000;
 }
 
-.item:hover .counter {
+.item:hover .counter,
+.item:focus .counter {
 	top: -10px;
 	right: -10px;
 	width: 20px;
@@ -124,18 +125,34 @@ body {
 	overflow: none; 
 }
 
-.item:hover img {
+.item:hover img,
+.item:focus img{
 	opacity: 1;
 	border: 3px solid #A020F0;
 	margin: -3px;
 	border-radius: 3px;
 }
 
+.item:hover img,
+.item:focus img {
+	opacity: 1;
+	border: 3px solid #A020F0;
+	margin: -3px;
+	border-radius: 3px;
+}
+
+.item:focus img {
+	width: 120%;
+	height: auto;
+}
+
 .item.pending:hover img {
 	border: 3px solid #00f;
 }
 
-/* ASIDE */
+/***************************************************
+ 	SIDE PANEL
+ ***************************************************/
 
 aside {
 	width: 25%;
@@ -173,65 +190,84 @@ aside .panel-resize {
 	background-image: linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
 }
 
-.inspect ul {
-	padding: 0;
+/*------------------------------------*\
+    $CAROUSEL
+\*------------------------------------*/
+.carousel{
+  overflow:hidden;
+  width:100%;
+}
+.panes{
 	margin: 0;
-	width: 100%;
+	padding: 0;
+  list-style:none;
+  position:absolute;
+  top: 0; bottom: 0;
+  height: 100%;
+  width:500%; /* Number of panes * 100% */
+  overflow:hidden; /* This is used solely to clear floats, it does not add functionality. */
+  -moz-animation:carousel 30s infinite;
+  -webkit-animation:carousel 30s infinite;
+  animation:carousel 30s infinite;
 }
-
-.inspect .carousel li {
-	margin: 0 auto;
-	list-style: none;
-	width: 100%;
+.panes > li{
+  position:relative;
+  display: block;
+  float: left;
+  width:20%; /* 100 / number of panes */
+	top:0; bottom: 0;
+	height: 100%;
+}
+.panes > li > a{
+	display: block;
+	margin: auto;
+	top: 0; right: 0; bottom: 100px; left: 0;
 	position: absolute;
-	right: -100%;
-	bottom: 100px;
-	top: 0;
-	text-align: center;
 }
-
-.inspect .carousel li img {
+.carousel img{
+	display: block;
+	margin: auto;
+	top: 0; right: 0; bottom: 0; left: 0;
+	position: absolute;
 	-moz-box-shadow:    0px 8px 10px 0px rgba(0,0,0,0.20);
 	-webkit-box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.20);
 	box-shadow:         0px 8px 10px 0px rgba(0,0,0,0.20);
-	right: 0;
-	left: 0;
-	top: 0;
-	bottom: 0;
-	margin: auto;
-	position: absolute;
 }
 
-.inspect .carousel li.active{
-	right: 0;
-	left: 0;
-}
-
-aside .controls {
-	bottom: 110px;
-	margin: 0 auto;
-	z-index: 200;
+.carousel div.num-of{
 	position: absolute;
+	bottom: 100px;
 	text-align: center;
+	width: 100%;
+	font-size: 2em;
+	color: #999;
+	font-family: Georgia, "Times New Roman", Serif;
+	font-style: italic;
+	margin-bottom: 20px;
 }
 
-aside .controls li{
-	margin: 0 auto;
-	list-style: none;
-	margin-right: 10px;
-	display: inline-block;
+.carousel div.num-of span:last-child {
+	line-height: .5em;
 }
 
-aside .controls a {
-	width: 4px;
-	height: 4px;
-	border: 2px solid #F2F2F2;
-	border-radius: 4px;
-	display: block;
-}
-
-aside .controls li.active a {
-	background: #F2F2F2;
+@keyframes carousel{
+  0%    { left:0; }
+  11%   { left:0; }
+  12.5% { left:-100%; }
+  23.5% { left:-100%; }
+  25%   { left:-200%; }
+  36%   { left:-200%; }
+  37.5% { left:-300%; }
+  48.5% { left:-300%; }
+  50%   { left:-400%; }
+  61%   { left:-400%; }
+  62.5% { left:-300%; }
+  73.5% { left:-300%; }
+  75%   { left:-200%; }
+  86%   { left:-200%; }
+  87.5% { left:-100%; }
+  98.5% { left:-100%; }
+  100%  { left:0; }
 }
 
 aside .details {

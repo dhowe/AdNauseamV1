@@ -81,7 +81,7 @@
 			<div class="inspect carousel">
 				<ul class="panes">
 					<li class="active">
-						<a href="#"><img id="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
 						<div class="num-of">1 / 5</div>
 						<div class="details">
 							<dl>
@@ -97,7 +97,7 @@
 						</div>
 					</li>
 					<li class="">
-						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
 						<div class="num-of">2 / 5</div>
 						<div class="details">
 							<dl>
@@ -113,7 +113,7 @@
 						</div>
 					</li>
 					<li class="">
-						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
 						<div class="num-of">3 / 5</div>
 						<div class="details">
 							<dl>
@@ -129,7 +129,7 @@
 						</div>
 					</li>
 					<li class="">
-						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
 						<div class="num-of">4 / 5</div>
 						<div class="details">
 							<dl>
@@ -145,7 +145,7 @@
 						</div>
 					</li>
 					<li class="">
-						<a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
 						<div class="num-of">5 / 5</div>
 						<div class="details">
 							<dl>
@@ -183,9 +183,9 @@
 			  	gutter: 1
 			});
 
-			$( '.item' ).hover(
+			$( '.item img' ).hover(
 			 	function() {
-			   		$( '#inspected' ).replaceWith(($(this)>img).clone());
+			   		$($(this)).clone().replaceAll('.inspect img');
 			 	}
 			);
 

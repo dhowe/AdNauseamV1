@@ -184,11 +184,15 @@
 			  	gutter: 1
 			});
 
-			var ratio = 1.5; // item resize aspect ratio
-
 			$(document).ready(function() {
 
+				if (ratio == null) {
+					var ratio = 1.5; // sets initial item resize aspect ratio
+				}
+
+				// resizing each image according to aspect ratio
 				function resize() {
+					
 	    		$('.item img').each(function(i, img) {
 						$(img).css({
 							'width': $(img).width()/ratio ,
@@ -201,12 +205,14 @@
 
 				resize(ratio);
 
+				// zoom-in
 				$('#z-in').live('click', function () {  
 					ratio+=0.5;
 					console.log( ratio );
 					resize(ratio);
 	    	});
 
+				// zoom-out
 				$('#z-out').live('click', function () {  
 					ratio-=0.5;
 					console.log( ratio );
@@ -220,7 +226,7 @@
 			 	function() {
 			 			var dup = $('span', this).text();
 			 			for (var i = 0; i < dup; i++) {
-				   		$('.inspect img').attr('src', $('img', this).attr('src'));
+				   		$('.inspect img').attr('src', $('img', this).attr('src')); // copy hovered image attributes into inspector
 				   		$('.target','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-target'));
 				   		$('.visited','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-visited'));
 				   		$('.origin','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-origin'));

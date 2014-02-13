@@ -220,7 +220,7 @@
 			 	function() {
 			 			var dup = $('span', this).text();
 			 			for (var i = 0; i < dup; i++) {
-				   		$('img', this).clone().replaceAll('.inspect img');
+				   		$('.inspect img').attr('src', $('img', this).attr('src'));
 				   		$('.target','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-target'));
 				   		$('.visited','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-visited'));
 				   		$('.origin','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-origin'));

@@ -81,18 +81,18 @@
 			<div class="inspect carousel">
 				<ul class="panes">
 					<li class="active">
-						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<a href="#"><img class="inspected" src="#" alt="inspected image text"></a>
 						<div class="num-of">1 / 5</div>
 						<div class="details">
 							<dl>
 								<dd>Leads to:</dd>
-									<dt><a href="http://" class="target">washingtonpost.com/</a></dt>
+									<dt><a href="http://" class="target">--</a></dt>
 								<dd>Visited:</dd>
-									<dt class="visited">pending</dt>
+									<dt class="visited">--</dt>
 								<dd>Viewed On:</dd>
-									<dt><a href="http://" class="origin">washingtonpost.com/</a></dt>
+									<dt><a href="http://" class="origin">--</a></dt>
 								<dd>Detected:</dd>
-									<dt class="detected">04:32:18, Jan 22, 2014</dt>
+									<dt class="detected">--</dt>
 							</dl>
 						</div>
 					</li>
@@ -225,6 +225,7 @@
 			$( '.item' ).hover(
 			 	function() {
 			 			var dup = $('span', this).text();
+			 			$('.panes').addClass('animate');
 			 			for (var i = 0; i < dup; i++) {
 				   		$('.inspect img').attr('src', $('img', this).attr('src')); // copy hovered image attributes into inspector
 				   		$('.target','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-target'));
@@ -232,6 +233,8 @@
 				   		$('.origin','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-origin'));
 				   		$('.detected','.inspect li:nth-child('+(i+1)+')').text($(this).attr('data-detected'));			 				
 			 			};
+			 	}, function() {
+			 		$('.panes').removeClass('animate');
 			 	}
 			);
 		</script>

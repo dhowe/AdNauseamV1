@@ -45,7 +45,7 @@ body {
 	color: #fff;
 }
 
-.zoom a.z-in{
+.zoom a#z-in{
 	border-bottom: 1px solid #818181;
 }
 
@@ -89,8 +89,8 @@ body {
 .item img {
 	opacity: 0.85;
 	/* temporary fix for the big images bug */
-	max-height: 200px; 
-	max-width: 200px;
+	/*max-height: 200px; 
+	max-width: 200px;*/
 }
 
 .item.pending img {

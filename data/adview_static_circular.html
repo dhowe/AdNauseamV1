@@ -48,8 +48,8 @@
 		<div class="stage">
 			<div id="logo"><a href="#"></a></div>
 			<div class="zoom">
-				<a href="" class="z-in">&#10010;</a>
-				<a href="" class="z-out">&#8211;</a>
+				<a href="" id="z-in">&#10010;</a>
+				<a href="" id="z-out">&#8211;</a>
 			</div>
 			<div class="session-sum">
 				Since January 12, 2014: <strong>2100 ads detected, 1190 visited.</strong>
@@ -173,6 +173,7 @@
 		</aside>
 		<div id='json'>json</div>
 		<script>
+
 			var container = document.querySelector('#container');
 			var pckry = new Packery( container, {
     		  	centered: {
@@ -182,6 +183,38 @@
 			  	itemSelector: '.item',
 			  	gutter: 1
 			});
+
+			var ratio = 1.5; // item resize aspect ratio
+
+			$(document).ready(function() {
+
+				function resize() {
+	    		$('.item img').each(function(i, img) {
+						$(img).css({
+							'width': $(img).width()/ratio ,
+							'height': $(img).height()/ratio
+						});
+					});
+					pckry.layout(); // rearrange everything
+					console.log( ratio );
+				}
+
+				resize(ratio);
+
+				$('#z-in').live('click', function () {  
+					ratio+=0.5;
+					console.log( ratio );
+					resize(ratio);
+	    	});
+
+				$('#z-out').live('click', function () {  
+					ratio-=0.5;
+					console.log( ratio );
+					resize(ratio);
+	    	});
+
+			});
+
 
 			$( '.item' ).hover(
 			 	function() {

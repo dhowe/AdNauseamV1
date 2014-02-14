@@ -18,70 +18,177 @@
 		<script src="lib/packery/js/packer.js"></script>
 		<script src="lib/packery/js/item.js"></script>
 		<script src="lib/packery/js/packery.js"></script>
-		<script src="lib/packery/examples/examples.js"></script>
-		
-		<!-- only for testing  -->
-		<script src="ads1.json"></script>
-		<script src="adview.js"></script>
+		<script src="lib/packery/examples/examples.js"></script>		
 	</head>
 	<body>
 		<div class="stage">
 			<div id="logo"><a href="#"></a></div>
 			<div class="zoom">
-				<a href="" class="z-in">&#10010;</a>
-				<a href="" class="z-out">&#8211;</a>
+				<a href="" id="z-in">&#10010;</a>
+				<a href="" id="z-out">&#8211;</a>
 			</div>
-			<div id='stats' class="session-sum">
-				<!--Since January 12, 2014: <strong>2100 ads detected, 1190 visited.</strong>-->
-			</div>
-			<div id='container'>loading</div>
+			<div id="stats" class="session-sum"></div>
+			<div id='container'></div>
 		</div>
 		<aside>
 			<a href="#" class="panel-resize"></a>
-			<div class="inspect">
-				<ul class="carousel">
-					<li class="active"><a href="#"><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a></li>
-					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
-					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
-					<li><a href="#"><img src="#" alt="inspected image text"></a></li>
+			<div class="inspect carousel">
+				<ul class="panes">
+					<li class="active">
+						<a href="#"><img class="inspected" src="#" alt=""></a>
+						<div class="num-of">1 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="target">--</a></dt>
+								<dd>Visited:</dd>
+									<dt class="visited">--</dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="origin">--</a></dt>
+								<dd>Detected:</dd>
+									<dt class="detected">--</dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">2 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="target">washingtonpost.com/</a></dt>
+								<dd>Visited:</dd>
+									<dt class="visited">pending</dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="origin">washingtonpost.com/</a></dt>
+								<dd>Detected:</dd>
+									<dt class="detected">04:32:18, Jan 22, 2014</dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">3 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="target">washingtonpost.com/</a></dt>
+								<dd>Visited:</dd>
+									<dt class="visited">pending</dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="origin">washingtonpost.com/</a></dt>
+								<dd>Detected:</dd>
+									<dt class="detected">04:32:18, Jan 22, 2014</dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">4 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="target">washingtonpost.com/</a></dt>
+								<dd>Visited:</dd>
+									<dt class="visited">pending</dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="origin">washingtonpost.com/</a></dt>
+								<dd>Detected:</dd>
+									<dt class="detected">04:32:18, Jan 22, 2014</dt>
+							</dl>
+						</div>
+					</li>
+					<li class="">
+						<a href="#"><img class="inspected" src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="inspected image text"></a>
+						<div class="num-of">5 / 5</div>
+						<div class="details">
+							<dl>
+								<dd>Leads to:</dd>
+									<dt><a href="http://" class="target">washingtonpost.com/</a></dt>
+								<dd>Visited:</dd>
+									<dt class="visited">pending</dt>
+								<dd>Viewed On:</dd>
+									<dt><a href="http://" class="origin">washingtonpost.com/</a></dt>
+								<dd>Detected:</dd>
+									<dt class="detected">04:32:18, Jan 22, 2014</dt>
+							</dl>
+						</div>
+					</li>
 				</ul>
-				<ul class="controls">
-					<li class="active"><a href="#" class="btn circle"></a></li>
-					<li><a href="#" class="btn circle"></a></li>
-					<li><a href="#" class="btn circle"></a></li>
-					<li><a href="#" class="btn circle"></a></li>
-				</ul>
-			</div>
-			<div class="details">
-				<dl>
-					<dd>Detected:</dd>
-						<dt>04:32:18, Jan 22, 2014</dt>
-					<dd>Visited:</dd>
-						<dt>pending</dt>
-					<dd>Leads to:</dd>
-						<dt><a href="http://" class="pending">washingtonpost.com/</a></dt>
-					<dd>Viewed On:</dd>
-						<dt><a href="http://" class="visited">washingtonpost.com/</a></dt>
-				</dl>
 			</div>
 		</aside>
 		<div id='json'></div>
 		<script>
-			window.onload = function() {
-				console.log("Starting adview...");
-				if (testing) updateAdView({ads:ads});
-				console.log("Starting packery...");
-				var container = document.querySelector('#container');
-				var pckry = new Packery( container, {
-	    		  	centered: {
-		        		// x: 400,
-	        			y: 300
-	      			},
-				  	// options
-				  	itemSelector: '.item',
-				  	gutter: 1
-				});
-	    	}
+
+$(document).ready(function() {
+
+	var container = document.querySelector('#container');
+	var pckry = new Packery(container, {
+		centered : { y : 300 },
+		itemSelector : '.item',
+		gutter : 1
+	});
+
+
+	// resizing each image according to aspect ratio
+	function resize(r) {
+		
+		if (!r) alert("no ratio in resize()!");
+			
+		$('.item img').each(function(i, img) {
+			$(img).css({
+				'width' : $(img).width() / r,
+				'height' : $(img).height() / r
+			});
+		});
+		pckry.layout();
+		
+		console.log(r);
+	}
+
+	// sets initial item resize aspect ratio
+	if (!ratio) var ratio = 1.5;
+	resize(ratio);
+
+	// zoom-in
+	$('#z-in').live('click', function() {
+		ratio += 0.5;
+		console.log(ratio);
+		resize(ratio);
+	});
+
+	// zoom-out
+	$('#z-out').live('click', function() {
+		ratio -= 0.5;
+		console.log(ratio);
+		resize(ratio);
+	});
+
+	$('.item').hover(function() {
+		
+		var dup = $('span', this).text();
+		$('.panes').addClass('animate');
+	
+		for (var i = 0; i < dup; i++) {
+			
+			$('.inspect img').attr('src', $('img', this).attr('src'));
+			
+			// copy hovered image attributes into inspector
+			$('.inspect img').attr('alt', $('img', this).attr('alt'));
+			
+			// copy hovered image attributes into inspector
+			$('.target',   '.inspect li:nth-child(' + (i+1) + ')').text($(this).attr('data-target'));
+			$('.visited',  '.inspect li:nth-child(' + (i+1) + ')').text($(this).attr('data-visited'));
+			$('.origin',   '.inspect li:nth-child(' + (i+1) + ')').text($(this).attr('data-origin'));
+			$('.detected', '.inspect li:nth-child(' + (i+1) + ')').text($(this).attr('data-detected'));
+		}
+	
+	}, function() {
+		
+		$('.panes').removeClass('animate');
+	});
+});
+
 		</script>
 	</body>
 </html>

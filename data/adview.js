@@ -1,4 +1,4 @@
-var testing = 1;
+var testing = 0;
 
 if (!testing)  {
 	
@@ -13,11 +13,12 @@ function formatDivs(ads) {
 		
 		if (ads[i].url) {
 			var ad = ads[i];
-			html += '<div class="item ';
+			html += '<div class="	item ';
 			if (ad.visited==0) html += 'pending '	
+			if (ad.visited<0)  html += 'failed '	
 			html += 'dup-count-'+ad.count+'" ';
-			html += 'data-detected="'+ad.found+'" ';
-			html += 'data-visited="'+ad.visited+'" ';
+			html += 'data-detected="'+format(ad.found)+'" ';
+			html += 'data-visited="'+format(ad.visited)+'" ';
 			html += 'data-target="'+ad.target+'" ';
 			html += 'data-origin="'+ad.page+'" ';
 			html += '><span class="counter">'+ad.count+'</span>';
@@ -54,6 +55,7 @@ function formatStats(ads) {
 // }
 
 function format(ts) {
+	
 	var date = new Date(ts);
 	var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -63,7 +65,9 @@ function format(ts) {
 	}
 	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
 	var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds()) + ' ' + meridian;
+	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() 
+		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) + meridian.toLowerCase();
+		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
 }  
 
 function findDups(ads) {
@@ -76,10 +80,13 @@ function findDups(ads) {
 		if (!ad.url) continue;
 		
 		soFar = hash[ad.url];
-		if (!soFar) 
+		if (!soFar) {
 			hash[ad.url] = 1;
+			ad.hidden = false;
+		}
 		else {
 			hash[ad.url] = hash[ad.url]+1;
+			ad.hidden = true;
 		}
 	}
 	for (var i=0, j = ads.length; i<j; i++) {

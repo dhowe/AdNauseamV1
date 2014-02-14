@@ -45,7 +45,7 @@ body {
 	color: #fff;
 }
 
-.zoom a.z-in{
+.zoom a#z-in{
 	border-bottom: 1px solid #818181;
 }
 
@@ -73,14 +73,26 @@ body {
 	text-decoration: none;
 }
 
+.container {
+	position: absolute;
+	top:0;right:0;bottom:0;left:0;
+	margin: auto;
+}
 
 .item{ 
 	/* margin-bottom: -6px; */
 	background: #000;
+	display: inline-block;
+	position: relative;
 }
 
 .item img {
 	opacity: 0.85;
+}
+
+.item, .item img {
+	/* temporary fix for the big images bug */
+	max-width: 600px !important;
 }
 
 .item.pending img {
@@ -206,10 +218,13 @@ aside .panel-resize {
   height: 100%;
   width:500%; /* Number of panes * 100% */
   overflow:hidden; /* This is used solely to clear floats, it does not add functionality. */
+}
+.panes.animate{
   -moz-animation:carousel 30s infinite;
   -webkit-animation:carousel 30s infinite;
   animation:carousel 30s infinite;
 }
+
 .panes > li{
   position:relative;
   display: block;

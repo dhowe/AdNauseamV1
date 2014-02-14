@@ -7,29 +7,50 @@ if (!testing)  {
 }
 
 function formatDivs(ads) {
-	
+		
 	var html = '', ads = findDups(ads);
+	
 	for (var i=0, j = ads.length; i<j; i++) {
 		
 		if (ads[i].url) {
+			
 			var ad = ads[i];
-			html += '<div class="	item ';
-			if (ad.visited==0) html += 'pending '	
-			if (ad.visited<0)  html += 'failed '	
+			
+			html += '<a href="'+ad.target+'" class="item';
+			html += ad.hidden ? '-dup ' : ' ';
+			
+			if (ad.visited==0) html += 'pending ';	
+			if (ad.visited<0)  html += 'failed ';	
+			
 			html += 'dup-count-'+ad.count+'" ';
-			html += 'data-detected="'+format(ad.found)+'" ';
-			html += 'data-visited="'+format(ad.visited)+'" ';
+			html += 'data-detected="'+formatDate(ad.found)+'" ';
+			html += 'data-visited="'+formatDate(ad.visited)+'" ';
 			html += 'data-target="'+ad.target+'" ';
-			html += 'data-origin="'+ad.page+'" ';
-			html += '><span class="counter">'+ad.count+'</span>';
-			html += '<img src="' + ads[i].url + '" alt="ad image">';
+			html += 'data-origin="'+ad.page+'">';
+			
+			if (!ad.hidden) {
+				
+				html += '<span class="counter">'+ad.count+'</span>';
+				html += '<img src="' + ads[i].url + '" alt="ad image">';
+			}
+			
 			html += '</div>\n';
 		}
 	}
 	
+	//console.log("\nHTML\n"+html+"\n\n");
+	
 	return html;
 }
 
+function trimPath(u, max) {
+	
+	max = max || 30;
+	if (u && u.length > max) 
+		u = u.substring(0,max/2)+"..."+u.substring(u.length-max/2);
+	return u;
+}
+	
 function updateAdView(o) {
 	
 	var result, ads = o.ads;
@@ -37,24 +58,23 @@ function updateAdView(o) {
 	$('#container').html(result);
 
 	result = formatStats(ads);
-	console.log(result);
 	$('#stats').html(result);
+	
 	//result = formatJSON(ads);
 	//$('#json').html('<!--\n'+result+'\n-->');
 }
 
 function formatStats(ads) {
 	
-	return 'Since '+ format(sinceTime(ads)) + ': <strong>' + // yuck
+	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html
 	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
 }
 
-// function format(ts) {
-	// console.log(d);
-	// return d.format("dddd, mmmm dS, yyyy, h:MM:ss TT");
-// }
-
-function format(ts) {
+function formatDate(ts) {
+	
+	if (!ts) return 'pending';
+		
+	if (ts < 0)  return 'error';
 	
 	var date = new Date(ts);
 	var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -89,11 +109,13 @@ function findDups(ads) {
 			ad.hidden = true;
 		}
 	}
+	
 	for (var i=0, j = ads.length; i<j; i++) {
 		ad = ads[i];
 		ad.count = hash[ad.url];
 		//console.log(i+") "+ad.count);
 	}
+	
 	return ads;
 }
 

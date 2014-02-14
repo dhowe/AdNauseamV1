@@ -61,14 +61,14 @@ body {
 #logo{
 	position: absolute;
 	z-index: 100;
-	bottom: 16px;
-	right: 16px;
+	bottom: 1px;
+	right:16px;
 }
 
 #logo a {
 	width: 75px;
 	height: 75px;
-	background: url(img/ADNAUSEUM_logo.svg);
+	background: url(img/ADNAUSEUM_logo.png);
 	display: block;
 	text-decoration: none;
 }

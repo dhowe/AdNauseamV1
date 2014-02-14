@@ -19,30 +19,10 @@
 		<script src="lib/packery/js/item.js"></script>
 		<script src="lib/packery/js/packery.js"></script>
 		<script src="lib/packery/examples/examples.js"></script>
-		<script>    
-			// testing viewport measurements
-			$(document).ready(function() {
-			    $("body").append('<div id="measurements"></div>');
-			    $("#measurements").css({
-			        'position': 'fixed',
-			        'bottom': '0',
-			        'left': '0',
-			        'background-color': 'black',
-			        'color': 'white',
-			        'padding': '5px',
-			        'font-size': '10px',
-			        'opacity': '0.4'
-			    });
-			    getDimensions = function(){
-			    	return $('#container').width() + ' x ' +$('#container').height();
-			        //return $(window).width() + ' (' + $(document).width() + ') x ' + $(window).height() + ' (' + $(document).height() + ')';
-			    }
-			    $("#measurements").text(getDimensions());
-			    $(window).on("resize", function(){
-			        $("#measurements").text(getDimensions());
-			    });
-			});
-    	</script>		
+		
+		<!-- only for testing  -->
+		<script src="ads1.json"></script>
+		<script src="adview.js"></script>
 	</head>
 	<body>
 		<div class="stage">
@@ -51,8 +31,8 @@
 				<a href="" class="z-in">&#10010;</a>
 				<a href="" class="z-out">&#8211;</a>
 			</div>
-			<div class="session-sum">
-				Since January 12, 2014: <strong>2100 ads detected, 1190 visited.</strong>
+			<div id='stats' class="session-sum">
+				<!--Since January 12, 2014: <strong>2100 ads detected, 1190 visited.</strong>-->
 			</div>
 			<div id='container'>loading</div>
 		</div>
@@ -85,11 +65,12 @@
 				</dl>
 			</div>
 		</aside>
-		<div id='json'>json</div>
+		<div id='json'></div>
 		<script>
 			window.onload = function() {
-	
-				console.log("starting packery...");
+				console.log("Starting adview...");
+				if (testing) updateAdView({ads:ads});
+				console.log("Starting packery...");
 				var container = document.querySelector('#container');
 				var pckry = new Packery( container, {
 	    		  	centered: {

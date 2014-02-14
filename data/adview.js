@@ -48,9 +48,23 @@ function formatStats(ads) {
 	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
 }
 
+// function format(ts) {
+	// console.log(d);
+	// return d.format("dddd, mmmm dS, yyyy, h:MM:ss TT");
+// }
+
 function format(ts) {
-	return 'January 12, 2014';
-}
+	var date = new Date(ts);
+	var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	var pad = function(str) {
+		str = String(str);
+		return (str.length < 2) ? "0" + str : str;
+	}
+	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
+	var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds()) + ' ' + meridian;
+}  
 
 function findDups(ads) {
 	

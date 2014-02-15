@@ -55,7 +55,11 @@ body {
 	left: 16px;
 	z-index: 100;
 	font-size: 12px;
-	color: #4C4D4C;
+	color: #999;
+	text-shadow: 1px  1px 2px #000,
+							-1px  1px 2px #000,
+							-1px -1px 2px #000,
+							 1px -1px 2px #000;
 }
 
 #logo{

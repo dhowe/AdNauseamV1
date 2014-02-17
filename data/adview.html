@@ -72,7 +72,9 @@ function makeAdview() {
 	function resize(r) {
 		
 		if (!r) alert("no ratio in resize()!");
-			
+		
+		// OR: document.body.style.zoom="300%"
+		
 		$('.item img').each(function(i, img) {
 			$(img).css({
 				'width' : $(img).width() / r,

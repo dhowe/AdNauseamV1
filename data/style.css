@@ -55,7 +55,11 @@ body {
 	left: 16px;
 	z-index: 100;
 	font-size: 12px;
-	color: #4C4D4C;
+	color: #999;
+	text-shadow: 1px  1px 2px #000,
+							-1px  1px 2px #000,
+							-1px -1px 2px #000,
+							 1px -1px 2px #000;
 }
 
 #logo{
@@ -290,7 +294,7 @@ aside .details {
 	left: 4px;
 	right: 0;
 	bottom: 0;
-	height: 100px;
+	height: 120px;
 	background: rgba(220,220,220,0.90);
 	font-size: 12px;
 }
@@ -298,7 +302,7 @@ aside .details {
 aside .details dl {
 	line-height: 20px;
 	margin: 0;
-	padding: 0;
+	padding: 4px 0 0 0;
 }
 
 aside .details dd,
@@ -308,10 +312,13 @@ aside .details dt {
 	border-bottom: 1px solid #BFBFBF;
 	width: 30%;
 	display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 aside .details dd {
-	text-indent: 8px;
-	margin: -4px;
+	text-indent: 12px;
+	margin: 0 -4px;
 }
 aside .details dt{
 	min-width: 70%;

@@ -48,7 +48,7 @@
 		</div>
 		<aside id="right">
 			<a href="#" id="handle" class="panel-resize"/></a>
-			<div  class="inspect carousel">
+			<div class="inspect carousel">
 				<ul class="panes">
 					<li class="active">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
@@ -62,6 +62,8 @@
 									<dt><a href="http://" class="origin">--</a></dt>
 								<dd>Detected:</dd>
 									<dt class="detected">--</dt>
+								<dd>&nbsp;</dd>
+									<dt class="cheap-hack"></dt>
 							</dl>
 						</div>
 					</li>
@@ -76,6 +78,8 @@ $(document).ready(makeAdview);
 $(document).focus(makeAdview);
 
 function makeAdview() {
+	
+	var ratio = 1.2, stepSz = .1, holdMs = 100, timeoutId = -1;
 		
 	var container = document.querySelector('#container');
 
@@ -86,8 +90,6 @@ function makeAdview() {
 		gutter : 1
 	});
 	
-	var ratio = 1.2, stepSz = .1, holdMs = 100, timeoutId = -1;
-
 	addEventHandlers();
 	resize(ratio);
 	
@@ -111,11 +113,6 @@ function makeAdview() {
 		        r.css('width', w - e.pageX);
 		    }
 		    pack.layout();
-		});
-			
-		$('#handle').click(function(e) {
-			e.preventDefault();
-			resize(ratio += stepSz);
 		});
 		
 		/////////// ZOOMING
@@ -170,11 +167,11 @@ function makeAdview() {
 	// hack to grab the native image size
 	function realSize(theImage) { // use cache?
 		
-		// Create new offscreen image to test
+		// Create new offscreen image 
 		var theCopy = new Image();
 		theCopy.src = theImage.attr("src");
 		
-		// Get accurate measurements from that.
+		// Get accurate measurements from it
 		return { w: theCopy.width, h: theCopy.height };
 	}
 	
@@ -197,7 +194,7 @@ function makeAdview() {
 		pack.layout();
 	}
 	
-	function trimPath(u, max) { // fix (show full domain)
+	function trimPath(u, max) { // fix (should show full domain?)
 		return u;
 		max = max || 30;
 		if (u && u.length > max) 

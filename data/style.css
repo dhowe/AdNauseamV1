@@ -10,7 +10,28 @@ body {
 }
 
 /* STAGE */
-
+#left{
+    float:left;
+    width:75%;
+}
+#right{
+    float:left;
+    width:25%;
+}
+#handle{
+    float:left;
+	position: absolute;
+	top:0;
+	left: 0;
+	bottom: 0;
+	width: 2px;
+	background: #aaa;
+	border: 1px solid #777;
+	border-width: 0 1px;
+	display: block;
+	z-index: 200;
+	cursor: col-resize;
+}
 .stage {
 	width: 75%;
 	position: fixed;

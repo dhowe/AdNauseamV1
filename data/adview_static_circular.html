@@ -171,7 +171,7 @@
 				-->
 			</div>
 		</aside>
-		<div id='json'>json</div>
+		<div id='ratio'>ratio</div>
 		<script>
 
 			var container = document.querySelector('#container');
@@ -191,16 +191,19 @@
 				}
 
 				// resizing each image according to aspect ratio
-				function resize() {
+				function resize(r) {
 					
-	    		$('.item img').each(function(i, img) {
+					$('#z-in').html();
+					
+	    			$('.item img').each(function(i, img) {
 						$(img).css({
-							'width': $(img).width()/ratio ,
-							'height': $(img).height()/ratio
+							'width': $(img).width()/r ,
+							'height': $(img).height()/r
 						});
 					});
 					pckry.layout(); // rearrange everything
-					console.log( ratio );
+					
+					console.log( r );
 				}
 
 				resize(ratio);
@@ -210,14 +213,14 @@
 					ratio+=0.5;
 					console.log( ratio );
 					resize(ratio);
-	    	});
+	    		});
 
 				// zoom-out
 				$('#z-out').live('click', function () {  
 					ratio-=0.5;
 					console.log( ratio );
 					resize(ratio);
-	    	});
+	    		});
 
 			});
 

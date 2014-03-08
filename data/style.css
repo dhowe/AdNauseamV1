@@ -49,6 +49,15 @@ body {
 	border-bottom: 1px solid #818181;
 }
 
+#ratio {
+	position: absolute;
+	top: 65px;
+	left: 17px;
+	z-index: 100;
+	font-size: 9px;
+	color: #999;
+}
+
 .session-sum {
 	position: absolute;
 	bottom: 16px;

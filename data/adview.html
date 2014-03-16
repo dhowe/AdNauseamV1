@@ -18,7 +18,8 @@
 		<script src="lib/packery/js/packer.js"></script>
 		<script src="lib/packery/js/item.js"></script>
 		<script src="lib/packery/js/packery.js"></script>
-		<script src="lib/packery/examples/examples.js"></script>		
+		<script src="lib/packery/examples/examples.js"></script>	
+		<script src="make-adview.js"></script>		
 	</head>
 	<body>
 		<div id="left" class="stage">
@@ -29,6 +30,7 @@
 			</div>
 			<div id="stats" class="session-sum"></div>
 			<div id='container'>
+<!-- for testing only -->
 <a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_MS3.jpg" alt="img alt"></a>
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359251/13_2259_INYT_Anon_USD_163x90_ER1.jpg" alt="img alt"></a>
 <a class="item dup-count-4" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">4</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/subscribe-200x60.png" alt="img alt"></a>
@@ -38,6 +40,9 @@
 <a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359250/13_2259_INYT_Anon_USD_120x90_ER1.jpg" alt="img alt"></a>
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/11/ad.361146/GBH_NYT96x60_Revised-1.gif" alt="img alt"></a>
 <a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
+
+<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter-hidden">2</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
+
 <a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><img src="http://aka-cdn-ns.adtechus.com/images/265/Ad0St1Sz170Sq0V1Id22163209.jpg" alt="img alt"></a>
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><img src="http://aka-cdn-ns.adtechus.com/images/3/Ad0St1Sz457Sq0V2Id22141443.jpg" alt="img alt"></a>
 <a class="item dup-count-6" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">6</span><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="img alt"></a>
@@ -54,6 +59,8 @@
 						<a href="#"><img class="inspected" src="#" alt=""></a>
 						<div class="details">
 							<dl>
+								<!--dd>Count:</dd>
+									<dt class="dupcount">--</dt-->
 								<dd>Leads to:</dd>
 									<dt><a href="http://" class="target">--</a></dt>
 								<dd>Visited:</dd>
@@ -68,141 +75,10 @@
 						</div>
 					</li>
 				</ul>
+				<ul class="controls"></ul>
 			</div>
 		</aside>
 		<div id='ratio'>zoom</div>
 		<div id='json'></div>
-		<script>
-
-$(document).ready(makeAdview);
-$(document).focus(makeAdview);
-
-function makeAdview() {
-	
-	var ratio = 1.2, stepSz = .1, holdMs = 100, timeoutId = -1;
-		
-	var container = document.querySelector('#container');
-
-	var pack = new Packery(container, {
-		
-		centered : { y : 300 }, // why 300??
-		itemSelector : '.item',
-		gutter : 1
-	});
-	
-	addEventHandlers();
-	resize(ratio);
-	
-	function addEventHandlers() {
-		
-		/////////// RESIZE PANELS
-		
-		var h = $('#handle'), l = $('#left'), r = $('#right'), w = $('body').width(), isDragging = false;
-	
-		h.mousedown(function(e){
-		    isDragging = true;
-		    e.preventDefault();
-		});
-		
-		$(document).mouseup(function() {
-	    	isDragging = false;
-			}).mousemove(function(e) {
-		    if (isDragging){  // constrain drag width here
-		    	var lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
-		        l.css('width', lw);
-		        r.css('width', w - e.pageX);
-		    }
-		    pack.layout();
-		});
-		
-		/////////// ZOOMING
-		
-		// click zoom-in
-		$('#z-in').click(function(e) {
-			e.preventDefault();
-			resize(ratio += stepSz);
-		});
-		
-		// hold zoom-in
-		$('#z-in').mousedown(function() {
-	    	timeoutId = setInterval(function(){ resize(ratio += stepSz); }, holdMs);
-		}).bind('mouseup mouseleave', function() {
-		    clearTimeout(timeoutId);
-		});
-		
-		// click zoom-out
-		$('#z-out').click(function(e) {
-			e.preventDefault();
-			resize(ratio -= stepSz);
-		});
-		
-		// hold zoom-out
-		$('#z-out').mousedown(function() {
-	    	timeoutId = setInterval(function(){ resize(ratio -= stepSz); }, holdMs);
-		}).bind('mouseup mouseleave', function() {
-		    clearTimeout(timeoutId);
-		});
-		
-		// hover to put item(s) in inspector
-		$('.item').hover(function() {
-	
-			$('.inspect img').attr('src', $('img', this).attr('src'));
-			
-			// copy hovered image attributes into inspector
-			$('.inspect img').attr('alt', $('img', this).attr('alt'));
-			
-			// copy hovered image attributes into inspector
-			$('.target',   '.inspect li:nth-child(1)').text(trimPath($(this).attr('data-target')));
-			$('.target',   '.inspect li:nth-child(1)').attr('href',$(this).attr('data-target'));
-	
-			$('.origin',   '.inspect li:nth-child(1)').text(trimPath($(this).attr('data-origin')));
-			$('.origin',   '.inspect li:nth-child(1)').attr('href',$(this).attr('data-origin'));
-			
-			$('.visited',  '.inspect li:nth-child(1)').text($(this).attr('data-visited'));
-			$('.detected', '.inspect li:nth-child(1)').text($(this).attr('data-detected'));
-		});
-		
-	}
-	
-	// hack to grab the native image size
-	function realSize(theImage) { // use cache?
-		
-		// Create new offscreen image 
-		var theCopy = new Image();
-		theCopy.src = theImage.attr("src");
-		
-		// Get accurate measurements from it
-		return { w: theCopy.width, h: theCopy.height };
-	}
-	
-	// resize each image according to aspect ratio
-	function resize(r) {
-			
-		// OR: document.body.style.zoom="300%"
-	
-		$('.item img').each(function(i, img) {
-			
-			var $img = $(img), sz = realSize($img);
-			$img.css({
-				'width'  : sz.w * r,
-				'height' : sz.h * r
-			});
-		});
-		
-		$('#ratio').html(r.toFixed(2));
-	
-		pack.layout();
-	}
-	
-	function trimPath(u, max) { // fix (should show full domain?)
-		return u;
-		max = max || 30;
-		if (u && u.length > max) 
-			u = u.substring(0, max / 2) + '...' + u.substring(u.length-max/2);
-		return u;
-	}
-}
-
-		</script>
 	</body>
 </html>

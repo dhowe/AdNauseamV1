@@ -17,7 +17,7 @@ function formatDivs(ads) {
 			var ad = ads[i];
 			
 			html += '<a href="'+ad.target+'" class="item';
-			html += ad.hidden ? '-dup ' : ' ';
+			html += ad.hidden ? '-hidden ' : ' '; // hide dups w css
 			
 			if (ad.visited==0) html += 'pending ';	
 			if (ad.visited<0)  html += 'failed ';	
@@ -26,12 +26,15 @@ function formatDivs(ads) {
 			html += 'data-detected="'+formatDate(ad.found)+'" ';
 			html += 'data-visited="'+formatDate(ad.visited)+'" ';
 			html += 'data-target="'+ad.target+'" ';
+			html += 'data-url="'+ad.url+'" ';
 			html += 'data-origin="'+ad.page+'">';
 			
-			if (!ad.hidden) {
-				
-				html += '<span class="counter">'+ad.count+'</span>';
-				html += '<img src="' + ads[i].url + '" alt="ad image">';
+			
+			var spantag = 'counter'; 
+			if (!ad.hidden) 
+			{
+				html += '<span class="'+spantag+'">'+ad.count+'</span>';
+				html += '<img src="' + ad.url + '" alt="ad image">';
 			}
 			
 			html += '</div>\n';
@@ -76,17 +79,20 @@ function formatDate(ts) {
 		
 	if (ts < 0)  return 'error';
 	
-	var date = new Date(ts);
-	var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	var date = new Date(ts), days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	
 	var pad = function(str) {
 		str = String(str);
 		return (str.length < 2) ? "0" + str : str;
 	}
+	
 	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
 	var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
 	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() 
-		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) + meridian.toLowerCase();
+		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) 
+		+ meridian.toLowerCase() + ' ('+ts+')'; // attach ts to end for debugging
+		
 		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
 }  
 

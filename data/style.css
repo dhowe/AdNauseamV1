@@ -120,6 +120,10 @@ body {
 	position: relative;
 }
 
+.item-hidden {
+	display: none;
+}
+
 .item img {
 	opacity: 0.85;
 }
@@ -222,6 +226,42 @@ aside .panel-resize {
 	z-index: 200;
 	cursor: col-resize;
 }
+
+/***************************************************
+ 	SIDE PANEL: CONTROLS
+ ***************************************************/
+
+
+aside .controls {
+	bottom: 180px;
+	margin: 0 auto;
+	z-index: 200;
+	position: absolute;
+	text-align: center;
+}
+
+aside .controls li {
+	margin: 0 auto;
+	list-style: none;
+	margin-right: 10px;
+	display: inline-block;
+}
+
+aside .controls a {
+	width: 4px;
+	height: 4px;
+	border: 2px solid #F2F2F2;
+	border-radius: 4px;
+	display: block;
+}
+
+aside .controls li.active a {
+	background: #F2F2F2;
+}
+
+/***************************************************
+ 	SIDE PANEL: INSPECTOR
+ ***************************************************/
 
 .inspect {
 	top:0;

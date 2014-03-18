@@ -180,10 +180,10 @@ function populateInspector(selectedIdx) {
 	if (!selected) throw Error("No selected!!");
 	
 	// copy hovered image attributes into inspector
-	$('.target',   '.inspect li:first-child()').text(trimPath(selected.target));
+	$('.target',   '.inspect li:first-child()').text(selected.target);
 	$('.target',   '.inspect li:first-child()').attr('href',  selected.target);
 
-	$('.origin',   '.inspect li:first-child()').text(trimPath(selected.origin));
+	$('.origin',   '.inspect li:first-child()').text(selected.origin);
 	$('.origin',   '.inspect li:first-child()').attr('href',  selected.origin);
 	
 	$('.visited',  '.inspect li:first-child()').text(selected.visited);

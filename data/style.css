@@ -211,6 +211,7 @@ aside {
 	top:0;
 	bottom: 0;
 	background: url(img/bg_panel.png);
+	z-index: 10000;
 }
 
 aside .panel-resize {

@@ -13,24 +13,40 @@
 		<string>LucidaGrande-Bold</string>
 		<string>LucidaGrande-Bold</string>
 		<string>LucidaGrande</string>
-		<string>.LucidaGrandeUI</string>
 		<string>LucidaGrande</string>
 		<string>.LucidaGrandeUI</string>
-		<string>OpenSansHebrew-Regular</string>
+		<string>.LucidaGrandeUI</string>
+		<string>BebasNeueBold</string>
+		<string>.LucidaGrandeUI</string>
+		<string>.LucidaGrandeUI</string>
 		<string>OpenSansHebrew-Bold</string>
 		<string>OpenSansHebrew-Regular</string>
 		<string>OpenSansHebrew-Bold</string>
 		<string>OpenSansHebrew-Regular</string>
-		<string>OpenSansHebrew-Bold</string>
 		<string>OpenSansHebrew-Regular</string>
-		<string>OpenSansHebrew-Bold</string>
-		<string>OpenSansHebrew-Regular</string>
-		<string>OpenSansHebrew-Bold</string>
+		<string>BebasNeueBold</string>
+		<string>NanumMyeongjo</string>
+		<string>NanumMyeongjo</string>
+		<string>NanumGothicExtraBold</string>
+		<string>Helvetica-Bold</string>
+		<string>NanumMyeongjo</string>
+		<string>NanumGothicExtraBold</string>
+		<string>NanumMyeongjo</string>
+		<string>Helvetica-Bold</string>
+		<string>Helvetica</string>
+		<string>BebasNeueBold</string>
+		<string>.LucidaGrandeUI</string>
+		<string>.LucidaGrandeUI</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
 		<string>BebasNeueBold</string>
 		<string>BebasNeueBold</string>
 	</array>
 	<key>length</key>
-	<integer>973441</integer>
+	<integer>10668111</integer>
 	<key>version</key>
 	<integer>18</integer>
 </dict>

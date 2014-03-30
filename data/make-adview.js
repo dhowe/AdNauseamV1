@@ -51,13 +51,12 @@ function makeAdview() {
 			zoomIn();
 		});
 		
-		// hold zoom-in
+		/* hold zoom-in 
 		$('#z-in').mousedown(function() {
-	    	//zoomId = setInterval(function(){ resize(zratio += zstepSz); }, zholdMs);
-	    	//zoomId = setInterval(function(){ zoomIn(); }, zholdMs);
+	    	zoomId = setInterval(function(){ zoomIn(); }, zholdMs);
 		}).bind('mouseup mouseleave', function() {
 		    clearTimeout(zoomId);
-		});
+		});*/
 		
 		// click zoom-out
 		$('#z-out').click(function(e) {
@@ -66,13 +65,13 @@ function makeAdview() {
 			zoomOut();
 		});
 		
-		// hold zoom-out
+		/* hold zoom-out
 		$('#z-out').mousedown(function() {
 	    	//zoomId = setInterval(function(){ if (zratio > .1) resize(zratio -= zstepSz); }, zholdMs);
-	    	//zoomId = setInterval(function(){ if (zratio > .1) zoomOut(); }, zholdMs);
+	    	zoomId = setInterval(function(){ zoomOut(); }, zholdMs);
 		}).bind('mouseup mouseleave', function() {
 		    clearTimeout(zoomId);
-		});
+		});*/
 
 		/////////// INSPECTOR
 

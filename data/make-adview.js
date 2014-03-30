@@ -42,6 +42,34 @@ function makeAdview() {
 		    pack.layout();
 		});
 		
+		/////////// DRAG CONTAINER
+		
+		function drag_start(event) {
+		    var style = window.getComputedStyle(event.target, null);
+		    event.dataTransfer.setData("text/plain", (parseInt(style.getPropertyValue("left"), 10)
+		    	 - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
+		} 
+		function drag_over(event) { 
+		    event.preventDefault(); 
+		    return false; 
+		} 
+		function drop(event) { 
+			
+		    var offset = event.dataTransfer.getData("text/plain").split(',');
+		   	var dm  = document.querySelector('#container');
+		    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+		    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+		    event.preventDefault();
+		    return false;
+		} 
+		
+		var dm  = document.querySelector('#container');
+		dm.addEventListener('dragstart', drag_start, false); 
+		document.body.addEventListener('dragover', drag_over, false); 
+		document.body.addEventListener('drop', drop, false);
+		
+		//from: http://jsfiddle.net/robertc/kKuqH/
+		
 		/////////// ZOOMING
 		
 		// click zoom-in
@@ -51,13 +79,7 @@ function makeAdview() {
 			zoomIn();
 		});
 		
-		/* hold zoom-in 
-		$('#z-in').mousedown(function() {
-	    	zoomId = setInterval(function(){ zoomIn(); }, zholdMs);
-		}).bind('mouseup mouseleave', function() {
-		    clearTimeout(zoomId);
-		});*/
-		
+
 		// click zoom-out
 		$('#z-out').click(function(e) {
 			e.preventDefault();
@@ -65,7 +87,14 @@ function makeAdview() {
 			zoomOut();
 		});
 		
-		/* hold zoom-out
+		/* // hold zoom-in 
+		$('#z-in').mousedown(function() {
+	    	zoomId = setInterval(function(){ zoomIn(); }, zholdMs);
+		}).bind('mouseup mouseleave', function() {
+		    clearTimeout(zoomId);
+		});
+		
+		// hold zoom-out
 		$('#z-out').mousedown(function() {
 	    	//zoomId = setInterval(function(){ if (zratio > .1) resize(zratio -= zstepSz); }, zholdMs);
 	    	zoomId = setInterval(function(){ zoomOut(); }, zholdMs);

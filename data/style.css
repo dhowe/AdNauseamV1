@@ -38,6 +38,7 @@ body {
 	top:0;
 	bottom: 0;
 	left:0;
+	cursor: move;
 }
 
 .zoom {
@@ -109,8 +110,9 @@ body {
 
 .container {
 	position: absolute;
-	top:0;right:0;bottom:0;left:0;
+	top:0;left:0;
 	margin: auto;
+	cursor: move;
 }
 
 .item{ 
@@ -285,15 +287,17 @@ aside .controls li.active a {
   width:100%;
 }
 .panes{
-	margin: 0;
+  	margin: 0;
 	padding: 0;
-  list-style:none;
-  position:absolute;
-  top: 0; bottom: 0;
-  height: 100%;
-  width:500%; /* Number of panes * 100% */
-  overflow:hidden; /* This is used solely to clear floats, it does not add functionality. */
+	cursor: none;
+	list-style:none;
+	position:absolute;
+	top: 0; bottom: 0;
+	height: 100%;
+	width:500%; /* Number of panes * 100% */
+	overflow:hidden; /* This is used solely to clear floats, it does not add functionality. */
 }
+
 .panes.animate{
   -moz-animation:carousel 30s infinite;
   -webkit-animation:carousel 30s infinite;
@@ -313,6 +317,7 @@ aside .controls li.active a {
 	margin: auto;
 	top: 0; right: 0; bottom: 100px; left: 0;
 	position: absolute;
+	cursor: default;
 }
 .carousel img{
 	display: block;

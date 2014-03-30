@@ -34,7 +34,7 @@ function formatDivs(ads) {
 			if (!ad.hidden) 
 			{
 				html += '<span class="'+spantag+'">'+ad.count+'</span>';
-				html += '<img src="' + ad.url + '" alt="ad image">';
+				html += '<img src="' + ad.url + '" alt="ad">';
 			}
 			
 			html += '</div>\n';

@@ -1,10 +1,13 @@
 var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
 var inspectorData, inspectorIdx, animatorId, pack, container;
+var zoomIdx=0, zooms = [ 100, 75, 50, 25, 12.5, 6.25 ];
 
 $(document).ready(makeAdview);
 $(document).focus(makeAdview);
 
 function makeAdview() {
+	
+	//console.log('makeAdview');
 	
 	var container = document.querySelector('#container');
 	var zoomId = -1, pack = new Packery(container, {
@@ -15,7 +18,7 @@ function makeAdview() {
 	});
 	
 	addEventHandlers();
-	resize(zratio);
+	//resize(zratio);
 	
 	function addEventHandlers() {
 			
@@ -44,12 +47,14 @@ function makeAdview() {
 		// click zoom-in
 		$('#z-in').click(function(e) {
 			e.preventDefault();
-			resize(zratio += zstepSz);
+			//resize(zratio += zstepSz);
+			zoomIn();
 		});
 		
 		// hold zoom-in
 		$('#z-in').mousedown(function() {
-	    	zoomId = setInterval(function(){ resize(zratio += zstepSz); }, zholdMs);
+	    	//zoomId = setInterval(function(){ resize(zratio += zstepSz); }, zholdMs);
+	    	//zoomId = setInterval(function(){ zoomIn(); }, zholdMs);
 		}).bind('mouseup mouseleave', function() {
 		    clearTimeout(zoomId);
 		});
@@ -57,13 +62,14 @@ function makeAdview() {
 		// click zoom-out
 		$('#z-out').click(function(e) {
 			e.preventDefault();
-			if (zratio > .1)	
-				resize(zratio -= zstepSz);
+			//if (zratio > .1)	resize(zratio -= zstepSz);
+			zoomOut();
 		});
 		
 		// hold zoom-out
 		$('#z-out').mousedown(function() {
-	    	zoomId = setInterval(function(){ if (zratio > .1) resize(zratio -= zstepSz); }, zholdMs);
+	    	//zoomId = setInterval(function(){ if (zratio > .1) resize(zratio -= zstepSz); }, zholdMs);
+	    	//zoomId = setInterval(function(){ if (zratio > .1) zoomOut(); }, zholdMs);
 		}).bind('mouseup mouseleave', function() {
 		    clearTimeout(zoomId);
 		});
@@ -108,7 +114,7 @@ function makeAdview() {
 
 			/////////// RESET CONTROLS
 			
-			$( ".controls" ).empty();
+			$(".controls" ).empty();
 			
 			for (var i=0; i < inspectorData.length; i++) {
 				
@@ -149,6 +155,24 @@ function makeAdview() {
 		return { w: theCopy.width, h: theCopy.height };
 	}
 	
+	function zoomIn() {
+		
+		(zoomIdx > 0) && setZoom(--zoomIdx);
+	}
+	
+	function setZoom(idx) {
+		
+		var style =('z-'+zooms[idx]).replace(/\./, '_');
+		$('#container').removeClass().addClass(style);
+		$('#ratio').html(zooms[idx]+'%');
+		//console.log('zoomIn: '+$('#container').attr('class')+" style="+style);
+	}
+	
+	function zoomOut() {
+
+		(zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
+	}
+			
 	// resize each image according to aspect ratio
 	function resize(r) {
 			

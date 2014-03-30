@@ -25,6 +25,9 @@ var Packery = Outlayer.create('packery');
 Packery.Item = Item;
 
 Packery.prototype._create = function() {
+	
+  //console.log(this.options);
+  
   // call super
   Outlayer.prototype._create.call( this );
 

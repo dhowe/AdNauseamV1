@@ -36,6 +36,8 @@
 		<string>Helvetica</string>
 		<string>BebasNeueBold</string>
 		<string>OpenSansHebrew-Bold</string>
+		<string>HoeflerText-Italic</string>
+		<string>Helvetica</string>
 		<string>.LucidaGrandeUI</string>
 		<string>.LucidaGrandeUI</string>
 		<string>BebasNeueBold</string>
@@ -47,7 +49,7 @@
 		<string>BebasNeueBold</string>
 	</array>
 	<key>length</key>
-	<integer>10680331</integer>
+	<integer>11008834</integer>
 	<key>version</key>
 	<integer>18</integer>
 </dict>

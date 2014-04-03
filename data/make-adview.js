@@ -50,18 +50,22 @@ function makeAdview() {
 		    	 - event.clientX) + ',' + (parseInt(style.getPropertyValue("top"), 10) - event.clientY));
 		} 
 		function drag_over(event) { 
-		    event.preventDefault(); 
-		    return false; 
+	
+		    return _drag(event); 
 		} 
 		function drop(event) { 
 			
-		    var offset = event.dataTransfer.getData("text/plain").split(',');
+		    return _drag(event);
+		} 
+		function _drag(event) {
+			
+			var offset = event.dataTransfer.getData("text/plain").split(',');
 		   	var dm  = document.querySelector('#container');
 		    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
 		    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
-		    event.preventDefault();
+		    event.preventDefault(); 
 		    return false;
-		} 
+		}
 		
 		var dm  = document.querySelector('#container');
 		dm.addEventListener('dragstart', drag_start, false); 

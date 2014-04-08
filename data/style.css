@@ -111,6 +111,14 @@ body {
 	transform: 			scale(0.0625, 0.0625);
 }
 
+#container {
+	-moz-transition:	-moz-transform 0.5s;
+	-ms-transition: -ms-transform 0.5s;
+	-webkit-transition: -webkit-transform 0.5s;
+	-o-transition: 		-o-transform 0.5s;
+    transition: 		transform 0.5s;
+}
+
 #ratio {
 	position: absolute;
 	top: 65px;
@@ -167,7 +175,7 @@ body {
 }
 
 .item img {
-	opacity: 0.85;
+	/*opacity: 0.85;*/
 }
 
 .item, .item img {
@@ -176,7 +184,7 @@ body {
 }
 
 .item.pending img {
-	opacity: 0.4;
+	/*opacity: 0.8;*/
 }
 
 .item .counter{
@@ -203,7 +211,7 @@ body {
 }
 
 .item:hover {
-	box-shadow:   0px 0px 20px 0px rgba(0,0,0,0.90);
+	box-shadow:   0px 0px 40px 5px rgba(0,0,0,0.90);
 	z-index: 100000;
 }
 

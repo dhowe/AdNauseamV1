@@ -29,7 +29,6 @@ function formatDivs(ads) {
 			html += 'data-url="'+ad.url+'" ';
 			html += 'data-origin="'+ad.page+'">';
 			
-			
 			var spantag = 'counter'; 
 			if (!ad.hidden) 
 			{

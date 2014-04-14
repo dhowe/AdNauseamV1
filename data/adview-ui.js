@@ -1,5 +1,5 @@
 var inspectorData, inspectorIdx, animatorId, pack, container;
-var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000, offset={};
+var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
 var zoomIdx = 0, resizing = false, zooms = [ 100, 75, 50, 25, 12.5, 6.25 ];
 
 $(document).ready(makeAdview);
@@ -55,10 +55,6 @@ function makeAdview() {
 		var y = parseInt(style.getPropertyValue("top"),  10) - event.clientY;
 		console.log("dragStart: "+x+","+y); 
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
-	    offset.x = x;
-	    offset.y = y;
-	    	// (parseInt(style.getPropertyValue("left"), 10)-event.clientX) 
-	    	// + ',' + (parseInt(style.getPropertyValue("top"), 10)-event.clientY));
 		// event.preventDefault(); -> breaks dragging 
 	} 
 	
@@ -74,6 +70,7 @@ function makeAdview() {
 	    //dm.style.left = (event.clientX + parseInt(offset.x, 10)) + 'px';
 	    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
 	    //dm.style.top = (event.clientY + parseInt(offset.y, 10)) + 'px';
+	    //$('#container').width('100%').height('100%');
 	    event.preventDefault(); 
 	    return false;
 	}

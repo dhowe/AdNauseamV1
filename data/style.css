@@ -32,7 +32,8 @@ body {
 	z-index: 200;
 	cursor: col-resize;
 }
-.stage {
+
+#stage {
 	width: 75%;
 	position: fixed;
 	top:0;
@@ -41,16 +42,18 @@ body {
 	cursor: move;
 }
 
-.container {
+#container {
 	position: absolute;
 	top:0;left:0;
 	margin: auto;
 	cursor: move;
+	border-style:solid;
+	border-color:#ff0000;
 	height: 100%;
 }
 
 .zoom {
-	position: absolute;
+	position: absolute; 
 	top: 16px;
 	left: 16px;
 	border: 2px solid #818181;

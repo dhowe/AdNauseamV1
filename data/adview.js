@@ -1,10 +1,6 @@
-var testing = 0;
 
-if (!testing)  {
-	
-	self.port.on("ADNUpdateAdView", updateAdView);
-	updateAdView(self.options);
-}
+//self.port.on("ADNUpdateAdView", updateAdView);
+updateAdView(self.options);
 
 function formatDivs(ads) {
 		

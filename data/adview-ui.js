@@ -1,6 +1,6 @@
 var inspectorData, inspectorIdx, animatorId, pack, container;
-var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
-var zoomIdx=0, isDragging=false, zooms = [ 100, 75, 50, 25, 12.5, 6.25 ];
+var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000, offset={};
+var zoomIdx = 0, resizing = false, zooms = [ 100, 75, 50, 25, 12.5, 6.25 ];
 
 $(document).ready(makeAdview);
 $(document).focus(makeAdview);
@@ -9,7 +9,7 @@ function makeAdview() {
 
 	var zoomId = -1, pack = new Packery(
 		document.querySelector('#container'), {
-		centered : { y : 300 }, // why 300??
+		centered : { y : 300 }, // why??
 		itemSelector : '.item',
 		gutter : 1
 	});
@@ -17,22 +17,30 @@ function makeAdview() {
 	/////////// RESIZE-PANELS
 
 	$('#handle').mousedown(function(e){
-	    isDragging = true;
+		
+	    resizing = true;
 	    e.preventDefault();
 	});
 	
-	$(document).mouseup(function() {
-    	isDragging = false;
-		}).mousemove(function(e) {
-	    if (isDragging) {  // constrain drag width here
-	    	var lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
+	$(document).mouseup(function(e) {
+		
+    	resizing = false;
+    	e.preventDefault();
+	});
+	
+	$(document).mousemove(function(e) {
+		
+	    if (resizing) {  // constrain drag width here
+	    	
+	    	var w = $('body').width(), 
+	    		lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
 	        $('#left').css('width', lw);
 	        $('#right').css('width', w - e.pageX);
 	    }
+	    
 	    pack.layout();
 	});
-	
-	
+		
 	/////////// DRAG-STAGE
 	
 	document.querySelector('#container').addEventListener('dragstart', dragStart, false); 
@@ -40,16 +48,48 @@ function makeAdview() {
 	document.body.addEventListener('drop', drop, false);
 	// from: http://jsfiddle.net/robertc/kKuqH/
 
+	function dragStart(event) {
+		//console.log("dragStart: "+event.target);
+	    var style = window.getComputedStyle(document.querySelector('#container'), null);
+		var x = parseInt(style.getPropertyValue("left"), 10) - event.clientX; 
+		var y = parseInt(style.getPropertyValue("top"),  10) - event.clientY;
+		console.log("dragStart: "+x+","+y); 
+	    event.dataTransfer.setData("text/plain", x + ',' + y);
+	    offset.x = x;
+	    offset.y = y;
+	    	// (parseInt(style.getPropertyValue("left"), 10)-event.clientX) 
+	    	// + ',' + (parseInt(style.getPropertyValue("top"), 10)-event.clientY));
+		// event.preventDefault(); -> breaks dragging 
+	} 
+	
+	function dragOver(event) { return _drag(event); } 
+	
+	function drop(event) { return _drag(event); } 
+	
+	function _drag(event) {
+		
+		var offset = event.dataTransfer.getData("text/plain").split(',');
+	   	var dm  = document.querySelector('#container');
+	    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
+	    //dm.style.left = (event.clientX + parseInt(offset.x, 10)) + 'px';
+	    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+	    //dm.style.top = (event.clientY + parseInt(offset.y, 10)) + 'px';
+	    event.preventDefault(); 
+	    return false;
+	}
+	
 	/////////// ZOOM-STAGE
 	
 	// click zoom-in
 	$('#z-in').unbind().click(function(e) {
+		
 		zoomIn();
 		e.preventDefault();
 	});		
 
 	// click zoom-out
 	$('#z-out').unbind().click(function(e) {
+		
 		zoomOut();
 		e.preventDefault();
 	});
@@ -169,26 +209,6 @@ function makeAdview() {
 		
 		// Get accurate measurements from it
 		return { w: theCopy.width, h: theCopy.height };
-	}
-	
-	function dragStart(event) {
-	    var style = window.getComputedStyle(event.target, null);
-	    event.dataTransfer.setData("text/plain", 
-	    	(parseInt(style.getPropertyValue("left"), 10)-event.clientX) 
-	    	+ ',' + (parseInt(style.getPropertyValue("top"), 10)-event.clientY));
-	} 
-	
-	function dragOver(event) { return _drag(event); } 
-	
-	function drop(event) { return _drag(event); } 
-	
-	function _drag(event) {
-		var offset = event.dataTransfer.getData("text/plain").split(',');
-	   	var dm  = document.querySelector('#container');
-	    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
-	    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
-	    event.preventDefault(); 
-	    return false;
 	}
 }
 

@@ -1,9 +1,0 @@
-{
-  "name": "doc-ready",
-  "version": "1.0.2",
-  "description": "Let's get this party started... when the document is ready",
-  "main": "doc-ready.js",
-  "dependencies": {
-    "eventie": "desandro/eventie"
-  }
-}

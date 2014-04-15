@@ -178,10 +178,10 @@ section p {
 }
 
 #logo     {left: 376px; top: 281px;}
-#tagline  {left: 429px; top: 473px; animation-delay: 200ms}
-#p1       {left: 429px; top: 560px; animation-delay: 400ms}
-#p2       {left: 165px; top: 975px; animation-delay: 600ms}
-#install  {left: 302px; top: 105px; animation-delay: 800ms}
+#tagline  {left: 429px; top: 473px; animation-delay: 0ms}
+#p1       {left: 429px; top: 560px; animation-delay: 0ms}
+#p2       {left: 165px; top: 975px; animation-delay: 0ms}
+#install  {left: 302px; top: 105px; animation-delay: 0ms}
 #helen    {left: 620px; top: 295px; animation-delay: 1000ms}
 #faq      {left: 308px; top: 618px; animation-delay: 1200ms}
 #contact  {left: 272px; top: 499px; animation-delay: 1400ms}

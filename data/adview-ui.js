@@ -53,7 +53,7 @@ function makeAdview() {
 	    var style = window.getComputedStyle(document.querySelector('#container'), null);
 		var x = parseInt(style.getPropertyValue("left"), 10) - event.clientX; 
 		var y = parseInt(style.getPropertyValue("top"),  10) - event.clientY;
-		console.log("dragStart: "+x+","+y); 
+		//console.log("dragStart: "+x+","+y); 
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
 		// event.preventDefault(); -> breaks dragging 
 	} 
@@ -67,10 +67,7 @@ function makeAdview() {
 		var offset = event.dataTransfer.getData("text/plain").split(',');
 	   	var dm  = document.querySelector('#container');
 	    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
-	    //dm.style.left = (event.clientX + parseInt(offset.x, 10)) + 'px';
 	    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
-	    //dm.style.top = (event.clientY + parseInt(offset.y, 10)) + 'px';
-	    //$('#container').width('100%').height('100%');
 	    event.preventDefault(); 
 	    return false;
 	}

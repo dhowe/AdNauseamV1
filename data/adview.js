@@ -40,14 +40,6 @@ function formatDivs(ads) {
 	
 	return html;
 }
-
-function trimPath(u, max) {
-	
-	max = max || 30;
-	if (u && u.length > max) 
-		u = u.substring(0,max/2)+"..."+u.substring(u.length-max/2);
-	return u;
-}
 	
 function updateAdView(o) {
 	
@@ -64,7 +56,7 @@ function updateAdView(o) {
 
 function formatStats(ads) {
 	
-	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html
+	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
 	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
 }
 
@@ -106,7 +98,7 @@ function findDups(ads) {
 			ad.hidden = false;
 		}
 		else {
-			hash[ad.url] = hash[ad.url]+1;
+			hash[ad.url]++;
 			ad.hidden = true;
 		}
 	}
@@ -121,6 +113,7 @@ function findDups(ads) {
 }
 
 function numVisited(ads) {
+	
 	var numv = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
 			
@@ -131,6 +124,7 @@ function numVisited(ads) {
 }
 
 function sinceTime(ads) {
+	
 	var oldest = +new Date(), idx = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
 			

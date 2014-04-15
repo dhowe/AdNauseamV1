@@ -65,11 +65,6 @@ body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
 }
 
-.wrapper {
-    width: 90%;
-    margin: 0 5%;
-}
-
 /* ==============
     MOBILE: Main
    ============== */
@@ -110,6 +105,13 @@ body {
     color: #eee;
 }
 
+::selection {
+	background: #B96AFF; /* Safari */
+}
+::-moz-selection {
+	background: #B96AFF; /* Firefox */
+}
+
 header {
   text-align: center;
 }
@@ -118,8 +120,22 @@ header h1 {
   display: none;
 }
 
-#logo {
+#tagline {
+  font-family: 'BebasNeue';
+  font-size: 1.5em;
+  color: #BD10E0;
+  text-align: left;
+  margin: 1em auto;
+  width: 175px;
+}
 
+section p {
+  color: #BAD2ED;
+  width: 300px;
+}
+
+.highlight {
+  color: #eee;
 }
 
 #install>a{
@@ -143,28 +159,37 @@ header h1 {
   color: #3E9AF8;
 }
 
-header p {
-  font-family: 'BebasNeue';
-  font-size: 1.5em;
-  color: #BD10E0;
-  text-align: left;
-  margin: 1em auto;
-  width: 175px;
-  padding-left: 28px;
+.wrapper {
+  width: 940px;
+  margin: 0 auto;
+  position: relative;
 }
 
-p {
-  color: #BAD2ED;
+#logo,
+#tagline,
+#install,
+#p1,
+#p2,
+#banners>div {
+  position: absolute;
 }
 
-.highlight {
-  color: #eee;
-}
-
-
-
-
-
+#logo     {left: 376px; top: 281px;}
+#tagline  {left: 429px; top: 473px;}
+#p1       {left: 429px; top: 560px;}
+#p2       {left: 165px; top: 975px;}
+#install  {left: 302px; top: 105px;}
+#helen    {left: 620px; top: 295px;}
+#daniel   {left: 4px;   top: 499px;}
+#mushon   {left: 40px;  top: 668px;}
+#source   {left: 620px; top: 225px;}
+#faq      {left: 308px; top: 618px;}
+#contact  {left: 272px; top: 499px;}
+#essay    {left: 98px;  top: 171px;}
+#symposium{left: 620px; top: 414px;}
+#chrome   {left: 6px;   top: 618px;}
+#scrn1    {left: 516px; top: 967px;}
+#scrn2    {left: 516px; top: 1271px;}
 
 /* ==========================================================================
    Media Queries

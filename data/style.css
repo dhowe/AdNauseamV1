@@ -68,9 +68,9 @@ body {
 }
 
 .zoom a {
-	line-height: 20px;
+	line-height: 18px;
 	display: block;
-	height: 18px;
+	height: 21px;
 	text-align: center;
 	color: #818181;
 	text-decoration: none;
@@ -214,7 +214,7 @@ body {
 	text-indent: -9999px;
 	overflow: hidden;
 	background: #A020F0;
-	border-radius: 10px;
+	border-radius: 360px;
 	text-align: center;
 	font-size: 12px;
 	box-shadow:   -4px 4px 10px 0px rgba(0,0,0,0.20);
@@ -223,7 +223,7 @@ body {
 	line-height: 1.5em;
 }
 
-.item.dup-count-1 .counter{
+.item.dup-count-1 .counter {
 	display: none;
 }
 
@@ -239,7 +239,46 @@ body {
 	width: 20px;
 	height: 20px;
 	text-indent: 0;
+}
 
+.z-75 .item:hover .counter {
+	right: 	-15px;
+	top: 	-15px;
+	width:	30px;
+	height: 30px;
+	font-size: 18px;
+}
+
+.z-50 .item:hover .counter {
+	right: 	-20px;
+	top: 	-20px;
+	width:	40px;
+	height: 40px;
+	font-size: 24px;
+}
+
+.z-25 .item:hover .counter {
+	right: 	-40px;
+	top: 	-40px;
+	width:	80px;
+	height: 80px;
+	font-size: 48px;
+}
+
+.z-12_5 .item:hover .counter {
+	right: 	-80px;
+	top: 	-80px;
+	width:	160px;
+	height: 160px;
+	font-size: 96px;
+}
+
+.z-6_25 .item:hover .counter {
+	right: 	-160px;
+	top: 	-160px;
+	width:	320px;
+	height: 320px;
+	font-size: 192px;
 }
 
 .item:hover img,
@@ -256,11 +295,6 @@ body {
 	border: 3px solid #A020F0;
 	margin: -3px;
 	border-radius: 3px;
-}
-
-.item:focus img {
-	width: 120%;
-	height: auto;
 }
 
 .item.pending:hover img {

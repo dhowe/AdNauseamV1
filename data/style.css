@@ -164,10 +164,11 @@ body {
 }
 
 #logo{
-	position: absolute;
 	z-index: 100;
-	bottom: 1px;
-	left:16px;  /* this should align from right-side */
+	bottom: 0;
+	position: absolute;
+	right: 25%;
+	margin: 8px 10px;
 }
 
 #logo a {

@@ -5,7 +5,7 @@
     "description": "A software tool and 'artware' intervention to defend against surveillance and tracking by ad-networks",
     "author": "Daniel C. Howe",
     "license": "GPL",
-	"version": "0.6.1",
+	"version": "0.6.4",
 	"preferences": [
 		{
 			"title": "Enabled",

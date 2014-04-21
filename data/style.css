@@ -1,4 +1,9 @@
+html {
+	height: 100%;
+}
+
 body {
+	height: 100%;
 	background: #000 url(img/project_papper.png);
 	color: #4C4D4C;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -13,11 +18,14 @@ body {
 #left{
     float:left;
     width:75%;
+	height: 100%;
 }
+
 #right{
     float:left;
     width:25%;
 }
+
 #handle{
     float:left;
 	position: absolute;
@@ -32,17 +40,23 @@ body {
 	z-index: 200;
 	cursor: col-resize;
 }
+
 .stage {
-	width: 75%;
-	position: fixed;
-	top:0;
-	bottom: 0;
-	left:0;
+}
+
+#container {
+	position: absolute;
+	top:0;left:0;
+	margin: auto;
 	cursor: move;
+	border-style:solid;
+	border-color:#444444;
+	border-width:thin;
+	height: 100%;
 }
 
 .zoom {
-	position: absolute;
+	position: absolute; 
 	top: 16px;
 	left: 16px;
 	border: 2px solid #818181;
@@ -54,9 +68,9 @@ body {
 }
 
 .zoom a {
-	line-height: 20px;
+	line-height: 18px;
 	display: block;
-	height: 18px;
+	height: 21px;
 	text-align: center;
 	color: #818181;
 	text-decoration: none;
@@ -77,6 +91,14 @@ body {
 	-webkit-transform: 	scale(1, 1);
 	-o-transform: 		scale(1, 1);
 	transform: 			scale(1, 1);
+}
+
+.z-75 {
+	-moz-transform: 	scale(0.75, 0.75);
+	-ms-transform: 		scale(0.75, 0.75);
+	-webkit-transform: 	scale(0.75, 0.75);
+	-o-transform: 		scale(0.75, 0.75);
+	transform: 			scale(0.75, 0.75);
 }
 
 .z-50 {
@@ -111,6 +133,14 @@ body {
 	transform: 			scale(0.0625, 0.0625);
 }
 
+#container {
+	-moz-transition:	-moz-transform 0.5s;
+	-ms-transition: -ms-transform 0.5s;
+	-webkit-transition: -webkit-transform 0.5s;
+	-o-transition: 		-o-transform 0.5s;
+    transition: 		transform 0.5s;
+}
+
 #ratio {
 	position: absolute;
 	top: 65px;
@@ -128,16 +158,17 @@ body {
 	font-size: 12px;
 	color: #999;
 	text-shadow: 1px  1px 2px #000,
-							-1px  1px 2px #000,
-							-1px -1px 2px #000,
-							 1px -1px 2px #000;
+				-1px  1px 2px #000,
+				-1px -1px 2px #000,
+				 1px -1px 2px #000;
 }
 
 #logo{
-	position: absolute;
 	z-index: 100;
-	bottom: 1px;
-	right:16px;
+	bottom: 0;
+	position: absolute;
+	right: 25%;
+	margin: 8px 10px;
 }
 
 #logo a {
@@ -146,13 +177,6 @@ body {
 	background: url(img/ADNAUSEUM_logo.png);
 	display: block;
 	text-decoration: none;
-}
-
-.container {
-	position: absolute;
-	top:0;left:0;
-	margin: auto;
-	cursor: move;
 }
 
 .item{ 
@@ -167,16 +191,17 @@ body {
 }
 
 .item img {
-	opacity: 0.85;
+	/*opacity: 0.85;*/
 }
 
+/*
 .item, .item img {
-	/* temporary fix for the big images bug */
+	//temporary fix for the big images bug 
 	max-width: 600px !important;
-}
+}*/
 
 .item.pending img {
-	opacity: 0.4;
+	/*opacity: 0.8;*/
 }
 
 .item .counter{
@@ -184,12 +209,12 @@ body {
 	position: absolute;
 	right: 2px;
 	top: 2px;
-	width: 6px;
-	height: 6px;
+	width: 4px;
+	height: 4px;
 	text-indent: -9999px;
 	overflow: hidden;
 	background: #A020F0;
-	border-radius: 10px;
+	border-radius: 360px;
 	text-align: center;
 	font-size: 12px;
 	box-shadow:   -4px 4px 10px 0px rgba(0,0,0,0.20);
@@ -198,12 +223,12 @@ body {
 	line-height: 1.5em;
 }
 
-.item.dup-count-1 .counter{
+.item.dup-count-1 .counter {
 	display: none;
 }
 
 .item:hover {
-	box-shadow:   0px 0px 20px 0px rgba(0,0,0,0.90);
+	box-shadow:   0px 0px 40px 5px rgba(0,0,0,0.90);
 	z-index: 100000;
 }
 
@@ -214,7 +239,71 @@ body {
 	width: 20px;
 	height: 20px;
 	text-indent: 0;
-	overflow: none; 
+}
+
+.z-75 .item:hover .counter {
+	right: 	-15px;
+	top: 	-15px;
+	width:	30px;
+	height: 30px;
+	font-size: 18px;
+}
+
+.z-50 .item:hover .counter {
+	right: 	-20px;
+	top: 	-20px;
+	width:	40px;
+	height: 40px;
+	font-size: 24px;
+}
+
+.z-25 .item:hover .counter {
+	right: 	-40px;
+	top: 	-40px;
+	width:	80px;
+	height: 80px;
+	font-size: 48px;
+}
+
+.z-12_5 .item:hover .counter {
+	right: 	-60px;
+	top: 	-60px;
+	width:	120px;
+	height: 120px;
+	font-size: 72px;
+}
+
+.z-6_25 .item:hover .counter {
+	right: 	-120px;
+	top: 	-120px;
+	width:	240px;
+	height: 240px;
+	font-size: 144px;
+}
+
+.z-75 .item .counter {
+	width: 6px;
+	height: 6px;
+}
+
+.z-50 .item .counter {
+	width: 8px;
+	height: 8px;
+}
+
+.z-25 .item .counter {
+	width: 16px;
+	height: 16px;
+}
+
+.z-12_5 .item .counter {
+	width: 32px;
+	height: 32px;
+}
+
+.z-6_25 .item .counter {
+	width: 64px;
+	height: 64px;
 }
 
 .item:hover img,
@@ -231,11 +320,6 @@ body {
 	border: 3px solid #A020F0;
 	margin: -3px;
 	border-radius: 3px;
-}
-
-.item:focus img {
-	width: 120%;
-	height: auto;
 }
 
 .item.pending:hover img {

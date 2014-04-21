@@ -1,0 +1,269 @@
+var ads = [
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_LS2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=797c909e/c117061e&camp=nyt2014_184x90_StoreValentines&ad=184x90_L_storeVDay&goto=http%3A%2F%2Fwww%2Enytstore%2Ecom%2Fvalentine%3Futm%5Fsource%3Dnytimes%26utm%5Fmedium%3Dhouse%2Dad%26utm%5Fterm%3Dvalentines%2D184x90%26utm%5Fcontent%3Dros%26utm%5Fcampaign%3D1%2D23%2D14",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654309,
+        "visited": 1390739659359,
+        "errors": [],
+        "path": [
+            "http://www.nytstore.com/valentine?utm_source=nytimes&utm_medium=house-ad&utm_term=valentines-184x90&utm_content=ros&utm_campaign=1-23-14"
+        ],
+        "width": 184,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362488/14-2642-NYTS_VDay_184x90_LS2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=5efdbfc6/daf33d82&camp=nyt2014_184x90_StoreValentines&ad=184x90_R_storeVDay&goto=http%3A%2F%2Fwww%2Enytstore%2Ecom%2Fvalentine%3Futm%5Fsource%3Dnytimes%26utm%5Fmedium%3Dhouse%2Dad%26utm%5Fterm%3Dvalentines%2D184x90%26utm%5Fcontent%3Dros%26utm%5Fcampaign%3D1%2D23%2D14",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654315,
+        "visited": 1390739671238,
+        "errors": [],
+        "path": [
+            "http://www.nytstore.com/valentine?utm_source=nytimes&utm_medium=house-ad&utm_term=valentines-184x90&utm_content=ros&utm_campaign=1-23-14"
+        ],
+        "width": 184,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/13/ad.361368/13-2148_AwardsSeason_163x90_adv1.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Middle4&sn2=1523368b/d11e58cc&sn1=f8136df8/5381350e&camp=nyt2014_163x90_AwardsSeason_hp&ad=MO-D-I-NYT-AD-HMK-HP-0114&goto=http%3A%2F%2Fnytimes%2Ecom%2Fawardsseason%3FWT%2Emc%5Fid%3DMO%2DD%2DI%2DNYT%2DAD%2DHMK%2DHP%2D0114%26WT%2Emc%5Fev%3Dclick%26WT%2Emc%5Fc%3D235024",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654640,
+        "visited": 1390739699384,
+        "errors": [
+            {
+                "url": "http://graphics8.nytimes.com/css/0.1/screen/common/modules/video/player.css",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/css/0.1/screen/common/modules/video/poster.css",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/2013/12/11/arts/video-bagger-christian-bale/video-bagger-christian-bale-thumbWide.jpg",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/2013/10/16/arts/video-twelve-anatomy/video-twelve-anatomy-thumbWide.jpg",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/2013/10/02/arts/video-gravity-anatomy/video-gravity-anatomy-thumbWide-v2.jpg",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/adx/images/ADS/36/20/ad.362096/13-2191_TimesVideo_Banners_300x79_adv2.png",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/icons/multimedia/icon-media-video-12x12-000.png",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/2013/12/11/arts/video-bagger-christian-bale/video-bagger-christian-bale-thumbWide.jpg",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/2013/10/16/arts/video-twelve-anatomy/video-twelve-anatomy-thumbWide.jpg",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/images/2013/10/02/arts/video-gravity-anatomy/video-gravity-anatomy-thumbWide-v2.jpg",
+                "error": "/video/i"
+            },
+            {
+                "url": "http://graphics8.nytimes.com/adx/images/ADS/36/20/ad.362096/13-2191_TimesVideo_Banners_300x79_adv2.png",
+                "error": "/video/i"
+            }
+        ],
+        "path": [
+            "http://www.nytimes.com/pages/movies/awardsseason/?WT.mc_id=MO-D-I-NYT-AD-HMK-HP-0114&WT.mc_ev=click&WT.mc_c=235024"
+        ],
+        "width": 163,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362490/14-2642-NYTS_VDay_300x250_LS2A.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=260cbf6c/b106b9e9&camp=nyt2014_300x250_StoreValentines&ad=300x250_storeVDay&goto=http%3A%2F%2Fwww%2Enytstore%2Ecom%2Fvalentine%3Futm%5Fsource%3Dnytimes%26utm%5Fmedium%3Dhouse%2Dad%26utm%5Fterm%3Dvalentines%2D300x79%26utm%5Fcontent%3Dros%26utm%5Fcampaign%3D1%2D23%2D14",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654646,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 300,
+        "height": 250
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362480/14-2642-NYTS_VDay_163x90_LS2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Middle5&sn2=1523368c/d15e58cc&sn1=839c2e6d/7f71d0ea&camp=nyt2014_163x90_StoreValentines&ad=163x90_StoreVDay&goto=http%3A%2F%2Fwww%2Enytstore%2Ecom%2Fvalentine%3Futm%5Fsource%3Dnytimes%26utm%5Fmedium%3Dhouse%2Dad%26utm%5Fterm%3Dvalentines%2D163x90%26utm%5Fcontent%3Dros%26utm%5Fcampaign%3D1%2D23%2D14",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654654,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 163,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/19/ad.361952/nytimesphoto2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=568d5d26/24d5cd14&camp=HPModule-Terra-Adeline-1913888&ad=Adeline-nytimesphoto-173x98.jpg&goto=http%3A%2F%2Fwww%2Etheadeline%2Ecom%2F%3Futm%5Fsource%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fmedium%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fcampaign%3DOMGadelinenytimeshpmodule1%2E24",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654670,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 173,
+        "height": 98
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/19/ad.361952/nytimes_logo-78x36.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=568d5d26/24d5cd14&camp=HPModule-Terra-Adeline-1913888&ad=Adeline-nytimesphoto-173x98.jpg&goto=http%3A%2F%2Fwww%2Etheadeline%2Ecom%2F%3Futm%5Fsource%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fmedium%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fcampaign%3DOMGadelinenytimeshpmodule1%2E24",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654677,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 78,
+        "height": 36
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/19/ad.361952/nytimesphoto2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=568d5d26/24d5cd14&camp=HPModule-Terra-Adeline-1913888&ad=Adeline-nytimesphoto-173x98.jpg&goto=http%3A%2F%2Fwww%2Etheadeline%2Ecom%2F%3Futm%5Fsource%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fmedium%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fcampaign%3DOMGadelinenytimeshpmodule1%2E24",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654692,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 173,
+        "height": 98
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/19/ad.361952/nytimes_logo-78x36.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=568d5d26/24d5cd14&camp=HPModule-Terra-Adeline-1913888&ad=Adeline-nytimesphoto-173x98.jpg&goto=http%3A%2F%2Fwww%2Etheadeline%2Ecom%2F%3Futm%5Fsource%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fmedium%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fcampaign%3DOMGadelinenytimeshpmodule1%2E24",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654699,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 78,
+        "height": 36
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/19/ad.361952/nytimesphoto2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=568d5d26/24d5cd14&camp=HPModule-Terra-Adeline-1913888&ad=Adeline-nytimesphoto-173x98.jpg&goto=http%3A%2F%2Fwww%2Etheadeline%2Ecom%2F%3Futm%5Fsource%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fmedium%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fcampaign%3DOMGadelinenytimeshpmodule1%2E24",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654709,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 173,
+        "height": 98
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/19/ad.361952/nytimes_logo-78x36.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=568d5d26/24d5cd14&camp=HPModule-Terra-Adeline-1913888&ad=Adeline-nytimesphoto-173x98.jpg&goto=http%3A%2F%2Fwww%2Etheadeline%2Ecom%2F%3Futm%5Fsource%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fmedium%3DOMGadelinenytimeshpmodule1%2E24%26utm%5Fcampaign%3DOMGadelinenytimeshpmodule1%2E24",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654714,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 78,
+        "height": 36
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362492/14-2642-NYTS_VDay_300x79_LS2.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle3&sn2=2798b754/f0b6765&sn1=3b8d959c/dc4b9639&camp=nyt2014_300x79_StoreValentines_hp&ad=300x79_storeVDay&goto=http%3A%2F%2Fwww%2Enytstore%2Ecom%2Fvalentine%3Futm%5Fsource%3Dnytimes%26utm%5Fmedium%3Dhouse%2Dad%26utm%5Fterm%3Dvalentines%2D300x79%26utm%5Fcontent%3Dros%26utm%5Fcampaign%3D1%2D23%2D14",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739654725,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 300,
+        "height": 79
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/34/90/ad.349058/13-1573_ios7LaunchBannerIPad_120x90_DM.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Right1&sn2=b20a74cb/423db008&sn1=8f7be7a5/87173f12&camp=nyt2013_120x90_ipad_ios7_3L3JX&ad=120x90_ipad_ios7&goto=http%3A%2F%2Fappstore%2Ecom%2Fnytimesforipad%3Fadxc%3D225302%26adxa%3D349058%26page%3Dhomepage.nytimes.com/index.html%26pos%3DRight1%26campaignId%3D3L3JX",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739655442,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 120,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359250/13_2259_INYT_Anon_USD_120x90_ER1.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Box2&sn2=5b35dc2a/56c295e7&sn1=7441b9be/43ec397d&camp=inyt2013_120x90_digi_glob_3LUWH&ad=3LUWH_120x90_digi_glob&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3KYXX%2Ehtml%3Fadxc%3D232691%26adxa%3D359250%26page%3Dhomepage.nytimes.com/index.html%26pos%3DBox2%26campaignId%3D3LUWH",
+        "page": "http://www.nytimes.com/",
+        "found": 1390739655447,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 120,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/34/90/ad.349058/13-1573_ios7LaunchBannerIPad_120x90_DM.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/pages/movies/awardsseason/index.html&pos=Right1&sn2=3593202/629af1b3&sn1=8f7be7a5/87173f12&camp=nyt2013_120x90_ipad_ios7_3L3JX&ad=120x90_ipad_ios7&goto=http%3A%2F%2Fappstore%2Ecom%2Fnytimesforipad%3Fadxc%3D225302%26adxa%3D349058%26page%3Dwww.nytimes.com/pages/movies/awardsseason/index.html%26pos%3DRight1%26campaignId%3D3L3JX",
+        "page": "http://www.nytimes.com/pages/movies/awardsseason/?WT.mc_id=MO-D-I-NYT-AD-HMK-HP-0114&WT.mc_ev=click&WT.mc_c=235024",
+        "found": 1390739697973,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 120,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359250/13_2259_INYT_Anon_USD_120x90_ER1.jpg",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/pages/movies/awardsseason/index.html&pos=Box2&sn2=2402a4eb/c8ee9dab&sn1=7441b9be/43ec397d&camp=inyt2013_120x90_digi_glob_3LUWH&ad=3LUWH_120x90_digi_glob&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3KYXX%2Ehtml%3Fadxc%3D232691%26adxa%3D359250%26page%3Dwww.nytimes.com/pages/movies/awardsseason/index.html%26pos%3DBox2%26campaignId%3D3LUWH",
+        "page": "http://www.nytimes.com/pages/movies/awardsseason/?WT.mc_id=MO-D-I-NYT-AD-HMK-HP-0114&WT.mc_ev=click&WT.mc_c=235024",
+        "found": 1390739697978,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 120,
+        "height": 90
+    },
+    {
+        "type": "a",
+        "url": "http://graphics8.nytimes.com/adx/images/ADS/36/20/ad.362096/13-2191_TimesVideo_Banners_300x79_adv2.png",
+        "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/pages/movies/awardsseason/index.html&pos=Middle5&sn2=f3b79b52/adf3018a&sn1=31c9fe40/48dd9ccd&camp=nyt2014_300x79_freevideo_ros_nonsubs&ad=VI-D-I-NYT-AD-FP-FREE-HP-ROS-0114&goto=http%3A%2F%2Fnytimes%2Ecom%2Fvideo%2Flatest%2Dvideo%2F%3FWT%2Emc%5Fid%3DVI%2DD%2DI%2DNYT%2DAD%2DFP%2DFREE%2DROS%2D0114%26WT%2Emc%5Fev%3Dclick%26WT%2Emc%5Fc%3D235822",
+        "page": "http://www.nytimes.com/pages/movies/awardsseason/?WT.mc_id=MO-D-I-NYT-AD-HMK-HP-0114&WT.mc_ev=click&WT.mc_c=235024",
+        "found": 1390739698019,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 300,
+        "height": 79
+    },
+    {
+        "type": "a",
+        "url": "http://media1.s-nbcnews.com/i/MSNBC/SiteManagement/Ads/Custom%20Solutions/HouseAd/NBCNews_WhatMatters%20Creative/120x30_brand.jpg",
+        "target": "http://www.NBCNews.com",
+        "page": "http://www.nbcnews.com/id/41781145",
+        "found": 1390739742499,
+        "visited": 0,
+        "errors": [],
+        "path": [],
+        "width": 120,
+        "height": 30
+    }
+];

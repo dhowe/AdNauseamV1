@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>app</key>
+	<string>com.bohemiancoding.sketch</string>
+	<key>build</key>
+	<integer>5355</integer>
+	<key>commit</key>
+	<string>b7d299b0a34651d1a0e066786b75aa36168d5809</string>
+	<key>fonts</key>
+	<array>
+		<string>LucidaGrande-Bold</string>
+		<string>LucidaGrande-Bold</string>
+		<string>LucidaGrande</string>
+		<string>LucidaGrande</string>
+		<string>.LucidaGrandeUI</string>
+		<string>.LucidaGrandeUI</string>
+		<string>BebasNeueBold</string>
+		<string>.LucidaGrandeUI</string>
+		<string>.LucidaGrandeUI</string>
+		<string>OpenSansHebrew-Bold</string>
+		<string>OpenSansHebrew-Regular</string>
+		<string>OpenSansHebrew-Bold</string>
+		<string>OpenSansHebrew-Regular</string>
+		<string>OpenSansHebrew-Regular</string>
+		<string>BebasNeueBold</string>
+		<string>NanumMyeongjo</string>
+		<string>NanumMyeongjo</string>
+		<string>NanumGothicExtraBold</string>
+		<string>Helvetica-Bold</string>
+		<string>NanumMyeongjo</string>
+		<string>NanumGothicExtraBold</string>
+		<string>NanumMyeongjo</string>
+		<string>Helvetica-Bold</string>
+		<string>Helvetica</string>
+		<string>BebasNeueBold</string>
+		<string>OpenSansHebrew-Bold</string>
+		<string>HoeflerText-Italic</string>
+		<string>Helvetica</string>
+		<string>.LucidaGrandeUI</string>
+		<string>.LucidaGrandeUI</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+		<string>BebasNeueBold</string>
+	</array>
+	<key>length</key>
+	<integer>11008836</integer>
+	<key>version</key>
+	<integer>18</integer>
+</dict>
+</plist>

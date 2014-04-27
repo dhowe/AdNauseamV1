@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>app</key>
-	<string>com.bohemiancoding.sketch</string>
+	<string>com.bohemiancoding.sketch3</string>
 	<key>build</key>
-	<integer>5355</integer>
+	<integer>7573</integer>
 	<key>commit</key>
-	<string>b7d299b0a34651d1a0e066786b75aa36168d5809</string>
+	<string>4e465a63318006126bf98e1e51096c1ad230008e</string>
 	<key>fonts</key>
 	<array>
 		<string>LucidaGrande-Bold</string>
@@ -49,8 +49,8 @@
 		<string>BebasNeueBold</string>
 	</array>
 	<key>length</key>
-	<integer>11008836</integer>
+	<integer>11138389</integer>
 	<key>version</key>
-	<integer>18</integer>
+	<integer>36</integer>
 </dict>
 </plist>

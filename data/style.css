@@ -56,7 +56,7 @@ body {
 }
 
 .zoom {
-	position: absolute; 
+	position: absolute;
 	top: 16px;
 	left: 16px;
 	border: 2px solid #818181;
@@ -179,7 +179,7 @@ body {
 	text-decoration: none;
 }
 
-.item{ 
+.item{
 	/* margin-bottom: -6px; */
 	background: #000;
 	display: inline-block;
@@ -196,7 +196,7 @@ body {
 
 /*
 .item, .item img {
-	//temporary fix for the big images bug 
+	//temporary fix for the big images bug
 	max-width: 600px !important;
 }*/
 
@@ -204,7 +204,7 @@ body {
 	/*opacity: 0.8;*/
 }
 
-.item .counter{
+.item span{
 	display: block;
 	position: absolute;
 	right: 2px;
@@ -221,6 +221,10 @@ body {
 	z-index: 1000;
 	color: #fff;
 	line-height: 1.5em;
+}
+
+.item span.eye {
+	display: none;
 }
 
 .item.dup-count-1 .counter {
@@ -241,7 +245,24 @@ body {
 	text-indent: 0;
 }
 
-.z-75 .item:hover .counter {
+.item:hover span.eye,
+.item:focus span.eye {
+	display: block;
+	top: auto;
+	bottom: -10px;
+	right: -10px;
+	width: 20px;
+	height: 20px;
+	background: #A020F0 url(img/eye-white.svg) no-repeat center center;
+	background-size: 1em;
+}
+
+
+.item:focus span.eye:hover {
+	background-image: url(img/link.svg);
+}
+
+.z-75 .item:hover span {
 	right: 	-15px;
 	top: 	-15px;
 	width:	30px;
@@ -249,7 +270,12 @@ body {
 	font-size: 18px;
 }
 
-.z-50 .item:hover .counter {
+.z-75 .item:hover span.eye {
+	top:			auto;
+	bottom: 	-15px;
+}
+
+.z-50 .item:hover span {
 	right: 	-20px;
 	top: 	-20px;
 	width:	40px;
@@ -257,7 +283,12 @@ body {
 	font-size: 24px;
 }
 
-.z-25 .item:hover .counter {
+.z-50 .item:hover span.eye {
+	top:			auto;
+	bottom: 	-20px;
+}
+
+.z-25 .item:hover span {
 	right: 	-40px;
 	top: 	-40px;
 	width:	80px;
@@ -265,7 +296,12 @@ body {
 	font-size: 48px;
 }
 
-.z-12_5 .item:hover .counter {
+.z-25 .item:hover span.eye {
+	top:			auto;
+	bottom: 	-40px;
+}
+
+.z-12_5 .item:hover span {
 	right: 	-60px;
 	top: 	-60px;
 	width:	120px;
@@ -273,7 +309,12 @@ body {
 	font-size: 72px;
 }
 
-.z-6_25 .item:hover .counter {
+.z-12_5 .item:hover span.eye {
+	top:			auto;
+	bottom: 	-60px;
+}
+
+.z-6_25 .item:hover span {
 	right: 	-120px;
 	top: 	-120px;
 	width:	240px;
@@ -281,27 +322,32 @@ body {
 	font-size: 144px;
 }
 
-.z-75 .item .counter {
+.z-6_25 .item:hover span.eye {
+	top:			auto;
+	bottom: 	-120px;
+}
+
+.z-75 .item span {
 	width: 6px;
 	height: 6px;
 }
 
-.z-50 .item .counter {
+.z-50 .item span {
 	width: 8px;
 	height: 8px;
 }
 
-.z-25 .item .counter {
+.z-25 .item span {
 	width: 16px;
 	height: 16px;
 }
 
-.z-12_5 .item .counter {
+.z-12_5 .item span {
 	width: 32px;
 	height: 32px;
 }
 
-.z-6_25 .item .counter {
+.z-6_25 .item span {
 	width: 64px;
 	height: 64px;
 }
@@ -494,28 +540,49 @@ aside .details {
 	left: 4px;
 	right: 0;
 	bottom: 0;
-	height: 150px;
+/*	height: 150px;*/
 	background: rgba(220,220,220,0.90);
 	font-size: 12px;
 }
 
 aside .details dl {
-	line-height: 20px;
+	line-height: 18px;
 	margin: 0;
-	padding: 4px 0 0 0;
+	padding: 6px 0 0 40px;
+	background: url(img/eye.svg) no-repeat 10px center;
+	background-size: 16px;
+}
+
+aside .details dl.leads-to {
+	background-image: url(img/external-link.svg)
+}
+
+aside .details dl.leads-to.visited {
+	background-image: url(img/external-link-visited.svg)
+}
+
+aside .details dl:first-child {
+	border-bottom: 1px solid #BFBFBF;
 }
 
 aside .details dd,
 aside .details dt {
 	margin: 0;
-	padding: 2px 0;
-	border-bottom: 1px solid #BFBFBF;
+	padding: 2px 0px 5px;
 	width: 30%;
 	display: inline-block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+	border-bottom: 1px solid #BFBFBF;
 }
+
+aside .details dl dd:nth-child(3),
+aside .details dl dt:nth-child(4) {
+	border: 0;
+	padding-bottom: 0;
+}
+
 aside .details dd {
 	text-indent: 12px;
 	margin: 0 -4px;

@@ -5,51 +5,25 @@
 	<key>app</key>
 	<string>com.bohemiancoding.sketch3</string>
 	<key>build</key>
-	<integer>7573</integer>
+	<integer>7597</integer>
 	<key>commit</key>
-	<string>4e465a63318006126bf98e1e51096c1ad230008e</string>
+	<string>463d76bf23dc890960e184011f80b3dacac572b9</string>
 	<key>fonts</key>
 	<array>
 		<string>LucidaGrande-Bold</string>
-		<string>LucidaGrande-Bold</string>
-		<string>LucidaGrande</string>
 		<string>LucidaGrande</string>
 		<string>.LucidaGrandeUI</string>
-		<string>.LucidaGrandeUI</string>
 		<string>BebasNeueBold</string>
-		<string>.LucidaGrandeUI</string>
-		<string>.LucidaGrandeUI</string>
 		<string>OpenSansHebrew-Bold</string>
 		<string>OpenSansHebrew-Regular</string>
-		<string>OpenSansHebrew-Bold</string>
-		<string>OpenSansHebrew-Regular</string>
-		<string>OpenSansHebrew-Regular</string>
-		<string>BebasNeueBold</string>
-		<string>NanumMyeongjo</string>
 		<string>NanumMyeongjo</string>
 		<string>NanumGothicExtraBold</string>
-		<string>Helvetica-Bold</string>
-		<string>NanumMyeongjo</string>
-		<string>NanumGothicExtraBold</string>
-		<string>NanumMyeongjo</string>
 		<string>Helvetica-Bold</string>
 		<string>Helvetica</string>
-		<string>BebasNeueBold</string>
-		<string>OpenSansHebrew-Bold</string>
 		<string>HoeflerText-Italic</string>
-		<string>Helvetica</string>
-		<string>.LucidaGrandeUI</string>
-		<string>.LucidaGrandeUI</string>
-		<string>BebasNeueBold</string>
-		<string>BebasNeueBold</string>
-		<string>BebasNeueBold</string>
-		<string>BebasNeueBold</string>
-		<string>BebasNeueBold</string>
-		<string>BebasNeueBold</string>
-		<string>BebasNeueBold</string>
 	</array>
 	<key>length</key>
-	<integer>11138389</integer>
+	<integer>11153494</integer>
 	<key>version</key>
 	<integer>36</integer>
 </dict>

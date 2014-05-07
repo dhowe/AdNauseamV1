@@ -134,6 +134,14 @@ section p {
   width: 300px;
 }
 
+section p a {
+  color: #72a4e8;
+}
+
+section p a:visited {
+  color: #7176e8;
+}
+
 .highlight {
   color: #eee;
 }
@@ -165,11 +173,16 @@ section p {
   position: relative;
 }
 
+#p3{
+  padding-bottom: 40px;
+}
+
 #logo,
 #tagline,
 #install,
 #p1,
 #p2,
+#p3,
 #banners>* {
   position: absolute;
   animation: flyin 0.5s ease forwards;
@@ -181,6 +194,7 @@ section p {
 #tagline  {left: 429px; top: 473px; animation-delay: 0ms}
 #p1       {left: 429px; top: 560px; animation-delay: 0ms}
 #p2       {left: 165px; top: 975px; animation-delay: 0ms}
+#p3       {left: 429px; top: 1271px; animation-delay: 0ms}
 #install  {left: 302px; top: 105px; animation-delay: 800ms}
 #helen    {left: 620px; top: 295px; animation-delay: 1000ms}
 #faq      {left: 308px; top: 618px; animation-delay: 1200ms}
@@ -192,7 +206,7 @@ section p {
 #symposium{left: 620px; top: 414px; animation-delay: 2400ms}
 #chrome   {left: 6px;   top: 618px; animation-delay: 2600ms}
 #scrn1    {left: 516px; top: 967px; animation-delay: 2800ms}
-#scrn2    {left: 516px; top: 1271px;animation-delay: 3000ms}
+#scrn2    {left: 0px;   top: 1271px;animation-delay: 3000ms}
 
 
 /* ===============

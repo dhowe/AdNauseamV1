@@ -25,9 +25,9 @@ var Packery = Outlayer.create('packery');
 Packery.Item = Item;
 
 Packery.prototype._create = function() {
-	
+
   //console.log(this.options);
-  
+
   // call super
   Outlayer.prototype._create.call( this );
 
@@ -78,17 +78,17 @@ Packery.prototype._resetLayout = function() {
 
   // reset packer
   var packer = this.packer;
-  
+
   // packer settings, if horizontal or vertical
   if ( this.options.isHorizontal ) {
-  	
+
   	//console.log('isHorizontal');
     packer.width = Number.POSITIVE_INFINITY;
     packer.height = this.size.innerHeight + this.gutter;
     packer.sortDirection = 'rightwardTopToBottom';
-  } 
+  }
   else {
-  	
+
   	//console.log('isVertical');
     packer.width = Number.POSITIVE_INFINITY;//DCH: 3/30/14 was: this.size.innerWidth + this.gutter;
     packer.height = Number.POSITIVE_INFINITY;

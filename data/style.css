@@ -16,9 +16,10 @@ body {
 
 /* STAGE */
 #left{
-    float:left;
-    width:75%;
+  float:left;
+  width:75%;
 	height: 100%;
+	overflow: hidden;
 }
 
 #right{
@@ -46,13 +47,16 @@ body {
 
 #container {
 	position: absolute;
-	top:0;left:0;
-	margin: auto;
 	cursor: move;
 	border-style:solid;
 	border-color:#444444;
 	border-width:thin;
-	height: 100%;
+
+	//large dimensions to center the composition
+	top:-5000px;left:-5000px;
+	margin: 50% 0 0 50%;
+	min-height: 10000px;
+	min-width: 10000px;
 }
 
 .zoom {

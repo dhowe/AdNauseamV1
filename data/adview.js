@@ -25,10 +25,10 @@ function formatDivs(ads) {
 			html += 'data-url="'+ad.url+'" ';
 			html += 'data-origin="'+ad.page+'">';
 			
-			var spantag = 'counter'; 
 			if (!ad.hidden) 
 			{
-				html += '<span class="'+spantag+'">'+ad.count+'</span>';
+				html += '<span class="counter">'+ad.count+'</span>';
+				//html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
 				html += '<img src="' + ad.url + '" alt="ad">';
 			}
 			

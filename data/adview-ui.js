@@ -217,10 +217,10 @@ function populateInspector(selectedIdx) {
 	
 	// copy hovered image attributes into inspector
 	$('.target',   '.inspect li:first-child()').text(selected.target);
-	$('.target',   '.inspect li:first-child()').attr('href',  selected.target);
+	//$('.target',   '.inspect li:first-child()').attr('href',  selected.target);
 
 	$('.origin',   '.inspect li:first-child()').text(selected.origin);
-	$('.origin',   '.inspect li:first-child()').attr('href',  selected.origin);
+	//$('.origin',   '.inspect li:first-child()').attr('href',  selected.origin);
 	
 	$('.visited',  '.inspect li:first-child()').text(selected.visited);
 	$('.detected', '.inspect li:first-child()').text(selected.detected);

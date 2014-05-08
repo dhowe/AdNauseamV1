@@ -52,7 +52,7 @@ body {
 	border-color:#444444;
 	border-width:thin;
 
-	//large dimensions to center the composition
+	/*large dimensions to center the composition*/
 	top:-5000px;left:-5000px;
 	margin: 50% 0 0 50%;
 	min-height: 10000px;

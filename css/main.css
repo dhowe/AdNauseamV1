@@ -169,7 +169,7 @@ section p a:visited {
 
 .wrapper {
   width: 940px;
-  margin: 0 auto;
+  margin: -90px auto 0;
   position: relative;
 }
 
@@ -252,7 +252,7 @@ section p a:visited {
 
     .wrapper {
         width: 1026px; /* 1140px - 10% for margins */
-        margin: 0 auto;
+        margin: -90px auto 0;
     }
 }
 

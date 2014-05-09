@@ -177,6 +177,34 @@ section p a:visited {
   padding-bottom: 40px;
 }
 
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (max-width: 768px) {
+  .wrapper {
+    width: 94%;
+    padding: 0 3%;
+    margin-top: 3%;
+  }
+  section>p{
+    margin: 1em auto;
+  }
+  #banners>div {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  #banners>div img {
+    max-width: 100%;
+  }
+}
+
+@media only screen and (min-width: 480px) {
+
+}
+
+@media only screen and (min-width: 768px) {
+
 #logo,
 #tagline,
 #install,
@@ -231,17 +259,6 @@ section p a:visited {
      opacity: 1;
    }
 }
-
-/* ==========================================================================
-   Media Queries
-   ========================================================================== */
-
-@media only screen and (min-width: 480px) {
-
-}
-
-@media only screen and (min-width: 768px) {
-
 }
 
 @media only screen and (min-width: 1140px) {
@@ -252,7 +269,6 @@ section p a:visited {
 
     .wrapper {
         width: 1026px; /* 1140px - 10% for margins */
-        margin: -90px auto 0;
     }
 }
 

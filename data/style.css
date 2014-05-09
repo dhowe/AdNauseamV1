@@ -48,10 +48,6 @@ body {
 #container {
 	position: absolute;
 	cursor: move;
-	border-style:solid;
-	border-color:#444444;
-	border-width:thin;
-
 	/*large dimensions to center the composition*/
 	top:-5000px;left:-5000px;
 	margin: 50% 0 0 50%;
@@ -461,9 +457,8 @@ aside .controls li.active a {
   width:100%;
 }
 .panes{
-  	margin: 0;
+	margin: 0;
 	padding: 0;
-	cursor: none;
 	list-style:none;
 	position:absolute;
 	top: 0; bottom: 0;
@@ -491,7 +486,6 @@ aside .controls li.active a {
 	margin: auto;
 	top: 0; right: 0; bottom: 100px; left: 0;
 	position: absolute;
-	cursor: default;
 }
 .carousel img{
 	display: block;

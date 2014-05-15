@@ -12,7 +12,7 @@ AdNauseam blends software tool and 'artware' intervention in a browser extension
 * Authors:   Daniel C. Howe (http://rednoise.org/~dhowe) & Helen Nissenbaum
 * License: 			 GPL (see included LICENSE file for full license)
 * Maintainers:       See included AUTHORS file for contributor list
-* Web Site:          http://rednoise.org/adnauseam/js
+* Web Site:          http://rednoise.org/adnauseam
 * Github Repo:       https://github.com/dhowe/adnauseam/
 * Bug Tracker:       https://github.com/dhowe/adnauseam/issues
 

@@ -11,6 +11,7 @@ AdNauseam is a lightweight browser extension that helps protect users against su
 
 #### About the project
 --------
+
 * Authors:          [Daniel C. Howe](http://rednoise.org/~dhowe), [Helen Nissenbaum](https://www.nyu.edu/projects/nissenbaum/) & [Mushon Zer-Aviv](http://mushon.com)
 * License:          GPL (see included LICENSE file for full license)
 * Maintainers:      See included AUTHORS file for contributor list

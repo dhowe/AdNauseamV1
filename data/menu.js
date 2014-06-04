@@ -7,23 +7,24 @@ $(document).ready(function(){
 	$("#adn-menu-log").click(function()  { msg("ADNShowLog"); });
 });
 
+var pad1 = '&nbsp;&nbsp;&nbsp;', pad2 = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+//for key-accels: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+
 function msg(m) { addon.port.emit(m); }
 
 function updateEnabled(options) {
 
 	var enabled = options.enabled;
 	
-	//console.log("Menu::updateMenu(enabled="+enabled+")");
-
 	if (enabled) {
 
-		$("#adn-enabled").html('disable');
+		$("#adn-enabled").html('Disable');
 		
 		$("#adn-img-enabled").attr("src", "img/off_icon.png");		
 	} 
 	else {
 		
-		$("#adn-enabled").html('enable');
+		$("#adn-enabled").html('Enable');
 
 		$("#adn-img-enabled").attr("src", "img/on_icon.png");
 	}

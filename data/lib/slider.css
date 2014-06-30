@@ -4,12 +4,15 @@
  *        and http://cssdeck.com/item/276/pure-css-arrow-with-border-tooltip
  */
 
+
 #slider {
 	z-index: 10000;
+	/*position: absolute;*/
+	bottom: 30px;
 }
 
 .ui-rangeSlider{
-  height: 30px;
+  height: 6px;
   padding-top: 40px;
 }
 
@@ -25,22 +28,6 @@
   margin: 0 15px;
 }
 
-.ui-rangeSlider-withArrows .ui-rangeSlider-container,
-.ui-rangeSlider-noArrow .ui-rangeSlider-container,
-.ui-rangeSlider-arrow{
-  -webkit-box-shadow: inset 0px 4px 6px -2px RGBA(0,0,0,0.5);
-     -moz-box-shadow: inset 0px 4px 6px -2px RGBA(0,0,0,0.5);
-          box-shadow: inset 0px 4px 6px -2px RGBA(0,0,0,0.5);
-}
-
-.ui-rangeSlider-disabled.ui-rangeSlider-withArrows .ui-rangeSlider-container,
-.ui-rangeSlider-disabled.ui-rangeSlider-noArrow .ui-rangeSlider-container,
-.ui-rangeSlider-disabled .ui-rangeSlider-arrow{
-  -webkit-box-shadow: inset 0px 4px 6px -2px RGBA(0,0,0,0.3);
-     -moz-box-shadow: inset 0px 4px 6px -2px RGBA(0,0,0,0.3);
-          box-shadow: inset 0px 4px 6px -2px RGBA(0,0,0,0.3);
-}
-
 .ui-rangeSlider-noArrow .ui-rangeSlider-container{
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -54,10 +41,8 @@
 
 .ui-rangeSlider-container,
 .ui-rangeSlider-arrow{
- 	height: 30px;
-
-  border-top: solid 1px #232a32;
-  border-bottom: solid 1px #6a7179;
+	height: 6px;
+  border: solid 1px #000;
 }
 
 .ui-rangeSlider-disabled .ui-rangeSlider-container,
@@ -69,17 +54,13 @@
 .ui-rangeSlider-container,
 .ui-rangeSlider-arrow,
 .ui-rangeSlider-label{
-  background: #67707F;
-  background: -moz-linear-gradient(top, #67707F 0%, #888DA0 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#67707F), color-stop(100%,#888DA0));
+  background: #595959;
 }
 
 .ui-rangeSlider-disabled .ui-rangeSlider-container,
 .ui-rangeSlider-disabled .ui-rangeSlider-arrow,
 .ui-rangeSlider-disabled .ui-rangeSlider-label{
-  background: #95a4bd;
-  background: -moz-linear-gradient(top, #95a4bd 0%, #b2bbd8 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#95a4bd), color-stop(100%,#b2bbd8));
+  background: #595959;
 }
 
 .ui-rangeSlider-arrow{

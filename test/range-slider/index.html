@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>jQRangeSlider - Documentation - Quickstart</title>
+		<meta name="viewport" content="width=980" />
+		<link href="iThing.css" rel="stylesheet" media="screen">
+	</head>
+
+	<body data-spy="scroll" data-target="#tableOfContent" data-offset="60">
+
+		<div class="sliderContainer">
+			<div class="ui-rangeSlider ui-rangeSlider-withArrows ui-dateRangeSlider" style="position: relative;" id="dateSliderExample">
+				<div style="position: absolute; width: 778px;" class="ui-rangeSlider-container">
+					<div style="position: absolute; top: 0px; left: 0px; width: 778px;" class="ui-rangeSlider-innerBar"></div><div class="ui-rangeSlider-bar" style="position: absolute; top: 0px; width: 389px; left: 43.7px;"></div>
+					<div class="ui-rangeSlider-handle ui-rangeSlider-leftHandle" style="position: absolute; top: 0px; left: 43.6959px;">
+						<div class="ui-rangeSlider-handle-inner"></div>
+					</div>
+					<div class="ui-rangeSlider-handle ui-rangeSlider-rightHandle" style="position: absolute; top: 0px; left: 422.696px;">
+						<div class="ui-rangeSlider-handle-inner"></div>
+					</div>
+				</div>
+				<div style="position: absolute; left: 0px;" class="ui-rangeSlider-arrow ui-rangeSlider-leftArrow">
+					<div class="ui-rangeSlider-arrow-inner"></div>
+				</div>
+				<div style="position: absolute; right: 0px;" class="ui-rangeSlider-arrow ui-rangeSlider-rightArrow">
+					<div class="ui-rangeSlider-arrow-inner"></div>
+				</div>
+			</div>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQRangeSliderMouseTouch.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQRangeSliderDraggable.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQRangeSliderHandle.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQRangeSliderBar.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQRangeSliderLabel.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQRangeSlider.js"></script>
+
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQDateRangeSliderHandle.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQDateRangeSlider.js"></script>
+
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQEditRangeSliderLabel.js"></script>
+		<script src="http://ghusse.github.io/jQRangeSlider/stable/jQEditRangeSlider.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				$("#dateSliderExample").dateRangeSlider();
+			});
+
+		</script>
+
+	</body>
+</html>

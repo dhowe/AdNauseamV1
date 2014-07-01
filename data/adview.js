@@ -2,6 +2,43 @@
 //self.port.on("ADNUpdateAdView", updateAdView);
 updateAdView(self.options);
 
+function updateAdView(o, min, max) {
+	
+	min = min || 0;
+	max = max || Number.MAX_VALUE;
+	
+	console.log('updateAdView: '+min+'-'+max);
+	
+	var ads = filterDateRange(o.ads, min, max),
+		result = formatDivs(ads),
+		stats = formatStats(ads);
+			
+	$('#container').html(result);
+	$('#stats').html(stats);
+	
+	console.log(stats);
+	
+	//result = formatJSON(ads);
+	//$('#json').html('<!--\n'+result+'\n-->');
+}
+
+function filterDateRange(ads, min, max) {
+	
+	var result = [];
+	
+	for (var i=0, j = ads.length; i<j; i++) {
+		
+		if (ads[i].found < min || ads[i].found > max) {
+			
+			console.log("Filter (date-slider): "+ad.found); 
+			continue;
+		}
+		result.push(ads[i]);
+	}
+	
+	return result;
+}
+
 function formatDivs(ads) {
 		
 	var html = '', ads = findDups(ads);
@@ -40,23 +77,10 @@ function formatDivs(ads) {
 	
 	return html;
 }
-	
-function updateAdView(o) {
-	
-	var result, ads = o.ads;
-	result = formatDivs(ads);
-	$('#container').html(result);
-
-	result = formatStats(ads);
-	$('#stats').html(result);
-	
-	//result = formatJSON(ads);
-	//$('#json').html('<!--\n'+result+'\n-->');
-}
 
 function formatStats(ads) {
 	
-	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
+	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // TODO: get rid of html here
 	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
 }
 
@@ -79,8 +103,6 @@ function formatDate(ts) {
 	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() 
 		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) 
 		+ meridian.toLowerCase() + ' ('+ts+')'; // attach ts to end for debugging
-		
-		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
 }  
 
 function findDups(ads) {
@@ -90,6 +112,7 @@ function findDups(ads) {
 	for (var i=0, j = ads.length; i<j; i++) {
 		
 		ad = ads[i];
+		
 		if (!ad.url) continue;
 		
 		soFar = hash[ad.url];

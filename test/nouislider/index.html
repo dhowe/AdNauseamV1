@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<script src="jquery.min.js"></script>
+		<script src="jquery.nouislider.min.js"></script>
+		<script src="dateslider.functions.js"></script>
+		<link href="jquery.nouislider.css" rel="stylesheet">
+		<link href="nouislider.css" rel="stylesheet">
+</head>
+<body>
+
+<section>
+
+	<div class="double">
+
+		<div class="example">
+		
+			<div class="example-val" id="event-start"></div>
+			<div class="example-val" id="event-end"></div>
+			<div id="daterange-slider"></div>
+			
+<script>
+
+$("#daterange-slider").noUiSlider({
+	
+	// Create two timestamps to define a range.
+    range: {
+        min: timestamp('2010'),
+        max: timestamp('2016')
+    },
+	
+	// Steps of one week
+    step: 7 * 24 * 60 * 60 * 1000,
+	
+	// Two more timestamps indicate the handle starting positions.
+    start: [ timestamp('2011'), timestamp('2015') ],
+	
+	// The setDate function will display the current values.
+    serialization: {
+        lower: [
+            $.Link({
+                target: $("#event-start"),
+                method: setDate
+            })
+        ],
+		upper: [
+            $.Link({
+                target: $("#event-end"),
+                method: setDate
+            })
+        ],
+        format: {
+            decimals: 0   
+        }
+    }
+});
+</script>		
+
+			</div>
+		</div>
+	</section>
+
+</body>
+</html>

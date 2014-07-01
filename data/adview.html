@@ -4,12 +4,24 @@
 		<meta charset="utf-8" />
 		<title>AdNauseam</title>
 		<link rel="stylesheet" href="style.css">
+		
+		<!-- css for history-slider -->
+		<link href="lib/jquery.nouislider.css" rel="stylesheet">
+		<link href="lib/nouislider.css" rel="stylesheet">
+		
+		<!-- js for history-slider -->
+		<script src="lib/jquery.min.js"></script>
+		<script src="lib/jquery.nouislider.min.js"></script>
+		<script src="adview-history.js"></script>
+		
+		
+		<!--script src="lib/packery.pkgd.min.js"></script>
 		<script src="lib/jquery-1.10.2.min.js"></script>
 		<script src="lib/jquery-ui-1.8.16.custom.min.js"></script>
 		<script src="lib/jQDateRangeSlider-min.js"></script>
 		<script src="lib/jquery.mousewheel.min.js"></script>
 		<script src="lib/dateSlider.js"></script>
-		<link rel="stylesheet" href="lib/slider.css">
+		<link rel="stylesheet" href="lib/slider.css"-->
 
 		<link rel="icon" type="image/png" href="img/adn64.png">
 
@@ -38,7 +50,60 @@
 				<a href="" id="z-out">&#8211;</a>
 			</div>
 			<div id="stats" class="session-sum"></div>
-			<div id="slider"></div>
+			
+<!-- start date-slider -->			
+			<div class="history-slider">
+
+				<div class="example">
+		
+					<div class="example-val" id="event-start"></div>
+					<div class="example-val" id="event-end"></div>
+					<div id="history-range-slider"></div>
+			
+<script>
+
+// TODO: NEED TO BE ABLE TO SET RANGE(min/max) and START(min/max) based on oldest-Ad
+// Check noIuSlider: http://refreshless.com/nouislider/update-range-slider
+
+$("#history-range-slider").noUiSlider({
+	
+	// Create two timestamps to define a range.
+    range: {
+        min: timestamp('2011'),
+        max: timestamp('2015')
+    },
+	
+	// Steps of one week
+    step: 7 * 24 * 60 * 60 * 1000,
+	
+	// Two more timestamps indicate the handle starting positions.
+    start: [ timestamp('2011'), timestamp('2015') ],
+	
+	// The setDate function will display the current values.
+    serialization: {
+        lower: [
+            $.Link({
+                target: $("#event-start"),
+                method: selectDateRange
+            })
+        ],
+		upper: [
+            $.Link({
+                target: $("#event-end"),
+                method: selectDateRange
+            })
+        ],
+        format: {
+            decimals: 0   
+        }
+    }
+});
+</script>		
+
+			</div>
+		</div>
+<!-- end date-slider -->
+	
 			<div id="container" class="z-100" draggable="true">
 
 <!-- testing only -->
@@ -94,16 +159,12 @@
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/e800de8d3ba845528d5efbc25c63e650.png" alt="img alt"></a>
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.launchbit.com/taz-i/4646-4626.png" alt="img alt"></a>
 
-
-
 <!-- end testing -->
-
-
 
 			</div>
 		</div>
 		<aside id="right">
-			<a href="#" id="handle" class="panel-resize"/></a>
+			<a href="#" id="handle" class="panel-resize"></a>
 			<div class="inspect carousel">
 				<ul class="panes">
 					<li class="active">

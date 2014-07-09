@@ -12,7 +12,24 @@ function updateAdView(o, min, max) {
 	var ads = filterDateRange(o.ads, min, max),
 		result = formatDivs(ads),
 		stats = formatStats(ads);
+		
+	console.log('total-ads: '+ads.length);
 			
+	
+//	        min: sinceTime(ads),
+//	        max: +new Date()
+
+	var slider = $("#history-range-slider");
+   	slider.noUiSlider({
+	
+		// Create two timestamps to define a range.
+	    range: {
+	        min: timestamp('2014'),
+	        max: timestamp('2015')
+	    }
+	    
+	}, true);
+    
 	$('#container').html(result);
 	$('#stats').html(stats);
 	
@@ -30,9 +47,10 @@ function filterDateRange(ads, min, max) {
 		
 		if (ads[i].found < min || ads[i].found > max) {
 			
-			console.log("Filter (date-slider): "+ad.found); 
+			console.log("Filter (date-slider): "+ads[i].found); 
 			continue;
 		}
+		
 		result.push(ads[i]);
 	}
 	
@@ -175,3 +193,11 @@ function formatJSON(data) {
 
 	return JSON.stringify(data, null, 4);//.replace(/\n/g, "<br/>");.replace(/ /g, "&nbsp;");
 }
+
+
+window.addEventListener("addon-message", function(event) {
+	
+  console.log(JSON.stringify(event.detail));
+  updateAdView(self.options, event.detail.min,  event.detail.max);
+
+}, false);

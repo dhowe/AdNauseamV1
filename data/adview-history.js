@@ -1,9 +1,17 @@
 
-var maxDate=Number.maxValue, minDate=0, updateTimerId, sliderTimoutMs=200;
+var maxDate = Number.maxValue, minDate=0, updateTimerId, sliderTimoutMs=200;
 
 function selectAds() {
 	
-	console.log('range: '+formatDate(new Date(+minDate))+" TO "+formatDate(new Date(+maxDate)));
+	console.log('range: '+formatDate(new Date(+minDate))
+		+ " TO " + formatDate(new Date(+maxDate)) );
+	//window.postMessage("Message from page script", "http://my-domain.org/" );
+	
+	//console.log("makeAdview: "+(typeof makeAdview)); // adview-ui.js
+
+ 	var event = document.createEvent('CustomEvent');
+	event.initCustomEvent("addon-message", true, true, { min: minDate, max: maxDate });
+    document.documentElement.dispatchEvent(event);
 	// NEXT: send message to addon to call:
 	// 		 adview.js.updateAdView(self.options);
 	// 		   send min/max timestamps as arguments

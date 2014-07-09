@@ -11,8 +11,9 @@
 		
 		<!-- js for history-slider -->
 		<script src="lib/jquery.min.js"></script>
-		<script src="lib/jquery.nouislider.min.js"></script>
-		<script src="adview-history.js"></script>
+		<script src="lib/Link.js"></script>
+		<script src="lib/jquery.nouislider.js"></script>
+		
 		
 		
 		<!--script src="lib/packery.pkgd.min.js"></script>
@@ -40,7 +41,8 @@
 		<script src="lib/packery/js/packery.js"></script>
 
 		<script src="adview-ui.js"></script>
-
+		<script src="adview-history.js"></script>
+		
 	</head>
 	<body>
 		<div id="left" class="stage">
@@ -65,7 +67,10 @@
 // TODO: NEED TO BE ABLE TO SET RANGE(min/max) and START(min/max) based on oldest-Ad
 // Check noIuSlider: http://refreshless.com/nouislider/update-range-slider
 
-$("#history-range-slider").noUiSlider({
+var slider = $("#history-range-slider");
+console.log(slider);
+
+slider.noUiSlider({
 	
 	// Create two timestamps to define a range.
     range: {
@@ -79,7 +84,6 @@ $("#history-range-slider").noUiSlider({
 	// Two more timestamps indicate the handle starting positions.
     start: [ timestamp('2011'), timestamp('2015') ],
 	
-	// The setDate function will display the current values.
     serialization: {
         lower: [
             $.Link({
@@ -97,7 +101,9 @@ $("#history-range-slider").noUiSlider({
             decimals: 0   
         }
     }
-});
+}, false);
+
+
 </script>		
 
 			</div>

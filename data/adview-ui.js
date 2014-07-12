@@ -9,7 +9,7 @@ function makeAdview() {
 
 	var zoomId = -1, pack = new Packery(
 		document.querySelector('#container'), {
-		centered : { y : 5000 }, // center packery in half the min-height
+		centered : { y : 5000 }, // center of the packery in half the min-height
 		itemSelector : '.item',
 		gutter : 1
 	});
@@ -159,26 +159,7 @@ function makeAdview() {
 
 	//////////// HELPER-FUNCTIONS
 
-	function select(min,max) { // not used 
-
-		// OR: document.body.style.zoom="300%"
-
-		$('.item img').each(function(i, img) {
-
-			var $img = $(img), sz = realSize($img);
-			$img.css({
-				'width'  : sz.w * r,
-				'height' : sz.h * r
-			});
-		});
-		// $('#container').removeClass().addClass(style);
-
-
-		pack.layout();
-	}
-
 	function zoomIn() {
-		//console.log('zoomIn()');
 		(zoomIdx > 0) && setZoom(--zoomIdx);
 	}
 
@@ -194,8 +175,8 @@ function makeAdview() {
 		$('#ratio').html(zooms[idx]+'%');
 	}
 
-	// resize each image maintaining its aspect ratio
-	function resize(r) { // not used 
+	// resize each image according to aspect ratio
+	function resize(r) {
 
 		// OR: document.body.style.zoom="300%"
 

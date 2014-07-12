@@ -7,9 +7,9 @@ function updateAdView(o, min, max) {
 	min = min || 0;
 	max = max || Number.MAX_VALUE;
 	
-	console.log('updateAdView: '+min+'-'+max);
+	//console.log('updateAdView: '+min+'-'+max);
 	
-	var ads = filterDateRange(o.ads, min, max),
+	var ads = o.ads;//filterDateRange(o.ads, min, max),
 		result = formatDivs(ads),
 		stats = formatStats(ads);
 		
@@ -19,7 +19,7 @@ function updateAdView(o, min, max) {
 //	        min: sinceTime(ads),
 //	        max: +new Date()
 
-	var slider = $("#history-range-slider");
+	/*var slider = $("#history-range-slider");
    	slider.noUiSlider({
 	
 		// Create two timestamps to define a range.
@@ -28,12 +28,12 @@ function updateAdView(o, min, max) {
 	        max: timestamp('2015')
 	    }
 	    
-	}, true);
+	}, true);*/
     
 	$('#container').html(result);
 	$('#stats').html(stats);
 	
-	console.log(stats);
+	//console.log(stats);
 	
 	//result = formatJSON(ads);
 	//$('#json').html('<!--\n'+result+'\n-->');

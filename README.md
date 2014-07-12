@@ -5,7 +5,7 @@ We conceptualize AdNauseam within a broader class of software systems that serve
 
 <a href="http://dhowe.github.io/AdNauseam"><img src="https://raw.githubusercontent.com/dhowe/AdNauseam/master/data/img/ADNAUSEAM_logo_128.png" alt=""/></a>
 
-#### <a href="http://dhowe.github.io/AdNauseam">The AdNauseam website</a>
+#### <a href="http://dhowe.github.io/AdNauseam/">The AdNauseam website</a>
 
 AdNauseam is a lightweight browser extension that helps protect users against surveillance and data-profiling by online advertisers and ad networks. It does so not by means of concealment and encryption (i.e. covering one's tracks), but instead, paradoxically, by the opposite strategy: noise and obfuscation. AdNauseam works silently in the background of your web browser by clicking all the ads on a page, thereby obscuring user interests in a cloud of decoy clicks. In light of the industry's failure to achieve consensus on a Do Not Track standard, AdNauseam allows individual users to take matters into their own hands, offering cover against certain forms of surveillance, profiling, and practices of discrimination.
 

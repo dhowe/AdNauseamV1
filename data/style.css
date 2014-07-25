@@ -592,3 +592,42 @@ aside .details dt{
 aside .details dt a.visited {
 	color: #A020F0;
 }
+
+/******************************
+
+		D3 Slider
+
+******************************/
+
+svg {
+  font: 10px sans-serif;
+}
+
+rect {
+  fill: #555;
+}
+
+.selecting rect {
+}
+
+.selecting rect.selected {
+  fill: #999;
+}
+
+.resize path {
+  fill: #666;
+  fill-opacity: .8;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.brush .extent {
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}

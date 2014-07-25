@@ -604,27 +604,14 @@ svg {
 }
 
 .bars rect {
-  fill: #555;
+  fill: #777;
 }
 
 .selecting rect {
 }
 
 .selecting rect.selected {
-  fill: #999;
-}
-
-.resize path {
-  fill: #666;
-  fill-opacity: .8;
-  stroke: #000;
-  stroke-width: 1.5px;
-}
-
-.axis path, .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+  fill: #ccc;
 }
 
 .brush .extent {

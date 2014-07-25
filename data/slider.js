@@ -19,43 +19,40 @@ function slider() {
 	    .on("brush", brushmove)
 	    .on("brushend", brushend);
 
-	var arc = d3.svg.arc()
-	    .outerRadius(height / 2)
-	    .startAngle(0)
-	    .endAngle(function(d, i) { return i ? -Math.PI : Math.PI; });
-
 	var svg = d3.select("#stats").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	  .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+			.style("filter", "url(#drop-shadow)");
 
-	svg.append("g")
-	    .attr("class", "x axis")
-	    .attr("transform", "translate(0," + height + ")")
-	    .call(d3.svg.axis().scale(x).orient("bottom"));
-
-	var rect = svg.append("g").selectAll("rect")
+	var rect = svg.append("g")
+		.attr("class", "bars")
+		.selectAll("rect")
 	    .data(data)
 	  .enter().append("rect")
 			.attr("x", function(d) { return x(d) })
-			.attr("y", function(d) { return y(d) })
-			.attr("width", 2)
-			.attr("height", function(d) { return height - y(d) })
+			.attr("y", 10)
+			.attr("width", 1)
+			.attr("height", function(d) { return height - y(d) -10 })
 
 	var brushg = svg.append("g")
 	    .attr("class", "brush")
 	    .call(brush);
 
-	brushg.selectAll(".resize").append("path")
-	    .attr("transform", "translate(0," +  height / 2 + ")")
-			// .attr("width", 2)
-			// .attr("height", height )
+	brushg.selectAll(".resize rect")
+			.attr("height", height)
+			.attr("width", 1)
+			.attr("x", 0)
+			.attr("fill", "#999")
+			.attr("stroke-width",0)
+			.attr("style", "visibility: visible");
 
-	    .attr("d", arc);
-
-	brushg.selectAll("rect")
-	    .attr("height", height);
+	brushg.selectAll(".resize").append("rect")
+				.attr("width", 10)
+				.attr("x", -5)
+				.attr("height", height )
+				.attr("style", "visibility: hidden");
 
 	brushstart();
 	brushmove();
@@ -72,4 +69,29 @@ function slider() {
 	function brushend() {
 	  svg.classed("selecting", !d3.event.target.empty());
 	}
+
+	// black drop shadow
+
+	var defs = svg.append("defs");
+
+	var filter = defs.append("filter")
+			.attr("id", "drop-shadow")
+
+	filter.append("feGaussianBlur")
+			.attr("in", "SourceAlpha")
+			.attr("stdDeviation", 2)
+			.attr("result", "blur");
+	filter.append("feOffset")
+			.attr("in", "blur")
+			.attr("dx", 2)
+			.attr("dy", 2	)
+			.attr("result", "offsetBlur");
+
+	var feMerge = filter.append("feMerge");
+
+	feMerge.append("feMergeNode")
+			.attr("in", "offsetBlur")
+	feMerge.append("feMergeNode")
+			.attr("in", "SourceGraphic");
+
 }

@@ -603,7 +603,7 @@ svg {
   font: 10px sans-serif;
 }
 
-rect {
+.bars rect {
   fill: #555;
 }
 

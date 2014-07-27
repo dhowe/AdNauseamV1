@@ -6,6 +6,8 @@ function formatDivs(ads) {
 		
 	var html = '', ads = findDups(ads);
 	
+	console.log(ads);
+	
 	for (var i=0, j = ads.length; i<j; i++) {
 		
 		if (ads[i].url) {
@@ -15,8 +17,8 @@ function formatDivs(ads) {
 			html += '<a href="'+ad.target+'" class="item';
 			html += ad.hidden ? '-hidden ' : ' '; // hide dups w css
 			
-			if (ad.visited==0) html += 'pending ';	
-			if (ad.visited<0)  html += 'failed ';	
+			if (ad.visited == 0) html += 'pending ';	
+			if (ad.visited < 0)  html += 'failed ';	
 			
 			html += 'dup-count-'+ad.count+'" ';
 			html += 'data-detected="'+formatDate(ad.found)+'" ';

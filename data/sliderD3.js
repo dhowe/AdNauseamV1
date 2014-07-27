@@ -1,10 +1,10 @@
 $(document).ready(historySlider);
 
+var format = d3.time.format("%a %b %d %Y");
 
 function historySlider() {
 
-	var data = sortAdsPerDay(ads),  
-		format = d3.time.format("%a %b %d %Y");
+	var data = sortAdsPerDay(ads);		
 	
 	var margin = {top: 0, right: 130, bottom: 0, left: 20},
 	    width =  parseInt(d3.select("#left").style("width"), 10) - margin.left - margin.right,

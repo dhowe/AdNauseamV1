@@ -611,7 +611,7 @@ rect {
 }
 
 .selecting rect.selected {
-  fill: #999;
+  fill: #ccc;
 }
 
 .resize path {

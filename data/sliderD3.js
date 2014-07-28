@@ -22,8 +22,11 @@ function historySlider() {
     	.domain(d3.extent(data, amountFn));
     	
 	var brush = d3.svg.brush()
-	    .x(x).extent([x.invert(width/2-50), x.invert(width/2+50)])
-	    .on("brushstart", brushstart).on("brush", brushmove).on("brushend", brushend);
+	    .x(x)
+	    .extent([x.invert(width/2-50), x.invert(width/2+50)])
+	    .on("brushstart", brushstart)
+	    .on("brush", brushmove)
+	    .on("brushend", brushend);
 
 	var arc = d3.svg.arc()
 	    .outerRadius(height / 2)

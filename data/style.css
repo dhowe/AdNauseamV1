@@ -47,7 +47,8 @@ body {
 
 #container {
 	position: absolute;
-	cursor: move;
+	cursor: -moz-grab;
+  cursor: -webkit-grab;
 	/*large dimensions to center the composition*/
 	top:-5000px;left:-5000px;
 	margin: 50% 0 0 50%;
@@ -617,4 +618,5 @@ svg {
 .brush .extent {
   fill-opacity: .125;
   shape-rendering: crispEdges;
+	cursor: move;
 }

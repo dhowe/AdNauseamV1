@@ -89,6 +89,12 @@ function makeAdview() {
 	});
 
 
+	$('#z-clear').unbind().click(function(e) {
+
+		clearAds();
+		e.preventDefault();
+	});
+	
 	/////////// INSPECTOR
 
 	// hover to put a new ad in the inspector
@@ -165,6 +171,11 @@ function makeAdview() {
 
 	function zoomOut() {
 		(zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
+	}
+	
+	function clearAds() {
+		
+		console.log('clear-ads: '+options.ads);
 	}
 
 	function setZoom(idx) {

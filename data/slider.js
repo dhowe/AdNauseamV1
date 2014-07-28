@@ -1,8 +1,14 @@
-$(document).ready(historySlider);
 
 var format = d3.time.format("%a %b %d %Y");
 
-function historySlider() {
+/*
+ * NEXT: 
+ * 
+	Do actual filtering in brushend
+	Add a couple of fake dates to each end of slider with 0 counts???
+ */
+
+function historySlider(ads) {
 
 	var data = sortAdsPerDay(ads);		
 	
@@ -13,16 +19,18 @@ function historySlider() {
   	var amountFn = function(d) { return d.count },
   		dateFn = function(d) { return format.parse(d.date) }
   	
+  	var padding = 0;
   	var x = d3.time.scale()
-   		.range([0, width])
+   		.range([padding, width-padding])
     	.domain(d3.extent(data, dateFn));
 
   	var y = d3.scale.linear()
     	.range([10, height-20])
     	.domain(d3.extent(data, amountFn));
-    	
+    
 	var brush = d3.svg.brush()
-	    .x(x).extent([x.invert(width/2-50), x.invert(width/2+50)])
+	    .x(x)
+	    .extent([x.invert(padding), x.invert(width-padding)])
 	    .on("brushstart", brushstart)
 	    .on("brush", brushmove)
 	    .on("brushend", brushend);
@@ -41,11 +49,6 @@ function historySlider() {
 	    .attr("class", "x axis")
 	    .attr("transform", "translate(0," + height + ")")
 	    .call(d3.svg.axis().scale(x).orient("bottom"));
-	    
-	// var rect = svg.append("g")
-		// .attr("class", "bars")
-		// .selectAll("rect")
-	    // .data(data)
 	    
 	// a single div to hold tooltip info for rects
 	var div = d3.select("body").append("div")   
@@ -68,6 +71,7 @@ function historySlider() {
 	    		.style("top", (d3.event.pageY - 28) + "px");    
 		})                  
         .on("mouseout", function(d) {       
+        	
             div.transition()        
                 .duration(500)      
                 .style("opacity", 0);   
@@ -78,22 +82,6 @@ function historySlider() {
 		  x: function(d) { return x( dateFn(d) ) },
 		  y: 10
 	});
-	
-	// .attr("x", function(d) { return x(d) })
-	// .attr("y", function(d) { return y(d) })
-	// .attr("width", 2)
-	// .attr("height", function(d) { return height - y(d) })
-
-	/*var brushg = svg.append("g")
-	    .attr("class", "brush")
-	    .call(brush);
-
-	brushg.selectAll(".resize").append("path")
-	    .attr("transform", "translate(0," +  height / 2 + ")")
-	    .attr("d", arc);
-
-	brushg.selectAll("rect")
-	    .attr("height", height);*/
 	   
 	var brushg = svg.append("g")
 	    .attr("class", "brush")
@@ -112,7 +100,7 @@ function historySlider() {
 	brushg.selectAll("rect.extent")
 			.attr("height", height)
 
-	//these ones only for getting a widder hit area
+	// these ones only for getting a wider hit area
 	brushg.selectAll(".resize").append("rect")
 				.attr("width", 10)
 				.attr("x", -5)
@@ -129,17 +117,35 @@ function historySlider() {
 
 	function brushmove() {
 		
-		var s = brush.extent(), min = s[0], max = s[1];
-		rect.classed("selected", function(d) {
-			return min <= d && d <= max;
-		});
+		// var s = brush.extent(), min = s[0], max = s[1];
 		
-		console.log('min='+min+' max='+max);
+		// rect.classed("selected", function(d) {  
+			// console.log("Checking: "+d);
+			// return min <= d.date && d.date <= max;
+		// });
+// 		
+		// var selects = d3.selectAll(".selected");
+		// console.log(selects);
 	}
 
 	function brushend() {
 		
 		svg.classed("selecting", !d3.event.target.empty());
+		
+		// NEXT: update the ad date range here
+		
+		var s = brush.extent(), min = s[0], max = s[1];
+
+		var filter = function(ad) {
+                return ad.date >= min && ad.date <= max;
+		};
+        
+        //var filtered = data.features.filter(filter);
+        //earthquakesLayer.clearLayers()
+          //  .addData(filtered);
+            
+		console.log('min='+min+' max='+max);
+		
 	}
 
 	var defs = svg.append("defs");
@@ -171,8 +177,8 @@ function historySlider() {
 		
 		for (var i=0; i < ads.length; i++) {
 			
-		  //d = new Date(ads[i].found), // TESTING ONLY
-		  d = new Date(randomDate(new Date(2014, 5, 5), new Date())), 
+		  d = new Date(ads[i].found), // TESTING ONLY
+		  //d = new Date(randomDate(new Date(2014, 5, 5), new Date())), 
 		  	day = getDay(d);
 		  
 		  if (!dateToCount[day])

@@ -90,6 +90,32 @@ div.tooltip {
 	overflow: hidden;
 }
 
+.clearb {
+	position: absolute;
+	top: 16px;
+	left: 72%;
+	border: 2px solid #818181;
+	border-radius: 12px;
+	height: 20px;
+	width: 16px;
+	background: #000;
+	z-index: 100;
+}
+
+.clearb a {
+	line-height: 18px;
+	display: block;
+	height: 21px;
+	text-align: center;
+	color: #818181;
+	text-decoration: none;
+	overflow: hidden;
+}
+
+.clearb a:hover {
+	color: #fff;
+}
+
 .zoom a:hover {
 	color: #fff;
 }
@@ -183,6 +209,15 @@ div.tooltip {
 	right: 25%;
 	margin: 8px 10px;
 }
+
+#clear.button{
+	z-index: 2000;
+	bottom: 0;
+	position: absolute;
+	right: 25%;
+	margin: 8px 10px;
+}
+
 
 #logo a {
 	width: 75px;

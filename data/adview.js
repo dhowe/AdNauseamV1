@@ -1,6 +1,17 @@
 
 //self.port.on("ADNUpdateAdView", updateAdView);
-updateAdView(self.options);
+
+//console.log("adview.js.port: "+port); 
+
+
+// if (typeof options != 'undefined') {
+	// console.log("adview.js.ads: " + options.ads);
+	// updateAdView(options.ads);
+// }
+// else {
+	// console.log("adview.js no ads!!!");
+// }
+
 
 function formatDivs(ads) {
 		
@@ -42,8 +53,21 @@ function formatDivs(ads) {
 	
 	return html;
 }
+
+function updateAdView(ads) {
 	
-function updateAdView(o) {
+	if (!ads) throw Error("No ads!!!!");
+	
+	var result = formatDivs(ads);
+	$('#container').html(result);
+
+	result = formatStats(ads);
+	$('#stats').html(result);
+	
+	historySlider(ads);
+}
+	
+function updateAdViewOld(o) {
 	
 	var result, ads = o.ads;
 	result = formatDivs(ads);

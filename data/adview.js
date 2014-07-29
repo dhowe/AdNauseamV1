@@ -27,8 +27,8 @@ function updateAdView(ads) {//}, minDate, maxDate) {
 	var result = formatDivs(uniqueAds);
 	$('#container').html(result);
 
-	//result = formatStats(uniqueAds);
-	//$('#stats').html(result);
+	result = formatStats(uniqueAds);
+	$('#stats').html(result);
 	
 	//historySlider(ads);
 }

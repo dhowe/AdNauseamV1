@@ -4,10 +4,12 @@ var format = d3.time.format("%a %b %d %Y");
 /*
  * NEXT: 
  * 
-	Do actual filtering in brushend
-	Implement and check clearAds
+	Do actual filtering
+	Bars should be as wide as possible
 	
 	Add a couple of fake dates as ends of slider range??? but dont change count
+	
+	Implement and check clearAds()
  */
 
 function historySlider(allAds) {
@@ -50,12 +52,7 @@ function historySlider(allAds) {
 	var svg = d3.select("#stats").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
-	  	.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	svg.append("g")
-	    .attr("class", "x axis")
-	    .attr("transform", "translate(0," + height + ")")
-	    .call(d3.svg.axis().scale(x).orient("bottom"));
+	  	.append("g").attr("transform", "translate(" + margin.left + ","+margin.top + ")");
 	    
 	// a single div to hold tooltip info for rects
 	var tt = d3.select("body").append("div")   
@@ -109,86 +106,57 @@ function historySlider(allAds) {
 			.attr("in", "offsetBlur")
 	feMerge.append("feMergeNode")
 			.attr("in", "SourceGraphic");
-		
-
-	refresh(ads);
-	
-	// functions ======================================
-	
-	function refresh(ads) {
-			
-		console.log("refresh() :: "+ads.length);
-		var data = sortAdsPerDay();
-
-	  	var ext = d3.extent(data, dateFn)
-	  	x.domain(ext);
-	  	y.domain(d3.extent(data, amountFn));
-	
-		console.log('min='+ext[0]+' max='+ext[1]);
-
-		var rects = svg.append("g")
-			.attr("class", "bars")
-			.selectAll("rect")
-		    .data(data)
-		    .enter().append("rect")
-		  	.on("mouseover", function(d) {     
-		  		
-				tt.transition()        
-		    		.duration(200)      
-		    		.style("opacity", .9);      
-				
-				tt.html(d.date+"<br/>"+d.count+" Ad(s) found")  
-		    		.style("left", (d3.event.pageX) + "px")     
-		    		.style("top", (d3.event.pageY - 28) + "px");    
-			})                  
-	        .on("mouseout", function(d) {       
-	        	
-	            tt.transition()        
-	                .duration(500)      
-	                .style("opacity", 0);   
-	        })
-		  	.attr({
-			  width: 5,
-			  height: function(d) { return y(amountFn(d)) },
-			  x: function(d) { return x( dateFn(d) ) },
-			  y: 10
-		});
-		
-	
-    	//rects.exit().remove();
-	  // var rects = svg.selectAll("rect").data(data);
-// 	  
-	  // rects.transition()
-	   // .attr("cx", function(d) { return x(dateFn(d)) })
-	   // .attr("cy", function(d) { return y(amountFn(d)) })
+// 		
+// 
+	// refreshSlider(ads);
+	// //updateAdView(ads);
 // 	
-	   // rects.enter()
-	    // .append("svg:rect")
-	    // .attr("r", 4)
-	    // .attr("cx", function(d) { return x(dateFn(d)) })
-	    // .attr("cy", function(d) { return y(amountFn(d)) })
-	}
+	// // functions ======================================
+// 	
+	// function refreshSlider(ads) {
+// 			
+		//console.log("refresh() :: "+ads.length);
+	var data = sortAdsPerDay();
+
+  	var ext = d3.extent(data, dateFn)
+  	x.domain(ext);
+  	y.domain(d3.extent(data, amountFn));
+
+	//console.log('min='+ext[0]+' max='+ext[1]);
+
+	var rects = svg.append("g")
+		.attr("class", "bars")
+		.selectAll("rect")
+	    .data(data)
+	    .enter().append("rect")
+	  	.on("mouseover", function(d) {     
+	  		
+			tt.transition()        
+	    		.duration(200)      
+	    		.style("opacity", .9);      
+			
+			tt.html(d.date+"<br/>"+d.count+" Ad(s) found")  
+	    		.style("left", (d3.event.pageX) + "px")     
+	    		.style("top", (d3.event.pageY - 28) + "px");    
+		})                  
+        .on("mouseout", function(d) {       
+        	
+            tt.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+        })
+	  	.attr({
+		  width: 5,
+		  height: function(d) { return y(amountFn(d)) },
+		  x: function(d) { return x( dateFn(d) ) },
+		  y: 10
+	});
 
 	function brushend() {
 		
 		svg.classed("selecting", !d3.event.target.empty());
-		
-		// NEXT: update the ad date range here
-		
 		var s = brush.extent(), min = s[0], max = s[1];
-
-		/*var filter = function(ad) {
-			return ad.date >= min && ad.date <= max;
-		};*/
-        
-        //var filtered = data.features.filter(filter);
-        //earthquakesLayer.clearLayers()
-          //  .addData(filtered);
-         
-        var tmp = dateFilter(min, max);
-        
-		refresh(tmp);
-		//updateAdView(options.ads, min, max);
+ 		var tmp = dateFilter(min, max);
 	}
 	
 	function dateFilter(min, max) {
@@ -226,10 +194,10 @@ function historySlider(allAds) {
 		
 		// var s = brush.extent(), min = s[0], max = s[1];
 		
-		rect.classed("selected", function(d) {  
+		//rect.classed("selected", function(d) {  
 			// console.log("Checking: "+d);
-			return min <= d.date && d.date <= max;
-		});
+			//return min <= d.date && d.date <= max;
+		//});
 // 		
 		// var selects = d3.selectAll(".selected");
 		// console.log(selects);
@@ -289,6 +257,8 @@ function historySlider(allAds) {
 	function randomDate(start, end) {
 	    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 	}
+	
+	updateAdView(window.ads);
 	
 }// end historySlider
 

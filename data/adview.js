@@ -12,7 +12,9 @@
 	// console.log("adview.js no ads!!!");
 // }
 
-function updateAdView(ads, minDate, maxDate) {
+function updateAdView(ads) {//}, minDate, maxDate) {
+	
+	console.log("updateAdView: "+ads.length);
 	
 	if (!ads) throw Error("No ads!!!!");
 	
@@ -20,15 +22,15 @@ function updateAdView(ads, minDate, maxDate) {
 	// maxDate = maxDate || new Date();
 // 	
 	//ads = filterByDate(ads, minDate, maxDate);
-	ads = findDups(ads);
+	var uniqueAds = findDups(ads);
 	
-	var result = formatDivs(ads);
+	var result = formatDivs(uniqueAds);
 	$('#container').html(result);
 
-	result = formatStats(ads);
-	$('#stats').html(result);
+	//result = formatStats(uniqueAds);
+	//$('#stats').html(result);
 	
-	historySlider(ads);
+	//historySlider(ads);
 }
 	
 function updateAdViewOld(o) {

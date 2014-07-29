@@ -30,8 +30,10 @@
 		
 		<script>
  			$(document).ready(function() {
- 				
- 				updateAdView(options.ads);
+ 				console.log("jquery.ready()");
+ 				var staticTest = 1;
+ 				//updateAdView((staticTest ? test : options).ads); // from testads, if present
+ 				historySlider((staticTest ? test : options).ads);
  			});
 		</script>
 		
@@ -51,12 +53,13 @@
 				<a href="" id="z-out">&#8211;</a>
 			</div>
 			
-			<div id="stats" class="session-sum">
-
-			</div>
+			<div id="stats" class="session-sum"></div>
+			
+			<!--div id="svgcon" class="svg-container"></div-->
+			
 			<div id='container' class="z-100" draggable="true">
 
-<!-- testing only -->
+<!-- testing only
 
 <a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_MS3.jpg" alt="img alt"></a>
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359251/13_2259_INYT_Anon_USD_163x90_ER1.jpg" alt="img alt"></a>
@@ -111,7 +114,7 @@
 
 
 
-<!-- end testing -->
+ end testing -->
 
 
 

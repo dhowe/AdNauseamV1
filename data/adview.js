@@ -94,6 +94,8 @@ function makeAdview() { // should happen just once
 	// hover to put a new ad in the inspector
 	$('.item').hover(function() {
 		
+		console.log('.item.hover');
+		
 		var img = $('img', this),
 			src = img.attr('src'),
 			alt = img.attr('alt');
@@ -108,6 +110,8 @@ function makeAdview() { // should happen just once
 		}
 
 		inspectorData = [ first ];
+		
+		console.log('inspectorData: '+inspectorData);
 
 		// check all duplicate items to see which apply for this ad
 		$(".item-hidden").each(function(i) {
@@ -270,13 +274,13 @@ function updateAdview(ads) {
 	result = formatStats(uniqueAds);
 	$('#stats').html(result);
 	
-	console.log("pack.layout()");
-	
 	repack();
 }
 
 function repack() {
 	
+	console.log("new Packery()");
+
 	pack = new Packery(
 		'#container', {
 		centered : { y : 5000 }, // center packery at half min-height
@@ -342,12 +346,14 @@ function formatDate(ts) {
 		months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	
 	var pad = function(str) {
+		
 		str = String(str);
 		return (str.length < 2) ? "0" + str : str;
 	}
 	
 	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
 	var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+	
 	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() 
 		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) 
 		+ meridian.toLowerCase() + ' ('+ts+')'; // attach ts to end for debugging
@@ -385,8 +391,8 @@ function findDups(ads) {
 	for (var i=0, j = ads.length; i<j; i++) {
 		
 		ad = ads[i];
-		if (!ad.url || ad.hidden) 
-			continue;
+		
+		if (!ad.url) continue;
 		
 		soFar = hash[ad.url];
 		if (!soFar) {
@@ -402,6 +408,7 @@ function findDups(ads) {
 	}
 	
 	for (var i=0, j = ads.length; i<j; i++) {
+		
 		ad = ads[i];
 		ad.count = hash[ad.url];
 		//console.log(i+") "+ad.count);

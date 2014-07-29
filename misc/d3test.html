@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<script src="lib/jquery-1.8.3.min.js"></script>
+		<script src="lib/d3.min.js"></script>
+</head>
+
+<body id="posts-show">
+
+<style>
+    
+svg {
+  vertical-align: middle;
+  background: rgba(255,255,255, 0.2);
+  box-shadow: inset 0 0 3px 0px #CECECE;
+}
+
+svg circle {
+  stroke-width: 2px;
+  stroke: #79A32B;
+  fill: transparent;
+  cursor: pointer;
+}
+
+svg circle:active {
+  stroke: #45D3C7;
+}
+
+.action-button {
+  border-radius: 2px;
+  border: 1px solid #19380D;
+  padding: 3px 12px;
+  background-color: rgba(175, 209, 183, 0.6);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.action-button:active {
+  box-shadow: inset 0 0 3px 0px #868686;
+}
+
+.action-button.destroy {
+  border: 1px solid #863636;
+  background-color: rgba(197, 86, 86, 0.6);
+}
+</style>
+
+
+<div id="demoAddRandomAndDelete" style="text-align: left;">
+  <p class="value">---</p>
+  <a href="javascript:void(0)" class="add-data action-button">Add data</a>
+  <a href="javascript:void(0)" class="remove-data action-button destroy">Delete data</a>
+  <p>
+</div>
+
+<script>
+
+(function() {
+	
+	var format = d3.time.format("%a %b %d %Y");
+	
+	var amountFn = function(d) { return d.count }
+	var dateFn = function(d) { return format.parse(d.date) }
+	
+	var JSONData = [
+	  { "id": 3, "date": "Sun May 05 2013", "count": 12000},
+	  { "id": 1, "date": "Mon May 13 2013", "count": 2000},
+	  { "id": 2, "date": "Thu Jun 06 2013", "count": 17000},
+	  { "id": 4, "date": "Thu May 09 2013", "count": 15000},
+	  { "id": 5, "date": "Mon Jul 01 2013", "count": 16000}
+	]
+	
+  	var data = JSONData.slice(), width=800, height=50;
+   
+  	var x =  d3.time.scale().range([10, width-20]);
+  	var y =  d3.scale.linear().range([0, height-20]);
+    var bx = d3.time.scale().range([10, width-20]);
+  	var by = d3.scale.linear().range([0, height-20]);
+  	
+  	var svg = d3.select("#demoAddRandomAndDelete")
+  	 .append("svg:svg")
+	 .attr("width", width)
+	 .attr("height", height)
+  
+  	//d3.svg.brush().x(bx)
+	//svg.append("g")
+	 //.attr("class", "brush")
+     //call(d3.svg.brush().x(bx));
+     	// d3.svg.brush().x(bx)
+      	// .on("brushstart", brushstart)
+      	// .on("brush", brushmove)
+      	// .on("brushend", brushend))
+  	 // .selectAll("rect")
+     // .attr("height", height);
+	// var brush = d3.svg.brush()
+	    // .x(bx)
+	    // .extent([bx.invert(10), bx.invert(width-20)])
+	    // .on("brushstart", brushstart)
+	    // .on("brushmove", brushmove)
+	    // .on("brushend", brushend);	
+// 	    
+	var brush = d3.svg.brush()
+    .x(x)
+    .on("brush", brushed);
+	
+	// brush.x(x)
+	// var g = svg.append("g")
+	// brush(g)
+	//g.attr("transform", "translate(100, 32)")
+	//g.selectAll("rect").attr("height", 30)	    
+	
+	function brushed() {
+		console.log('brushed');
+	}
+	function brushstart() {
+		console.log('brushstart');
+	  	svg.classed("selecting", true);
+	}
+	
+	function brushmove() {
+		console.log('brushmove');
+	  	var s = d3.event.target.extent();
+	  	//circle.classed("selected", function(d) { return s[0] <= d && d <= s[1]; });
+	}
+	
+	function brushend() {
+		
+		console.log('brushend');
+	  	svg.classed("selecting", !d3.event.target.empty());
+	}  
+	
+	var context = svg.append("g")
+     .attr("class", "context")
+     .attr("transform", "translate(0,100)");
+      
+  	var refreshGraph = function() {
+
+		var ext = d3.extent(data, dateFn);
+		console.log(ext[0]+" -- "+ext[1]);
+    	x.domain(ext);
+    	y.domain(d3.extent(data, amountFn));
+
+    	var rects = svg.selectAll("rect").data(data, dateFn);
+  
+	    rects.transition() // needed
+	     .attr("x", function(d) { return x( dateFn(d)) })
+	     .attr("height", function(d) { return y( amountFn(d)) });
+
+	    rects.enter()
+    	 .append("svg:rect")
+    	 .attr({
+	  		width: 5,
+	  		height: function(d) { return y(amountFn(d)) },
+	 		x: function(d) { return x( dateFn(d) ) },
+	  		y: 10
+	 	})
+	 	
+     	.on("mouseover", function(d) {     
+     	
+			d3.select("#demoAddRandomAndDelete .value").text("Date: " + d.date + " count: " + d.count)   
+	 	})                  
+   
+	    context.append("g")
+	      .attr("class", "x brush")
+	      .call(brush)
+	    .selectAll("rect")
+	      .attr("y", -6)
+	      .attr("height", 50);
+      
+		rects.exit().remove()
+	}
+
+
+	d3.selectAll("#demoAddRandomAndDelete .add-data")
+	 .on("click", function() {
+	 	
+		var start = d3.min(data, dateFn);
+		var end = d3.max(data, dateFn);
+		var date = new Date(end.getTime() + Math.random() * (end.getTime() - start.getTime()));
+		var obj = {
+			'id': Math.floor(Math.random()*70),
+			'count': Math.floor(1000 + Math.random()*20001),
+			'date': date.toDateString()
+		}
+		
+		data.push(obj)
+		console.log("ADDED: "+obj.date+" :: "+obj.count);
+		refreshGraph()
+	});
+
+  	d3.selectAll("#demoAddRandomAndDelete .remove-data")
+     .on("click", function() {
+     	
+      	var idx = Math.floor(Math.random() * data.length)
+      	data.splice( Math.floor(Math.random() * data.length), 1 )
+      	refreshGraph()
+    })
+
+  	refreshGraph();
+  
+})();
+</script>
+
+</body>
+</html>

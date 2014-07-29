@@ -12,12 +12,43 @@
 	// console.log("adview.js no ads!!!");
 // }
 
+function updateAdView(ads, minDate, maxDate) {
+	
+	if (!ads) throw Error("No ads!!!!");
+	
+	// minDate = minDate || new Date(0);
+	// maxDate = maxDate || new Date();
+// 	
+	//ads = filterByDate(ads, minDate, maxDate);
+	ads = findDups(ads);
+	
+	var result = formatDivs(ads);
+	$('#container').html(result);
+
+	result = formatStats(ads);
+	$('#stats').html(result);
+	
+	historySlider(ads);
+}
+	
+function updateAdViewOld(o) {
+	
+	var result, ads = o.ads;
+	result = formatDivs(ads);
+	$('#container').html(result);
+
+	result = formatStats(ads);
+	$('#stats').html(result);
+	
+	//result = formatJSON(ads);
+	//$('#json').html('<!--\n'+result+'\n-->');
+}
 
 function formatDivs(ads) {
 		
-	var html = '', ads = findDups(ads);
+	var html = '';// ads = findDups(ads);
 	
-	console.log(ads);
+	//console.log(ads);
 	
 	for (var i=0, j = ads.length; i<j; i++) {
 		
@@ -54,32 +85,6 @@ function formatDivs(ads) {
 	return html;
 }
 
-function updateAdView(ads) {
-	
-	if (!ads) throw Error("No ads!!!!");
-	
-	var result = formatDivs(ads);
-	$('#container').html(result);
-
-	result = formatStats(ads);
-	$('#stats').html(result);
-	
-	historySlider(ads);
-}
-	
-function updateAdViewOld(o) {
-	
-	var result, ads = o.ads;
-	result = formatDivs(ads);
-	$('#container').html(result);
-
-	result = formatStats(ads);
-	$('#stats').html(result);
-	
-	//result = formatJSON(ads);
-	//$('#json').html('<!--\n'+result+'\n-->');
-}
-
 function formatStats(ads) {
 	
 	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
@@ -109,6 +114,29 @@ function formatDate(ts) {
 		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
 }  
 
+function filterByDate(ads, min, max) {
+	
+	console.log('filterByDate: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
+	
+	var filtered = [];
+	for (var i=0, j = ads.length; i<j; i++) {
+		 
+		//ads[i].filtered = false;
+		
+		if (ads[i].found < min || ads[i].found > max) {
+			
+			console.log('filtered: '+formatDate(ads[i].found));
+			//ads[i].filtered = true;
+		}
+		else {
+			filtered.push(ads[i]);
+		}
+	}
+	console.log('filterByDate: in='+ads.length+' out='+filtered.length);
+
+	return filtered;
+}
+
 function findDups(ads) {
 	
 	var ad, soFar, hash = {};
@@ -116,14 +144,17 @@ function findDups(ads) {
 	for (var i=0, j = ads.length; i<j; i++) {
 		
 		ad = ads[i];
-		if (!ad.url) continue;
+		if (!ad.url || ad.hidden) 
+			continue;
 		
 		soFar = hash[ad.url];
 		if (!soFar) {
+			
 			hash[ad.url] = 1;
 			ad.hidden = false;
 		}
 		else {
+			
 			hash[ad.url]++;
 			ad.hidden = true;
 		}

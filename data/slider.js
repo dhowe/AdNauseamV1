@@ -157,6 +157,7 @@ function historySlider(allAds) {
 		svg.classed("selecting", !d3.event.target.empty());
 		var s = brush.extent(), min = s[0], max = s[1];
  		var tmp = dateFilter(min, max);
+ 		updateAdView(tmp);
 	}
 	
 	function dateFilter(min, max) {

@@ -1,6 +1,4 @@
 
-var format = d3.time.format("%a %b %d %Y");
-
 /*
  * NEXT: 
  * 
@@ -12,7 +10,11 @@ var format = d3.time.format("%a %b %d %Y");
 	Implement and check clearAds()
  */
 
-function historySlider(allAds) {
+var format = d3.time.format("%a %b %d %Y");
+
+function historySlider(allAds) { // should happen just once
+	
+	console.log('historySlider:'+allAds.length);
 	
 	// TMP: remove!!!
 	for (var i=0; i < allAds.length; i++) 
@@ -106,16 +108,9 @@ function historySlider(allAds) {
 			.attr("in", "offsetBlur")
 	feMerge.append("feMergeNode")
 			.attr("in", "SourceGraphic");
-// 		
-// 
+
 	// refreshSlider(ads);
-	// //updateAdView(ads);
-// 	
-	// // functions ======================================
-// 	
-	// function refreshSlider(ads) {
-// 			
-		//console.log("refresh() :: "+ads.length);
+
 	var data = sortAdsPerDay();
 
   	var ext = d3.extent(data, dateFn)
@@ -155,10 +150,15 @@ function historySlider(allAds) {
 	function brushend() {
 		
 		svg.classed("selecting", !d3.event.target.empty());
+		runFilter();
+	}
+	
+	function runFilter() {
+
 		var s = brush.extent(), min = s[0], max = s[1];
  		var tmp = dateFilter(min, max);
- 		updateAdView(tmp);
-	}
+ 		updateAdview(tmp);
+ 	}
 	
 	function dateFilter(min, max) {
 	
@@ -202,7 +202,9 @@ function historySlider(allAds) {
 // 		
 		// var selects = d3.selectAll(".selected");
 		// console.log(selects);
-	}
+		
+		runFilter(); // NOTE: may cause perf problems...
+	} 
 				
 	function sortAdsPerDay() {
 	
@@ -259,7 +261,7 @@ function historySlider(allAds) {
 	    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 	}
 	
-	updateAdView(window.ads);
+	makeAdview();
 	
 }// end historySlider
 

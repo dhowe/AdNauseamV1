@@ -22,17 +22,14 @@
 		<script src="lib/packery/js/packery.js"></script>
 
 		<script src="lib/d3.min.js"></script>
-		<script src="testads.js"></script>
+		<script src="testads.js"></script><!-- testing-only -->
 		
 		<script src="adview.js"></script>
-		<script src="adview-ui.js"></script>
 		<script src="slider.js"></script>
 		
 		<script>
+			var staticTest = 1; // use testads, if true
  			$(document).ready(function() {
- 				console.log("jquery.ready()");
- 				var staticTest = 1;
- 				//updateAdView((staticTest ? test : options).ads); // from testads, if present
  				historySlider((staticTest ? test : options).ads);
  			});
 		</script>

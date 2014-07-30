@@ -91,76 +91,7 @@ function makeAdview() { // should happen just once
 	
 	/////////// INSPECTOR
 
-	// hover to put a new ad in the inspector
-	$('.item').hover(function() {
-		
-		console.log('.item.hover');
-		
-		var img = $('img', this),
-			src = img.attr('src'),
-			alt = img.attr('alt');
-
-	    // grab the data for the new ad(s) from html attributes
-		var first = {
-			
-			target : $(this).attr('data-target'),
-			origin : $(this).attr('data-origin'),
-			visited : $(this).attr('data-visited'),
-			detected : $(this).attr('data-detected')
-		}
-
-		inspectorData = [ first ];
-		
-		console.log('inspectorData: '+inspectorData);
-
-		// check all duplicate items to see which apply for this ad
-		$(".item-hidden").each(function(i) {
-
-			var url = $(this).attr('data-url');
-			if (url === src) {
-				var next = {
-					target : $(this).attr('data-target'),
-					origin : $(this).attr('data-origin'),
-					visited : $(this).attr('data-visited'),
-					detected : $(this).attr('data-detected')
-				}
-				inspectorData.push(next);
-			}
-		});
-
-		// reset the controls (small dots below the image)
-		$(".controls" ).empty();
-
-		for (var i=0; i < inspectorData.length; i++) {
-
-			var li = '<li data-idx="'+i+'"';
-			if (i == 0) li += ' class="active"';
-			$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
-		}
-
-		// allow user to select a duplicates to view by mousing over a control
-		$('ul.controls > li').mouseenter(function (e) {
-
-    		//$(this).addClass('active').siblings().removeClass('active');
-    		var idx = $(this).attr('data-idx');
-
-    		if (!inspectorData || inspectorData.length < 1)
-    			throw Error("No inspector data!!!");
-
-			populateInspector(idx);
-
-    		e.preventDefault();
-		});
-
-		// update image-src and image-alt tags for new ad
-		$('.inspect img').attr('src', src);
-		$('.inspect img').attr('alt', alt);
-
-		// update data fields and cycle if we have duplicates
-		populateInspector(0);
-		if (inspectorData.length > 1)
-			cycleThroughDuplicates();
-	});
+	
 
 	//////////// HELPER-FUNCTIONS
 
@@ -190,6 +121,81 @@ function makeAdview() { // should happen just once
 	
 	updateAdview();
 }
+
+function enableInspector() {
+
+		console.log('enableInspector');
+
+		// hover to put a new ad in the inspector
+		$('.item').hover(function() {
+			
+			
+			var img = $('img', this),
+				src = img.attr('src'),
+				alt = img.attr('alt');
+	
+		    // grab the data for the new ad(s) from html attributes
+			var first = {
+				
+				target : $(this).attr('data-target'),
+				origin : $(this).attr('data-origin'),
+				visited : $(this).attr('data-visited'),
+				detected : $(this).attr('data-detected')
+			}
+	
+			inspectorData = [ first ];
+			
+			console.log('inspectorData: '+inspectorData);
+	
+			// check all duplicate items to see which apply for this ad
+			$(".item-hidden").each(function(i) {
+	
+				var url = $(this).attr('data-url');
+				if (url === src) {
+					var next = {
+						target : $(this).attr('data-target'),
+						origin : $(this).attr('data-origin'),
+						visited : $(this).attr('data-visited'),
+						detected : $(this).attr('data-detected')
+					}
+					inspectorData.push(next);
+				}
+			});
+	
+			// reset the controls (small dots below the image)
+			$(".controls" ).empty();
+	
+			for (var i=0; i < inspectorData.length; i++) {
+	
+				var li = '<li data-idx="'+i+'"';
+				if (i == 0) li += ' class="active"';
+				$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
+			}
+	
+			// allow user to select a duplicates to view by mousing over a control
+			$('ul.controls > li').mouseenter(function (e) {
+	
+	    		//$(this).addClass('active').siblings().removeClass('active');
+	    		var idx = $(this).attr('data-idx');
+	
+	    		if (!inspectorData || inspectorData.length < 1)
+	    			throw Error("No inspector data!!!");
+	
+				populateInspector(idx);
+	
+	    		e.preventDefault();
+			});
+	
+			// update image-src and image-alt tags for new ad
+			$('.inspect img').attr('src', src);
+			$('.inspect img').attr('alt', alt);
+	
+			// update data fields and cycle if we have duplicates
+			populateInspector(0);
+			if (inspectorData.length > 1)
+				cycleThroughDuplicates();
+		});
+	}
 
 // hack to grab the native image size
 function realSize(theImage) { // use cache?
@@ -273,6 +279,8 @@ function updateAdview(ads) {
 
 	result = formatStats(uniqueAds);
 	$('#stats').html(result);
+	
+	enableInspector();
 	
 	repack();
 }
@@ -360,10 +368,10 @@ function formatDate(ts) {
 		
 		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
 }  
-
+/*
 function filterByDate(ads, min, max) {
 	
-	console.log('filterByDate: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
+	//console.log('filterByDate: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
 	
 	var filtered = [];
 	for (var i=0, j = ads.length; i<j; i++) {
@@ -379,10 +387,10 @@ function filterByDate(ads, min, max) {
 			filtered.push(ads[i]);
 		}
 	}
-	console.log('filterByDate: in='+ads.length+' out='+filtered.length);
+	//console.log('filterByDate: in='+ads.length+' out='+filtered.length);
 
 	return filtered;
-}
+}*/
 
 function findDups(ads) {
 	

@@ -164,7 +164,7 @@ function historySlider(allAds) { // should happen just once
 	
 		var ads = window.ads;
 		
-		console.log('filter: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
+		//console.log('dateFilter: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
 		
 		var filtered = [];
 		for (var i=0, j = ads.length; i<j; i++) {
@@ -173,10 +173,11 @@ function historySlider(allAds) { // should happen just once
 			
 			if (ads[i].found < min || ads[i].found > max) {
 				
-				console.log(i+') filtered: '+formatDate(ads[i].found));
+				//console.log(i+') filtered: '+formatDate(ads[i].found));
 				//ads[i].filtered = true;
 			}
 			else {
+				
 				filtered.push(ads[i]);
 			}
 		}

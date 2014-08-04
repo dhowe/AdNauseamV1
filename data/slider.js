@@ -1,20 +1,18 @@
 
 /*
  * NEXT: 
- * 
-	Do actual filtering
-	Bars should be as wide as possible
-	
+	Bars should be as wide as possible	
 	Add a couple of fake dates as ends of slider range??? but dont change count
-	
 	Implement and check clearAds()
  */
 
-var format = d3.time.format("%a %b %d %Y");
+var currentAds, format = d3.time.format("%a %b %d %Y");
 
 function historySlider(allAds) { // should happen just once
 	
 	console.log('historySlider:'+allAds.length);
+	
+	currentAds = allAds;
 	
 	// TMP: remove!!!
 	for (var i=0; i < allAds.length; i++) 
@@ -156,10 +154,32 @@ function historySlider(allAds) { // should happen just once
 	function runFilter() {
 
 		var s = brush.extent(), min = s[0], max = s[1];
- 		var tmp = dateFilter(min, max);
- 		updateAdview(tmp);
- 	}
-	
+		var tmpAds = dateFilter(min, max);
+		if (!arraysEqual(currentAds, tmpAds))
+			updateAdview( currentAds = tmpAds);
+	}
+
+
+	function arraysEqual(a, b) {
+		a.sort();
+		b.sort();
+		if (a === b)
+			return true;
+		if (a == null || b == null)
+			return false;
+		if (a.length != b.length)
+			return false;
+
+		// If you don't care about the order of the elements inside
+		// the array, you should sort both arrays here.
+
+		for (var i = 0; i < a.length; ++i) {
+			if (a[i] !== b[i])
+				return false;
+		}
+		return true;
+	}
+
 	function dateFilter(min, max) {
 	
 		var ads = window.ads;
@@ -193,17 +213,7 @@ function historySlider(allAds) { // should happen just once
 	}
 
 	function brushmove() {
-		
-		// var s = brush.extent(), min = s[0], max = s[1];
-		
-		//rect.classed("selected", function(d) {  
-			// console.log("Checking: "+d);
-			//return min <= d.date && d.date <= max;
-		//});
-// 		
-		// var selects = d3.selectAll(".selected");
-		// console.log(selects);
-		
+
 		runFilter(); // NOTE: may cause perf problems...
 	} 
 				

@@ -43,13 +43,12 @@ function makeAdview() { // should happen just once
 	// from: http://jsfiddle.net/robertc/kKuqH/
 
 	function dragStart(event) {
-		//console.log("dragStart: "+event.target);
+		
 	    var style = window.getComputedStyle(document.querySelector('#container'), null);
 		var x = parseInt(style.getPropertyValue("left"), 10) - event.clientX;
 		var y = parseInt(style.getPropertyValue("top"),  10) - event.clientY;
 		//console.log("dragStart: "+x+","+y);
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
-		// event.preventDefault(); -> breaks dragging
 	}
 
 	function dragOver(event) { return _drag(event); }
@@ -89,10 +88,6 @@ function makeAdview() { // should happen just once
 		e.preventDefault();
 	});
 	
-	/////////// INSPECTOR
-
-	
-
 	//////////// HELPER-FUNCTIONS
 
 	function zoomIn() {
@@ -124,139 +119,137 @@ function makeAdview() { // should happen just once
 
 function enableInspector() {
 
-		console.log('enableInspector');
+	console.log('enableInspector');
 
-		// hover to put a new ad in the inspector
-		$('.item').hover(function() {
+	// hover to put a new ad in the inspector
+	$('.item').hover(function() {
+
+		// var img = $('img', this),
+			// src = img.attr('src'),
+			// alt = img.attr('alt');
+
+	    // grab the data for the new ad(s) from html attributes
+		var first = {
 			
-			
-			var img = $('img', this),
-				src = img.attr('src'),
-				alt = img.attr('alt');
-	
-		    // grab the data for the new ad(s) from html attributes
-			var first = {
-				
-				target : $(this).attr('data-target'),
-				origin : $(this).attr('data-origin'),
-				visited : $(this).attr('data-visited'),
-				detected : $(this).attr('data-detected')
-			}
-	
-			inspectorData = [ first ];
-			
-			console.log('inspectorData: '+inspectorData);
-	
-			// check all duplicate items to see which apply for this ad
-			$(".item-hidden").each(function(i) {
-	
-				var url = $(this).attr('data-url');
-				if (url === src) {
-					var next = {
-						target : $(this).attr('data-target'),
-						origin : $(this).attr('data-origin'),
-						visited : $(this).attr('data-visited'),
-						detected : $(this).attr('data-detected')
-					}
-					inspectorData.push(next);
+			imgsrc : $('img', this).attr('src'),
+			imgalt : $('img', this).attr('alt'),
+			target : $(this).attr('data-target'),
+			origin : $(this).attr('data-origin'),
+			visited : $(this).attr('data-visited'),
+			detected : $(this).attr('data-detected')
+		}
+		
+		inspectorData = [ first ];
+		
+		//console.log('inspectorData: ',inspectorData);
+
+		// check all duplicate items to see which apply for this ad
+		$(".item-hidden").each(function(i) {
+
+			var url = $(this).attr('data-url');
+			if (url === first.imgsrc) {
+				var next = {
+					imgsrc : first.imgsrc,
+					imgalt : first.imgalt,
+					target : $(this).attr('data-target'),
+					origin : $(this).attr('data-origin'),
+					visited : $(this).attr('data-visited'),
+					detected : $(this).attr('data-detected')
 				}
-			});
-	
-			// reset the controls (small dots below the image)
-			$(".controls" ).empty();
-	
-			for (var i=0; i < inspectorData.length; i++) {
-	
-				var li = '<li data-idx="'+i+'"';
-				if (i == 0) li += ' class="active"';
-				$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
+				inspectorData.push(next);
 			}
-	
-			// allow user to select a duplicates to view by mousing over a control
-			$('ul.controls > li').mouseenter(function (e) {
-	
-	    		//$(this).addClass('active').siblings().removeClass('active');
-	    		var idx = $(this).attr('data-idx');
-	
-	    		if (!inspectorData || inspectorData.length < 1)
-	    			throw Error("No inspector data!!!");
-	
-				populateInspector(idx);
-	
-	    		e.preventDefault();
-			});
-	
-			// update image-src and image-alt tags for new ad
-			$('.inspect img').attr('src', src);
-			$('.inspect img').attr('alt', alt);
-	
-			// update data fields and cycle if we have duplicates
-			populateInspector(0);
-			if (inspectorData.length > 1)
-				cycleThroughDuplicates();
 		});
-	}
 
-// hack to grab the native image size
-function realSize(theImage) { // use cache?
+		// reset the controls (small dots below the image)
+		$(".controls" ).empty();
+		for (var i=0; i < inspectorData.length; i++) {
 
-	// Create new offscreen image
-	var theCopy = new Image();
-	theCopy.src = theImage.attr("src");
+			var li = '<li data-idx="'+i+'" class=';
+			li += (i == 0)  ? 'active' : 'passive';
+			$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
+		}
 
-	// Get accurate measurements from it
-	return { w: theCopy.width, h: theCopy.height };
-}
+		// allow user to select a duplicates to view by mousing over a btn-circle (dot)
+		$('ul.controls > li').mouseenter(function (e) {
 
-// resize each image according to aspect ratio
+    		if (!inspectorData || inspectorData.length < 1)
+    			throw Error("No inspector data!!!");
+    		
+    		console.log($(this).attr('data-idx'));
 
-function resize(r) {
+			populateInspector("#pane1",  $(this).attr('data-idx'));
 
-	// OR: document.body.style.zoom="300%"
-	
-	$('.item img').each(function(i, img) {
-
-		var $img = $(img), sz = realSize($img);
-		$img.css({
-			'width'  : sz.w * r,
-			'height' : sz.h * r
+    		e.preventDefault();
 		});
+
+		// update data fields and cycle if we have duplicates
+		populateInspector("#pane1", 0);
+		
+		if (inspectorData.length > 1)
+			cycleThroughDuplicates();
 	});
-
-	$('#ratio').html(r.toFixed(2));
-
-	pack.layout();
 }
 
-function populateInspector(selectedIdx) {
-
-	(selectedIdx >= inspectorData.length) && (selectedIdx = 0);
+function populateInspector(selector, selectedIdx) {
+	
+	//var outgoing = inspectorData[inspectorIdx];
+	//console.log(outgoing);
+	
+	if (selectedIdx >= inspectorData.length) 
+		selectedIdx = 0;
 
 	inspectorIdx = selectedIdx;
-	var selected = inspectorData[inspectorIdx];
+	
+	selector = '.inspect';
+	
+	var ad = inspectorData[inspectorIdx],
+		ele = selector+' li:first-child()';
 
-	if (!selected) throw Error("No selected!!");
-
-	// copy hovered image attributes into inspector
-	$('.target',   '.inspect li:first-child()').text(selected.target);
-	//$('.target',   '.inspect li:first-child()').attr('href',  selected.target);
-
-	$('.origin',   '.inspect li:first-child()').text(selected.origin);
-	//$('.origin',   '.inspect li:first-child()').attr('href',  selected.origin);
-
-	$('.visited',  '.inspect li:first-child()').text(selected.visited);
-	$('.detected', '.inspect li:first-child()').text(selected.detected);
-
-	$("ul.controls li:nth-child("+(inspectorIdx+1)+")" )
-		.addClass('active').siblings().removeClass('active');
+	// ASK-M
+	//$("ul.controls li:nth-child("+selectedIdx+1)+")"
+		//.addClass('active').siblings().removeClass('active');
+	
+	if (!ad) throw Error("Nothing selected!!");	
+	
+	// update image-src and image-alt tags for new ad
+	$(selector+' img').attr('src', ad.imgsrc);
+	$(selector+' img').attr('alt',  ad.imgalt);
+	
+	$('.target',   ele).text(ad.target);
+	$('.origin',   ele).text(ad.origin);
+	$('.visited',  ele).text(ad.visited);
+	$('.detected', ele).text(ad.detected)
 }
 
+/*function setInspectorFields(selector, idx) {
+
+	var ad = inspectorData[idx],
+		ele = '.inspect li:first-child()';
+		
+	if (!ad) throw Error("Nothing selected!!");
+
+	$('.target',   '.inspect li:first-child()').text(selected.target);
+	$('.origin',   '.inspect li:first-child()').text(selected.origin);
+	$('.visited',  '.inspect li:first-child()').text(selected.visited);
+	$('.detected', '.inspect li:first-child()').text(selected.detected);
+	
+	$('.target',   ele).text(ad.target);
+	$('.origin',   ele).text(ad.origin);
+	$('.visited',  ele).text(ad.visited);
+	$('.detected', ele).text(ad.detected);
+	
+	//$('.target', ele).attr('href', selected.target);
+	//$('.origin', ele).attr('href', selected.origin);
+}*/
+	
 function cycleThroughDuplicates() {
+	
 	animatorId && clearTimeout(animatorId);
 	animatorId = setTimeout(inspectorAnimator, animateMs);
 }
 
 function inspectorAnimator() {
+	
 	if (inspectorData && inspectorData.length>1) // is this a dup?
 		populateInspector(inspectorIdx+1);
 	cycleThroughDuplicates();
@@ -423,6 +416,36 @@ function findDups(ads) {
 	}
 	
 	return ads;
+}
+
+// hack to grab the native image size
+function realSize(theImage) { // use cache?
+
+	// Create new offscreen image
+	var theCopy = new Image();
+	theCopy.src = theImage.attr("src");
+
+	// Get accurate measurements from it
+	return { w: theCopy.width, h: theCopy.height };
+}
+
+// resize each image according to aspect ratio
+function resize(r) {
+
+	// OR: document.body.style.zoom="300%"
+	
+	$('.item img').each(function(i, img) {
+
+		var $img = $(img), sz = realSize($img);
+		$img.css({
+			'width'  : sz.w * r,
+			'height' : sz.h * r
+		});
+	});
+
+	$('#ratio').html(r.toFixed(2));
+
+	pack.layout();
 }
 
 function numVisited(ads) {

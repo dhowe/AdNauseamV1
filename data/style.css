@@ -555,10 +555,13 @@ aside .controls li.active a {
   position:relative;
   display: block;
   float: left;
+  overflow: visible;
+  white-space: nowrap;
   width:20%; /* 100 / number of panes */
-	top:0; bottom: 0;
+  top:0; bottom: 0;
 	height: 100%;
 }
+
 .panes > li > a{
 	display: block;
 	margin: auto;

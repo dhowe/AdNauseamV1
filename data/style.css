@@ -698,7 +698,7 @@ svg {
 }
 
 .brush .extent {
-  fill-opacity: .125;
+  fill-opacity: .5;
   shape-rendering: crispEdges;
 	cursor: move;
 }

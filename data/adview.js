@@ -1,6 +1,7 @@
+var handleDups = 1, lastInspected; // tmp
 var inspectorData, inspectorIdx, animatorId, pack, container;
 var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
-var zoomIdx = 0, resizing = false, zooms = [ 100, 75, 50, 25, 12.5, 6.25 ];
+var zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
 function makeAdview() { // should happen just once
 	
@@ -117,29 +118,57 @@ function makeAdview() { // should happen just once
 	updateAdview();
 }
 
+function createInspectorObj(item) {
+	
+	// var imageSrc, imageAlt;
+// 	
+	// if (template) {
+// 		
+	// }
+	return {
+			
+		imgsrc : $('img', item).attr('src'),
+		imgalt : $('img', item).attr('alt'),
+		target : $(item).attr('data-target'),
+		origin : $(item).attr('data-origin'),
+		visited : $(item).attr('data-visited'),
+		detected : $(item).attr('data-detected')
+	}
+}
+
+function cycleThroughDuplicates() {
+	console.log('cycleThroughDuplicates()');
+	animatorId && clearTimeout(animatorId);
+	animatorId = setTimeout(inspectorAnimator, animateMs);
+}
+
+function inspectorAnimator() {
+	
+	if (inspectorData && inspectorData.length>1) { // is this a dup?
+		//console.log("pre: "+);
+		inspectorIdx = ++inspectorIdx >= inspectorData.length ? 0 : inspectorIdx;
+		console.log('inspectorAnimator.inspectorIdx='+inspectorIdx);
+		populateInspector("#pane1", inspectorData, inspectorIdx);
+	}
+	cycleThroughDuplicates();
+}
+
 function enableInspector() {
 
 	console.log('enableInspector');
 
 	// hover to put a new ad in the inspector
 	$('.item').hover(function() {
-
-		// var img = $('img', this),
-			// src = img.attr('src'),
-			// alt = img.attr('alt');
-
-	    // grab the data for the new ad(s) from html attributes
-		var first = {
-			
-			imgsrc : $('img', this).attr('src'),
-			imgalt : $('img', this).attr('alt'),
-			target : $(this).attr('data-target'),
-			origin : $(this).attr('data-origin'),
-			visited : $(this).attr('data-visited'),
-			detected : $(this).attr('data-detected')
-		}
 		
-		inspectorData = [ first ];
+		// save current inspectee to 'outgoing' pane
+		if (inspectorData && inspectorData.length)
+			populateInspector("#pane3", inspectorData, 0);
+		
+	    // grab the data for the new ad(s) from html attributes
+	    
+		var first = createInspectorObj(this); 
+		inspectorData = [ first ]; // clearing our the old data
+		inspectorIdx = 0;
 		
 		//console.log('inspectorData: ',inspectorData);
 
@@ -148,17 +177,22 @@ function enableInspector() {
 
 			var url = $(this).attr('data-url');
 			if (url === first.imgsrc) {
-				var next = {
+				var next = createInspectorObj(this);
+				/*{
 					imgsrc : first.imgsrc,
 					imgalt : first.imgalt,
 					target : $(this).attr('data-target'),
 					origin : $(this).attr('data-origin'),
 					visited : $(this).attr('data-visited'),
 					detected : $(this).attr('data-detected')
-				}
+				}*/
 				inspectorData.push(next);
 			}
 		});
+		
+		if (inspectorData.length) { // TODO: put the duplicates in 'wait' state: #pane2
+			;
+		}
 
 		// reset the controls (small dots below the image)
 		$(".controls" ).empty();
@@ -169,56 +203,55 @@ function enableInspector() {
 			$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
 		}
 
-		// allow user to select a duplicates to view by mousing over a btn-circle (dot)
-		$('ul.controls > li').mouseenter(function (e) {
+		if (handleDups) {
 
-    		if (!inspectorData || inspectorData.length < 1)
-    			throw Error("No inspector data!!!");
-    		
-    		console.log($(this).attr('data-idx'));
-
-			populateInspector("#pane1",  $(this).attr('data-idx'));
-
-    		e.preventDefault();
-		});
+			// allow user to select a duplicates to view by mousing over a btn-circle (dot)
+			$('ul.controls > li').mouseenter(function (e) {
+	
+	    		if (!(inspectorData && inspectorData.length))
+	    			throw Error("No inspector data!!!");
+	    		
+	    		console.log("DUP-IDX: "+$(this).attr('data-idx'));
+	
+				populateInspector("#pane1",  inspectorData, $(this).attr('data-idx'));
+	
+	    		e.preventDefault();
+			});
+		}
 
 		// update data fields and cycle if we have duplicates
-		populateInspector("#pane1", 0);
+		populateInspector("#pane1", inspectorData, 0);
 		
-		if (inspectorData.length > 1)
-			cycleThroughDuplicates();
+		//lastInspected = inspectorData.slice();
 	});
 }
 
-function populateInspector(selector, selectedIdx) {
-	
-	//var outgoing = inspectorData[inspectorIdx];
-	//console.log(outgoing);
-	
-	if (selectedIdx >= inspectorData.length) 
-		selectedIdx = 0;
+function populateInspector(selector, iData, dupIdx) {
 
-	inspectorIdx = selectedIdx;
-	
-	selector = '.inspect';
-	
-	var ad = inspectorData[inspectorIdx],
-		ele = selector+' li:first-child()';
+	var ad = iData[dupIdx];// + ';//:first-child()';
 
-	// ASK-M
-	//$("ul.controls li:nth-child("+selectedIdx+1)+")"
-		//.addClass('active').siblings().removeClass('active');
+	if (!ad) throw Error("No item for dupIdx:"+dupIdx+"!!", iData);
 	
-	if (!ad) throw Error("Nothing selected!!");	
-	
-	// update image-src and image-alt tags for new ad
+	// update image-src and image-alt tags
 	$(selector+' img').attr('src', ad.imgsrc);
 	$(selector+' img').attr('alt',  ad.imgalt);
 	
-	$('.target',   ele).text(ad.target);
-	$('.origin',   ele).text(ad.origin);
-	$('.visited',  ele).text(ad.visited);
-	$('.detected', ele).text(ad.detected)
+	// update inspector fields
+	$('.target',   selector).text(ad.target);
+	$('.origin',   selector).text(ad.origin);
+	$('.visited',  selector).text(ad.visited);
+	$('.detected', selector).text(ad.detected)
+	
+	if (handleDups) {
+		
+		$('ul.controls li:nth-child('+(dupIdx+1)+')')
+			.addClass('active').siblings().removeClass('active');
+		
+		if (iData.length > 1) { // we have dups
+
+			cycleThroughDuplicates(); 
+		}
+	}
 }
 
 /*function setInspectorFields(selector, idx) {
@@ -242,18 +275,7 @@ function populateInspector(selector, selectedIdx) {
 	//$('.origin', ele).attr('href', selected.origin);
 }*/
 	
-function cycleThroughDuplicates() {
-	
-	animatorId && clearTimeout(animatorId);
-	animatorId = setTimeout(inspectorAnimator, animateMs);
-}
 
-function inspectorAnimator() {
-	
-	if (inspectorData && inspectorData.length>1) // is this a dup?
-		populateInspector(inspectorIdx+1);
-	cycleThroughDuplicates();
-}
 
 // was adview-ui.js ==========================================
 

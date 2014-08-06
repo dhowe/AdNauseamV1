@@ -150,12 +150,48 @@ function inspectorAnimator() {
 	//cycleThroughDuplicates();
 }
 
+/*
+ * -- hover:
+ *  -- if 'out' exists, remove it
+ * 	-- check for existing pane with 'in', if exists
+ * 			switch in->out
+ *  -- populate first empty pane (with no-class): hovered-items nth dup
+ *  -- assign 'in' to this pane
+ */
 function enableInspector() {
 
-	console.log('enableInspector');
+	console.log('enableInspector');	
+	
+	$('.item').mouseenter(function() {
+		
+		//console.log($('.full').first().find('dt.detected'));
+		if ($(this).hasClass('inspectee')) return;
 
+		$(this).addClass('inspectee').siblings().removeClass('inspectee');
+		
+		var first = createInspectorObj(this); 
+		inspectorData = [ first ]; // clearing our the old data
+		inspectorIdx = 0;
+	
+		// STOP: add duplicate-handling next
+		
+		populateInspector( $('.empty').first(), inspectorData, inspectorIdx);
+		$('.empty').first().removeClass().addClass('full');
+	
+		$('.panes>li').each(function( i ) {
+			//console.log( i + ": " + $( this ).class() );
+			console.log( i + ": " +($( this )).hasClass('out')); 
+			$( this ).removeClass('out').addClass('empty');
+			if ($( this ).hasClass('in'))
+				$( this ).removeClass().addClass('out');
+		});
+		
+		$('.full').removeClass().addClass('in');
+		
+	});
+	
 	// hover to put a new ad in the inspector
-	$('.item').hover(function() {
+	$('.itemx').hover(function() {
 		
 		// save current inspectee to 'outgoing' pane
 		if (inspectorData && inspectorData.length)
@@ -212,6 +248,7 @@ function enableInspector() {
 	});
 }
 
+
 function populateInspector(selector, iData, dupIdx) {
 
 	var ad = iData[dupIdx];// + ';//:first-child()';
@@ -219,9 +256,12 @@ function populateInspector(selector, iData, dupIdx) {
 	if (!ad) 
 		throw Error("No item for dupIdx:"+dupIdx+"!!", iData);
 	
+	//console.log($('img',selector));
+	
+	
 	// update image-src and image-alt tags
-	$(selector+' img').attr('src', ad.imgsrc);
-	$(selector+' img').attr('alt',  ad.imgalt);
+	$('img', selector).attr('src', ad.imgsrc);
+	$('img', selector).attr('alt',  ad.imgalt);
 	
 	// update inspector fields
 	$('.target',   selector).text(ad.target);
@@ -229,7 +269,7 @@ function populateInspector(selector, iData, dupIdx) {
 	$('.visited',  selector).text(ad.visited);
 	$('.detected', selector).text(ad.detected);
 	
-	if (selector === '#pane1') {
+	/*if (selector === '#pane1') {
 		
 		// set the active dot (1st if no-dup)
 		$('ul.controls li:nth-child('+(inspectorIdx+1)+')')
@@ -238,7 +278,7 @@ function populateInspector(selector, iData, dupIdx) {
 		// we have dups, so cycle through...
 		 if (inspectorData.length > 1)   
 			cycleThroughDuplicates(); 
-	}
+	}*/
 }
 
 /*function setInspectorFields(selector, idx) {

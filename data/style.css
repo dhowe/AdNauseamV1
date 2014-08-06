@@ -576,6 +576,11 @@ aside .controls li.active a {
 	right: 100%;
 }
 
+.panes > li.empty {
+	right: -100%;
+}
+
+
 .panes > li > a{
 	display: block;
 	margin: auto;

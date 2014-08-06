@@ -540,28 +540,40 @@ aside .controls li.active a {
 	margin: 0;
 	padding: 0;
 	list-style:none;
-	position:absolute;
+	position: relative;
 	top: 0; bottom: 0;
 	height: 100%;
-	width:500%; /* Number of panes * 100% */
+	width: 100%;
 	overflow:hidden; /* This is used solely to clear floats, it does not add functionality. */
 }
 
-.panes.animate{
+/*.panes.animate{
   -moz-animation:carousel 30s infinite;
   -webkit-animation:carousel 30s infinite;
   animation:carousel 30s infinite;
-}
+}*/
 
 .panes > li{
-  position:relative;
+  position: absolute;
   display: block;
   float: left;
   overflow: visible;
   white-space: nowrap;
-  width:20%; /* 100 / number of panes */
+  width: 100%;
   top:0; bottom: 0;
 	height: 100%;
+	right: -100%;
+}
+
+.panes > li.in,
+.panes > li.out {
+	-webkit-transition: right 1s;
+	transition: 				right 1s;
+	right: 0;
+}
+
+.panes > li.out {
+	right: 100%;
 }
 
 .panes > li > a{

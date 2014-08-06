@@ -676,8 +676,8 @@ aside .details dt {
 	border-bottom: 1px solid #BFBFBF;
 }
 
-aside .details dl dd:nth-child(3),
-aside .details dl dt:nth-child(4) {
+aside .details dl dd:nth-child(4),
+aside .details dl dt:nth-child(5) {
 	border: 0;
 	padding-bottom: 0;
 }

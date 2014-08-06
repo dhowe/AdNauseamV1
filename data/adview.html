@@ -23,37 +23,37 @@
 
 		<script src="lib/d3.min.js"></script>
 		<script src="testads.js"></script><!-- testing-only -->
-		
+
 		<script src="adview.js"></script>
 		<script src="slider.js"></script>
-		
+
 		<script>
  			$(document).ready(function() {
- 				
+
  				historySlider( ( (typeof options !== 'undefined') ? options : test).ads);
  			});
 		</script>
-		
+
 	</head>
 	<body>
-		    
+
 		<div id="left" class="stage">
-			
+
 			<!--div id="logo"><a href="#"></a></div-->
 
 			<div class="clearb">
 				<a href="" id="z-clear">c</a>
 			</div>
-				
+
 			<div class="zoom">
 				<a href="" id="z-in">&#10010;</a>
 				<a href="" id="z-out">&#8211;</a>
 			</div>
-			
+
 			<div id="stats" class="session-sum"></div>
-			
+
 			<div id="svgcon" class="svg-container"></div>
-			
+
 			<div id='container' class="z-100" draggable="true">
 
 <!-- testing only
@@ -110,7 +110,7 @@
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.launchbit.com/taz-i/4646-4626.png" alt="img alt"></a>
 
  end testing -->
- 
+
 			</div>
 		</div>
 
@@ -118,7 +118,7 @@
 			<a href="#" id="handle" class="panel-resize"></a>
 			<div class="inspect carousel">
 				<ul class="panes">
-					
+
 					<li id="pane1" class="empty">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
 						<ul class="controls"></ul>
@@ -181,7 +181,7 @@
 							</dl>
 						</div>
 					</li>
-					
+
 				</ul>
 			</div>
 		</aside>

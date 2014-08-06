@@ -639,7 +639,8 @@ aside .details {
 	left: 4px;
 	right: 0;
 	bottom: 0;
-	height: 150px;
+	height: 130px;
+	border-bottom: 20px solid #ccc;
 	background: rgba(220,220,220,0.90);
 	font-size: 12px;
 }

@@ -29,13 +29,12 @@ function historySlider(allAds) { // should happen just once
   		dateFn = function(d) { return format.parse(d.date) }
   	 	
   	var padding = 0;
-  	var x = d3.time.scale()
-   		.range([padding, width-padding])
-    	//.domain(d3.extent(data, dateFn));
+  	var ts = d3.time.scale();
+  	//ts.ticks(d3.time.minute, 15);
+  	var x = ts.range([padding, width-padding])
 
   	var y = d3.scale.linear()
     	.range([10, height-20])
-    	//.domain(d3.extent(data, amountFn));
     
 	var brush = d3.svg.brush()
 	    .x(x)
@@ -53,6 +52,16 @@ function historySlider(allAds) { // should happen just once
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 	  	.append("g").attr("transform", "translate(" + margin.left + ","+margin.top + ")");
+	  
+	var axis = d3.svg.axis()
+	    .scale(ts)
+	    //.tickValues([x.invert(10),x.invert(200),x.invert(400)]);
+	    //.tickValues([1, 2, 3, 5, 8, 13, 21]);
+	  
+	svg.append("g")
+		.attr("class", "axis")
+    	.attr("transform", "translate(0,30)")
+    	.call(axis);
 	    
 	// a single div to hold tooltip info for rects
 	var tt = d3.select("body").append("div")   
@@ -146,14 +155,6 @@ function historySlider(allAds) { // should happen just once
 		  x: function(d) { return x( dateFn(d) ) },
 		  y: 10
 	});
-
-	function brushend() {
-		
-		var ext = d3.event.target.extent();
-		if (ext[1]-ext[0] <= 1) return; // fix for
-		svg.classed("selecting", !d3.event.target.empty());
-		runFilter();
-	}
 	
 	function runFilter() {
 
@@ -212,13 +213,21 @@ function historySlider(allAds) { // should happen just once
 	
 	function brushstart() {
 		
-		svg.classed("selecting", true);
+		//svg.classed("selecting", true);
 	}
 
 	function brushmove() {
 
 		runFilter(); // NOTE: may cause perf problems...
 	} 
+	
+	function brushend() {
+		
+		var ext = d3.event.target.extent();
+		if (ext[1]-ext[0] <= 1) return; // fix for gh #100
+		//svg.classed("selecting", !d3.event.target.empty());
+		runFilter();
+	}
 				
 	function sortAdsPerDay() {
 	

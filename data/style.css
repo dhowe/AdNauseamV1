@@ -586,6 +586,7 @@ aside .controls li.active a {
 	margin: auto;
 	top: 0; right: 0; bottom: 100px; left: 0;
 	position: absolute;
+	overflow: hidden;
 }
 .carousel img{
 	display: block;
@@ -718,4 +719,17 @@ svg {
   fill-opacity: .5;
   shape-rendering: crispEdges;
 	cursor: move;
+}
+
+.axis path{
+	opacity: 0;
+}
+
+.axis line {
+	stroke-width: 1;
+	stroke-color: white;
+}
+
+.axis text{
+	fill: white;
 }

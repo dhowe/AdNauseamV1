@@ -179,8 +179,8 @@ function enableInspector() {
 		$('.empty').first().removeClass().addClass('full');
 	
 		$('.panes>li').each(function( i ) {
-			//console.log( i + ": " + $( this ).class() );
-			console.log( i + ": " +($( this )).hasClass('out')); 
+
+			//console.log( i + ": " +($( this )).hasClass('out')); 
 			$( this ).removeClass('out').addClass('empty');
 			if ($( this ).hasClass('in'))
 				$( this ).removeClass().addClass('out');

@@ -28,9 +28,9 @@
 		<script src="slider.js"></script>
 		
 		<script>
-			var staticTest = 1; // use testads, if true
  			$(document).ready(function() {
- 				historySlider((staticTest ? test : options).ads);
+ 				
+ 				historySlider( ( (typeof options !== 'undefined') ? options : test).ads);
  			});
 		</script>
 		
@@ -109,12 +109,8 @@
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/e800de8d3ba845528d5efbc25c63e650.png" alt="img alt"></a>
 <a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.launchbit.com/taz-i/4646-4626.png" alt="img alt"></a>
 
-
-
  end testing -->
-
-
-
+ 
 			</div>
 		</div>
 
@@ -122,18 +118,20 @@
 			<a href="#" id="handle" class="panel-resize"></a>
 			<div class="inspect carousel">
 				<ul class="panes">
+					
 					<li id="pane1" class="in">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
 						<div class="details">
 							<dl class="leads-to">
 								<dd>Leads to:</dd>
-									<dt><div class="target">--1--</div></dt>
+									<dt><div class="target">--1--</div></dt><br>
 								<dd>Visited:</dd>
 									<dt class="visited">--1--</dt>
 							</dl>
 							<dl class="viewed-on">
 								<dd>Viewed On:</dd>
-									<dt><div class="origin">--1--</div></dt>
+									<!--dt><a href="http://" class="origin"></a></dt-->
+									<dt><div class="origin">--1--</div></dt><br>
 								<dd>Detected:</dd>
 									<dt class="detected">--1--</dt>
 							</dl>
@@ -179,6 +177,7 @@
 							</dl>
 						</div>
 					</li>
+					
 				</ul>
 				<ul class="controls"></ul>
 			</div>

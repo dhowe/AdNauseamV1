@@ -83,6 +83,8 @@ function historySlider(allAds) { // should happen just once
 				.attr("height", height )
 				.attr("style", "visibility: hidden");
 
+	//brushg.on("mousedown", function(){  });
+
 	
 	var defs = svg.append("defs");
 	
@@ -147,6 +149,8 @@ function historySlider(allAds) { // should happen just once
 
 	function brushend() {
 		
+		var ext = d3.event.target.extent();
+		if (ext[1]-ext[0] <= 1) return; // fix for
 		svg.classed("selecting", !d3.event.target.empty());
 		runFilter();
 	}
@@ -158,7 +162,6 @@ function historySlider(allAds) { // should happen just once
 		if (!arraysEqual(currentAds, tmpAds))
 			updateAdview( currentAds = tmpAds);
 	}
-
 
 	function arraysEqual(a, b) {
 		a.sort();

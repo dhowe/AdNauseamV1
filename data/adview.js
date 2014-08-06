@@ -1,4 +1,3 @@
-var handleDups = 1, lastInspected; // tmp
 var inspectorData, inspectorIdx, animatorId, pack, container;
 var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
 var zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
@@ -101,10 +100,12 @@ function makeAdview() { // should happen just once
 	
 	function clearAds() {
 		
-		console.log('clear-ads(placeholder): '+window.ads.length);
+		console.log('clear-ads(placeholder)');
+		
 		// need to clear window.ads, delete all .item, then call addon to clear simple-storage
 		//window.ads=[];
-		//repack();
+		//console.log('preDate: '+window.ads);
+		//runFilter();
 	}
 
 	function setZoom(idx) {
@@ -119,12 +120,7 @@ function makeAdview() { // should happen just once
 }
 
 function createInspectorObj(item) {
-	
-	// var imageSrc, imageAlt;
-// 	
-	// if (template) {
-// 		
-	// }
+
 	return {
 			
 		imgsrc : $('img', item).attr('src'),
@@ -137,6 +133,7 @@ function createInspectorObj(item) {
 }
 
 function cycleThroughDuplicates() {
+	
 	console.log('cycleThroughDuplicates()');
 	animatorId && clearTimeout(animatorId);
 	animatorId = setTimeout(inspectorAnimator, animateMs);
@@ -145,12 +142,12 @@ function cycleThroughDuplicates() {
 function inspectorAnimator() {
 	
 	if (inspectorData && inspectorData.length>1) { // is this a dup?
-		//console.log("pre: "+);
+		
 		inspectorIdx = ++inspectorIdx >= inspectorData.length ? 0 : inspectorIdx;
 		console.log('inspectorAnimator.inspectorIdx='+inspectorIdx);
 		populateInspector("#pane1", inspectorData, inspectorIdx);
 	}
-	cycleThroughDuplicates();
+	//cycleThroughDuplicates();
 }
 
 function enableInspector() {
@@ -178,21 +175,9 @@ function enableInspector() {
 			var url = $(this).attr('data-url');
 			if (url === first.imgsrc) {
 				var next = createInspectorObj(this);
-				/*{
-					imgsrc : first.imgsrc,
-					imgalt : first.imgalt,
-					target : $(this).attr('data-target'),
-					origin : $(this).attr('data-origin'),
-					visited : $(this).attr('data-visited'),
-					detected : $(this).attr('data-detected')
-				}*/
 				inspectorData.push(next);
 			}
-		});
-		
-		if (inspectorData.length) { // TODO: put the duplicates in 'wait' state: #pane2
-			;
-		}
+		});	
 
 		// reset the controls (small dots below the image)
 		$(".controls" ).empty();
@@ -203,26 +188,27 @@ function enableInspector() {
 			$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
 		}
 
-		if (handleDups) {
+		// allow user to select a duplicates to view by mousing over a btn-circle (dot)
+		$('ul.controls > li').mouseenter(function (e) {
 
-			// allow user to select a duplicates to view by mousing over a btn-circle (dot)
-			$('ul.controls > li').mouseenter(function (e) {
-	
-	    		if (!(inspectorData && inspectorData.length))
-	    			throw Error("No inspector data!!!");
-	    		
-	    		console.log("DUP-IDX: "+$(this).attr('data-idx'));
-	
-				populateInspector("#pane1",  inspectorData, $(this).attr('data-idx'));
-	
-	    		e.preventDefault();
-			});
-		}
+    		if (!(inspectorData && inspectorData.length))
+    			throw Error("No inspector data!!!");
+    		
+    		//console.log("DUP-IDX: "+$(this).attr('data-idx'));
+
+			populateInspector("#pane1",  inspectorData, $(this).attr('data-idx'));
+
+    		e.preventDefault();
+		});
 
 		// update data fields and cycle if we have duplicates
 		populateInspector("#pane1", inspectorData, 0);
 		
-		//lastInspected = inspectorData.slice();
+		// TODO: put the duplicates in 'wait' state (#pane)
+		if (inspectorData.length>1) { 
+		
+			populateInspector("#pane2",  inspectorData, 1);
+		}
 	});
 }
 
@@ -230,7 +216,8 @@ function populateInspector(selector, iData, dupIdx) {
 
 	var ad = iData[dupIdx];// + ';//:first-child()';
 
-	if (!ad) throw Error("No item for dupIdx:"+dupIdx+"!!", iData);
+	if (!ad) 
+		throw Error("No item for dupIdx:"+dupIdx+"!!", iData);
 	
 	// update image-src and image-alt tags
 	$(selector+' img').attr('src', ad.imgsrc);
@@ -240,17 +227,17 @@ function populateInspector(selector, iData, dupIdx) {
 	$('.target',   selector).text(ad.target);
 	$('.origin',   selector).text(ad.origin);
 	$('.visited',  selector).text(ad.visited);
-	$('.detected', selector).text(ad.detected)
+	$('.detected', selector).text(ad.detected);
 	
-	if (handleDups) {
+	if (selector === '#pane1') {
 		
-		$('ul.controls li:nth-child('+(dupIdx+1)+')')
+		// set the active dot (1st if no-dup)
+		$('ul.controls li:nth-child('+(inspectorIdx+1)+')')
 			.addClass('active').siblings().removeClass('active');
-		
-		if (iData.length > 1) { // we have dups
-
+			
+		// we have dups, so cycle through...
+		 if (inspectorData.length > 1)   
 			cycleThroughDuplicates(); 
-		}
 	}
 }
 

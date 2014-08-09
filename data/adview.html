@@ -23,95 +23,39 @@
 
 		<script src="lib/d3.min.js"></script>
 		<script src="testads.js"></script><!-- testing-only -->
-		
+
 		<script src="adview.js"></script>
 		<script src="slider.js"></script>
-		
+
 		<script>
  			$(document).ready(function() {
- 				
+
  				historySlider( ( (typeof options !== 'undefined') ? options : test).ads);
  			});
 		</script>
-		
+
 	</head>
 	<body>
-		    
+
 		<div id="left" class="stage">
-			
-			<!--div id="logo"><a href="#"></a></div-->
 
 			<div class="clearb">
 				<a href="" id="z-clear">c</a>
 			</div>
-				
+
 			<div class="zoom">
 				<a href="" id="z-in">&#10010;</a>
 				<a href="" id="z-out">&#8211;</a>
 			</div>
-			
+
 			<div id="stats" class="session-sum"></div>
-			
+
 			<div id="svgcon" class="svg-container"></div>
+
+			<div id="logo"><a href="#"></a></div>
+
+			<div id='container' class="z-100" draggable="true"></div>
 			
-			<div id='container' class="z-100" draggable="true">
-
-<!-- testing only
-
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_MS3.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359251/13_2259_INYT_Anon_USD_163x90_ER1.jpg" alt="img alt"></a>
-<a class="item dup-count-4" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">4</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/subscribe-200x60.png" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/610x90-text-001.gif" alt="img alt"></a>
-<a class="item dup-count-3" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">3</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://pagead2.googlesyndication.com/pagead/imgad?id=CICAgMCuxI6WtgEQoAEY2AQyCNMurS37z_f4" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://pagead2.googlesyndication.com/pagead/imgad?id=CICAgMCuxI7GyQEQtAEYlgEyCLMSwgnecZ_K" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359250/13_2259_INYT_Anon_USD_120x90_ER1.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/11/ad.361146/GBH_NYT96x60_Revised-1.gif" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter-hidden">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://aka-cdn-ns.adtechus.com/images/265/Ad0St1Sz170Sq0V1Id22163209.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://aka-cdn-ns.adtechus.com/images/3/Ad0St1Sz457Sq0V2Id22141443.jpg" alt="img alt"></a>
-<a class="item dup-count-6" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">6</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.winwin.co.il/AttractiveAds_Media/853729_04e5a579-c63b-4bed-b.jpg.ashx?width=121&height=78" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/e800de8d3ba845528d5efbc25c63e650.png" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.launchbit.com/taz-i/4646-4626.png" alt="img alt"></a>
-
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_MS3.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359251/13_2259_INYT_Anon_USD_163x90_ER1.jpg" alt="img alt"></a>
-<a class="item dup-count-4" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">4</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/subscribe-200x60.png" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/610x90-text-001.gif" alt="img alt"></a>
-<a class="item dup-count-3" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">3</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://pagead2.googlesyndication.com/pagead/imgad?id=CICAgMCuxI6WtgEQoAEY2AQyCNMurS37z_f4" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://pagead2.googlesyndication.com/pagead/imgad?id=CICAgMCuxI7GyQEQtAEYlgEyCLMSwgnecZ_K" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359250/13_2259_INYT_Anon_USD_120x90_ER1.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/11/ad.361146/GBH_NYT96x60_Revised-1.gif" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter-hidden">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://aka-cdn-ns.adtechus.com/images/265/Ad0St1Sz170Sq0V1Id22163209.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://aka-cdn-ns.adtechus.com/images/3/Ad0St1Sz457Sq0V2Id22141443.jpg" alt="img alt"></a>
-<a class="item dup-count-6" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">6</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.winwin.co.il/AttractiveAds_Media/853729_04e5a579-c63b-4bed-b.jpg.ashx?width=121&height=78" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/e800de8d3ba845528d5efbc25c63e650.png" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.launchbit.com/taz-i/4646-4626.png" alt="img alt"></a>
-
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/24/ad.362487/14-2642-NYTS_VDay_184x90_MS3.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359251/13_2259_INYT_Anon_USD_163x90_ER1.jpg" alt="img alt"></a>
-<a class="item dup-count-4" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">4</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/subscribe-200x60.png" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://img.wpdigital.net/wp-srv/ad/public/static/22285/610x90-text-001.gif" alt="img alt"></a>
-<a class="item dup-count-3" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">3</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://pagead2.googlesyndication.com/pagead/imgad?id=CICAgMCuxI6WtgEQoAEY2AQyCNMurS37z_f4" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://pagead2.googlesyndication.com/pagead/imgad?id=CICAgMCuxI7GyQEQtAEYlgEyCLMSwgnecZ_K" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/92/ad.359250/13_2259_INYT_Anon_USD_120x90_ER1.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/36/11/ad.361146/GBH_NYT96x60_Revised-1.gif" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
-<a class="item dup-count-2" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter-hidden">2</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://graphics8.nytimes.com/adx/images/ADS/35/82/ad.358278/MSMH8_photo.gif" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://aka-cdn-ns.adtechus.com/images/265/Ad0St1Sz170Sq0V1Id22163209.jpg" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://aka-cdn-ns.adtechus.com/images/3/Ad0St1Sz457Sq0V2Id22141443.jpg" alt="img alt"></a>
-<a class="item dup-count-6" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">6</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/b2cd8e73d2f641628eb87fb6db7831cf.png" alt="img alt"></a>
-<a class="item dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.winwin.co.il/AttractiveAds_Media/853729_04e5a579-c63b-4bed-b.jpg.ashx?width=121&height=78" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://static.adzerk.net/Advertisers/e800de8d3ba845528d5efbc25c63e650.png" alt="img alt"></a>
-<a class="item pending dup-count-1" data-detected="[timestamp]" data-visited="[timestamp]" href="#target-url" data-origin="#origin-url"><span class="counter">1</span><span class="eye" data-href="#origin-url">go to origin link</span><img src="http://www.launchbit.com/taz-i/4646-4626.png" alt="img alt"></a>
-
- end testing -->
- 
-			</div>
 		</div>
 
 		<aside id="right">
@@ -122,7 +66,6 @@
 
 					<li id="pane1" class="empty">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
-						<ul class="xcontrols"></ul>
 						<div class="details">
 							<dl class="leads-to">
 								<dd>Leads to:</dd>
@@ -142,8 +85,6 @@
 
 					<li id="pane2" class="">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
-						<ul class="xcontrols"></ul>
-
 						<div class="details">
 							<dl class="leads-to">
 								<dd>Leads to:</dd>
@@ -164,7 +105,6 @@
 
 					<li id="pane3" class="">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
-						<ul class="xcontrols"></ul>
 						<div class="details">
 							<dl class="leads-to">
 								<dd>Leads to:</dd>
@@ -182,7 +122,7 @@
 							</dl>
 						</div>
 					</li>
-					
+
 				</ul>
 			</div>
 		</aside>

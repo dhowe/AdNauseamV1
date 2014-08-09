@@ -84,8 +84,7 @@ function makeAdview() { // should happen just once
 	// click zoom-out
 	$('#z-out').unbind().click(function(e) {
 
-		//zoomOut();
-		setZoom(zoomIdx);
+		zoomOut();
 		e.preventDefault();
 	});
 
@@ -310,7 +309,7 @@ function populateInspector(ele, iData, dupIdx) {
 	$('.visited',  ele).text(ad.visited);
 	$('.detected', ele).text(ad.detected);
 	
-	ele.removeClass().addClass('ready');
+	$(ele).removeClass().addClass('ready');
 	
 	$('.gcontrols li:nth-child('+(inspectorIdx+1)+')')
 		.addClass('active').siblings().removeClass('active');

@@ -141,23 +141,6 @@ function createInspectorObj(item) {
 	}
 }
 
-function cycleThroughDuplicates() {
-	
-	console.log('cycleThroughDuplicates()');
-	animatorId && clearTimeout(animatorId);
-	animatorId = setTimeout(inspectorAnimator, animateMs);
-}
-
-function inspectorAnimator() {
-	
-	if (inspectorData && inspectorData.length>1) { // is it a dup?
-		
-		inspectorIdx = ++inspectorIdx >= inspectorData.length ? 0 : inspectorIdx;
-		console.log('inspectorAnimator.inspectorIdx='+inspectorIdx);
-		populateInspector("#pane1", inspectorData, inspectorIdx);
-	}
-}
-
 /*
  * -- hover:
  *  -- if 'out' exists, remove it
@@ -176,50 +159,60 @@ function enableInspector() {
 		if ($(this).hasClass('inspectee'))
 			return;
 		
-		// remember this as in the inspector	
+		// remember this as last in the inspector	
 		$(this).addClass('inspectee').siblings()
 			.removeClass('inspectee');
 
-		// reset the data
-		inspectorData = [ createInspectorObj(this) ]; 
-		findDuplicates();
+		// load primary ad and any dups for inspector
+		inspectorData = loadInspectorData(this);
 		
-		// fill fields for first empty pan & set class to 'full'
+		// fill fields for first empty pane & set class to 'full'
 		populateInspector($('.empty').first(), inspectorData, inspectorIdx=0);
-		createDupControls();
-
-		$(".item-hidden").each(function(i) {
-
-			var next, url = $(this).attr('data-url');
-			if (url === inspectorData[0].imgsrc) { // same ad-image?
-				
-				next = createInspectorObj(this);
-				inspectorData.push(next);
-			}
-		});	
+		
+		// make/layout controls for duplicates
+		makeDuplicateControls(inspectorData);
 	
-		doAnimation();
+		doAnimation(inspectorData);
+		
+		var WORKING_HERE = true;
+		
+		if (!WORKING_HERE && inspectorData.length>1)
+			 cycleThroughDuplicates();
+	});
+	
+	$('.item').mouseleave(function() {
+		
+		// kill any remaining dup animations
+		animatorId && clearTimeout(animatorId);
 	});
 }
 
-function findDuplicates() {
+function loadInspectorData(ele) {
+
+	var data = [ createInspectorObj(ele) ]; 
+	return findDuplicates(data);
+}
+
+function findDuplicates(data) { // contains template at index=0
 	
 	$(".item-hidden").each(function(i) {
 
 		var next, url = $(this).attr('data-url');
-		if (url === inspectorData[0].imgsrc) { // same ad-image?
+		if (url === data[0].imgsrc) { // same ad-image?
 			
 			next = createInspectorObj(this);
-			inspectorData.push(next);
+			data.push(next);
 		}
 	});	
+	
+	return data;
 }
 
-function createDupControls() {
+function makeDuplicateControls(data) {
 
 	// reset the controls (small dots below the image)
 	$(".controls" ).empty();
-	for (var i=0; i < inspectorData.length; i++) {
+	for (var i=0; i < data.length; i++) {
 
 		var li = '<li data-idx="'+i+'" class=';
 		li += (i == 0)  ? 'active' : 'passive';
@@ -227,24 +220,74 @@ function createDupControls() {
 			 ' class="btn circle"></a></li>');
 	}
 }
-function doAnimation() {
+
+function doAnimation(data) {
 	
 	// move pane 'in' to 'out', move 'out' to 'empty' 
-	$('.panes>li').each(function( i ) {  
+	$('.panes>li').each(function(i) {  
  
-			$( this ).removeClass('out').addClass('empty');
+		$( this ).removeClass('out').addClass('empty');
 		if ($( this ).hasClass('in'))
 			$( this ).removeClass().addClass('out');
 	});
 	
 	// set current pane (class='ready') to 'in'
 	$('.ready').removeClass().addClass('in');
+}
+
+function cycleThroughDuplicates() {
 	
-	if (inspectorData.length > 1) 
-		cycleThroughDuplicates();
+	console.log('cycleThroughDuplicates()');
+	animatorId && clearTimeout(animatorId);
+	animatorId = setTimeout(inspectorAnimator, animateMs);
+}
+
+function inspectorAnimator() {
+	
+	if (inspectorData && inspectorData.length>1) { // is it a dup?
+		
+		inspectorIdx = ++inspectorIdx >= inspectorData.length ? 0 : inspectorIdx;
+		
+		console.log('inspectorAnimator.inspectorIdx='+inspectorIdx);
+		
+		populateInspector("#pane1", inspectorData, inspectorIdx);
+		
+		doAnimation(inspectorData);
+		
+		cycleThroughDuplicates(); // next
+	}
+	
 }
 		
-// hover to put a new ad in the inspector
+function populateInspector(ele, iData, dupIdx) {
+
+	console.log('populateInspector('+dupIdx+') '+new Date());//ele, iData, dupIdx);
+	
+	var ad = iData[dupIdx];// + ';//:first-child()';
+
+	if (!ad) throw Error('no inspectorData['+dupIdx +']:', iData);
+
+	// update image-src and image-alt tags
+	$('img', ele).attr('src', ad.imgsrc);
+	$('img', ele).attr('alt',  ad.imgalt);
+	
+	// update inspector fields
+	$('.target',   ele).text(ad.target);
+	$('.origin',   ele).text(ad.origin);
+	$('.visited',  ele).text(ad.visited);
+	$('.detected', ele).text(ad.detected);
+	
+	// set the active dot in the dup-control
+	$('.controls li:nth-child('+(inspectorIdx+1)+')')
+		.addClass('active').siblings().removeClass('active');
+	
+	// tell the world we are ready to slide 'in'
+	$(ele).removeClass().addClass('ready');
+	
+	//if (dupIdx) console.log("dupIdx="+dupIdx, $(ele));
+}
+
+//  NOT USED - REMOVE
 $('.itemx').hover(function() {
 	
 	// save current inspectee to 'outgoing' pane
@@ -292,28 +335,6 @@ $('.itemx').hover(function() {
 	}
 });
 
-function populateInspector(ele, iData, dupIdx) {
-
-	var ad = iData[dupIdx];// + ';//:first-child()';
-
-	if (!ad) 
-		throw Error("No item for dupIdx:"+dupIdx+"!!", iData);
-
-	// update image-src and image-alt tags
-	$('img', ele).attr('src', ad.imgsrc);
-	$('img', ele).attr('alt',  ad.imgalt);
-	
-	// update inspector fields
-	$('.target',   ele).text(ad.target);
-	$('.origin',   ele).text(ad.origin);
-	$('.visited',  ele).text(ad.visited);
-	$('.detected', ele).text(ad.detected);
-	
-	$(ele).removeClass().addClass('ready');
-	
-	$('.gcontrols li:nth-child('+(inspectorIdx+1)+')')
-		.addClass('active').siblings().removeClass('active');
-}
 
 function updateAdview(ads) {
 	
@@ -491,14 +512,14 @@ function realSize(theImage) { // use cache?
 function positionAdview() { 
 	
 	var pb = packBounds();
-	console.log("Window: 0,0,"+$(window).width()+','+$(window).height());
+	/*console.log("Window: 0,0,"+$(window).width()+','+$(window).height());
 	console.log("RightP: "+$('#right').css('left')+','+$('#right').css('top')+','+$('#right').width()+','+$('#right').height());
 	console.log("LeftP: 0,0,"+($(window).width()-$('#right').width())+','+$(window).height());
 	var px = Math.round(pb.x+pb.width/2);
 	var py = Math.round(pb.y+pb.height/2);
 	console.log('CenterPack: '+px+","+py);
 	//$('.clearb').css("top",+py+"px");
-	//$('.clearb').css("left",+px+"px");
+	//$('.clearb').css("left",+px+"px");*/
 
 	return;
 	

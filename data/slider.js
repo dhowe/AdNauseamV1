@@ -53,8 +53,8 @@ function historySlider(allAds) { // should happen just once
 	    .attr("height", height + margin.top + margin.bottom)
 	  	.append("g").attr("transform", "translate(" + margin.left + ","+margin.top + ")");
 	  
-	var axis = d3.svg.axis()
-	    .scale(ts)
+	//var axis = d3.svg.axis().scale(ts)
+	var axis = d3.svg.axis().scale(x).tickSize(50).tickSubdivide(true);
 	    //.tickValues([x.invert(10),x.invert(200),x.invert(400)]);
 	    //.tickValues([1, 2, 3, 5, 8, 13, 21]);
 	  
@@ -66,7 +66,7 @@ function historySlider(allAds) { // should happen just once
 	// a single div to hold tooltip info for rects
 	var tt = d3.select("body").append("div")   
     	.attr("class", "tooltip")               
-    	.style("opacity", 1);
+    	.style("opacity", 0);
 	   
 	var brushg = svg.append("g")
 	    .attr("class", "brush")
@@ -135,19 +135,23 @@ function historySlider(allAds) { // should happen just once
 	    .enter().append("rect")
 	  	.on("mouseover", function(d) {     
 	  		
+	  		// create tooltip for history slider
+	  		
+			tt.html(d.date+"<br/>"+d.count+" Ad(s) found")  
+	    		.style("left", (d3.event.pageX) + "px")     
+	    		.style("top", (d3.event.pageY - 28) + "px");
+	    		
 			tt.transition()        
 	    		.duration(200)      
 	    		.style("opacity", .9);      
-			
-			tt.html(d.date+"<br/>"+d.count+" Ad(s) found")  
-	    		.style("left", (d3.event.pageX) + "px")     
-	    		.style("top", (d3.event.pageY - 28) + "px");    
 		})                  
         .on("mouseout", function(d) {       
         	
+        	// remove tooltip for history slider
+        	
             tt.transition()        
                 .duration(500)      
-                .style("opacity", 0);   
+                .style("opacity", 0)   
         })
 	  	.attr({
 		  width: 5,

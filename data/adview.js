@@ -1,3 +1,9 @@
+/* ISSUES:
+ * Add:
+ * 	Handle video assets better (especially images)
+ * 	Show notification in adview if no network
+ */
+
 var inspectorData, inspectorIdx, animatorId, pack, container;
 var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
 var zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
@@ -61,6 +67,7 @@ function makeAdview() { // should happen just once
 	   	var dm  = document.querySelector('#container');
 	    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
 	    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
+	    console.log(dm.style.left+","+dm.style.top, $( window ).width(), $( window ).height(), packBounds());
 	    event.preventDefault();
 	    return false;
 	}
@@ -77,7 +84,8 @@ function makeAdview() { // should happen just once
 	// click zoom-out
 	$('#z-out').unbind().click(function(e) {
 
-		zoomOut();
+		//zoomOut();
+		setZoom(zoomIdx);
 		e.preventDefault();
 	});
 
@@ -90,13 +98,7 @@ function makeAdview() { // should happen just once
 	
 	//////////// HELPER-FUNCTIONS
 
-	function zoomIn() {
-		(zoomIdx > 0) && setZoom(--zoomIdx);
-	}
-
-	function zoomOut() {
-		(zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
-	}
+	
 	
 	function clearAds() {
 		
@@ -107,16 +109,24 @@ function makeAdview() { // should happen just once
 		//console.log('preDate: '+window.ads);
 		//runFilter();
 	}
-
-	function setZoom(idx) {
-
-		//console.log('zoomIdx='+zoomIdx);
-		var style =('z-'+zooms[idx]).replace(/\./, '_');
-		$('#container').removeClass().addClass(style);
-		$('#ratio').html(zooms[idx]+'%');
-	}
 	
 	updateAdview();
+	positionAdview();
+}
+
+function zoomIn() {
+	(zoomIdx > 0) && setZoom(--zoomIdx);
+}
+
+function zoomOut() {
+	(zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
+}
+
+function setZoom(idx) {
+
+	var style =('z-'+zooms[idx]).replace(/\./, '_');
+	$('#container').removeClass().addClass(style);
+	$('#ratio').html(zooms[idx]+'%');
 }
 
 function createInspectorObj(item) {
@@ -141,13 +151,12 @@ function cycleThroughDuplicates() {
 
 function inspectorAnimator() {
 	
-	if (inspectorData && inspectorData.length>1) { // is this a dup?
+	if (inspectorData && inspectorData.length>1) { // is it a dup?
 		
 		inspectorIdx = ++inspectorIdx >= inspectorData.length ? 0 : inspectorIdx;
 		console.log('inspectorAnimator.inspectorIdx='+inspectorIdx);
 		populateInspector("#pane1", inspectorData, inspectorIdx);
 	}
-	//cycleThroughDuplicates();
 }
 
 /*
@@ -163,148 +172,149 @@ function enableInspector() {
 	console.log('enableInspector');	
 	
 	$('.item').mouseenter(function() {
+		 
+		// don't re-animate the same ad
+		if ($(this).hasClass('inspectee'))
+			return;
 		
-		//console.log($('.full').first().find('dt.detected'));
-		if ($(this).hasClass('inspectee')) return;
+		// remember this as in the inspector	
+		$(this).addClass('inspectee').siblings()
+			.removeClass('inspectee');
 
-		$(this).addClass('inspectee').siblings().removeClass('inspectee');
+		// reset the data
+		inspectorData = [ createInspectorObj(this) ]; 
+		findDuplicates();
 		
-		var first = createInspectorObj(this); 
-		inspectorData = [ first ]; // clearing our the old data
-		inspectorIdx = 0;
-	
-		// STOP: add duplicate-handling next
-		
-		populateInspector( $('.empty').first(), inspectorData, inspectorIdx);
-		$('.empty').first().removeClass().addClass('full');
-	
-		$('.panes>li').each(function( i ) {
+		// fill fields for first empty pan & set class to 'full'
+		populateInspector($('.empty').first(), inspectorData, inspectorIdx=0);
+		createDupControls();
 
-			//console.log( i + ": " +($( this )).hasClass('out')); 
-			$( this ).removeClass('out').addClass('empty');
-			if ($( this ).hasClass('in'))
-				$( this ).removeClass().addClass('out');
-		});
-		
-		$('.full').removeClass().addClass('in');
-		
-	});
-	
-	// hover to put a new ad in the inspector
-	$('.itemx').hover(function() {
-		
-		// save current inspectee to 'outgoing' pane
-		if (inspectorData && inspectorData.length)
-			populateInspector("#pane3", inspectorData, 0);
-		
-	    // grab the data for the new ad(s) from html attributes
-	    
-		var first = createInspectorObj(this); 
-		inspectorData = [ first ]; // clearing our the old data
-		inspectorIdx = 0;
-		
-		//console.log('inspectorData: ',inspectorData);
-
-		// check all duplicate items to see which apply for this ad
 		$(".item-hidden").each(function(i) {
 
-			var url = $(this).attr('data-url');
-			if (url === first.imgsrc) {
-				var next = createInspectorObj(this);
+			var next, url = $(this).attr('data-url');
+			if (url === inspectorData[0].imgsrc) { // same ad-image?
+				
+				next = createInspectorObj(this);
 				inspectorData.push(next);
 			}
 		});	
-
-		// reset the controls (small dots below the image)
-		$(".controls" ).empty();
-		for (var i=0; i < inspectorData.length; i++) {
-
-			var li = '<li data-idx="'+i+'" class=';
-			li += (i == 0)  ? 'active' : 'passive';
-			$('.controls').append(li + '><a href="#" class="btn circle"></a></li>');
-		}
-
-		// allow user to select a duplicates to view by mousing over a btn-circle (dot)
-		$('ul.controls > li').mouseenter(function (e) {
-
-    		if (!(inspectorData && inspectorData.length))
-    			throw Error("No inspector data!!!");
-    		
-    		//console.log("DUP-IDX: "+$(this).attr('data-idx'));
-
-			populateInspector("#pane1",  inspectorData, $(this).attr('data-idx'));
-
-    		e.preventDefault();
-		});
-
-		// update data fields and cycle if we have duplicates
-		populateInspector("#pane1", inspectorData, 0);
-		
-		// TODO: put the duplicates in 'wait' state (#pane)
-		if (inspectorData.length>1) { 
-		
-			populateInspector("#pane2",  inspectorData, 1);
-		}
+	
+		doAnimation();
 	});
 }
 
+function findDuplicates() {
+	
+	$(".item-hidden").each(function(i) {
 
-function populateInspector(selector, iData, dupIdx) {
+		var next, url = $(this).attr('data-url');
+		if (url === inspectorData[0].imgsrc) { // same ad-image?
+			
+			next = createInspectorObj(this);
+			inspectorData.push(next);
+		}
+	});	
+}
+
+function createDupControls() {
+
+	// reset the controls (small dots below the image)
+	$(".controls" ).empty();
+	for (var i=0; i < inspectorData.length; i++) {
+
+		var li = '<li data-idx="'+i+'" class=';
+		li += (i == 0)  ? 'active' : 'passive';
+		$('.controls').append(li+'><a href="#"'+
+			 ' class="btn circle"></a></li>');
+	}
+}
+function doAnimation() {
+	
+	// move pane 'in' to 'out', move 'out' to 'empty' 
+	$('.panes>li').each(function( i ) {  
+ 
+			$( this ).removeClass('out').addClass('empty');
+		if ($( this ).hasClass('in'))
+			$( this ).removeClass().addClass('out');
+	});
+	
+	// set current pane (class='ready') to 'in'
+	$('.ready').removeClass().addClass('in');
+	
+	if (inspectorData.length > 1) 
+		cycleThroughDuplicates();
+}
+		
+// hover to put a new ad in the inspector
+$('.itemx').hover(function() {
+	
+	// save current inspectee to 'outgoing' pane
+	if (inspectorData && inspectorData.length)
+		populateInspector("#pane3", inspectorData, 0);
+	
+    // grab the data for the new ad(s) from html attributes
+    
+	var first = createInspectorObj(this); 
+	inspectorData = [ first ]; // clearing our the old data
+	inspectorIdx = 0;
+	
+	//console.log('inspectorData: ',inspectorData);
+
+	// check all duplicate items to see which apply for this ad
+	$(".item-hidden").each(function(i) {
+
+		var url = $(this).attr('data-url');
+		if (url === first.imgsrc) { // same ad-image?
+			var next = createInspectorObj(this);
+			inspectorData.push(next);
+		}
+	});	
+
+	// allow user to select a duplicates to view by mousing over a btn-circle (dot)
+	$('ul.controls > li').mouseenter(function (e) {
+
+		if (!(inspectorData && inspectorData.length))
+			throw Error("No inspector data!!!");
+		
+		//console.log("DUP-IDX: "+$(this).attr('data-idx'));
+
+		populateInspector("#pane1",  inspectorData, $(this).attr('data-idx'));
+
+		e.preventDefault();
+	});
+
+	// update data fields and cycle if we have duplicates
+	populateInspector("#pane1", inspectorData, 0);
+	
+	// TODO: put the duplicates in 'wait' state (#pane)
+	if (inspectorData.length>1) { 
+	
+		populateInspector("#pane2",  inspectorData, 1);
+	}
+});
+
+function populateInspector(ele, iData, dupIdx) {
 
 	var ad = iData[dupIdx];// + ';//:first-child()';
 
 	if (!ad) 
 		throw Error("No item for dupIdx:"+dupIdx+"!!", iData);
-	
-	//console.log($('img',selector));
-	
-	
+
 	// update image-src and image-alt tags
-	$('img', selector).attr('src', ad.imgsrc);
-	$('img', selector).attr('alt',  ad.imgalt);
+	$('img', ele).attr('src', ad.imgsrc);
+	$('img', ele).attr('alt',  ad.imgalt);
 	
 	// update inspector fields
-	$('.target',   selector).text(ad.target);
-	$('.origin',   selector).text(ad.origin);
-	$('.visited',  selector).text(ad.visited);
-	$('.detected', selector).text(ad.detected);
-	
-	/*if (selector === '#pane1') {
-		
-		// set the active dot (1st if no-dup)
-		$('ul.controls li:nth-child('+(inspectorIdx+1)+')')
-			.addClass('active').siblings().removeClass('active');
-			
-		// we have dups, so cycle through...
-		 if (inspectorData.length > 1)   
-			cycleThroughDuplicates(); 
-	}*/
-}
-
-/*function setInspectorFields(selector, idx) {
-
-	var ad = inspectorData[idx],
-		ele = '.inspect li:first-child()';
-		
-	if (!ad) throw Error("Nothing selected!!");
-
-	$('.target',   '.inspect li:first-child()').text(selected.target);
-	$('.origin',   '.inspect li:first-child()').text(selected.origin);
-	$('.visited',  '.inspect li:first-child()').text(selected.visited);
-	$('.detected', '.inspect li:first-child()').text(selected.detected);
-	
 	$('.target',   ele).text(ad.target);
 	$('.origin',   ele).text(ad.origin);
 	$('.visited',  ele).text(ad.visited);
 	$('.detected', ele).text(ad.detected);
 	
-	//$('.target', ele).attr('href', selected.target);
-	//$('.origin', ele).attr('href', selected.origin);
-}*/
+	ele.removeClass().addClass('ready');
 	
-
-
-// was adview-ui.js ==========================================
+	$('.gcontrols li:nth-child('+(inspectorIdx+1)+')')
+		.addClass('active').siblings().removeClass('active');
+}
 
 function updateAdview(ads) {
 	
@@ -337,6 +347,7 @@ function repack() {
 		itemSelector : '.item',
 		gutter : 1
 	});
+	
 }
 
 function formatDivs(ads) {
@@ -478,11 +489,73 @@ function realSize(theImage) { // use cache?
 	return { w: theCopy.width, h: theCopy.height };
 }
 
-// resize each image according to aspect ratio
+function positionAdview() { 
+	
+	var pb = packBounds();
+	console.log("Window: 0,0,"+$(window).width()+','+$(window).height());
+	console.log("RightP: "+$('#right').css('left')+','+$('#right').css('top')+','+$('#right').width()+','+$('#right').height());
+	console.log("LeftP: 0,0,"+($(window).width()-$('#right').width())+','+$(window).height());
+	var px = Math.round(pb.x+pb.width/2);
+	var py = Math.round(pb.y+pb.height/2);
+	console.log('CenterPack: '+px+","+py);
+	//$('.clearb').css("top",+py+"px");
+	//$('.clearb').css("left",+px+"px");
+
+	return;
+	
+	var pb = packBounds(), tries = 0;
+	
+	console.log("positionAdview().pre",pb);
+	
+	while (pb.x<0 || pb.y<0) {
+		
+		console.log("zoomOut("+pb.x+","+pb.y+") "+zooms[zoomIdx]);
+
+		zoomOut();
+		pb = packBounds();
+		if (++tries > 5)
+			break;
+	}
+	
+	var dm  = document.querySelector('#container');
+    //dm.style.left = '10px';
+    //dm.style.top =-2500+'px';
+	
+	console.log("positionAdview().done: ", packBounds(), zooms[zoomIdx]);
+}
+
+function packBounds(zoom) {
+	
+	zoom = zoom || 1;
+	var minX=Number.MAX_VALUE, 
+		maxX=-Number.MAX_VALUE, 
+		minY=Number.MAX_VALUE, 
+		maxY=-Number.MAX_VALUE, x, y, z, w;
+					
+	$('.item img').each(function(i, img) { // use offset or position
+
+		x = $(this).offset().left,
+			y = $(this).offset().top,
+			sz = realSize($(this)),
+			w = sz.w, h = sz.h;
+		
+		if (x < minX) minX = x;
+		if (y < minY) minY = y;
+		if (x+w > maxX) maxX = x+w;
+		if (y+h > maxY) maxY = y+h;
+		
+		//console.log(i+': x='+$(this).offset().left+" y="+$(this).offset().left);
+	});
+	
+	//var zoom = zoomzooms[zoomIdx]; 
+	return { x: minX, y: minY, width: (maxX-minX)*zoom, height: (maxY-minY)*zoom };
+}
+
+
+// resize each image according to aspect ratio (not used)
 function resize(r) {
 
-	// OR: document.body.style.zoom="300%"
-	
+	//console.log('resize: '+r);
 	$('.item img').each(function(i, img) {
 
 		var $img = $(img), sz = realSize($img);

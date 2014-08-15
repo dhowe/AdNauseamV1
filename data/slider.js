@@ -1,11 +1,9 @@
-
 /*
- * NEXT: 
+ NEXT: 
 	Bars should be as wide as possible	
 	Add a couple of fake dates as ends of slider range??? but dont change count
 	Implement and check clearAds()
  */
-
 var currentAds, format = d3.time.format("%a %b %d %Y");
 
 function historySlider(allAds) { // should happen just once
@@ -122,7 +120,7 @@ function historySlider(allAds) { // should happen just once
 
 	var data = sortAdsPerDay();
 
-  	var ext = d3.extent(data, dateFn)
+  	var ext = d3.extent(data, dateFn);
   	x.domain(ext);
   	y.domain(d3.extent(data, amountFn));
 

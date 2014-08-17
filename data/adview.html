@@ -29,8 +29,11 @@
 
 		<script>
  			$(document).ready(function() {
-
- 				historySlider( ( (typeof options !== 'undefined') ? options : test).ads);
+				
+				var haveOpts = (typeof options !== 'undefined');
+				if (!haveOpts)
+					console.log("[WARN] No options, using test Ad data!");
+ 				historySlider( (haveOpts ? options : test).ads);
  			});
 		</script>
 

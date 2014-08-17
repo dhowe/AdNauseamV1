@@ -1,12 +1,10 @@
-//unsafeWindow.msg = function(m) { self.port.emit(m); }
-
-function msg(m) { self.port.emit(m); }
-
-console.log("****adview-shim****");
-
 var ads = self.options.ads;
+
+// pass 'ads' object into page-scope
 
 unsafeWindow.options = cloneInto( { "ads" : ads }, unsafeWindow);
 
-exportFunction(msg, unsafeWindow, { defineAs: "msg"} );
+// pass 'msg' object into page-scope
+
+exportFunction(function(m) { self.port.emit(m); }, unsafeWindow, { defineAs: "msg"} );
 

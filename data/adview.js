@@ -92,11 +92,7 @@ function makeAdview() { // should happen just once
 	$('#z-clear').unbind().click(function(e) {
 
 		e.preventDefault();
-		
-		console.log('z-clear.click()');
-
 		clearAds();
-		
 	});
 	
 	//////////// HELPER-FUNCTIONS

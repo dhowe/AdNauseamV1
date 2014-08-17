@@ -114,10 +114,12 @@ function makeAdview() { // should happen just once
 }
 
 function zoomIn() {
+	
 	(zoomIdx > 0) && setZoom(--zoomIdx);
 }
 
 function zoomOut() {
+	
 	(zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
 }
 
@@ -468,7 +470,6 @@ function realSize(theImage) { // use cache?
 
 function positionAdview() { 
 	
-	var pb = packBounds();
 	/*console.log("Window: 0,0,"+$(window).width()+','+$(window).height());
 	console.log("RightP: "+$('#right').css('left')+','+$('#right').css('top')+','+$('#right').width()+','+$('#right').height());
 	console.log("LeftP: 0,0,"+($(window).width()-$('#right').width())+','+$(window).height());
@@ -480,7 +481,9 @@ function positionAdview() {
 
 	return;
 	
-	var pb = packBounds(), tries = 0;
+	var pb = packBounds(), tries = 0,
+		winH = $(window).height(),
+		winW = $(window).width()-$('#right').width(); 
 	
 	console.log("positionAdview().pre",pb);
 	
@@ -504,12 +507,13 @@ function positionAdview() {
 function packBounds(zoom) {
 	
 	zoom = zoom || 1;
+	
 	var minX=Number.MAX_VALUE, 
 		maxX=-Number.MAX_VALUE, 
 		minY=Number.MAX_VALUE, 
 		maxY=-Number.MAX_VALUE, x, y, z, w;
 					
-	$('.item img').each(function(i, img) { // use offset or position
+	$('.item img').each(function(i, img) { // use offset or position?
 
 		x = $(this).offset().left,
 			y = $(this).offset().top,
@@ -524,7 +528,7 @@ function packBounds(zoom) {
 		//console.log(i+': x='+$(this).offset().left+" y="+$(this).offset().left);
 	});
 	
-	//var zoom = zoomzooms[zoomIdx]; 
+	//var zoom = zooms[zoomIdx]; 
 	return { x: minX, y: minY, width: (maxX-minX)*zoom, height: (maxY-minY)*zoom };
 }
 

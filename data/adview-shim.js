@@ -1,9 +1,12 @@
-console.log("****adview-shim****");
-$(document).ready(function(){
+//unsafeWindow.msg = function(m) { self.port.emit(m); }
 
-	msg("ADNShowLog");
-});
+function msg(m) { self.port.emit(m); }
+
+console.log("****adview-shim****");
+
 var ads = self.options.ads;
+
 unsafeWindow.options = cloneInto( { "ads" : ads }, unsafeWindow);
 
-function msg(m) { addon.port.emit(m); }
+exportFunction(msg, unsafeWindow, { defineAs: "msg"} );
+

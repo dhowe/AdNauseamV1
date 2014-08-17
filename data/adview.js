@@ -91,20 +91,26 @@ function makeAdview() { // should happen just once
 
 	$('#z-clear').unbind().click(function(e) {
 
-		clearAds();
 		e.preventDefault();
+		
+		console.log('z-clear.click()');
+
+		clearAds();
+		
 	});
 	
 	//////////// HELPER-FUNCTIONS
 
 	function clearAds() {
 		
-		console.log('clear-ads(placeholder)');
+		// remove all .item elements,
+		$('.item').remove();
 		
-		// need to clear window.ads, delete all .item, then call addon to clear simple-storage
-		//window.ads=[];
-		//console.log('preDate: '+window.ads);
-		//runFilter();
+		// clear window.ads
+		window.ads = [];
+		
+		// call addon to clear simple-storage
+		window.msg && window.msg("ADNClearAds");
 	}
 	
 	updateAdview();
@@ -149,8 +155,6 @@ function createInspectorObj(item) {
  */
 function enableInspector() {
 
-	//console.log('enableInspector');	
-	
 	$('.item').mouseenter(function() {
 		 
 		// don't re-animate the same ad

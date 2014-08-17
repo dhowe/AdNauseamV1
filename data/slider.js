@@ -8,7 +8,7 @@ var currentAds, format = d3.time.format("%a %b %d %Y");
 
 function historySlider(allAds) { // should happen just once
 	
-	console.log('historySlider:'+allAds.length);
+	//console.log('historySlider:'+allAds.length);
 	
 	currentAds = allAds;
 	

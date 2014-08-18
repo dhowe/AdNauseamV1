@@ -486,7 +486,7 @@ function positionAdview() {
 
 	console.log('positionAdview()');
 	
-	return;
+	return;																																																																							````````````````````````````````````````````````````````````````````````																																												`																																																					`````
 	
 	// get the bounds of the collage
 	var pb = packBounds();

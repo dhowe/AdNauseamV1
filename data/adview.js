@@ -4,6 +4,8 @@
  * 	Show notification in adview if no network
  */
 
+// test push from cyrus
+
 var inspectorData, inspectorIdx, animatorId, pack, container;
 var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
 var zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];

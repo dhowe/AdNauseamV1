@@ -468,7 +468,12 @@ function realSize(theImage) { // use cache?
 	return { w: theCopy.width, h: theCopy.height };
 }
 
+// 1. Zoom so that all ads are at least 50% visible
+// 2. Center the collage in the window
+// Use: packBounds() and zoomOut()
 function positionAdview() { 
+	
+	var percentVisible = .5; // each ad must be 50% visible
 	
 	/*console.log("Window: 0,0,"+$(window).width()+','+$(window).height());
 	console.log("RightP: "+$('#right').css('left')+','+$('#right').css('top')+','+$('#right').width()+','+$('#right').height());
@@ -479,14 +484,22 @@ function positionAdview() {
 	//$('.clearb').css("top",+py+"px");
 	//$('.clearb').css("left",+px+"px");*/
 
+	console.log('positionAdview()');
+	
 	return;
 	
-	var pb = packBounds(), tries = 0,
-		winH = $(window).height(),
-		winW = $(window).width()-$('#right').width(); 
+	// get the bounds of the collage
+	var pb = packBounds();
+	
+	var tries = 0; // number of tries so far
+	
+	// get width and height of window
+	var winH = $(window).height(),
+		winW = $(window).width() - $('#right').width(); 
 	
 	console.log("positionAdview().pre",pb);
 	
+	// Part 1: keep zooming out until all ads (upper-left corner) are onscreen =============
 	while (pb.x<0 || pb.y<0) {
 		
 		console.log("zoomOut("+pb.x+","+pb.y+") "+zooms[zoomIdx]);
@@ -497,6 +510,8 @@ function positionAdview() {
 			break;
 	}
 	
+	// Part 2: Now center the collage in the container ==================================
+	
 	var dm  = document.querySelector('#container');
     //dm.style.left = '10px';
     //dm.style.top =-2500+'px';
@@ -504,6 +519,8 @@ function positionAdview() {
 	console.log("positionAdview().done: ", packBounds(), zooms[zoomIdx]);
 }
 
+// Returns the bounds of the collage 
+// returns Object with x, y, width, height
 function packBounds(zoom) {
 	
 	zoom = zoom || 1;
@@ -529,6 +546,8 @@ function packBounds(zoom) {
 	});
 	
 	//var zoom = zooms[zoomIdx]; 
+	
+	// Returns the bounds of the collage
 	return { x: minX, y: minY, width: (maxX-minX)*zoom, height: (maxY-minY)*zoom };
 }
 

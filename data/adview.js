@@ -486,7 +486,7 @@ function positionAdview() {
 	//$('.clearb').css("top",+py+"px");
 	//$('.clearb').css("left",+px+"px");*/
 
-	console.log('positionAdview()');
+	console.log('cyrus.positionAdview()');
 	
 	return;
 	

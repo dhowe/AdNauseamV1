@@ -50,11 +50,13 @@ function makeAdview() { // should happen just once
 	document.body.addEventListener('drop', drop, false);
 	// from: http://jsfiddle.net/robertc/kKuqH/
 
-	function dragStart(event) {
+		function dragStart(event) {
 		
 	    var style = window.getComputedStyle(document.querySelector('#container'), null);
-		var x = parseInt(style.getPropertyValue("left"), 10) - event.clientX;
-		var y = parseInt(style.getPropertyValue("top"),  10) - event.clientY;
+		/*  following up the auto-centers fix on adview-open after dragging the collage 
+			should get pixel values from margin-left and margin-top instead of left and top */
+		var x = parseInt(style.getPropertyValue("margin-left"), 10) - event.clientX;
+		var y = parseInt(style.getPropertyValue("margin-top"),  10) - event.clientY;
 		//console.log("dragStart: "+x+","+y);
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
 	}
@@ -67,9 +69,11 @@ function makeAdview() { // should happen just once
 
 		var offset = event.dataTransfer.getData("text/plain").split(',');
 	   	var dm  = document.querySelector('#container');
-	    dm.style.left = (event.clientX + parseInt(offset[0], 10)) + 'px';
-	    dm.style.top = (event.clientY + parseInt(offset[1], 10)) + 'px';
-	    //console.log(dm.style.left+","+dm.style.top, $( window ).width(), $( window ).height(), packBounds());
+		/*  following up the auto-centers fix on adview-open after dragging the collage 
+			should get pixel values from margin-left and margin-top instead of left and top */
+	    dm.style.marginLeft = (event.clientX + parseInt(offset[0], 10)) + 'px';
+	    dm.style.marginTop = (event.clientY + parseInt(offset[1], 10)) + 'px';
+	    //console.log(dm.style.marginLeft+","+dm.style.marginTop, $( window ).width(), $( window ).height(), packBounds());
 	    event.preventDefault();
 	    return false;
 	}

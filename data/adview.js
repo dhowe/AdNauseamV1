@@ -5,12 +5,11 @@
  * 	Show notification in adview if no network
  */
 
-var inspectorData, inspectorIdx, animatorId, pack, container;
-var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
-var zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
+var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
 // these functions are defined in adview-shim (and aliased here)
-formatDate = window.formatDate;
+//formatDate = window.formatDate;
 //sinceTime = window.sinceTime;
 //numVisited = window.numVisited;
 //formatStats = window.formatStats;
@@ -19,7 +18,7 @@ formatDate = window.formatDate;
 function makeAdview() { // should happen just once
 	
 	console.log('makeAdview()'); 
-
+	
 	/////////// RESIZE-PANELS
 
 	$('#handle').mousedown(function(e){
@@ -46,7 +45,7 @@ function makeAdview() { // should happen just once
 	        pack && pack.layout();
 	    }
 	    
-	    e.preventDefault(); // needed?
+	    e.preventDefault(); 
 	});
 
 	/////////// DRAG-STAGE
@@ -56,14 +55,14 @@ function makeAdview() { // should happen just once
 	document.body.addEventListener('drop', drop, false);
 	// from: http://jsfiddle.net/robertc/kKuqH/
 
-		function dragStart(event) {
+	function dragStart(event) {
 		
 	    var style = window.getComputedStyle(document.querySelector('#container'), null);
-		/*  following up the auto-centers fix on adview-open after dragging the collage 
-			should get pixel values from margin-left and margin-top instead of left and top */
+
+		/*  CS: get pixel values from margin-left and margin-top instead of left and top */
 		var x = parseInt(style.getPropertyValue("margin-left"), 10) - event.clientX;
 		var y = parseInt(style.getPropertyValue("margin-top"),  10) - event.clientY;
-		//console.log("dragStart: "+x+","+y);
+		
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
 	}
 
@@ -75,11 +74,12 @@ function makeAdview() { // should happen just once
 
 		var offset = event.dataTransfer.getData("text/plain").split(',');
 	   	var dm  = document.querySelector('#container');
-		/*  following up the auto-centers fix on adview-open after dragging the collage 
-			should get pixel values from margin-left and margin-top instead of left and top */
+
+		/*  CS: get pixel values from margin-left and margin-top instead of left and top */
 	    dm.style.marginLeft = (event.clientX + parseInt(offset[0], 10)) + 'px';
 	    dm.style.marginTop = (event.clientY + parseInt(offset[1], 10)) + 'px';
 	    //console.log(dm.style.marginLeft+","+dm.style.marginTop, $( window ).width(), $( window ).height(), packBounds());
+
 	    event.preventDefault();
 	    return false;
 	}
@@ -139,9 +139,49 @@ function zoomOut() {
 
 function setZoom(idx) {
 
-	var style =('z-'+zooms[idx]).replace(/\./, '_');
-	$('#container').removeClass().addClass(style);
+	$('#container').removeClass(zoomStyle).addClass // swap zoom class
+		((zoomStyle = ('z-'+zooms[idx]).replace(/\./, '_'))); 
 	$('#ratio').html(zooms[idx]+'%');
+}
+
+function positionAdview() {
+		
+	var percentVisible = .4,
+		winH = $('#svgcon').offset().top,
+		winW = $(window).width() -  $('#right').width(),
+		i, x, y, w, h, minX, maxX, minY, maxY, problem;
+
+	for (i=0; i < zooms.length; i++) {
+
+		problem = false; // no problem at start
+		
+		// loop over each image, checking that they (enough) onscreen
+		$('.item img').each(function(i, img) {
+	
+			x = $(this).offset().left,
+			y = $(this).offset().top,
+			scale = zooms[zoomIdx] / 100,
+			sz = realSize($(this)), // original size
+			w = sz.w * scale, // scaled width  
+			h = sz.h * scale, // scaled height
+			minX = (-w * (1 - percentVisible)),
+			maxX = (winW - (w * percentVisible)),
+			minY = (-h * (1 - percentVisible)),
+			maxY = (winH - (h * percentVisible));
+			
+			//$('#test'+(this.id)).offset({ top: y, left: x }).width(w).height(h);
+
+			if (x < minX || x > maxX || y < minY || y > maxY) {
+				
+				problem = true;
+				zoomOut();
+				console.log('Ad('+$(this).attr('id')+') offscreen, zoom='+zoomStyle);
+				return false; // break jquery each() loop
+			}
+		});	
+		
+		if (!problem) return;	// all ads ok, we're done
+	}
 }
 
 function createInspectorObj(item) {
@@ -371,7 +411,7 @@ function formatDivs(ads) {
 			{
 				html += '<span class="counter">'+ad.count+'</span>';
 				//html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
-				html += '<img src="' + ad.url + '" alt="ad-image">';
+				html += '<img id="img'+ad.id+'" src="' + ad.url + '" alt="ad-image">';
 			}
 			
 			html += '</div>\n';
@@ -428,8 +468,14 @@ function realSize(theImage) { // use cache?
 // 1. Zoom so that all ads are at least 50% visible
 // 2. Center the collage in the window
 // Use: packBounds() and zoomOut()
-function positionAdview() { 
+function addTestDivs() { 
 
+	$('.item img').each(function(i, img) { // use offset or position?
+
+		var id = $(this).attr('id');
+		//console.log(id);
+		$('body').append('<div id="test'+id+'" style="z-index:10000; border:1px; position:absolute; width: 4px; height: 4px; top: 50px; left: 50px; border-color: #f00; border-width:1px; border-style:solid"></div>');
+	});	
 }
 
 // Returns the bounds of the collage 
@@ -566,3 +612,27 @@ function sinceTime(ads) {
 	return oldest;
 }
 
+function formatDate(ts) {
+	
+	if (!ts) return 'pending';
+		
+	if (ts < 0)  return 'error';
+	
+	var date = new Date(ts), days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+		months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	
+	var pad = function(str) {
+		
+		str = String(str);
+		return (str.length < 2) ? "0" + str : str;
+	}
+	
+	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
+	var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+	
+	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() 
+		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) 
+		+ meridian.toLowerCase();
+		
+		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
+}  

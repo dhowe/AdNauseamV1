@@ -4,10 +4,8 @@ unsafeWindow.options = cloneInto( { "ads" : self.options.ads }, unsafeWindow);
 // pass 'msg' function into page-scope
 exportFunction(function(m) {  self.port.emit(m);  }, unsafeWindow, { defineAs: "msg"} );
 
-// pass 'formatDate' function into page-scope
-exportFunction(formatDate, unsafeWindow, { defineAs: "formatDate" } );
-
 /* pass functions into page-scope
+exportFunction(formatDate, unsafeWindow, { defineAs: "formatDate" } );
 exportFunction(formatStats, unsafeWindow, { defineAs: "formatStats" } );
 exportFunction(numVisited, unsafeWindow, { defineAs: "numVisited" } );
 exportFunction(sinceTime, unsafeWindow, { defineAs: "sinceTime" } );
@@ -47,6 +45,8 @@ function findAdById(id, ads) {
 	return null;
 }
 
+// ====== these functions currently duplicated in adview.js (need to isolate)
+
 function findDups(ads) {
 	
 	var ad, soFar, hash = {};
@@ -74,7 +74,6 @@ function findDups(ads) {
 		
 		ad = ads[i];
 		ad.count = hash[ad.url];
-		//console.log(i+") "+ad.count);
 	}
 	
 	//console.log('adview-shim.findDups() :: '+ads.length);

@@ -130,51 +130,33 @@ div.tooltip {
 }
 
 .z-100 {
-	-moz-transform: 	scale(1, 1);
-	-ms-transform: 		scale(1, 1);
-	-webkit-transform: 	scale(1, 1);
-	-o-transform: 		scale(1, 1);
+
 	transform: 			scale(1, 1);
 }
 
 .z-50 {
-	-moz-transform: 	scale(0.5, 0.5);
-	-ms-transform: 		scale(0.5, 0.5);
-	-webkit-transform: 	scale(0.5, 0.5);
-	-o-transform: 		scale(0.5, 0.5);
+
 	transform: 			scale(0.5, 0.5);
 }
 
 .z-25 {
-	-moz-transform: 	scale(0.25, 0.25);
-	-ms-transform: 		scale(0.25, 0.25);
-	-webkit-transform: 	scale(0.25, 0.25);
-	-o-transform: 		scale(0.25, 0.25);
+
 	transform: 			scale(0.25, 0.25);
 }
 
 .z-12_5 {
-	-moz-transform: 	scale(0.125, 0.125);
-	-ms-transform: 		scale(0.125, 0.125);
-	-webkit-transform: 	scale(0.125, 0.125);
-	-o-transform: 		scale(0.125, 0.125);
+
 	transform: 			scale(0.125, 0.125);
 }
 
 .z-6_25 {
-	-moz-transform: 	scale(0.0625, 0.0625);
-	-ms-transform: 		scale(0.0625, 0.0625);
-	-webkit-transform: 	scale(0.0625, 0.0625);
-	-o-transform: 		scale(0.0625, 0.0625);
+
 	transform: 			scale(0.0625, 0.0625);
 }
 
-#container {
-	-moz-transition:	-moz-transform 0.5s;
-	-ms-transition: -ms-transform 0.5s;
-	-webkit-transition: -webkit-transform 0.5s;
-	-o-transition: 		-o-transform 0.5s;
-    transition: 		transform 0.5s;
+.container-trans {
+	
+    transition: 		transform 0.5s; 
 }
 
 #ratio {
@@ -514,10 +496,6 @@ aside .controls li.active a {
 	bottom: 0;
 	left: 0;
 	position: absolute;
-	background-image: -o-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
-	background-image: -moz-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
-	background-image: -webkit-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
-	background-image: -ms-linear-gradient(-90deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
 	background-image: linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
 }
 

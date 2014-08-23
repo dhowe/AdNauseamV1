@@ -47,36 +47,6 @@ function findAdById(id, ads) {
 	return null;
 }
 
-function findAdsById(id, ads, getAllWithSameTarget) { // remove
-	
-	var originalAd, i;
-	for (i=0, j=ads.length; i< j; i++) {
-		
-		if (ads[i].id === id) {
-			originalAd = ads[i]
-			break;
-		}
-	}
-	
-	var result = [];
-	
-	if (originalAd) {
-		
-		result.push(originalAd);
-		
-		if (getAllWithSameTarget) {
-			
-			for (i=0, j=ads.length; i< j; i++) {
-				
-				if (ads[i].id != id && ads[i].target == originalAd.target)
-					result.push(ads[i]);
-			}
-		}
-	}
-	
-	return result;
-}
-
 function findDups(ads) {
 	
 	var ad, soFar, hash = {};

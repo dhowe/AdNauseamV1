@@ -1,14 +1,20 @@
 /* ISSUES:
+ * 
  * Add:
  * 	Handle video assets better (especially images)
  * 	Show notification in adview if no network
  */
 
-// test push from cyrus
-
 var inspectorData, inspectorIdx, animatorId, pack, container;
 var zratio = 1.2, zstepSz = .05, zholdMs = 200, animateMs=2000;
 var zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+
+// these functions are defined in adview-shim (and aliased here)
+formatDate = window.formatDate;
+//sinceTime = window.sinceTime;
+//numVisited = window.numVisited;
+//formatStats = window.formatStats;
+//findDups = window.findDups; 
 
 function makeAdview() { // should happen just once
 	
@@ -107,6 +113,8 @@ function makeAdview() { // should happen just once
 		
 		// remove all .item elements,
 		$('.item').remove();
+			
+		/* Note that window.ads && window.msg are populated in adview-shim.js */
 		
 		// clear window.ads
 		window.ads = [];
@@ -115,7 +123,7 @@ function makeAdview() { // should happen just once
 		window.msg && window.msg("ADNClearAds");
 	}
 	
-	updateAdview();
+	updateAdview(window.ads);
 	positionAdview();
 }
 
@@ -309,7 +317,7 @@ function updateAdview(ads) {
 
 	var uniqueAds = findDups(ads);
 	
-	console.log("updateAdview: "+ads.length+" unique="+uniqueAds.length);
+	//console.log("updateAdview: "+ads.length+" unique="+uniqueAds.length);
 	
 	var result = formatDivs(uniqueAds);
 	$('#container').html(result);
@@ -338,16 +346,14 @@ function repack() {
 function formatDivs(ads) {
 		
 	var html = '';// ads = findDups(ads);
-	
-	//console.log(ads);
-	
+
 	for (var i=0, j = ads.length; i<j; i++) {
 		
 		if (ads[i].url) {
 			
 			var ad = ads[i];
 			
-			html += '<a href="'+ad.target+'" class="item';
+			html += '<a href="'+ad.target+'" id="ad'+ad.id+'" class="item';
 			html += ad.hidden ? '-hidden ' : ' '; // hide dups w css
 			
 			if (ad.visited == 0) html += 'pending ';	
@@ -358,13 +364,14 @@ function formatDivs(ads) {
 			html += 'data-visited="'+formatDate(ad.visited)+'" ';
 			html += 'data-target="'+ad.target+'" ';
 			html += 'data-url="'+ad.url+'" ';
+			//html += 'data-id="'+ad.id+'" ';
 			html += 'data-origin="'+ad.page+'">';
 			
 			if (!ad.hidden) 
 			{
 				html += '<span class="counter">'+ad.count+'</span>';
 				//html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
-				html += '<img src="' + ad.url + '" alt="ad">';
+				html += '<img src="' + ad.url + '" alt="ad-image">';
 			}
 			
 			html += '</div>\n';
@@ -382,7 +389,7 @@ function formatStats(ads) {
 	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
 }
 
-function formatDate(ts) {
+function formatDateXXX(ts) { // TODO: this is duplicated from adview-shim, remove
 	
 	if (!ts) return 'pending';
 		
@@ -402,66 +409,10 @@ function formatDate(ts) {
 	
 	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate() 
 		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) 
-		+ meridian.toLowerCase() + ' ('+ts+')'; // attach ts to end for debugging
+		+ meridian.toLowerCase();
 		
 		//+ ':' + pad(date.getSeconds()) + ' ' + meridian;
 }  
-/*
-function filterByDate(ads, min, max) {
-	
-	//console.log('filterByDate: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
-	
-	var filtered = [];
-	for (var i=0, j = ads.length; i<j; i++) {
-		 
-		//ads[i].filtered = false;
-		
-		if (ads[i].found < min || ads[i].found > max) {
-			
-			//console.log('filtered: '+formatDate(ads[i].found));
-			//ads[i].filtered = true;
-		}
-		else {
-			filtered.push(ads[i]);
-		}
-	}
-	//console.log('filterByDate: in='+ads.length+' out='+filtered.length);
-
-	return filtered;
-}*/
-
-function findDups(ads) {
-	
-	var ad, soFar, hash = {};
-	
-	for (var i=0, j = ads.length; i<j; i++) {
-		
-		ad = ads[i];
-		
-		if (!ad.url) continue;
-		
-		soFar = hash[ad.url];
-		if (!soFar) {
-			
-			hash[ad.url] = 1;
-			ad.hidden = false;
-		}
-		else {
-			
-			hash[ad.url]++;
-			ad.hidden = true;
-		}
-	}
-	
-	for (var i=0, j = ads.length; i<j; i++) {
-		
-		ad = ads[i];
-		ad.count = hash[ad.url];
-		//console.log(i+") "+ad.count);
-	}
-	
-	return ads;
-}
 
 // hack to grab the native image size
 function realSize(theImage) { // use cache?
@@ -532,6 +483,65 @@ function resize(r) {
 	pack.layout();
 }
 
+function formatDivsSimple(ads) {
+	
+	var html = '';
+	for (var i=0, j = ads.length; i<j; i++) {
+		
+		if (ads[i].url) {
+			html += '<div class="item"><img src="' + ads[i].url + '"></div>\n';
+		}
+	}
+	return html;
+}
+
+function formatJSON(data) {
+
+	return JSON.stringify(data, null, 4);//.replace(/\n/g, "<br/>");.replace(/ /g, "&nbsp;");
+}
+
+
+// Duplicate functions (also in adview-shim.js) - need to isolate
+
+function findDups(ads) {
+	
+	var ad, soFar, hash = {};
+	
+	for (var i=0, j = ads.length; i<j; i++) {
+		
+		ad = ads[i];
+		
+		if (!ad.url) continue;
+		
+		soFar = hash[ad.url];
+		if (!soFar) {
+			
+			hash[ad.url] = 1;
+			ad.hidden = false;
+		}
+		else {
+			
+			hash[ad.url]++;
+			ad.hidden = true;
+		}
+	}
+	
+	for (var i=0, j = ads.length; i<j; i++) {
+		
+		ad = ads[i];
+		ad.count = hash[ad.url];
+		//console.log(i+") "+ad.count);
+	}
+	
+	return ads;
+}
+
+function formatStats(ads) {
+	
+	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
+	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
+}
+
 function numVisited(ads) {
 	
 	var numv = 0;
@@ -556,19 +566,3 @@ function sinceTime(ads) {
 	return oldest;
 }
 
-function formatDivsSimple(ads) {
-	
-	var html = '';
-	for (var i=0, j = ads.length; i<j; i++) {
-		
-		if (ads[i].url) {
-			html += '<div class="item"><img src="' + ads[i].url + '"></div>\n';
-		}
-	}
-	return html;
-}
-
-function formatJSON(data) {
-
-	return JSON.stringify(data, null, 4);//.replace(/\n/g, "<br/>");.replace(/ /g, "&nbsp;");
-}

@@ -1,19 +1,10 @@
 /* ISSUES:
- * 
- * Add:
- * 	Handle video assets better (especially images)
- * 	Show notification in adview if no network
+ * 	 Show notification in adview if no network
  */
 
+var dbugOffsets = 0;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
-
-// these functions are defined in adview-shim (and aliased here)
-//formatDate = window.formatDate;
-//sinceTime = window.sinceTime;
-//numVisited = window.numVisited;
-//formatStats = window.formatStats;
-//findDups = window.findDups; 
 
 function makeAdview() { // should happen just once
 	
@@ -53,10 +44,10 @@ function makeAdview() { // should happen just once
 	document.querySelector('#container').addEventListener('dragstart', dragStart, false);
 	document.body.addEventListener('dragover', dragOver, false);
 	document.body.addEventListener('drop', drop, false);
-	// from: http://jsfiddle.net/robertc/kKuqH/
+	  // from: http://jsfiddle.net/robertc/kKuqH/
 
 	function dragStart(event) {
-		
+			
 	    var style = window.getComputedStyle(document.querySelector('#container'), null);
 
 		/*  CS: get pixel values from margin-left and margin-top instead of left and top */
@@ -71,14 +62,17 @@ function makeAdview() { // should happen just once
 	function drop(event) { return _drag(event); }
 
 	function _drag(event) {
-
+		
 		var offset = event.dataTransfer.getData("text/plain").split(',');
 	   	var dm  = document.querySelector('#container');
+	   	
+	   	//console.log("_drag: ", event.clientX, event.clientY, offset);
 
 		/*  CS: get pixel values from margin-left and margin-top instead of left and top */
 	    dm.style.marginLeft = (event.clientX + parseInt(offset[0], 10)) + 'px';
 	    dm.style.marginTop = (event.clientY + parseInt(offset[1], 10)) + 'px';
-	    //console.log(dm.style.marginLeft+","+dm.style.marginTop, $( window ).width(), $( window ).height(), packBounds());
+				
+		dbugOffsets && updateTestDivs();
 
 	    event.preventDefault();
 	    return false;
@@ -124,7 +118,28 @@ function makeAdview() { // should happen just once
 	}
 	
 	updateAdview(window.ads);
-	positionAdview();
+	
+	setTimeout(function() {
+	
+		var evt = {
+			clientX: 0,
+			clientY: 0,
+			dataTransfer: {
+				setData: function() {},
+				getData: function() { return '-5000,-5000' }
+			},
+			preventDefault: function() {}
+		};
+			
+		drop(evt); // hack to fix offset()
+		
+		positionAdview(); // autozoom & center
+		
+		dbugOffsets && updateTestDivs(); // test-divs
+		
+		$('#container').addClass('container-trans');
+		
+	}, 100);
 }
 
 function zoomIn() {
@@ -141,9 +156,12 @@ function setZoom(idx) {
 
 	$('#container').removeClass(zoomStyle).addClass // swap zoom class
 		((zoomStyle = ('z-'+zooms[idx]).replace(/\./, '_'))); 
+	
 	$('#ratio').html(zooms[idx]+'%');
-}
 
+	dbugOffsets && updateTestDivs();
+}
+	
 function positionAdview() {
 		
 	var percentVisible = .4,
@@ -169,14 +187,14 @@ function positionAdview() {
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
 			
-			//$('#test'+(this.id)).offset({ top: y, left: x }).width(w).height(h);
-
+			// console.log(i+") "+Math.round(x));
+			// COMPARE-TO (console): $('.item img').each(function(i, img) { console.log( i+") "+Math.round($(this).offset().left)) }); 
+			
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 				
-				problem = true;
 				zoomOut();
 				console.log('Ad('+$(this).attr('id')+') offscreen, zoom='+zoomStyle);
-				return false; // break jquery each() loop
+				return (problem = true); // break jquery each() loop
 			}
 		});	
 		
@@ -368,11 +386,13 @@ function updateAdview(ads) {
 	enableInspector();
 	
 	repack();
+	
+	dbugOffsets && addTestDivs();
 }
 
 function repack() {
 	
-	console.log("new Packery()");
+	console.log("repack()");
 
 	pack = new Packery(
 		'#container', {
@@ -465,68 +485,30 @@ function realSize(theImage) { // use cache?
 	return { w: theCopy.width, h: theCopy.height };
 }
 
-// 1. Zoom so that all ads are at least 50% visible
-// 2. Center the collage in the window
-// Use: packBounds() and zoomOut()
-function addTestDivs() { 
+
+function addTestDivs() { // debugging-only
 
 	$('.item img').each(function(i, img) { // use offset or position?
 
-		var id = $(this).attr('id');
-		//console.log(id);
-		$('body').append('<div id="test'+id+'" style="z-index:10000; border:1px; position:absolute; width: 4px; height: 4px; top: 50px; left: 50px; border-color: #f00; border-width:1px; border-style:solid"></div>');
+		$('body').append('<div id="test'+$(this).attr('id')+
+			'" style="z-index:10000; border:1px; border-color: #f00; border-width:1px; border-style:solid"></div>');
 	});	
 }
 
-// Returns the bounds of the collage 
-// returns Object with x, y, width, height
-function packBounds(zoom) {
+function updateTestDivs() { // debugging-only
 	
-	zoom = zoom || 1;
-	
-	var minX=Number.MAX_VALUE, 
-		maxX=-Number.MAX_VALUE, 
-		minY=Number.MAX_VALUE, 
-		maxY=-Number.MAX_VALUE, x, y, z, w;
-					
-	$('.item img').each(function(i, img) { // use offset or position?
-
-		x = $(this).offset().left,
-			y = $(this).offset().top,
-			sz = realSize($(this)),
-			w = sz.w, h = sz.h;
-		
-		if (x < minX) minX = x;
-		if (y < minY) minY = y;
-		if (x+w > maxX) maxX = x+w;
-		if (y+h > maxY) maxY = y+h;
-		
-		//console.log(i+': x='+$(this).offset().left+" y="+$(this).offset().left);
-	});
-	
-	//var zoom = zooms[zoomIdx]; 
-	
-	// Returns the bounds of the collage
-	return { x: minX, y: minY, width: (maxX-minX)*zoom, height: (maxY-minY)*zoom };
-}
-
-
-// resize each image according to aspect ratio (not used)
-function resize(r) {
-
-	//console.log('resize: '+r);
 	$('.item img').each(function(i, img) {
-
-		var $img = $(img), sz = realSize($img);
-		$img.css({
-			'width'  : sz.w * r,
-			'height' : sz.h * r
-		});
+		var x = $(this).offset().left,
+			y = $(this).offset().top,
+			scale = zooms[zoomIdx] / 100,
+			sz = realSize($(this)), // original size
+			w = sz.w * scale, // scaled width  
+			h = sz.h * scale; // scaled height
+		
+		//console.log(i+"x: ", x);
+		
+		$('#test'+(this.id)).offset({ top: y, left: x }).width(w).height(h);
 	});
-
-	$('#ratio').html(r.toFixed(2));
-
-	pack.layout();
 }
 
 function formatDivsSimple(ads) {

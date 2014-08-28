@@ -27,13 +27,10 @@ function makeAdview() { // should happen just once
 	$(document).mousemove(function(e) {
 
 	    if (resizing) {  // constrain drag width here
-
 	    	var w = $('body').width(),
 	    		lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
 	        $('#left').css('width', lw);
 	        $('#right').css('width', w - e.pageX);
-	        
-	        pack && pack.layout();
 	    }
 	    
 	    e.preventDefault(); 
@@ -163,8 +160,10 @@ function setZoom(idx) {
 }
 	
 function positionAdview() {
-		
-	var percentVisible = .4,
+	
+	console.log("positionAdview");
+	
+	var percentVisible = .6,
 		winH = $('#svgcon').offset().top,
 		winW = $(window).width() -  $('#right').width(),
 		i, x, y, w, h, minX, maxX, minY, maxY, problem;
@@ -186,8 +185,8 @@ function positionAdview() {
 			maxX = (winW - (w * percentVisible)),
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
-			
-			// console.log(i+") "+Math.round(x));
+
+			//console.log(i+")",x,y,w,h);
 			// COMPARE-TO (console): $('.item img').each(function(i, img) { console.log( i+") "+Math.round($(this).offset().left)) }); 
 			
 			if (x < minX || x > maxX || y < minY || y > maxY) {

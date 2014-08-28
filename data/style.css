@@ -99,7 +99,7 @@ div.tooltip {
 .clearb {
 	position: absolute;
 	top: 16px;
-	left: 72%;
+	left: -35px;
 	border: 2px solid #818181;
 	border-radius: 12px;
 	height: 20px;
@@ -172,6 +172,8 @@ div.tooltip {
 .svg-container {
 	
 	position: absolute;
+	
+	
 	bottom: 20px;
 	left: 16px;
 	z-index: 100;
@@ -200,7 +202,7 @@ div.tooltip {
 	z-index: 100;
 	bottom: 0;
 	position: absolute;
-	right: 25%;
+	left: -100px;
 	margin: 8px 10px;
 }
 

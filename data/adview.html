@@ -24,8 +24,8 @@
 		<script src="lib/d3.min.js"></script>
 		<script src="testads.js"></script><!-- testing-only -->
 
-		<script src="adview.js"></script>
 		<script src="slider.js"></script>
+		<script src="adview.js"></script>
 
 		<script>
  			$(document).ready(function() {
@@ -43,9 +43,6 @@
 
 		<div id="left" class="stage">
 
-			<div class="clearb">
-				<a href="" id="z-clear">c</a>
-			</div>
 
 			<div class="zoom">
 				<a href="" id="z-in">&#10010;</a>
@@ -56,14 +53,19 @@
 
 			<div id="svgcon" class="svg-container"></div>
 
-			<div id="logo"><a href="#"></a></div>
-
 			<div id='container' class="z-100" draggable="true"></div>
 			
 		</div>
 
 		<aside id="right">
-			<a href="#" id="handle" class="panel-resize"></a>
+		
+			<div class="clearb">
+				<a href="" id="z-clear">c</a>
+			</div>
+			
+			<div id="logo"><a href="#"></a></div>
+			
+			<a href="#" id="handle" class="panel-resize" draggable="true"></a>
 			<div class="inspect carousel">
 				<ul class="panes">
 					<ul class="controls"></ul>

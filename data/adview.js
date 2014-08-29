@@ -26,28 +26,76 @@ function makeAdview() { // should happen just once
     	e.preventDefault();
 	});
 
-	$(document).mousemove(function(e) {
-
-	    if (resizing) {  // constrain drag width here
-
-	    	var w = $('body').width(),
-	    		lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
-	        $('#left').css('width', lw);
-	        $('#right').css('width', w - e.pageX);
-	        
-	        pack && pack.layout();
-	    }
-	    
-	    e.preventDefault(); 
-	});
-
 	/////////// DRAG-STAGE
 
 	document.querySelector('#container').addEventListener('dragstart', dragStart, false);
 	document.body.addEventListener('dragover', dragOver, false);
 	document.body.addEventListener('drop', drop, false);
 	  // from: http://jsfiddle.net/robertc/kKuqH/
+	
+	$(document).mousemove(function(e) {
 
+	   	 if (resizing) {  // constrain drag width here
+
+	    	var w = $('body').width(),
+	    		lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
+	      	$('#left').css('width', lw);
+	        $('#right').css('width', w - e.pageX);
+	    }
+	    	
+	    e.preventDefault(); 
+	});
+	
+	
+	var rightPanelWidth = null;  
+	
+	$('#right').mousedown(function(){
+	
+		rightPanelWidth = $(this).width();
+		console.log("Down: ", $(this).width());
+	}); 
+	
+	$('#right').mouseup(function(){
+	
+		console.log("Up: ", $(this).width());
+		
+		if (rightPanelWidth != $(this).width())
+		{
+			console.log("Right panel width changed!");
+			//reloadStylesheets();
+			resizeHistorySlider();
+		}
+		
+	}); 
+	
+	$(window).resize(function() {
+	
+		console.log('window was resized');
+		
+		resizeHistorySlider();
+	});
+	
+	function resizeHistorySlider() {
+		
+		console.log("resizeHistorySlider");
+		$("svg").remove();
+		$(".tooltip").remove();
+		
+		var haveOpts = (typeof options !== 'undefined');
+		if (!haveOpts)
+			console.log("[WARN] No options, using test Ad data!");
+					
+		historySlider( (haveOpts ? options : test).ads);
+	}
+	
+	function reloadStylesheets() {
+		var queryString = '?reload=' + new Date().getTime();
+		$('link[rel="stylesheet"]').each(function () {
+			this.href = this.href.replace(/\?.*|$/, queryString);
+    });
+}
+	
+	
 	function dragStart(event) {
 			
 	    var style = window.getComputedStyle(document.querySelector('#container'), null);
@@ -57,9 +105,19 @@ function makeAdview() { // should happen just once
 		var y = parseInt(style.getPropertyValue("margin-top"),  10) - event.clientY;
 		
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
+		
+		
+	}
+	
+	function handleDragStart(e) {
+		this.style.opacity = '0.4';  // this / e.target is the source node.
 	}
 
-	function dragOver(event) { return _drag(event); }
+	function dragOver(event) { 
+		
+	
+		return _drag(event); 
+	}
 
 	function drop(event) { return _drag(event); }
 
@@ -77,6 +135,7 @@ function makeAdview() { // should happen just once
 		dbugOffsets && updateTestDivs();
 
 	    event.preventDefault();
+		
 	    return false;
 	}
 

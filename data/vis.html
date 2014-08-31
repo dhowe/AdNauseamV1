@@ -1,5 +1,31 @@
-test={};
-test.ads=[
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+
+// this seems to work but the data is not there for the scale function
+// var dataset = d3.json("testads.json", function(error, json) {
+//   if (error) return console.warn(error);
+//   dataset = json;
+// });
+
+var dataset = [
   {
     "id": 1,
     "type": "a",
@@ -154,7 +180,7 @@ test.ads=[
     "height": 200,
     "hidden": false
   },
-  //{
+  {
     "id": 6,
     "type": "a",
     "url": "https://s.yimg.com/gs/apex/mediastore/1c87cae5-3b0f-4e36-b0ce-e1a74ba2beed",
@@ -634,3 +660,67 @@ test.ads=[
     "hidden": true
   }
 ];
+
+// finding the first and last ad:
+var minDate = d3.min(dataset, function(d) { return d.found; }),
+    maxDate = d3.max(dataset, function(d) { return d.found; });
+
+// dynamic time format function:
+var customTimeFormat = d3.time.format.multi([
+  [".%L", function(d) { return d.getMilliseconds(); }],
+  [":%S", function(d) { return d.getSeconds(); }],
+  ["%I:%M", function(d) { return d.getMinutes(); }],
+  ["%I %p", function(d) { return d.getHours(); }],
+  ["%a %d", function(d) { return d.getDay() && d.getDate() != 1; }],
+  ["%b %d", function(d) { return d.getDate() != 1; }],
+  ["%B", function(d) { return d.getMonth(); }],
+  ["%Y", function() { return true; }]
+]);
+
+// setting up the position of the chart:
+var margin = {top: 250, right: 40, bottom: 250, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// mapping the scales:
+var xScale = d3.time.scale()
+          // .domain([new Date(1405135703162), new Date(1406309727198)])
+          .domain([new Date(minDate), new Date(maxDate)])
+          // .domain([new Date(d3.min(dataset, function(d) { return d.found; })) ,
+          //          new Date(d3.max(dataset, function(d) { return d.found; })) ])
+          .range([0, width]);
+
+// setup the x axis
+var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .tickFormat(customTimeFormat)
+    .ticks(100);
+
+// position the SVG
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//Create circles
+svg.append("g")
+   .attr("id", "bars")
+   .selectAll("bar")
+   .data(dataset)
+   .enter()
+   .append("rect")
+   .attr("x", function(d) {
+      return xScale(d.found);
+   })
+   .attr("y", -5)     //temporarily hardcoded
+   .attr("height", 5) //temporarily hardcoded
+   .attr("width", 5); //temporarily hardcoded
+
+// append the x axis
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+</script>

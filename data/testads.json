@@ -1,5 +1,4 @@
-test={};
-test.ads=[
+[
   {
     "id": 1,
     "type": "a",
@@ -154,7 +153,7 @@ test.ads=[
     "height": 200,
     "hidden": false
   },
-  //{
+  {
     "id": 6,
     "type": "a",
     "url": "https://s.yimg.com/gs/apex/mediastore/1c87cae5-3b0f-4e36-b0ce-e1a74ba2beed",
@@ -633,4 +632,4 @@ test.ads=[
     "height": 90,
     "hidden": true
   }
-];
+]

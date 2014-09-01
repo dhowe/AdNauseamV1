@@ -1,9 +1,6 @@
 /* ISSUES:
  * 	 Show notification in adview if no network
  */
- 
- // Another push test from Cyrus
-
 var dbugOffsets = 0;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
@@ -36,48 +33,27 @@ function makeAdview() { // should happen just once
 	$(document).mousemove(function(e) {
 
 	    if (resizing) {  // constrain drag width here
-
+			
 	    	var w = $('body').width(),
 	    		lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
+	      	
 	      	$('#left').css('width', lw);
 	        $('#right').css('width', w - e.pageX);
+	        
+	        // TODO: need to do this as we are dragging
+	        resizeHistorySlider();
 	    }
 	    	
 	    e.preventDefault(); 
 	});
 	
+	$(window).resize(resizeHistorySlider);
 	
-	var rightPanelWidth = null;  
-	
-	$('#right').mousedown(function(){
-	
-		rightPanelWidth = $(this).width();
-		console.log("Down: ", $(this).width());
-	}); 
-	
-	$('#right').mouseup(function(){
-	
-		console.log("Up: ", $(this).width());
-		
-		if (rightPanelWidth != $(this).width())
-		{
-			console.log("Right panel width changed!");
-			//reloadStylesheets();
-			resizeHistorySlider();
-		}
-		
-	}); 
-	
-	$(window).resize(function() {
-	
-		console.log('window was resized');
-		
-		resizeHistorySlider();
-	});
-	
+	// TODO: This should only reset the x-axis, not recreate everything
 	function resizeHistorySlider() {
 		
-		console.log("resizeHistorySlider");
+		return; // TMP
+		
 		$("svg").remove();
 		$(".tooltip").remove();
 		
@@ -88,13 +64,13 @@ function makeAdview() { // should happen just once
 		historySlider( (haveOpts ? options : test).ads);
 	}
 	
-	function reloadStylesheets() {
+	function reloadStylesheets() { // what is this doing?
+		
 		var queryString = '?reload=' + new Date().getTime();
 		$('link[rel="stylesheet"]').each(function () {
 			this.href = this.href.replace(/\?.*|$/, queryString);
-    });
-}
-	
+   		});
+	}
 	
 	function dragStart(event) {
 			
@@ -105,8 +81,6 @@ function makeAdview() { // should happen just once
 		var y = parseInt(style.getPropertyValue("margin-top"),  10) - event.clientY;
 		
 	    event.dataTransfer.setData("text/plain", x + ',' + y);
-		
-		
 	}
 	
 	function handleDragStart(e) {

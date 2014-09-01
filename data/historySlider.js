@@ -1,10 +1,10 @@
-var currentAds, format = d3.time.format("%a %b %d %Y");
+var currentAds, xAxis, format = d3.time.format("%a %b %d %Y");
 
 function historySlider(allAds) { // should happen just once
 
-	console.log('historySlider:'+allAds.length);
+	console.log('historySlider: '+allAds.length);
 
-	// ============= TODO: move to adview.html ==================
+	// ============= TODO: remove (or at least move to adview.html)
 	currentAds = allAds;
 	window.ads = allAds;
 	var ads = window.ads.slice();
@@ -17,21 +17,21 @@ function historySlider(allAds) { // should happen just once
 	    barw = 5, // individual bar width
 	    barg = 1; // gap between individual bars
 
-	  // dynamic time format function:
+	// dynamic time format function:
 	var customTimeFormat = d3.time.format.multi([
-	    [".%L", function(d) { return d.getMilliseconds(); }],
-	    [":%S", function(d) { return d.getSeconds(); }],
-	    ["%I:%M", function(d) { return d.getMinutes(); }],
-	    ["%I %p", function(d) { return d.getHours(); }],
-	    ["%a %d", function(d) { return d.getDay() && d.getDate() != 1; }],
-	    ["%b %d", function(d) { return d.getDate() != 1; }],
-	    ["%B", function(d) { return d.getMonth(); }],
-	    ["%Y", function() { return true; }]
+	    [".%L", function(d) 	{ return d.getMilliseconds(); }],
+	    [":%S", function(d) 	{ return d.getSeconds(); }],
+	    ["%I:%M", function(d) 	{ return d.getMinutes(); }],
+	    ["%I %p", function(d) 	{ return d.getHours(); }],
+	    ["%a %d", function(d) 	{ return d.getDay() && d.getDate() != 1; }],
+	    ["%b %d", function(d) 	{ return d.getDate() != 1; }],
+	    ["%B", function(d) 		{ return d.getMonth(); }],
+	    ["%Y", function() 		{ return true; }]
 	]);
 
-	  // finding the first and last ad:
-	  var minDate = d3.min(ads, function(d) { return d.found; }),
-	      maxDate = d3.max(ads, function(d) { return d.found; });
+  	// finding the first and last ad:
+	var minDate = d3.min(ads, function(d) { return d.found; }),
+		maxDate = d3.max(ads, function(d) { return d.found; });
 
 	  // mapping the scales:
 	  var xScale = d3.time.scale()
@@ -40,17 +40,18 @@ function historySlider(allAds) { // should happen just once
 
 	  // create an array of dates:
 	  var map = ads.map( function(d) { return parseInt(xScale(d.found)) })
-	  console.log(map);
+	  //console.log(map);
 
 	  // setup the histogram layout:
 	  var histogram = d3.layout.histogram()
 	                  .bins(60) // how many groups? (should be dynamic, based on the data)
 	                  //.bins(width/(barw-barg)) // how many groups
 	                  (map)
-	  console.log(histogram);
+	                  
+	  //console.log(histogram);
 
 	  // setup the x axis
-	  var xAxis = d3.svg.axis()
+	  xAxis = d3.svg.axis()
 	      .scale(xScale)
 	      .tickFormat(customTimeFormat)
 	      .ticks(7);
@@ -240,7 +241,6 @@ function historySlider(allAds) { // should happen just once
 	}
 
 }// end historySlider
-
 
 
 function log(m) { console.log(m); }

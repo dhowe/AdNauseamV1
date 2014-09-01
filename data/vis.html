@@ -18,13 +18,16 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-// this seems to work but the data is not there for the scale function
+// load the json file and do the calculations
 d3.json("testads.json", function(error, dataset) {
   if (error) return console.warn(error);
 
-  // finding the first and last ad:
-  var minDate = d3.min(dataset, function(d) { return d.found; }),
-      maxDate = d3.max(dataset, function(d) { return d.found; });
+// setting up the position of the chart:
+var margin = {top: 250, right: 40, bottom: 250, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom,
+    barw = 5, // individual bar width
+    barg = 1; // gap between individual bars
 
   // dynamic time format function:
   var customTimeFormat = d3.time.format.multi([
@@ -38,24 +41,34 @@ d3.json("testads.json", function(error, dataset) {
     ["%Y", function() { return true; }]
   ]);
 
-  // setting up the position of the chart:
-  var margin = {top: 250, right: 40, bottom: 250, left: 40},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+  // finding the first and last ad:
+  var minDate = d3.min(dataset, function(d) { return d.found; }),
+      maxDate = d3.max(dataset, function(d) { return d.found; });
 
   // mapping the scales:
   var xScale = d3.time.scale()
             // .domain([new Date(1405135703162), new Date(1406309727198)])
-            .domain([new Date(minDate), new Date(maxDate)])
+            .domain([minDate, maxDate])
             // .domain([new Date(d3.min(dataset, function(d) { return d.found; })) ,
             //          new Date(d3.max(dataset, function(d) { return d.found; })) ])
             .range([0, width]);
+
+  // create an array of dates:
+  var map = dataset.map( function(d) { return parseInt(xScale(d.found)) })
+  console.log(map);
+
+  // setup the histogram layout:
+  var histogram = d3.layout.histogram()
+                  //.bins(width/(barw-barg)) // how many groups
+                  .bins(20) // how many groups
+                  (map)
+  console.log(histogram);
 
   // setup the x axis
   var xAxis = d3.svg.axis()
       .scale(xScale)
       .tickFormat(customTimeFormat)
-      .ticks(100);
+      .ticks(20);
 
   // position the SVG
   var svg = d3.select("body").append("svg")
@@ -64,24 +77,34 @@ d3.json("testads.json", function(error, dataset) {
     .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  //Create circles
-  svg.append("g")
-     .attr("id", "bars")
-     .selectAll("bar")
-     .data(dataset)
-     .enter()
-     .append("rect")
-     .attr("x", function(d) {
-        return xScale(d.found);
-     })
-     .attr("y", -5)     //temporarily hardcoded
-     .attr("height", 5) //temporarily hardcoded
-     .attr("width", 5); //temporarily hardcoded
-
   // append the x axis
   svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
+     .attr("class", "x axis")
+     .attr("transform", "translate(0," + height + ")")
+     .call(xAxis);
+
+  var barw = histogram[0].dx-1; //relative width (it's the same on)
+
+  //Create groups for the bars
+  var bars = svg.selectAll(".bar")
+     .data(histogram)
+     .enter()
+     .append("g")
+
+  // we could go with rectangular bars
+  bars.append("rect")
+     .attr("x", function(d) { return d.x })
+     .attr("y", function(d) { return d.y*-4 })
+     .attr("width", barw )
+     .attr("height", function(d) { return d.y*4 })
+     .attr("style", "fill: rgba(255,255,0,0.6)")
+
+  // or use lines which can also offer a stroke-dasharray
+  bars.append("line")
+     .attr("x1", function(d) { return d.x + barw/2 })
+     .attr("y1", 0 )
+     .attr("x2", function(d) { return d.x + barw/2 })
+     .attr("y2", function(d) { return d.y*-4 })
+     .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2; stroke: red")
 });
 </script>

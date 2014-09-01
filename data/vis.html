@@ -2,21 +2,27 @@
 <meta charset="utf-8">
 <style>
 
-body {
-  background: #333;
-}
+  body {
+    background: #333;
+  }
 
-.axis text {
-  font: 10px sans-serif;
-  fill: #ccc;
-}
+  .axis text {
+    font: 10px sans-serif;
+    fill: #ccc;
+  }
 
-.axis line,
-.axis path {
-  fill: none;
-  stroke: #ccc;
-  shape-rendering: crispEdges;
-}
+  .axis line,
+  .axis path {
+    fill: none;
+    stroke: #ccc;
+    shape-rendering: crispEdges;
+  }
+
+  .brush .extent {
+    stroke: #000;
+    fill-opacity: .125;
+    shape-rendering: crispEdges;
+  }
 
 </style>
 
@@ -37,9 +43,7 @@ var dataset = test.ads;
 // setting up the position of the chart:
 var margin = {top: 250, right: 40, bottom: 250, left: 40},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom,
-    barw = 5, // individual bar width
-    barg = 1; // gap between individual bars
+    height = 500 - margin.top - margin.bottom;
 
   // dynamic time format function:
   var customTimeFormat = d3.time.format.multi([
@@ -72,7 +76,6 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
   // setup the histogram layout:
   var histogram = d3.layout.histogram()
                   .bins(60) // how many groups? (should be dynamic, based on the data)
-                  //.bins(width/(barw-barg)) // how many groups
                   (map)
   console.log(histogram);
 
@@ -81,6 +84,11 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
       .scale(xScale)
       .tickFormat(customTimeFormat)
       .ticks(7);
+
+  // setup the brush
+  var brush = d3.svg.brush()
+    .x(xScale)
+    .extent([maxDate-(maxDate-minDate)/4, maxDate]); // brushing the latest 1/4
 
   // position the SVG
   var svg = d3.select("body").append("svg")
@@ -95,7 +103,7 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
      .attr("transform", "translate(0," + height + ")")
      .call(xAxis);
 
-  var barw = histogram[0].dx-1; //relative width (it's the same on)
+  var barw = histogram[0].dx-1; //relative width (it's the same one) - gap
 
   //Create groups for the bars
   var bars = svg.selectAll(".bar")
@@ -118,5 +126,17 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
      .attr("x2", function(d) { return d.x + barw/2 })
      .attr("y2", function(d) { return d.y*-3 - 2})
      .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
+
+  // add the brush
+  var gBrush = svg.append("g")
+    .attr("class", "brush")
+    .call(brush)
+    .call(brush.event);
+
+  // set the height of the brush to that of the chart
+  gBrush.selectAll("rect")
+      .attr("height", 40)
+      .attr("y", -40);
+
 });
 </script>

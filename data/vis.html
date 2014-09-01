@@ -2,14 +2,19 @@
 <meta charset="utf-8">
 <style>
 
+body {
+  background: #333;
+}
+
 .axis text {
   font: 10px sans-serif;
+  fill: #ccc;
 }
 
 .axis line,
 .axis path {
   fill: none;
-  stroke: #000;
+  stroke: #ccc;
   shape-rendering: crispEdges;
 }
 
@@ -59,8 +64,8 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
 
   // setup the histogram layout:
   var histogram = d3.layout.histogram()
+                  .bins(60) // how many groups? (should be dynamic, based on the data)
                   //.bins(width/(barw-barg)) // how many groups
-                  .bins(20) // how many groups
                   (map)
   console.log(histogram);
 
@@ -68,7 +73,7 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
   var xAxis = d3.svg.axis()
       .scale(xScale)
       .tickFormat(customTimeFormat)
-      .ticks(20);
+      .ticks(7);
 
   // position the SVG
   var svg = d3.select("body").append("svg")
@@ -94,17 +99,17 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
   // we could go with rectangular bars
   bars.append("rect")
      .attr("x", function(d) { return d.x })
-     .attr("y", function(d) { return d.y*-4 })
+     .attr("y", function(d) { return d.y*-3 - 1})
      .attr("width", barw )
-     .attr("height", function(d) { return d.y*4 })
-     .attr("style", "fill: rgba(255,255,0,0.6)")
+     .attr("height", function(d) { if (d.y > 0) { return d.y*3 - 1 } else { return 0} })
+     .attr("style", "fill: #000;stroke: #000;stroke-width: 2;")
 
   // or use lines which can also offer a stroke-dasharray
   bars.append("line")
      .attr("x1", function(d) { return d.x + barw/2 })
-     .attr("y1", 0 )
+     .attr("y1", - 2 )
      .attr("x2", function(d) { return d.x + barw/2 })
-     .attr("y2", function(d) { return d.y*-4 })
-     .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2; stroke: red")
+     .attr("y2", function(d) { return d.y*-3 - 2})
+     .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
 });
 </script>

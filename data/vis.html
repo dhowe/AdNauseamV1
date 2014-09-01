@@ -85,11 +85,6 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
       .tickFormat(customTimeFormat)
       .ticks(7);
 
-  // setup the brush
-  var brush = d3.svg.brush()
-    .x(xScale)
-    .extent([maxDate-(maxDate-minDate)/4, maxDate]); // brushing the latest 1/4
-
   // position the SVG
   var svg = d3.select("body").append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -126,6 +121,11 @@ var margin = {top: 250, right: 40, bottom: 250, left: 40},
      .attr("x2", function(d) { return d.x + barw/2 })
      .attr("y2", function(d) { return d.y*-3 - 2})
      .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
+
+   // setup the brush
+   var brush = d3.svg.brush()
+     .x(xScale)
+     .extent([maxDate-(maxDate-minDate)/4, maxDate]); // brushing the latest 1/4
 
   // add the brush
   var gBrush = svg.append("g")

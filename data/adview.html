@@ -24,9 +24,8 @@
 		<script src="lib/d3.min.js"></script>
 		<script src="testads.js"></script><!-- testing-only -->
 
-		<script src="slider.js"></script>
+		<script src="historySlider.js"></script>
 		<script src="adview.js"></script>
-
 		<script>
  			$(document).ready(function() {
 				
@@ -43,7 +42,6 @@
 
 		<div id="left" class="stage">
 
-
 			<div class="zoom">
 				<a href="" id="z-in">&#10010;</a>
 				<a href="" id="z-out">&#8211;</a>
@@ -51,10 +49,10 @@
 
 			<div id="stats" class="session-sum"></div>
 
-			<div id="svgcon" class="svg-container"></div>
 
 			<div id='container' class="z-100" draggable="true"></div>
-			
+			<div id="svgcon" class="svg-container"></div>
+
 		</div>
 
 		<aside id="right">

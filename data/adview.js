@@ -405,7 +405,7 @@ function inspectorAnimator() {
 		
 function populateInspector(iData, dupIdx) {
 
-	console.log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
+	//console.log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
 	
 	var ele = $('.empty').first(), ad = iData[dupIdx];
 

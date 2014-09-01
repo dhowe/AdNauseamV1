@@ -695,15 +695,14 @@ svg {
 	cursor: move;
 }
 
-.axis path{
-	opacity: 0;
+.axis text {
+  font: 10px sans-serif;
+  fill: #ccc;
 }
 
-.axis line {
-	stroke-width: 1;
-	stroke-color: white;
-}
-
-.axis text{
-	fill: white;
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #ccc;
+  shape-rendering: crispEdges;
 }

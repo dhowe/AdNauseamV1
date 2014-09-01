@@ -7,7 +7,7 @@ test.ads=[
     "count": 1,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405135703162,
+    "found": 1404835703162,
     "visited": -1,
     "errors": [
       "Timeout after 3 tries"
@@ -26,7 +26,7 @@ test.ads=[
     "count": 1,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3cTc4aW9haChnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU4ODA5MTU2MSx2JDIuMCxhaWQkQUVfSUpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE2OTIxNDA2MSxtbWUkMzgwOTE2ODEwMjUxNTY4OTk2NyxyJDAsaWQkYWx0aW1nLHJkJDEzdHBmY282dSx5b28kMSxhZ3AkMTk5NzYzOTQ5LGFwJFBBTSkp/0/*https://ad.doubleclick.net/ddm/trackclk/N1405.165020.HK.YAHOO.COM/B8173846.109647131;dc_trk_aid=282846359;dc_trk_cid=58557721",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405135703277,
+    "found": 1404935703277,
     "visited": 1406214198063,
     "errors": [
       {
@@ -154,7 +154,7 @@ test.ads=[
     "height": 200,
     "hidden": false
   },
-  //{
+  {
     "id": 6,
     "type": "a",
     "url": "https://s.yimg.com/gs/apex/mediastore/1c87cae5-3b0f-4e36-b0ce-e1a74ba2beed",
@@ -300,7 +300,7 @@ test.ads=[
     "count": 1,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3ZjdiMDBpYihnaWQkUmwzZXhVb0dwbDlpZGVGTlU0TlVQeW5jUk8yTTQxUEFzUUlBQXZ0ayxzdCQxNDA1MTM3MTU0MjA0MDU4LHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU0MTI3NDA2MSx2JDIuMCxhaWQkX2sublZHS0xjMlUtLGN0JDI1LHlieCR2bXlCdm1OQUlZOVlXTGhLSkhmcURBLGJpJDE0Njc0MDU2MSxtbWUkMzcxNTcxNjA1NjYwNTQ1ODI3MSxyJDAscmQkMTN0OWxicGMwLHlvbyQxLGFncCQxNzI5MzE5NDksYXAkUzEpKQ/2/*http://hk.promotions.yahoo.com/ysm/combinedsearch/?fr=s1fp-hotsearch-ysm&type=FP_S1ysm144&p=hong%20kong%20credit%20card&kg=39",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405137184152,
+    "found": 1405337184152,
     "visited": 1406214441040,
     "errors": [
       {
@@ -334,7 +334,7 @@ test.ads=[
     "count": 2,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3aGZsbmc4aChnaWQkUmwzZXhVb0dwbDlpZGVGTlU0TlVQeW5jUk8yTTQxUEFzUUlBQXZ0ayxzdCQxNDA1MTM3MTU0MjA0MDU4LHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5MjcxNjA2MSx2JDIuMCxhaWQkQmR5c1ZHS0xjMlUtLGN0JDI1LHlieCR2bXlCdm1OQUlZOVlXTGhLSkhmcURBLGJpJDE2NzY2NzU2MSxtbWUkMzgwMjk2MTg3NDc3Mjk5MjE0MixyJDAscmQkMTIzN2hrNmg0LHlvbyQxLGFncCQxOTgwOTM0NDksYXAkTU5UTCkp/0/*https://www.primecredit.com/campaign_sta/sta_1406/redirect.php?id=2",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405137184210,
+    "found": 1405437184210,
     "visited": 1406214480576,
     "errors": [
       {
@@ -370,7 +370,7 @@ test.ads=[
     "count": 2,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3cWZnZG1vZChnaWQkUmwzZXhVb0dwbDlpZGVGTlU0TlVQeW5jUk8yTTQxUEFzUUlBQXZ0ayxzdCQxNDA1MTM3MTU0MjA0MDU4LHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDYwMDA2NDA2MSx2JDIuMCxhaWQkU0pHc1ZHS0xjMlUtLGN0JDI1LHlieCR2bXlCdm1OQUlZOVlXTGhLSkhmcURBLGJpJDE2OTY4ODU2MSxtbWUkMzgxMDg1ODE3MjE0NjY4OTkyMSxyJDAsaWQkYWx0aW1nLHJkJDExb2l2NWI4cCx5b28kMSxhZ3AkMjAwMzM2OTQ5LGFwJFdBTSkp/0/*http://ad.she.com/ad_editorial_link.cfm?id=2528&url_id=1",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405137184214,
+    "found": 1405437184214,
     "visited": 1406214491592,
     "errors": [
 
@@ -389,7 +389,7 @@ test.ads=[
     "count": 1,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3cmZuc2JrYihnaWQkUmwzZXhVb0dwbDlpZGVGTlU0TlVQeW5jUk8yTTQxUEFzUUlBQXZ0ayxzdCQxNDA1MTM3MTU0MjA0MDU4LHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDc1NTMwODU2MSx2JDIuMCxhaWQkeDIubVZHS0xjMlUtLGN0JDI1LHlieCR2bXlCdm1OQUlZOVlXTGhLSkhmcURBLGJpJDExNzA1NjA2MSxtbWUkMzU5MjM5MjUxMzE1MjAwNjM4MSxyJDEsaWQkaWQ9aW1hZ2UscmQkMTU4bXNkNWN1LHlvbyQxLGFncCQxMzc0MDg5NDksYXAkRTEpKQ/2/*http://ad.doubleclick.net/ddm/clk/266782592;92762648;e?http://www.americanexpress.com/hk/cn/campaigns/flyfaster/welcome/elite.shtml?sourcecode=ADF144FF51&cpid=100131571",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405137184220,
+    "found": 1405837184220,
     "visited": 1406308416631,
     "errors": [
       {
@@ -424,7 +424,7 @@ test.ads=[
     "count": 1,
     "target": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3bnJwbW5mMShnaWQkUmwzZXhVb0dwbDlpZGVGTlU0TlVQeW5jUk8yTTQxUEFzUUlBQXZ0ayxzdCQxNDA1MTM3MTU0MjA0MDU4LHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDYzNDg4MDU2MSx2JDIuMCxhaWQkRWJHclZHS0xjMlUtLGN0JDI1LHlieCR2bXlCdm1OQUlZOVlXTGhLSkhmcURBLGJpJDE3MDc4MDA2MSxtbWUkMzgxNTI3NzY5MzQ5NDI3NTIyNixyJDEsaWQkaW1nLHJkJDExMG1vN2lwZyx5b28kMSxhZ3AkMjAyMjU5NDQ5LGFwJEVVMSkp/0/*http://yhk15.tumblr.com/?src=eu1#s2",
     "page": "https://hk.yahoo.com/?p=us",
-    "found": 1405137184246,
+    "found": 1406037184246,
     "visited": 1406308429840,
     "errors": [
       {
@@ -450,7 +450,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPPromo&sn2=66967783/674e32a&sn1=3f6ca35d/6411529d&camp=Chevron-Corporate-C-SF-1943272&ad=Chevron-C-Column-SF-10462066&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D10462066%26PluID%3D0%26ord%3D%25%25GMTTIME%25%25",
     "page": "http://www.nytimes.com/",
-    "found": 1406309726946,
+    "found": 1406209726946,
     "visited": 0,
     "errors": [
 
@@ -469,7 +469,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPPromo&sn2=66967783/674e32a&sn1=3f6ca35d/6411529d&camp=Chevron-Corporate-C-SF-1943272&ad=Chevron-C-Column-SF-10462066&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D10462066%26PluID%3D0%26ord%3D%25%25GMTTIME%25%25",
     "page": "http://www.nytimes.com/",
-    "found": 1406309726949,
+    "found": 1406409726949,
     "visited": 0,
     "errors": [
 
@@ -488,7 +488,7 @@ test.ads=[
     "count": 2,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=59481c88/35d9033f&camp=Chevron-Corporate-Phase-1-1943264&ad=chevron-right-ear&goto=http%3A%2F%2Fpaidpost%2Enytimes%2Ecom%2Fchevron%2Fa%2Dcomplex%2Dflow%2Dof%2Denergy%2Ehtml",
     "page": "http://www.nytimes.com/",
-    "found": 1406309726973,
+    "found": 1406409726973,
     "visited": 0,
     "errors": [
 
@@ -507,7 +507,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Middle4&sn2=1523368b/d11e58cc&sn1=538dd039/73fb37cc&camp=nyt2014_163x90_cooking_evergreen&ad=163x90_cooking_evergreen&goto=http%3A%2F%2Fwww%2Enytimes%2Ecom%2Fnewsletters%2Fcooking%2F",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727033,
+    "found": 1406409727033,
     "visited": 0,
     "errors": [
 
@@ -526,7 +526,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Middle5&sn2=1523368c/d15e58cc&sn1=758b5090/17150270&camp=nyt2014_163x90_Video_evergreen&ad=D-I-NYT-AD-163X90-HP-VIDEO-XY-EVERGREEN-0714&goto=http%3A%2F%2Fnytimes%2Ecom%2Fvideo%2F%3FWT%2Emc%5Fid%3DD%2DI%2DNYT%2DAD%2D163X90%2DHP%2DVIDEO%2DXY%2DEVERGREEN%2D0714%26WT%2Emc%5Fev%3Dclick%26WT%2Emc%5Fc%3D252476",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727048,
+    "found": 1406409727048,
     "visited": 0,
     "errors": [
 
@@ -545,7 +545,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=c6acfc04/5e414dda&camp=Chevron-Corporate-Phase-1-1943264&ad=chevron-billboard&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D10462067%26PluID%3D0%26ord%3D%25%25GMTTIME%25%25",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727090,
+    "found": 1406509727090,
     "visited": 0,
     "errors": [
 
@@ -564,7 +564,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle3&sn2=2798b754/f0b6765&sn1=b2c6dfaa/d2c95295&camp=nyt2014_300x79_Video_evergreen_hp&ad=D-I-NYT-AD-300X79-VIDEO-XY-EVERGREEN-0714&goto=http%3A%2F%2Fnytimes%2Ecom%2Fvideo%2F%3FWT%2Emc%5Fid%3DD%2DI%2DNYT%2DAD%2D300X79%2DVIDEO%2DXY%2DEVERGREEN%2D0714%26WT%2Emc%5Fev%3Dclick%26WT%2Emc%5Fc%3D252477",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727157,
+    "found": 1406509727157,
     "visited": 0,
     "errors": [
 
@@ -583,7 +583,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=2fe0dc41/9a00eed7&camp=Corcoran_GroupSeptDisplay-1894126-cla&ad=2486235&goto=http://www.corcoran.com/florida/listings/display/2486235?utm_medium=Display&utm_source=NYTimes%20Homepage%20Module&utm_campaign=Property&utm_content=Florida",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727182,
+    "found": 1406509727182,
     "visited": 0,
     "errors": [
 
@@ -602,7 +602,7 @@ test.ads=[
     "count": 1,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=2fe0dc41/9a00eed7&camp=Corcoran_GroupSeptDisplay-1894126-cla&ad=2486235&goto=http://www.corcoran.com/florida/listings/display/2486235?utm_medium=Display&utm_source=NYTimes%20Homepage%20Module&utm_campaign=Property&utm_content=Florida",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727184,
+    "found": 1406809727184,
     "visited": 0,
     "errors": [
 
@@ -621,7 +621,7 @@ test.ads=[
     "count": 2,
     "target": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=c8271a44/a9d3c012&camp=Chevron-Corporate-Phase-1-1943264&ad=chevron-left-ear&goto=http%3A%2F%2Fpaidpost%2Enytimes%2Ecom%2Fchevron%2Fa%2Dcomplex%2Dflow%2Dof%2Denergy%2Ehtml",
     "page": "http://www.nytimes.com/",
-    "found": 1406309727198,
+    "found": 1407309727198,
     "visited": 0,
     "errors": [
 
@@ -633,4 +633,4 @@ test.ads=[
     "height": 90,
     "hidden": true
   }
-];
+]

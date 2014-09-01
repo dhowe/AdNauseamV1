@@ -19,13 +19,20 @@ body {
 }
 
 </style>
+
 <body>
+<script src="lib/jquery-1.8.3.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="testads.js"></script>
+
 <script>
 
-// load the json file and do the calculations
-d3.json("testads.json", function(error, dataset) {
-  if (error) return console.warn(error);
+// // load the json file and do the calculations
+// d3.json("testads.json", function(error, dataset) {
+  // if (error) return console.warn(error);
+$(document).ready(function() {
+
+var dataset = test.ads;
 
 // setting up the position of the chart:
 var margin = {top: 250, right: 40, bottom: 250, left: 40},

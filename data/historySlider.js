@@ -11,9 +11,9 @@ function historySlider(allAds) { // should happen just once
 	// ====================================================
 
 	// setting up the position of the chart:
-	var margin = {top: 50, right: 20, bottom: 20, left: 20},
+	var margin = {top: 50, right: 40, bottom: 20, left: 20},
 	    width = parseInt(d3.select("#left").style("width"), 10) - (margin.left + margin.right +100),
-	    height = 0,
+	   // height = 0,
 	    barw = 5, // individual bar width
 	    barg = 1; // gap between individual bars
 
@@ -58,14 +58,14 @@ function historySlider(allAds) { // should happen just once
 	  // position the SVG
 	  var svg = d3.select("#svgcon").append("svg")
 	      .attr("width", width + margin.left + margin.right)
-	      .attr("height", height + margin.top + margin.bottom)
+	      .attr("height", /*height +*/ margin.top + margin.bottom)
 	    .append("g")
 	      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	  // append the x axis
 	  svg.append("g")
 	     .attr("class", "x axis")
-	     .attr("transform", "translate(0," + height + ")")
+	     //.attr("transform", "translate(0," + height + ")")
 	     .call(xAxis);
 
 	  var barw = histogram[0].dx-1; //relative width (it's the same on)
@@ -95,8 +95,11 @@ function historySlider(allAds) { // should happen just once
 		// setup the brush
 		var brush = d3.svg.brush()
 			.x(xScale)
-			.extent([maxDate-(maxDate-minDate)/4, maxDate]); // brushing the latest 1/4
-
+			.extent([minDate, maxDate]) // brushing the latest 1/4
+		    .on("brushstart", brushstart)
+		    .on("brush", brushmove)
+		    .on("brushend", brushend);
+		    
 		// add the brush
 		var gBrush = svg.append("g")
 			.attr("class", "brush")
@@ -107,7 +110,6 @@ function historySlider(allAds) { // should happen just once
 		gBrush.selectAll("rect")
 				.attr("height", 40)
 				.attr("y", -40);
-
 
 	function runFilter() {
 

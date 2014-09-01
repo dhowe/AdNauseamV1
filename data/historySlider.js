@@ -16,7 +16,7 @@ function historySlider(allAds) { // should happen just once
 	    height = 0,
 	    barw = 5, // individual bar width
 	    barg = 1; // gap between individual bars
-	    
+
 	  // dynamic time format function:
 	var customTimeFormat = d3.time.format.multi([
 	    [".%L", function(d) { return d.getMilliseconds(); }],
@@ -28,54 +28,54 @@ function historySlider(allAds) { // should happen just once
 	    ["%B", function(d) { return d.getMonth(); }],
 	    ["%Y", function() { return true; }]
 	]);
-	
+
 	  // finding the first and last ad:
 	  var minDate = d3.min(ads, function(d) { return d.found; }),
 	      maxDate = d3.max(ads, function(d) { return d.found; });
-	
+
 	  // mapping the scales:
 	  var xScale = d3.time.scale()
 	            .domain([minDate, maxDate])
 	            .range([0, width]);
-	
+
 	  // create an array of dates:
 	  var map = ads.map( function(d) { return parseInt(xScale(d.found)) })
 	  console.log(map);
-	
+
 	  // setup the histogram layout:
 	  var histogram = d3.layout.histogram()
 	                  .bins(60) // how many groups? (should be dynamic, based on the data)
 	                  //.bins(width/(barw-barg)) // how many groups
 	                  (map)
 	  console.log(histogram);
-	
+
 	  // setup the x axis
 	  var xAxis = d3.svg.axis()
 	      .scale(xScale)
 	      .tickFormat(customTimeFormat)
 	      .ticks(7);
-	
+
 	  // position the SVG
 	  var svg = d3.select("#svgcon").append("svg")
 	      .attr("width", width + margin.left + margin.right)
 	      .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
 	      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
+
 	  // append the x axis
 	  svg.append("g")
 	     .attr("class", "x axis")
 	     .attr("transform", "translate(0," + height + ")")
 	     .call(xAxis);
-	
+
 	  var barw = histogram[0].dx-1; //relative width (it's the same on)
-	
+
 	  //Create groups for the bars
 	  var bars = svg.selectAll(".bar")
 	     .data(histogram)
 	     .enter()
 	     .append("g")
-	
+
 	  // we could go with rectangular bars
 	  bars.append("rect")
 	     .attr("x", function(d) { return d.x })
@@ -83,7 +83,7 @@ function historySlider(allAds) { // should happen just once
 	     .attr("width", barw )
 	     .attr("height", function(d) { if (d.y > 0) { return d.y*3 - 1 } else { return 0} })
 	     .attr("style", "fill: #000;stroke: #000;stroke-width: 2;")
-	
+
 	  // or use lines which can also offer a stroke-dasharray
 	  bars.append("line")
 	     .attr("x1", function(d) { return d.x + barw/2 })
@@ -91,8 +91,24 @@ function historySlider(allAds) { // should happen just once
 	     .attr("x2", function(d) { return d.x + barw/2 })
 	     .attr("y2", function(d) { return d.y*-3 - 2})
 	     .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
-	
-	
+
+		// setup the brush
+		var brush = d3.svg.brush()
+			.x(xScale)
+			.extent([maxDate-(maxDate-minDate)/4, maxDate]); // brushing the latest 1/4
+
+		// add the brush
+		var gBrush = svg.append("g")
+			.attr("class", "brush")
+			.call(brush)
+			.call(brush.event);
+
+		// set the height of the brush to that of the chart
+		gBrush.selectAll("rect")
+				.attr("height", 40)
+				.attr("y", -40);
+
+
 	function runFilter() {
 
 		var s = brush.extent(), min = s[0], max = s[1];

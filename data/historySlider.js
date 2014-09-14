@@ -47,7 +47,7 @@ function historySlider(allAds) { // should happen just once
 	                  .bins(60) // how many groups? (should be dynamic, based on the data)
 	                  //.bins(width/(barw-barg)) // how many groups
 	                  (map)
-	                  
+
 	  //console.log(histogram);
 
 	  // setup the x axis
@@ -100,7 +100,7 @@ function historySlider(allAds) { // should happen just once
 		    .on("brushstart", brushstart)
 		    .on("brush", brushmove)
 		    .on("brushend", brushend);
-		    
+
 		// add the brush
 		var gBrush = svg.append("g")
 			.attr("class", "brush")
@@ -109,7 +109,7 @@ function historySlider(allAds) { // should happen just once
 
 		// set the height of the brush to that of the chart
 		gBrush.selectAll("rect")
-				.attr("height", 40)
+				.attr("height", 39)
 				.attr("y", -40);
 
 	function runFilter() {

@@ -174,6 +174,10 @@ function makeAdview() { // should happen just once
 		
 		$('#container').addClass('container-trans');
 		
+		console.log('updated #container'); 
+
+		repack();
+		
 	}, 100);
 }
 

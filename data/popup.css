@@ -66,7 +66,6 @@ a img {
 
 body {
   height: 100%;
-  background: #000 url(img/project_papper.png);
   color: #4C4D4C;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   margin: 0;
@@ -187,14 +186,99 @@ h1 a {
   right: 8px;
   top: -10px;
   border-radius: 5px;
-  line-height: 1.4em;
+  line-height: 1.5em;
 }
 
 /* ============================================================
-  MAIN
+  LIST
 ============================================================ */
-#main{
+#list{
   background: #000 url(img/project_papper.png);
+  height: 350px;
+  /*visibility: scroll;*/
+  overflow: scroll;
+}
+
+#list li {
+  height: 80px;
+  border-top: #000 1px solid;
+  border-bottom: #383838 1px solid;
+    position: relative;
+}
+
+.banner a {
+  display: block;
+  padding: 20px 20px 0 130px;
+  color: #B2B1B0;
+}
+
+.thumb {
+  display: block;
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  margin: -30px 0 0 -40px;
+  text-align: center;
+}
+
+.banner img {
+  max-height: 60px;
+  max-width: 80px;
+  margin: 10px;
+  vertical-align: middle;
+}
+
+.textad {
+  padding: 10px 20px 0 130px;
+  font-size: 12px;
+}
+
+.textad .thumb {
+  height: 54px;
+  width: 54px;
+  border: 2px dashed #0076FF;
+  border-radius: 5px;
+  color: #0076FF;
+  font-size: 16px;
+  line-height: 1em;
+  padding: 10px;
+  font-family: bebas_neue_regularregular;
+  top: 40px;
+  left: 63px;
+}
+
+.textad h3 a{
+  color: #ababab;
+  text-decoration: none;
+}
+
+.textad .ads-creative{
+  font-size: 0.8em;
+  color: #979797;
+}
+
+.banner span.title{
+  display: block;
+  width: 250px;
+}
+
+#list li cite{
+  display: block;
+  font-style: normal;
+  margin: 2px 0;
+  color: #666;
+  font-size: 0.8em;
+}
+
+#list_bottom a {
+  color: #0076FF;
+  text-decoration: none;
+  text-align: center;
+  margin: 30px;
+  display: block;
+  font-size: 12px;
 }
 
 /* ============================================================

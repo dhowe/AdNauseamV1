@@ -1,6 +1,7 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <html>
 <head>
+	<link rel="stylesheet" href="fonts/stylesheet.css">
 	<link rel="stylesheet" href="popup.css">
 	<script src="lib/jquery-1.8.3.min.js"></script>
 	<script src="menu.js"></script>
@@ -13,10 +14,13 @@
 
 			<header>
 				<h1><a href="#">Toggle AdNauseam On/Off</a></h1>
-				<div id="found">
-					6 ads found on this page
+				<div id="stats">
+					<span class="visited">2 ads visited</span> / <span class="found">6 ads found</span>
+					<div id="vault-btn">
+						<button>View Ad Vault</button>
+						<span class="count">345</span>
+					</div>
 				</div>
-				<button>View Ad Vault (345)</button>
 			</header>
 
 			<div id="body">
@@ -34,7 +38,7 @@
 			</div>
 		</div> <!-- END #main -->
 
-		<div id="settings">
+		<div id="settings" class="hide">
 
 			<header class="settings">
 				<a href="#">Back</a>

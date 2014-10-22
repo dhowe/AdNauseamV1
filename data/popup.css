@@ -110,7 +110,7 @@ a:hover {
   right: 118px;
 }
 
-.hide {
+div.hide {
   display: none;
 }
 
@@ -196,15 +196,15 @@ h1 a {
 #settings{
   background: #000 url(img/project_papper.png);
   height: 350px;
-  /*visibility: scroll;*/
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #list li {
   height: 80px;
-  border-top: #000 1px solid;
-  border-bottom: #383838 1px solid;
-    position: relative;
+  border-top: #383838 1px solid;
+  border-bottom: #000 1px solid;
+  position: relative;
 }
 
 .banner a {
@@ -288,23 +288,64 @@ h1 a {
 
 #settings {
   height: 450px;
+  font-family: bebas_neue_regularregular;
+  width: 100%;
+  color: #aaa;
 }
 
-#settings a {
+#settings header a.close {
   display: inline-block;
-  width: 50px;
+  color: #777;
+  width: 90px;
   height: 100px;
-  float: left;
+  float: right;
   padding-top:30px;
   font-family: bebas_neue_regularregular;
   font-size: 40px;
   text-align: center;
 }
+#settings header a.close:hover{
+  color: #0076FF;
+}
 
-#settings h2 {
+#settings header h2 {
   display: inline-block;
   width: 130px;
-  padding-top:20px
+  padding:20px;
+  color: #0076FF;
+}
+
+#wrapper {
+  min-width: 600px;
+}
+#settings form {
+  display: table;
+}
+
+#settings .row {
+  display: table-row;
+  height: 50px;
+  width: 385px;
+}
+#settings .question,
+#settings .switch {
+  display: table-cell;
+  vertical-align: middle;
+  padding: 10px;
+  float: left;
+}
+#settings .question {
+  font-size: 20px;
+  width: 300px;
+  padding: 10px 20px;
+  line-height: 1.4em;
+}
+
+#settings_form h3{
+  color: #0076FF;
+  padding: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #333;
 }
 
 /* ============================================================
@@ -384,31 +425,6 @@ button.about {
 /* ============================================================
   COMMON
 ============================================================ */
-#wrapper {
-  min-width: 600px;
-}
-
-.settings {
-  display: table;
-  width: 100%;
-}
-.settings .row {
-  display: table-row;
-}
-.settings .question,
-.settings .switch {
-  display: table-cell;
-  vertical-align: middle;
-  padding: 10px;
-}
-.settings .question {
-  width: 600px;
-  font-size: 20px;
-}
-
-/* ============================================================
-  COMMON
-============================================================ */
 .cmn-toggle {
   position: absolute;
   margin-left: -9999px;
@@ -432,7 +448,7 @@ input.cmn-toggle-round-flat + label {
   padding: 2px;
   width: 60px;
   height: 30px;
-  background-color: #dddddd;
+  background-color: #777;
   -webkit-border-radius: 60px;
   -moz-border-radius: 60px;
   -ms-border-radius: 60px;
@@ -453,7 +469,7 @@ input.cmn-toggle-round-flat + label:before {
   left: 2px;
   bottom: 2px;
   right: 2px;
-  background-color: #fff;
+  background-color: #000;
   -webkit-border-radius: 30px;
   -moz-border-radius: 30px;
   -ms-border-radius: 30px;
@@ -469,7 +485,7 @@ input.cmn-toggle-round-flat + label:after {
   left: 4px;
   bottom: 4px;
   width: 22px;
-  background-color: #dddddd;
+  background-color: #777;
   -webkit-border-radius: 22px;
   -moz-border-radius: 22px;
   -ms-border-radius: 22px;

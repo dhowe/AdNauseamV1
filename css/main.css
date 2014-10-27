@@ -222,6 +222,7 @@ section p a:visited {
   #p1,
   #p2,
   #p3,
+  #p4,
   #banners>* {
     position: absolute;
     -webkit-animation: flyin 0.5s ease forwards;
@@ -234,6 +235,7 @@ section p a:visited {
   #p1       {left: 429px; top: 560px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p2       {left: 165px; top: 975px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p3       {left: 429px; top: 1271px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
+  #p4       {left: 429px; top: 50px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #install  {left: 302px; top: 105px; -webkit-animation-delay: 800ms; animation-delay: 800ms}
   #helen    {left: 620px; top: 295px; -webkit-animation-delay: 1000ms; animation-delay: 1000ms}
   #faq      {left: 308px; top: 618px; -webkit-animation-delay: 1200ms; animation-delay: 1200ms}

@@ -136,6 +136,8 @@ header h1 {
   text-align: left;
   margin: 1em auto;
   width: 600px;
+  top:300px;
+  left:100px;
 }
 
 section p {
@@ -216,7 +218,6 @@ section p a:visited {
 
   #logo,
   #tagline,
-  #alpha-warn,
   #install,
   #p1,
   #p2,
@@ -230,7 +231,6 @@ section p a:visited {
 
   #logo     {left: 376px; top: 281px;}
   #tagline  {left: 429px; top: 473px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
-  #alpha-warn  {left: 200px; top: 20px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p1       {left: 429px; top: 560px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p2       {left: 165px; top: 975px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p3       {left: 429px; top: 1271px; -webkit-animation-delay: 0ms; animation-delay: 0ms}

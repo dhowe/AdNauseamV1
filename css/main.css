@@ -56,6 +56,21 @@ textarea {
     padding: 0.2em 0;
 }
 
+#alert {
+  background: red;
+  color: #222;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999999;
+  font-weight: 700;
+}
+
+#alert a {
+  color: black;
+}
 
 /* ===== Initializr Styles ==================================================
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template

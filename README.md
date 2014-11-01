@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="http://dhowe.github.io/adnauseam">
+  <a href="http://dhowe.github.io/AdNauseam">
     <img src="https://raw.githubusercontent.com/dhowe/AdNauseam/master/data/img/ADNAUSEAM_logo_128.png"/>
   </a>
 </div>

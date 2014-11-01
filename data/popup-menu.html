@@ -1,0 +1,121 @@
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<html>
+<head>
+	<link rel="stylesheet" href="font/stylesheet.css">
+	<link rel="stylesheet" href="popup-menu.css">
+	<script src="lib/jquery-1.10.2.min.js"></script>
+	<script src="lib/jquery-1.11.2-ui.js"></script>
+</head>
+<body class="active">
+	<div class="container">
+		<div id="main" class="page">
+
+			<header>
+				<h1><div id="toggle-button" background="">Toggle AdNauseam On/Off</div></h1>
+				<div id="stats">
+					<span id="visited-count" class="visited">(2) ads visited</span> / <span id="found-count" class="found">(6) ads found</span>
+					<div id="vault-btn">
+						<button id="vault-button">View Ad Vault</button>
+						<span id="vault-count" class="count">(345)</span>
+					</div>
+				</div>
+			</header>
+
+			<div id="ad-list">
+				<ul id='ad-list-items'>
+					<li class="ad-item"><a href="#"><span class="thumb"><img src="http://subscribe.newyorker.com/circulation/shared/ads/TNY_RightRail_300x600.jpg" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>
+					<li class="ad-item"><a href="#"><span class="thumb"><img src="http://img.washingtonpost.com/wp-srv/ad/public/static/retina/sub_promos/610x66@2x.jpg" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>
+					<li class="ad-item"><a href="#"><span class="thumb"><img src="http://graphics8.nytimes.com/ads/cla/corcoran/Corcoran-hpmod/corcoran_78x36_logo.gif" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>
+					<li class="ad-item-text">
+						<span class="thumb">Text Ad</span>
+						<h3><a href="http://www.bladegallery.com/" id="vs3p2" onmousedown="return google.arwt(this)" jsl="$x 1;$t t-zxXzjt1d4B0;$x 0;" class="r-bottomads-7">Handmade Knives</a></h3>
+				        <cite>www.bladegallery.com/</cite>
+				        <div class="ads-creative">
+				            Handmade custom <b>knives</b> and swords. Shipped within 24 hours!
+				        </div>
+							</li>
+					<li class="ad-item"><a href="#"><span class="thumb"><img src="http://static.nectarads.com/Advertisers/1f56acff83914ec8a2b47d3bc3858a5f.jpg" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>
+					<li class="ad-item"><a href="#"><span class="thumb"><img src="http://s0.2mdn.net/viewad/2635444/1-Google_CL_VM_160x600_IW_v1c.jpg" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>
+				</ul>
+				<div id="log-button">
+					<!--a href="#">View Full log (345)</a-->
+					<a href="#">View Full log</a>
+				</div>
+			</div>
+
+		</div> <!-- END #main -->
+
+		<div id="settings" class="page hide">
+
+			<header class="">
+				<a href="#" class="settings close">&#10006;</a>
+				<h2>AdNauseam Settings</h2>
+			</header>
+
+			<form id="settings_form" action="index.html" method="post">
+
+				<div class="row">
+					<div class="question">
+						Cache visited ad images
+					</div>
+					<div class="switch">
+						<input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-1">
+						<label for="cmn-toggle-1"></label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="question">
+						Disable all logging
+					</div>
+					<div class="switch">
+						<input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-2">
+						<label for="cmn-toggle-2"></label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="question">
+						Randomly clicks some ads, sometimes
+					</div>
+					<div class="switch">
+						<input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-3">
+						<label for="cmn-toggle-3"></label>
+					</div>
+				</div>
+
+				<!--h3>Developer Settings</h3>
+
+				<div class="row">
+					<div class="question">
+						Verbose notifications
+					</div>
+					<div class="switch">
+						<input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-4">
+						<label for="cmn-toggle-4"></label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="question">
+						Outline Ads
+					</div>
+					<div class="switch">
+						<input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-5">
+						<label for="cmn-toggle-5"></label>
+					</div>
+				</div-->
+
+
+			</form>
+
+		</div> <!-- END #settings -->
+
+		<footer>
+			<button id="pause-button" class="pause">Pause Adnauseam</button>
+			<button id="settings-button" class="settings">Settings</button>
+			<button id="about-button" class="about">?</button>
+		</footer>
+	</div>
+</body>
+</html>

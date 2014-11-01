@@ -5,37 +5,21 @@
     "description": "A software tool and 'artware' intervention to defend against surveillance and tracking by ad-networks",
     "author": "Daniel C. Howe",
     "license": "GPL",
-	"version": "0.8.4",
+	"version": "0.9.1",
 	"preferences": [
 		{
 			"title": "Enabled",
 		    "name":  "enabled",
 		    "type":  "bool",
-		    "value":  true
-		},
-		{
-			"title": "Persistent Logs  (store logs across sessions)",
-		    "name": "saveLogs",
-		    "type": "bool",
-		    "value": true
+		    "value":  true,
+			"hidden": true
 		},
 		{
 			"title": "Logging Disabled  (no logs will be created)",
 		    "name": "disableLogs",
 		    "type": "bool",
-		    "value": false
-		},
-		{
-			"title": "Verbose Notify (show events as notifications)",
-		    "name":  "verboseNotify",
-		    "type":  "bool",
-		    "value":  false
-		},
-		{
-			"title": "Outline Ads (primarily for debugging)",
-		    "name": "outlineAds",
-		    "type": "bool",
-		    "value": false
+		    "value": false,
+			"hidden": true
 		}
 	]
 }

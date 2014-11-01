@@ -50,9 +50,9 @@ self.port.on("refresh-ads", function(data) {
 	
 	//console.log("popup.refresh-ads: ad-objs->"+ads.length);
 	
-	console.log("#objects: " + data.ads.length);
-	console.log("uniqueCount: " + data.uniqueCount);
-	console.log("pageCount: " + data.onpage.length);
+	console.log("objects: " + data.ads.length
+		+" uniqueCount: " + data.uniqueCount
+		+" pageCount: " + data.onpage.length);
 	
 	var visitedCount = 0;
 	for (var i=0, j = data.onpage.length; i<j; i++) {
@@ -62,10 +62,8 @@ self.port.on("refresh-ads", function(data) {
 	
 	$('#vault-count').text(data.uniqueCount);
 	$('#found-count').text(data.onpage.length+' ads found');
-	$('#visited-count').text(visitedCount+' ads visited'); 
-	
-	var result = createHtml(data.onpage);
-	$('#ad-list-items').html(result);
+	$('#visited-count').text(visitedCount+' ads visited'); 	
+	$('#ad-list-items').html(createHtml(data.onpage));
 });
 
 function createHtml(ads) {

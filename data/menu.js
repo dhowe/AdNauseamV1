@@ -17,8 +17,8 @@ function init() {
 	});
 	
 	$('#settings-button').click(function() {
-		//console.log('#settings-button.click');
-		$('.page').toggleClass( 'hide' );
+		console.log('#settings-button.click');
+		$('.page').removeClass('hide');
 		self.port.emit('show-settings');
 	});
 	

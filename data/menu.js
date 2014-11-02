@@ -1,58 +1,58 @@
 
 function init() {
 
-	$("#log-button").click(function() {
-		//console.log("#log-button.click");
-		self.port.emit("show-log");
+	$('#log-button').click(function() {
+		//console.log('#log-button.click');
+		self.port.emit('show-log');
 	});
 	
-	$("#vault-button").click(function() {
-		//console.log("#vault-button.click");
-		self.port.emit("show-vault");
+	$('#vault-button').click(function() {
+		//console.log('#vault-button.click');
+		self.port.emit('show-vault');
 	});
 	
-	$("#pause-button").click(function() {
-		//console.log("#pause-button.click");
-		self.port.emit("disable");
+	$('#pause-button').click(function() {
+		//console.log('#pause-button.click');
+		self.port.emit('disable');
 	});
 	
-	$("#settings-button").click(function() {
-		//console.log("#settings-button.click");
-		$(".page").toggleClass( "hide" );
-		self.port.emit("show-settings");
+	$('#settings-button').click(function() {
+		//console.log('#settings-button.click');
+		$('.page').toggleClass( 'hide' );
+		self.port.emit('show-settings');
 	});
 	
-	$("#about-button").click(function() {
-		//console.log("#about-button.click");
-		self.port.emit("show-about");
+	$('#about-button').click(function() {
+		//console.log('#about-button.click');
+		self.port.emit('show-about');
 	}); 
 
 }
 
-self.port.on("refresh-panel", function(opts) {
+self.port.on('refresh-panel', function(opts) {
 	
-	var img = "img/adn78@2x.png", label = "Pause AdNauseam";
+	var img = 'img/adn78@2x.png', label = 'Pause AdNauseam';
 	
-	$("#pause-button").removeClass('disabled');
+	$('#pause-button').removeClass('disabled');
 	
 	if (!opts.enabled) {
 		
-		img = "img/adn78@2xg.png";
-		label = "Start AdNauseam";
-		$("#pause-button").addClass('disabled');
+		img = 'img/adn78@2xg.png';
+		label = 'Start AdNauseam';
+		$('#pause-button').addClass('disabled');
 	}
 
-	$("#toggle-button").css("background-image", 'url('+img+')');
-	$("#pause-button").text(label); 
+	$('#toggle-button').css('background-image', 'url('+img+')');
+	$('#pause-button').text(label); 
 });
 
-self.port.on("refresh-ads", function(data) {
+self.port.on('refresh-ads', function(data) {
 	
-	//console.log("popup.refresh-ads: ad-objs->"+ads.length);
+	//console.log('popup.refresh-ads: ad-objs->'+ads.length);
 	
-	console.log("objects: " + data.ads.length
-		+" uniqueCount: " + data.uniqueCount
-		+" pageCount: " + data.onpage.length);
+	console.log('Menu: objects=' + data.ads.length
+		+', unique=' + data.uniqueCount
+		+', onpage=' + data.onpage.length);
 	
 	var visitedCount = 0;
 	for (var i=0, j = data.onpage.length; i<j; i++) {

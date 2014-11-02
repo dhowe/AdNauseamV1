@@ -92,7 +92,7 @@ function createSlider() { // should happen just once
 		.x(xScale)
 		.extent([minDate, maxDate])
 	    .on("brushstart", brushstart)
-	   	.on("brush", brushmove)
+	   	.on("brush", 	 brushmove)
 	    .on("brushend", brushend);
 
 	// add the brush
@@ -109,9 +109,10 @@ function createSlider() { // should happen just once
 	// ---------------------------- functions ------------------------------
 	
 	function runFilter(ext) {
-		if (ext[1]-ext[0] <= 1) return; // fix for gh #100
-		var s = brush.extent(), min = s[0], max = s[1];
-		var tmpAds = dateFilter(min, max);
+		
+		var tmpAds, min = ext[0], max =ext[1];
+		if (max - min <= 1) return; // fix for gh #100
+		tmpAds = dateFilter(min, max);
 		if (!arraysEqual(ads, tmpAds))
 			generateHtml(ads = tmpAds);
 	}
@@ -152,8 +153,7 @@ function createSlider() { // should happen just once
 
 			if (ads[i].foundTs < min || ads[i].foundTs > max) {
 
-				log('ad#'+ads[i].id+' filtered: '+formatDate(ads[i].foundTs));
-				//ads[i].filtered = true;
+				//log('ad#'+ads[i].id+' filtered: '+formatDate(ads[i].foundTs));
 			}
 			else {
 

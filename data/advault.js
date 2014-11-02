@@ -19,7 +19,7 @@ function makeAdview() { // should happen just once
 	generateHtml(allAds);
 	
 	setTimeout(function() {
-	
+
 		var evt = {
 			clientX: 0,
 			clientY: 0,
@@ -42,7 +42,7 @@ function makeAdview() { // should happen just once
 
 		repack();
 		
-	}, 100);
+	}, 300);
 }
 
 function zoomIn() {
@@ -627,7 +627,7 @@ function adjustCounts(theAds) {
 		}
 		else {
 			
-			console.log("  DUP: ad#"+ad.id+" "+formatDate(ad.foundTs));
+			//console.log("  DUP: ad#"+ad.id+" "+formatDate(ad.foundTs));
 			
 			// dup: update the count
 			hash[ad.contentData]++;
@@ -642,5 +642,5 @@ function adjustCounts(theAds) {
 		ad.count = hash[ad.contentData];
 	}
 	
-	console.log('adjusted: '+unique+"/"+(theAds.length-unique));
+	console.log('adjusted: '+unique+'unique (of '+(theAds.length)+')');
 }

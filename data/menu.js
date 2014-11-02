@@ -16,9 +16,26 @@ function init() {
 		self.port.emit('disable');
 	});
 	
-	$('#settings-button').click(function() {
-		console.log('#settings-button.click');
-		$('.page').removeClass('hide');
+	$('#settings-close').click(function() {
+		
+		console.log('#settings-close.click');
+		
+		// WORKING HERE
+		$('.page').toggleClass('hide');
+
+		//$('.page').addClass('hide');
+		
+		self.port.emit('hide-settings');
+	});
+
+	$('#settings-open').click(function() {
+		
+		console.log('#settings-open.click');
+		
+		$('.page').toggleClass('hide');
+		
+		//$('#settings-open').toggleClass('hide');
+		
 		self.port.emit('show-settings');
 	});
 	

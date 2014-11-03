@@ -28,7 +28,9 @@
 
 		<script src="../lib/test/test-ad-data.js"></script>
 		<script>
-			$(document).ready(function() {
+		
+			// TODO: rethink this nonsense
+			$(document).ready(function() { 
 				
 				console.log(typeof makeAdVault);
 				
@@ -39,7 +41,7 @@
 						ads = options.ads;
 						console.log("Options:");
 						console.log(options);
-						console.log("advault.ads: "+ads.length);
+						console.log("advault.ads: "+ads);
 
 						makeAdVault();
 					}

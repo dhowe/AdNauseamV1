@@ -29,7 +29,6 @@
 		<script src="../lib/test/test-ad-data.js"></script>
 		<script>
 			$(document).ready(function() {
-
 				setTimeout(function() {
 
 					if (typeof options !== 'undefined') {
@@ -41,14 +40,17 @@
 						makeAdview();
 					}
 					else if (typeof tests !== 'undefined') {
-
+// 
 						$.getJSON("../lib/test/test-ad-data.json", function(json) {
-    						//console.log(json); // this will show the info it in firebug console
+    						console.log(json); // this will show the info it in firebug console
     						ads = json;
+   							console.log(ads);
+   							makeAdview();
 						});
 						//ads = tests.ads;
-						//console.log("advault.test.ads: "+ads.length);
-						//makeAdview();
+						
+						//console.warn("no tests");
+
 					}
 					else // use test-ads
 						console.err("NO ADS!!!");

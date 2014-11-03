@@ -34,7 +34,6 @@ function createSlider() { // should happen just once
 
    // create an array of dates:
    var map = ads.map( function(d) { return parseInt(xScale(d.foundTs)) })
-   //log(map);
 
    // setup the histogram layout:
    var histogram = d3.layout.histogram()

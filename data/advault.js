@@ -18,10 +18,12 @@ function computeStats(theAds) {
 	$('#stats').html(formatStats(theAds));
 }
 
-function makeAdview() { // should happen just once
+function makeAdview() { // should happen once
 		
-	allAds = ads.slice();
+	console.log('makeAdview: '+ads);
 	
+	allAds = ads.slice();
+
 	if (!sliderCreated) createSlider();
 
 	addInterfaceHandlers();

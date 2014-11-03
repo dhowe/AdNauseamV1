@@ -15,7 +15,6 @@ self.port.on("ad-updated", function(update) {
 
 	var theAds = unsafeWindow.options.ads;
 	
-	
 	// Update the ad in window.ads
 	var found = findAdById(update.id, theAds, true);
 	

@@ -156,8 +156,8 @@ div.tooltip {
 }
 
 .container-trans {
-	
-    transition: 		transform 0.5s; 
+
+    transition: 		transform 0.5s;
 }
 
 #ratio {
@@ -170,25 +170,23 @@ div.tooltip {
 }
 
 .svg-container {
-	
+
 	position: absolute;
-	
-	
-	bottom: 20px;
-	left: 16px;
+	bottom: 0px;
+	left: 6px;
 	z-index: 100;
 	font-size: 12px;
 	color: #999;
 	text-shadow: 1px  1px 2px #000,
-				-1px  1px 2px #000,
-				-1px -1px 2px #000,
-				 1px -1px 2px #000;
+							-1px  1px 2px #000,
+							-1px -1px 2px #000,
+							 1px -1px 2px #000;
 }
 
 .session-sum {
 	position: absolute;
-	bottom: 2px;
-	left: 34px;
+	bottom: 82px;
+	left: 24px;
 	z-index: 100;
 	font-size: 12px;
 	color: #999;
@@ -218,7 +216,9 @@ div.tooltip {
 #logo a {
 	width: 75px;
 	height: 75px;
-	background: url(img/ADNAUSEUM_logo.png);
+	background: url(img/adn_black.png);
+	background-size: 100%;
+	opacity: 0.8;
 	display: block;
 	text-decoration: none;
 }

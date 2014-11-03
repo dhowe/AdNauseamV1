@@ -156,8 +156,8 @@ div.tooltip {
 }
 
 .container-trans {
-	
-    transition: 		transform 0.5s; 
+
+    transition: 		transform 0.5s;
 }
 
 #ratio {
@@ -170,10 +170,10 @@ div.tooltip {
 }
 
 .svg-container {
-	
+
 	position: absolute;
-	
-	
+
+
 	bottom: 20px;
 	left: 16px;
 	z-index: 100;
@@ -218,7 +218,9 @@ div.tooltip {
 #logo a {
 	width: 75px;
 	height: 75px;
-	background: url(img/ADNAUSEUM_logo.png);
+	background: url(img/adn_disabled.png);
+	background-size: 100%;
+	opacity: 0.5;
 	display: block;
 	text-decoration: none;
 }

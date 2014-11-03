@@ -20,11 +20,9 @@ function init() {
 		
 		console.log('#settings-close.click');
 		
-		// WORKING HERE
 		$('.page').toggleClass('hide');
+		$('.settings').toggleClass('hide');
 
-		//$('.page').addClass('hide');
-		
 		self.port.emit('hide-settings');
 	});
 
@@ -33,9 +31,8 @@ function init() {
 		console.log('#settings-open.click');
 		
 		$('.page').toggleClass('hide');
-		
-		//$('#settings-open').toggleClass('hide');
-		
+		$('.settings').toggleClass('hide');		
+
 		self.port.emit('show-settings');
 	});
 	

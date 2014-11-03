@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 		if (typeof options !== 'undefined') {
 
-			console.log("advault.ads: "+ads.length);
+			console.log("advault.ads: "+options.ads.length);
 			makeAdVault(ads = options.ads);
 		}
 		else  // use test-ad-data instead

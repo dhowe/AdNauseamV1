@@ -1,22 +1,23 @@
 
 function init() {
 
-	$('#log-button').click(function() {
+	// move these into separate js (src-loaded from html)
+	$('#log-button').unbind().click(function() {
 		//console.log('#log-button.click');
 		self && self.port.emit('show-log');
 	});
 	
-	$('#vault-button').click(function() {
+	$('#vault-button').unbind().click(function() {
 		//console.log('#vault-button.click');
 		self && self.port.emit('show-vault');
 	});
 	
-	$('#pause-button').click(function() {
+	$('#pause-button').unbind().click(function() {
 		//console.log('#pause-button.click');
 		self && self.port.emit('disable');
 	});
 	
-	$('#settings-close').click(function() {
+	$('#settings-close').unbind().click(function() {
 		
 		console.log('#settings-close.click');
 		
@@ -26,7 +27,7 @@ function init() {
 		self && self.port.emit('hide-settings');
 	});
 
-	$('#settings-open').click(function() {
+	$('#settings-open').unbind().click(function() {
 		
 		console.log('#settings-open.click');
 		
@@ -36,12 +37,12 @@ function init() {
 		self && self.port.emit('show-settings');
 	});
 	
-	$('#about-button').click(function() {
+	$('#about-button').unbind().click(function() {
 		//console.log('#about-button.click');
 		self.port.emit('show-about');
 	}); 
 
-	$('#cmn-toggle-1').click(function() {
+	$('#cmn-toggle-1').unbind().click(function() {
 		
 		var val = $(this).prop('checked'); 
 		
@@ -65,6 +66,11 @@ self.port.on('refresh-panel', function(opts) {
 
 	$('#toggle-button').css('background-image', 'url('+img+')');
 	$('#pause-button').text(label); 
+});
+
+self.port.on('ad-updated', function(data) {
+	
+	console.log("Menu::ad-updated: ad#"+data.id);
 });
 
 self.port.on('refresh-ads', function(data) {

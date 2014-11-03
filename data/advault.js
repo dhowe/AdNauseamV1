@@ -308,7 +308,7 @@ function repack() {
  
 function formatDivs() {
 		
-	var textAds = 0, html = '';// ads = findDups(ads);
+	var textAds = 0, html = '';
 	
 	for (var i=0, j = ads.length; i<j; i++) {
 		
@@ -317,7 +317,7 @@ function formatDivs() {
 			var ad = ads[i];
 			
 			html += '<a href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
-			html += ad.hidden ? '-hidden ' : ' '; // hide dups w css
+			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 			
 			if (ad.visitedTs == 0) html += 'pending ';	
 			if (ad.visitedTs < 0)  html += 'failed ';	
@@ -329,7 +329,6 @@ function formatDivs() {
 			html += 'data-visited="'+formatDate(ad.visitedTs)+'" ';
 			html += 'data-target="'+ad.targetUrl+'" ';
 			html += 'data-url="'+ad.contentData+'" ';
-			//html += 'data-id="'+ad.id+'" ';
 			html += 'data-origin="'+ad.pageUrl+'">';
 			
 			if (!ad.hidden) 

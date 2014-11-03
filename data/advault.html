@@ -34,12 +34,13 @@
 					if (typeof options !== 'undefined') {
 						
 						ads = options.ads;
+						console.log("Options:");
 						console.log(options);
 						console.log("advault.ads: "+ads.length);
 
 						makeAdview();
 					}
-					else if (typeof tests !== 'undefined') {
+					else {
 // 
 						$.getJSON("../lib/test/test-ad-data.json", function(json) {
     						console.log(json); // this will show the info it in firebug console
@@ -47,14 +48,8 @@
    							console.log(ads);
    							makeAdview();
 						});
-						//ads = tests.ads;
-						
-						//console.warn("no tests");
-
 					}
-					else // use test-ads
-						console.err("NO ADS!!!");
-						
+
 				}, 100);
 
 	 		});

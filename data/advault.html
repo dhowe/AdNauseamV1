@@ -33,14 +33,26 @@
 				setTimeout(function() {
 
 					if (typeof options !== 'undefined') {
+						
 						ads = options.ads;
 						console.log(options);
-						console.log("advault.ADS: "+ads.length);
+						console.log("advault.ads: "+ads.length);
 
 						makeAdview();
 					}
-					else
-						console.err("NO OPTIONS!!!");
+					else if (typeof tests !== 'undefined') {
+
+						$.getJSON("../lib/test/test-ad-data.json", function(json) {
+    						//console.log(json); // this will show the info it in firebug console
+    						ads = json;
+						});
+						//ads = tests.ads;
+						//console.log("advault.test.ads: "+ads.length);
+						//makeAdview();
+					}
+					else // use test-ads
+						console.err("NO ADS!!!");
+						
 				}, 100);
 
 	 		});

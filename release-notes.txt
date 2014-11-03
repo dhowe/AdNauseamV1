@@ -1,4 +1,16 @@
 
+0.9x
+-------------------
+-- Refactored Architecture
+-- New Icons and Menu-popup
+-- Adview renamed to AdVault
+-- Numerous bug fixes and enhancements 
+
+0.8
+-------------------
+-- Numerous fixes and design updates
+-- Using test-data for now in adview
+
 0.4.22
 -------------------
 -- Proper handling of disable/enable/remove/etc from AddonManager

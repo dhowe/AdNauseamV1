@@ -3,17 +3,17 @@ function init() {
 
 	$('#log-button').click(function() {
 		//console.log('#log-button.click');
-		self.port.emit('show-log');
+		self && self.port.emit('show-log');
 	});
 	
 	$('#vault-button').click(function() {
 		//console.log('#vault-button.click');
-		self.port.emit('show-vault');
+		self && self.port.emit('show-vault');
 	});
 	
 	$('#pause-button').click(function() {
 		//console.log('#pause-button.click');
-		self.port.emit('disable');
+		self && self.port.emit('disable');
 	});
 	
 	$('#settings-close').click(function() {
@@ -23,7 +23,7 @@ function init() {
 		$('.page').toggleClass('hide');
 		$('.settings').toggleClass('hide');
 
-		self.port.emit('hide-settings');
+		self && self.port.emit('hide-settings');
 	});
 
 	$('#settings-open').click(function() {
@@ -33,7 +33,7 @@ function init() {
 		$('.page').toggleClass('hide');
 		$('.settings').toggleClass('hide');		
 
-		self.port.emit('show-settings');
+		self && self.port.emit('show-settings');
 	});
 	
 	$('#about-button').click(function() {
@@ -41,6 +41,13 @@ function init() {
 		self.port.emit('show-about');
 	}); 
 
+	$('#cmn-toggle-1').click(function() {
+		
+		var val = $(this).prop('checked'); 
+		
+		console.log('#disable-logs.click: '+val);
+		self && self.port.emit('disable-logs', { 'value' : val });
+	}); 
 }
 
 self.port.on('refresh-panel', function(opts) {

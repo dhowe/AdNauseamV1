@@ -2,6 +2,43 @@ var dbugOffsets = 0, sliderCreated = false,  allAds;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
+$(document).ready(function() { 
+			
+	setTimeout(function() {
+
+		if (typeof options !== 'undefined') {
+
+			console.log("advault.ads: "+ads.length);
+			makeAdVault(ads = options.ads);
+		}
+		else  // use test-ad-data instead
+		{
+			function testGetAds(adlookup, filter) { 
+			
+				var all = [], keys = Object.keys(adlookup);
+				for (var i = 0, j = keys.length; i < j; i++) {
+			
+					var ads = adlookup[keys[i]];
+					for (var k=0; k < ads.length; k++) {
+						
+						if (!filter || filter(ads[k])) 
+							all.push(ads[k]);
+					}
+				}
+				return all;
+			}
+			
+			$.getJSON("../lib/test/test-ad-data.json", function(json) {
+				
+				console.warn("Using Test Ad-data...");
+			    makeAdVault(ads = testGetAds(json));
+			    
+			}).fail(function(e) { console.warn( "error:", e); })
+		}
+	}, 300);
+});
+
+
 function makeAdVault() { // should happen once
 		
 	console.log('makeAdVault: '+ads);

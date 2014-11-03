@@ -7,68 +7,14 @@
 		<script src="lib/jquery-1.10.2.min.js"></script>
 		<link rel="icon" type="image/png" href="img/icon-32.png">
 
+		<script src="../lib/test/test-ad-data.js"></script>
 		<script src="lib/packery.min.js"></script>
 		<script src="lib/d3.min.js"></script>
 		<script src="advault-slider.js"></script>
 		<script src="advault.js"></script>
-
-		<script src="../lib/test/test-ad-data.js"></script>
+		
 		<script>
 		
-			// TODO: rethink this nonsense
-			$(document).ready(function() { 
-				
-				console.log(typeof makeAdVault);
-				
-				setTimeout(function() {
-	
-					if (typeof options !== 'undefined') {
-						
-						ads = options.ads;
-						console.log("Options:");
-						console.log(options);
-						console.log("advault.ads: "+ads);
-
-						makeAdVault();
-					}
-					/*else if (0) {
-						console.log("TEST");
-						$.ajax({                    
-						    url: '../lib/test/test-ad-data.json',
-						    dataType: 'json',
-						    cache: false,
-						    success: function( data, status ){
-						        console.log(data);
-						        ads = data;
-						    },
-						    error: function(xhr, textStatus, err) { //odstampaj textStatus, err jbt
-						        console.error('fail');
-						        console.error(textStatus);
-						        console.error(err);
-						        console.error("readyState: "+xhr.readyState+"\n xhrStatus: "+xhr.status);
-						        console.error("responseText: "+xhr.responseText);
-						    }
-						});
-					}
-					else {
-						$.getJSON("../lib/test/test-ad-data.json", function(json) {
-    						console.log(json);
-    						ads = json;
-						    makeAdVault();
-						 	console.log( "success" );
-						})
-						.done(function() {
-							console.log( "second success" );
-						})
-						.fail(function() {
-							console.log( "error" );
-						})
-					}*/
-					
-
-				}, 100);
-
-	 		});
 		</script>
 	</head>
 	<body>
@@ -84,7 +30,6 @@
 
 			<div id='container' class="z-100" draggable="true"></div>
 			<div id="svgcon" class="svg-container"></div>
-
 		</div>
 
 		<aside id="right">

@@ -67,9 +67,12 @@ self.port.on('refresh-panel', function(opts) {
 	$('#pause-button').text(label);
 });
 
-self.port.on('refresh-ads', function(data) {
+self.port.on('refresh-ads', function(data) { 
 
-	//console.log('popup.refresh-ads: ad-objs->'+ads.length);
+	if (data.ads.length)
+		console.log('menu.refresh-ads1: ad-objs->'+data.ads.length);
+	else if (data.length)
+	console.log('menu.refresh-ads2: ad-objs->'+data.ads.length);
 
 	console.log('Menu: objects=' + data.ads.length
 		+', unique=' + data.uniqueCount

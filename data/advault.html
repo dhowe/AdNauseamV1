@@ -29,7 +29,9 @@
 		<script src="../lib/test/test-ad-data.js"></script>
 		<script>
 			$(document).ready(function() {
-		
+				
+				console.log(typeof makeAdVault);
+				
 				setTimeout(function() {
 	
 					if (typeof options !== 'undefined') {
@@ -39,7 +41,7 @@
 						console.log(options);
 						console.log("advault.ads: "+ads.length);
 
-						makeAdview();
+						makeAdVault();
 					}
 					/*else if (0) {
 						console.log("TEST");
@@ -64,7 +66,7 @@
 						$.getJSON("../lib/test/test-ad-data.json", function(json) {
     						console.log(json);
     						ads = json;
-						    fun();
+						    makeAdVault();
 						 	console.log( "success" );
 						})
 						.done(function() {

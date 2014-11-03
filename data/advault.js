@@ -2,25 +2,9 @@ var dbugOffsets = 0, sliderCreated = false,  allAds;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
-function updateVisitedAds(theAds) { // TODO: make sure this works on multiple ads
-
-	console.log("advault.js: updateVisitedAds()");
-
-	// Update the ad items in the DOM
-	var sel = '#ad' + update.id, att = 'data-'+update.field;
-	//console.log("PRE: "+$(sel).attr(att));
-	$(sel).attr(att, formatDate(update.value));
-	//console.log("POST: "+$(sel).attr(att));
-}	
-
-function computeStats(theAds) {
-	
-	$('#stats').html(formatStats(theAds));
-}
-
-function makeAdview() { // should happen once
+function makeAdVault() { // should happen once
 		
-	console.log('makeAdview: '+ads);
+	console.log('makeAdVault: '+ads);
 	
 	allAds = ads.slice();
 
@@ -661,4 +645,20 @@ function adjustCounts(theAds) {
 	}
 	
 	console.log('adjusted: '+unique+' unique (total='+(theAds.length)+')');
+}
+
+function updateVisitedAds(theAds) { // TODO: make sure this works on multiple ads
+
+	console.log("advault.js: updateVisitedAds()");
+
+	// Update the ad items in the DOM
+	var sel = '#ad' + update.id, att = 'data-'+update.field;
+	//console.log("PRE: "+$(sel).attr(att));
+	$(sel).attr(att, formatDate(update.value));
+	//console.log("POST: "+$(sel).attr(att));
+}	
+
+function computeStats(theAds) {
+	
+	$('#stats').html(formatStats(theAds));
 }

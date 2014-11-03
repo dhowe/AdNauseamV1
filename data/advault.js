@@ -1,15 +1,25 @@
-/* ISSUES:
- * 	 Show notification in adview if no network
- */
-var dbugOffsets = 0;
-var sliderCreated = false,  allAds;
+var dbugOffsets = 0, sliderCreated = false,  allAds;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
+function updateVisitedAds(theAds) { // TODO: make sure this works on multiple ads
+
+	console.log("advault.js: updateVisitedAds()");
+
+	// Update the ad items in the DOM
+	var sel = '#ad' + update.id, att = 'data-'+update.field;
+	//console.log("PRE: "+$(sel).attr(att));
+	$(sel).attr(att, formatDate(update.value));
+	//console.log("POST: "+$(sel).attr(att));
+}	
+
+function computeStats(theAds) {
+	
+	$('#stats').html(formatStats(theAds));
+}
+
 function makeAdview() { // should happen just once
-	
-	console.log('makeAdview()'); 
-	
+		
 	allAds = ads.slice();
 	
 	if (!sliderCreated) createSlider();
@@ -21,6 +31,7 @@ function makeAdview() { // should happen just once
 	setTimeout(function() {
 
 		var evt = {
+			
 			clientX: 0,
 			clientY: 0,
 			dataTransfer: {
@@ -30,19 +41,17 @@ function makeAdview() { // should happen just once
 			preventDefault: function() {}
 		};
 			
-		drop(evt); // hack to fix offset()
+		drop(evt); // tmp hack to fix offset()
 		
 		positionAdview(); // autozoom & center
 		
 		dbugOffsets && updateTestDivs(); // test-divs
 		
 		$('#container').addClass('container-trans');
-		
-		console.log('updated #container'); 
 
 		repack();
 		
-	}, 300);
+	}, 500);
 }
 
 function zoomIn() {
@@ -274,25 +283,29 @@ function populateInspector(iData, dupIdx) {
 
 function generateHtml(theAds) {
 	
-	if (!theAds) throw Error("No ads!");
+	if (!theAds) throw Error("No ads!");	
 
-	console.log("---------------------------------------");
-	console.log("generateHtml: "+theAds.length);//+" unique="+uniqueAds.length);
 	adjustCounts(theAds);
 	
 	var result = formatDivs(theAds);
+	
+if (0) {
+	console.log("---------------------------------------");
+	console.log("generateHtml: "+theAds.length);//+" unique="+uniqueAds.length);
+	console.log("result:\n"+result+"\n");
+}
+
 	$('#container').html(result);
 
-	result = formatStats(theAds);
-	$('#stats').html(result);
-	console.log("---------------------------------------");
+	computeStats(theAds);
+	
 	enableInspector();
 	
 	repack();
 	
 	//dbugOffsets && addTestDivs();
 }
-
+	
 function repack() {
 	
 	console.log("repack()");
@@ -306,13 +319,20 @@ function repack() {
 	
 }
  
-function formatDivs() {
+function formatDivs(ads) {
 		
+	//console.log('formatDivs: '+ads.length);
+
 	var textAds = 0, html = '';
 	
 	for (var i=0, j = ads.length; i<j; i++) {
 		
-		if (ads[i].contentType === 'img') {
+		if (ads[i].contentType === 'text') {
+			
+			textAds++;
+		} 
+		else // assume: contentType === 'img'
+		{
 			
 			var ad = ads[i];
 			
@@ -341,9 +361,6 @@ function formatDivs() {
 			}
 			
 			html += '</div>\n';
-		}
-		else if (ads[i].contentType === 'text') {
-			textAds++;
 		}
 
 	}
@@ -641,5 +658,5 @@ function adjustCounts(theAds) {
 		ad.count = hash[ad.contentData];
 	}
 	
-	console.log('adjusted: '+unique+'unique (of '+(theAds.length)+')');
+	console.log('adjusted: '+unique+' unique (total='+(theAds.length)+')');
 }

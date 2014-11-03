@@ -11,25 +11,31 @@ self.port.on('refresh-ads', function(data) {
 
 self.port.on("ad-updated", function(update) {
 	
-	console.log("AdVault::ad-updated: ad#"+data.id);
-	return;
-	
+	console.log("INJECTOR: ad-updated: "+typeof computeStats +" " +typeof updateVisitedAds);
+
 	var theAds = unsafeWindow.options.ads;
+	
 	
 	// Update the ad in window.ads
 	var found = findAdById(update.id, theAds, true);
+	
 	//console.log("Visited(pre): "+found.visited);
 	found[update.field] = update.value;
 	//console.log("Visited(post): "+findAdById(update.id, unsafeWindow.options.ads, true).visited);
 	
-	// Update the ad item in the DOM
-	var sel = '#ad' + update.id, att = 'data-'+update.field;
-	//console.log("PRE: "+$(sel).attr(att));
-	$(sel).attr(att, formatDate(update.value));
-	//console.log("POST: "+$(sel).attr(att));
-	
+	updateVisitedAds(theAds);
+
 	// Now recompute the stats
-	var uniqueAds = findDups(theAds);
-	var result = formatStats(uniqueAds);
-	$('#stats').html(result);
+	computeStats(theAds);
 });
+
+function findAdById(id, ads) {
+	
+	for (i=0, j=ads.length; i< j; i++) {
+		
+		if (ads[i].id === id)
+			return ads[i]
+	}
+	
+	return null;
+}

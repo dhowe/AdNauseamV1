@@ -201,7 +201,7 @@ header{
   LIST
 ============================================================ */
 #ad-list,
-#settings{
+#settings form{
   background: #000 url(img/gray_grid.png);
   height: 350px;
   overflow-y: scroll;
@@ -349,6 +349,10 @@ header{
   color: #aaa;
 }
 
+#settings form {
+  height: 400px;
+}
+
 #settings header a.close {
   display: inline-block;
   color: #777;
@@ -373,9 +377,6 @@ header{
 
 #wrapper {
   min-width: 600px;
-}
-#settings form {
-  display: table;
 }
 
 #settings .row {

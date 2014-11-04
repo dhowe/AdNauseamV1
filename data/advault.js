@@ -1,3 +1,5 @@
+var testAdFile = "../lib/test/test-ad-data.json"; // "../lib/test/lots-of-ads.json"
+
 var dbugOffsets = 0, sliderCreated = false,  allAds;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
@@ -28,7 +30,7 @@ $(document).ready(function() {
 				return all;
 			}
 			
-			$.getJSON("../lib/test/test-ad-data.json", function(json) {
+			$.getJSON(testAdFile, function(json) {
 				
 				console.warn("Using Test Ad-data...");
 			    makeAdVault(ads = testGetAds(json));

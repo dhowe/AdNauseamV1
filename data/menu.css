@@ -258,6 +258,15 @@ header{
   border: 1px solid #BD10E0;
 }
 
+.ad-item-img-errored {
+  max-height: 60px;
+  max-width: 80px;
+  margin: 10px;
+  vertical-align: middle;
+  font-size: 14px;
+  border: 1px solid #F00;
+}
+
 .ad-item-text {
   padding: 10px 20px 0 130px;
   font-size: 12px;

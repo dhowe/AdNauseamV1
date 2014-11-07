@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>AdNauseam Log</title>
+		<link rel="stylesheet" href="log.css">
+		<script src="lib/jquery-1.10.2.min.js"></script>
+		<link rel="icon" type="image/png" href="img/icon-32.png">	
+	</head>
+	<script>
+		$(document).ready(function() {
+			console.log("ready");
+			$('#clear-log-button').click(function(e) {
+
+				e.preventDefault(); // no click
+				
+				// trigger closing of settings
+				$("#content").text('no log available');
+				
+				// call addon to clear simple-storage
+				self.port && self.port.emit("clear-log");
+			});
+		});
+	</script>
+	<body>
+		<div id="logo"><a href="#"></a></div>				
+		<div class="clearb">
+		<a href="" id="clear-log-button">c</a>
+		</div>
+		<div id='content' class="logtext">
+			no log available
+		</div>
+	</body>
+</html>

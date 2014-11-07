@@ -2,7 +2,6 @@
   "https://hk.yahoo.com/?p=us": [
   {
     "id": 1,
-    "title": "Ad Title (pending)",
     "contentType": "img",
     "contentData": "https://s.yimg.com/gs/apex/mediastore/01dc223e-1bae-4918-bdfb-be002ea25d7d",
     "count": 1,
@@ -10,6 +9,7 @@
     "pageUrl": "https://hk.yahoo.com/?p=us",
     "foundTs": 1404835703162,
     "visitedTs": 0,
+     "title": "Ad Title (pending)",     
      "path": [
 	],
     "errors": [
@@ -25,6 +25,7 @@
       "pageUrl": "http://www.nytimes.com/",
       "foundTs": 1407052450784,
       "visitedTs": 1407052467940,
+      "title": "Visited Ad Title",   
       "errors": [
       ],
       "path": [
@@ -40,6 +41,7 @@
       "pageUrl": "http://www.nytimes.com/",
       "foundTs": 1407052450100,
       "visitedTs": 0,
+      "title": "Ad Title (pending)",     
       "errors": [
         {
         }
@@ -57,6 +59,7 @@
       "pageUrl": "http://www.nytimes.com/",
       "foundTs": 1407052450789,
       "visitedTs": 0,
+      "title": "Ad Title (pending)",     
       "errors": [
       ],
       "path": [

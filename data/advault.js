@@ -632,13 +632,6 @@ function addInterfaceHandlers() {
 		zoomOut();
 		e.preventDefault();
 	});
-
-
-	$('#z-clear').unbind().click(function(e) {
-
-		e.preventDefault();
-		clearAds();
-	});
 	
 	$(window).resize(resizeHistorySlider);
 }

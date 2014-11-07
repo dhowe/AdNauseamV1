@@ -1,11 +1,33 @@
-<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<!doctype html>
 <html>
 <head>
+	<meta charset="utf-8" />
+	<title>AdNauseam</title>
+	<link rel="icon" type="image/png" href="img/icon-32.png">
 	<link rel="stylesheet" href="font/stylesheet.css">
 	<link rel="stylesheet" href="menu.css">
 	<script src="lib/jquery-1.10.2.min.js"></script>
 	<script src="lib/jquery-1.11.2-ui.js"></script>
-	<!--script src="menu.js"></script-->
+	<script>
+	
+		var TEST_MODE = false, 
+			TEST_PAGE = "http://www.nytimes.com/",
+			TEST_ADS = "../lib/test/test-ad-data.json";
+		
+		if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
+		
+			$(function() {
+				$.getScript("menu.js")
+				.done(function() {
+					attachTests();
+				})
+				.fail(function(jqxhr, data, e ) {
+					 console.error("json: ", e);
+				});
+			});		
+		}
+		
+	</script>
 </head>
 <body class="active">
 	<div class="container">

@@ -1,94 +1,3 @@
-if (false && typeof self.port === 'undefined') { // for testing w'out cfx
-	console.log("NO SELF FOUND");
-	
-	$(document).ready(function() {
-		
-		console.log("NO SELF FOUND2");
-
-		initHandlers();
-		
-		var testAdFile = "../lib/test/lots-of-ads.json";
-		var testPageUrl = "http://www.nytimes.com/";
-		
-		$.getJSON(testAdFile, function(json) {
-			
-			console.warn("Menu.js :: Test Ad-data...");
-		    layoutAds(processAdData(testGetAds(json), testPageUrl));
-		    
-		}).fail(function(e) { console.warn( "error:", e); });
-		
-		function testGetAds(adlookup, filter) { 
-		
-			var all = [], keys = Object.keys(adlookup);
-			for (var i = 0, j = keys.length; i < j; i++) {
-		
-				var ads = adlookup[keys[i]];
-				for (var k=0; k < ads.length; k++) {
-					
-					if (!filter || filter(ads[k])) 
-						all.push(ads[k]);
-				}
-			}
-			return all;
-		}
-		
-// 		
-		// $('#log-button').unbind().click(function() {
-// 
-			// window.location.href = 'log.html';
-		// });
-
-	});
-	
-	// console.log("removing handler");
-	// $('#log-button').off("click");
-// 	
-	// $('#vault-button').click(function() {
-// 
-		// alert("show-vault");
-	// });
-}
-/*if (typeof self.port === 'undefined') { // for testing w'out cfx
-
-	console.warn("---------------- TESTING ----------------");
-
-	var testAdFile = "../lib/test/lots-of-ads.json";
-	//var testAdFile = "../lib/test/test-ad-data.json";
-	var testPageUrl = "http://www.nytimes.com/";
-	
-	$(document).ready(function() {
-		
-		initHandlers();
-		
-		$.getJSON(testAdFile, function(json) {
-			
-			console.warn("Menu.js :: Test Ad-data...");
-		    layoutAds(processAdData(testGetAds(json), testPageUrl));
-		    
-		}).fail(function(e) { console.warn( "error:", e); });
-	});
-	
-	function testGetAds(adlookup, filter) { 
-	
-		var all = [], keys = Object.keys(adlookup);
-		for (var i = 0, j = keys.length; i < j; i++) {
-	
-			var ads = adlookup[keys[i]];
-			for (var k=0; k < ads.length; k++) {
-				
-				if (!filter || filter(ads[k])) 
-					all.push(ads[k]);
-			}
-		}
-		return all;
-	}
-}
-else {
-	initHandlers(); 
-}*/
-
-
-	
 self.port && self.port.on('refresh-ads', layoutAds);
 
 self.port && self.port.on('refresh-panel', function(opts) {
@@ -186,6 +95,21 @@ function layoutAds(data) { //ads, onpage, uniqueCount) {
 		setCounts(data.onpage.length, visitedCount, data.ads.length);
 }
 
+function testGetAds(adlookup, filter) { 
+
+	var all = [], keys = Object.keys(adlookup);
+	for (var i = 0, j = keys.length; i < j; i++) {
+
+		var ads = adlookup[keys[i]];
+		for (var k=0; k < ads.length; k++) {
+			
+			if (!filter || filter(ads[k])) 
+				all.push(ads[k]);
+		}
+	}
+	return all;
+}
+
 function setCounts(found, visited, total) {
 	
 	$('#found-count').text(found+' ads found');
@@ -250,9 +174,38 @@ function extractDomains(text) {
 	return result;
 }
 
-function initHandlers() {
+function param(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function attachTests() {
+
+	$('#log-button').off('click').click(function() {
+		window.location.href = "log.html"
+	});
+	
+	$('#vault-button').off('click').click(function() {
+		window.location.href = "advault.html"
+	});
+	
+	$('#about-button').off('click').click(function() {
+		window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help"
+	}); 
+	 					 
+	$.getJSON(TEST_ADS, function(json) {
+
+		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
+	    layoutAds(processAdData(testGetAds(json), TEST_PAGE));
+	    
+	}).fail(function(e) { console.warn( "error:", e); });
+}
+					
+(function() {
 		
-	console.log('initHandlers');		
+	console.log('INIT_HANDLERS');		
 
 	$('#log-button').click(function(e) {
 		console.log('#log-button.click');
@@ -319,6 +272,6 @@ function initHandlers() {
 		//console.log('#disable-logs.click: '+val);
 		self.port && self.port.emit('disable-logs', { 'value' : val });
 	}); 
-}
+	
+})();
 
-initHandlers();

@@ -1,6 +1,6 @@
 <div align="center">
   <a href="http://dhowe.github.io/AdNauseam">
-    <img src="http://dhowe.github.io/AdNauseam/img/adn_animated.gif"/>
+    <img src="https://raw.githubusercontent.com/dhowe/AdNauseam/master/data/img/ADNAUSEUM_logo.png"/>
   </a>
 </div>
 

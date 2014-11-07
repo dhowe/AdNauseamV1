@@ -1,55 +1,3 @@
-
-function init() {
-
-	$('#log-button').click(function() {
-		//console.log('#log-button.click');
-		self && self.port.emit('show-log');
-	});
-
-	$('#vault-button').click(function() {
-		//console.log('#vault-button.click');
-		self && self.port.emit('show-vault');
-	});
-
-	$('#pause-button').click(function() {
-		//console.log('#pause-button.click');
-		self && self.port.emit('disable');
-	});
-
-	$('#settings-close').click(function() {
-
-		console.log('#settings-close.click');
-
-		$('.page').toggleClass('hide');
-		$('.settings').toggleClass('hide');
-
-		self && self.port.emit('hide-settings');
-	});
-
-	$('#settings-open').click(function() {
-
-		console.log('#settings-open.click');
-
-		$('.page').toggleClass('hide');
-		$('.settings').toggleClass('hide');
-
-		self && self.port.emit('show-settings');
-	});
-
-	$('#about-button').click(function() {
-		//console.log('#about-button.click');
-		self.port.emit('show-about');
-	});
-
-	$('#cmn-toggle-1').click(function() {
-		
-		var val = $(this).prop('checked'); 
-		
-		console.log('#disable-logs.click: '+val);
-		self && self.port.emit('disable-logs', { 'value' : val });
-	}); 
-}
-
 self.port.on('refresh-panel', function(opts) {
 
 	var img = 'img/adn_active.png', label = 'Pause AdNauseam';
@@ -72,7 +20,7 @@ self.port.on('refresh-ads', function(data) {
 	if (data.ads.length)
 		console.log('menu.refresh-ads1: ad-objs->'+data.ads.length);
 	else if (data.length)
-	console.log('menu.refresh-ads2: ad-objs->'+data.ads.length);
+		console.log('menu.refresh-ads2: ad-objs->'+data.length);
 
 	console.log('Menu: objects=' + data.ads.length
 		+', unique=' + data.uniqueCount

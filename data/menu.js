@@ -1,4 +1,7 @@
-self.port && self.port.on('refresh-ads', layoutAds);
+
+
+self.port && self.port.on('refresh-ads', layoutAds); // refresh all
+self.port && self.port.on('update-ads', updateAds); // update some
 
 self.port && self.port.on('refresh-panel', function(opts) {
 
@@ -29,9 +32,11 @@ self.port && self.port.on("load-advault", function() {
 	console.log("popup.load-advault: ");
 });
 
-function processAdData(ads, pageUrl) {
+function processAdData(adhash, pageUrl) {
 
-	console.warn("processAdData: "+ads.length+", "+pageUrl);
+	var ads = toAdArray(adhash);
+	
+//console.warn("processAdData: "+ads.length+", "+pageUrl);
 
 	var ad, unique=0, onpage=[], soFar, hash = {};
 
@@ -76,37 +81,73 @@ function processAdData(ads, pageUrl) {
 		ad.count = hash[ad.contentData];
 	}
 
-	return { ads: ads, uniqueCount: unique, onpage: onpage };
+	return { ads: ads, onpage: onpage };
 }
 
-function layoutAds(data) { //ads, onpage, uniqueCount) {
-
-		console.log('Menu: objects=' + data.ads.length
-			+', unique=' + data.uniqueCount
-			+', onpage=' + data.onpage.length);
+function currentPage() {
 	
-		var visitedCount = 0;
-		for (var i=0, j = data.onpage.length; i<j; i++) {
-			if (!data.onpage[i].hidden && data.onpage[i].visitedTs > 0)
-				visitedCount++;
-		}
-
-		$('#ad-list-items').html(createHtml(data.onpage));
-		setCounts(data.onpage.length, visitedCount, data.ads.length);
+	var url = window && window.top
+		 && window.top.getBrowser().selectedBrowser.contentWindow.location.href;
+	return url && url != "about:blank" ? url : null;
 }
 
-function testGetAds(adlookup, filter) { 
+function updateAds(obj) {
+	
+	var adhash = obj.data, updates = obj.updates, page = obj.page;
+	
+	//console.log("updates: "+updates.length);
+	//console.log("ads: "+toAdArray(adhash).length);
+	
+	// change class, {title, (visitedTs) resolved}
+	for (var i=0, j = updates.length; i<j; i++) {
 
-	var all = [], keys = Object.keys(adlookup);
+		// update the title
+		var sel = '#ad' + updates[i].id + ' .title';
+		$(sel).text(updates[i].title);
+
+		// update the url		
+		var sel = '#ad' + updates[i].id + ' cite';
+		$(sel).text(updates[i].resolvedTargetUrl);
+		
+		// update the class
+		$(sel).addClass('visited');
+	}
+	
+	var data = processAdData(adhash, page);
+	$('#visited-count').text(visitedCount(data.onpage)+' ads visited');
+	
+	//console.log('UPDATES COMPLETE!');
+	//setCounts(data.onpage.length, visitedCount, data.ads.length);
+}
+
+
+function layoutAds(adHashAndPageObj) {
+
+	var adhash = adHashAndPageObj.data;
+	var page = typeof TEST_MODE != 'undefined' 
+		&& TEST_MODE ? TEST_PAGE : adHashAndPageObj.page;
+	var data = processAdData(adhash, page);
+
+	//console.log('Menu: ads.total=' + data.ads.length
+		//+', ads.onpage=' + data.onpage.length+", page="+page);
+
+	$('#ad-list-items').html(createHtml(data.onpage));
+	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
+}
+
+function toAdArray(adhash, filter) { 
+
+	var all = [], keys = Object.keys(adhash);
 	for (var i = 0, j = keys.length; i < j; i++) {
 
-		var ads = adlookup[keys[i]];
+		var ads = adhash[keys[i]];
 		for (var k=0; k < ads.length; k++) {
 			
 			if (!filter || filter(ads[k])) 
 				all.push(ads[k]);
 		}
 	}
+	
 	return all;
 }
 
@@ -115,6 +156,16 @@ function setCounts(found, visited, total) {
 	$('#found-count').text(found+' ads found');
 	$('#visited-count').text(visited+' ads visited');
 	$('#vault-count').text(total);
+}
+	
+function visitedCount(arr) {
+	
+	var visitedCount = 0;
+	for (var i=0, j = arr.length; i<j; i++) {
+		if (!arr[i].hidden && arr[i].visitedTs > 0)
+			visitedCount++;
+	}
+	return visitedCount;
 }
 
 function createHtml(ads) {
@@ -127,40 +178,43 @@ function createHtml(ads) {
 
 		if (ads[i].contentType === 'img') {
 
-			html += '<li class="ad-item"><a target="new" href="' + ads[i].targetUrl;
+			html += '<li id="ad'+ads[i].id+'" class="ad-item'+visitedClass(ads[i]);
+			html += '"><a target="new" href="' + ads[i].targetUrl;
 			html += '"><span class="thumb"><img src="' + ads[i].contentData;
-			html += '" class="ad-item-img' + visitedState(ads[i]);
-			html += '" onError="this.onerror=null; this.src=\'img/blank.png\';"';
+			html += '" class="ad-item-img"';// + visitedState(ads[i]);
+			html += ' onError="this.onerror=null; this.src=\'img/blank.png\';"';
 			html += '" alt="ad thumb"></span><span class="title">'; 
 			html +=  ads[i].title ? ads[i].title  : "#"+ads[i].id;
-			html += '</span><cite>'+targetDomain(ads[i].targetUrl)+'</cite></a></li>\n\n';
+			html += '</span><cite>'+targetDomain(ads[i])+'</cite></a></li>\n\n';
 		}
 		else if (ads[i].contentType === 'text') {
 
-			html += '<li class="ad-item-text';
-			html += visitedState(ads[i]) + '""><span class="thumb">';
-			html += 'Text Ad</span><h3><a target="new" href="' + ads[i].targetUrl + '">';
-			html += ads[i].title + '</a></h3><cite>' + targetDomain(ads[i].targetUrl);
+			html += '<li id="ad'+ads[i].id+'" class="ad-item-text'+visitedClass(ads[i]);
+			html += '""><span class="thumb">Text Ad</span><h3><a target="new" href="' 
+			html += ads[i].targetUrl + '">'+ads[i].title + '</a></h3><cite>' + targetDomain(ads[i]);
 			html += '</cite><div class="ads-creative">' + ads[i].contentData +'</div></li>\n\n';
 		}
 	}
 
-	//console.log("\nHTML\n"+html+"\n\n");
+//console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
 }
 
-function visitedState(ad) {
+function visitedClass(ad) {
 
-	return ad.visitedTs > 0 ? '-visited' : (ad.visitedTs < 0 ? '-errored' : '');  
+	return ad.visitedTs > 0 ? ' visited' : 
+		(ad.visitedTs < 0 ? ' errored' : '');  
 }
 
+/* 
+ * Start with resolvedTargetUrl if available, else use targetUrl
+ * Then extract the last domain from the (possibly complex) url 
+ */
+function targetDomain(ad) {
 
-function targetDomain(text) {
-
-	var doms = extractDomains(text);
-	var dom = doms[doms.length-1];
-	return new URL(dom).hostname;
+	var url = ad.resolvedTargetUrl || ad.targetUrl;
+	return new URL(extractDomains(url).pop()).hostname;
 }
 
 function extractDomains(text) {
@@ -195,10 +249,10 @@ function attachTests() {
 		window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help"
 	}); 
 	 					 
-	$.getJSON(TEST_ADS, function(json) {
+	$.getJSON(TEST_ADS, function(jsonObj) {
 
 		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds(processAdData(testGetAds(json), TEST_PAGE));
+	    layoutAds({ data : jsonObj, page : TEST_PAGE });
 	    
 	}).fail(function(e) { console.warn( "error:", e); });
 }
@@ -208,13 +262,13 @@ function attachTests() {
 	console.log('INIT_HANDLERS');		
 
 	$('#log-button').click(function(e) {
-		console.log('#log-button.click');
+		//console.log('#log-button.click');
 
 		self.port && self.port.emit("show-log");
 	});
 	
 	$('#vault-button').click(function() {
-		console.log('#vault-button.click');
+		//console.log('#vault-button.click');
 
 		self.port && self.port.emit("show-vault");
 	});
@@ -261,6 +315,7 @@ function attachTests() {
 	});
 
 	$('#about-button').click(function() {
+		
 		//console.log('#about-button.click');
 		self.port && self.port.emit('show-about');
 	});

@@ -3,12 +3,12 @@ var xAxis, format = d3.time.format("%a %b %d %Y");
 function createSlider() { // should happen just once
 
 	sliderCreated = true;
-	
+
 	// setting up the position of the chart:
 	var margin = { top: 50, right: 40, bottom: 20, left: 20 },
-	    width = parseInt(d3.select("#left").style("width"), 10) 
+	    width = parseInt(d3.select("#left").style("width"), 10)
 	    - (margin.left + margin.right +100),
-	    barw = 5, // individual bar width
+	    barw = 3, // individual bar width
 	    barg = 1; // gap between individual bars
 
 	// dynamic time format function:
@@ -37,7 +37,7 @@ function createSlider() { // should happen just once
 
    // setup the histogram layout:
    var histogram = d3.layout.histogram()
-      .bins(60) // how many groups? (should be dynamic, based on the data)
+      .bins(120) // how many groups? (should be dynamic, based on the data)
       //.bins(width/(barw-barg))
       (map)
 
@@ -106,9 +106,9 @@ function createSlider() { // should happen just once
 		.attr("y", -40);
 
 	// ---------------------------- functions ------------------------------
-	
+
 	function runFilter(ext) {
-		
+
 		var tmpAds, min = ext[0], max =ext[1];
 		if (max - min <= 1) return; // fix for gh #100
 		tmpAds = dateFilter(min, max);
@@ -117,16 +117,16 @@ function createSlider() { // should happen just once
 	}
 
 	function arraysEqual(a, b) {
-		
+
 		a.sort();
 		b.sort();
-		
+
 		if (a === b)
 			return true;
-		
+
 		if (a == null || b == null)
 			return false;
-			
+
 		if (a.length != b.length)
 			return false;
 
@@ -134,7 +134,7 @@ function createSlider() { // should happen just once
 		// the array, you should sort both arrays here.
 
 		for (var i = 0; i < a.length; ++i) {
-			
+
 			if (a[i] !== b[i])
 				return false;
 		}
@@ -144,7 +144,7 @@ function createSlider() { // should happen just once
 	function dateFilter(min, max) {
 
 		//log('dateFilter: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
-	
+
 		var filtered = [], ads = allAds.slice();
 		for (var i=0, j = ads.length; i<j; i++) {
 
@@ -171,7 +171,7 @@ function createSlider() { // should happen just once
 	}
 
 	function brushmove() {
- 
+
 		runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
 	}
 

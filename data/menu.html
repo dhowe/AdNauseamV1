@@ -9,13 +9,13 @@
 	<script src="lib/jquery-1.10.2.min.js"></script>
 	<script src="lib/jquery-1.11.2-ui.js"></script>
 	<script>
-	
-		var TEST_MODE = false, 
+
+		var TEST_MODE = true,
 			TEST_PAGE = "http://www.nytimes.com/",
-			TEST_ADS = "../lib/test/test-ad-data.json";
-		
+			TEST_ADS = "../lib/test/lots-of-ads.json";
+
 		if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
-		
+
 			$(function() {
 				$.getScript("menu.js")
 				.done(function() {
@@ -24,9 +24,9 @@
 				.fail(function(jqxhr, data, e ) {
 					 console.error("json: ", e);
 				});
-			});		
+			});
 		}
-		
+
 	</script>
 </head>
 <body class="active">
@@ -45,6 +45,12 @@
 			</header>
 
 			<div id="ad-list">
+
+				<div id="alert" class="hide">
+					<img src="img/adn_error.png" alt="error">
+					<p>Error message here</p>
+				</div>
+
 				<ul id='ad-list-items'>
 					<!--li class="ad-item"><a href="#"><span class="thumb"><img src="http://subscribe.newyorker.com/circulation/shared/ads/TNY_RightRail_300x600.jpg" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>
 					<li class="ad-item"><a href="#"><span class="thumb"><img src="http://img.washingtonpost.com/wp-srv/ad/public/static/retina/sub_promos/610x66@2x.jpg" alt="ad thumb"></span><span class="title">Title of the ad's target</span><cite>www.bladegallery.com/</cite></a></li>

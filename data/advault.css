@@ -74,6 +74,39 @@ div.tooltip {
 	cursor: -webkit-grabbing;
 }
 
+.hide {
+	display: none;
+}
+
+#alert {
+	  height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+#alert img {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -36px 0px 0px -36px;
+	width: 72px;
+	height: auto;
+	box-shadow: 2px 0px 30px #000;
+	background: #000;
+	border-radius: 30px;
+}
+
+#alert p {
+	position: absolute;
+	top: 50%;
+	margin-top: 50px;
+	text-align: center;
+	width: 80%;
+	padding: 0px 10%;
+	color: white;
+	text-shadow: 0 0 3px #000;
+}
+
 .zoom {
 	position: absolute;
 	top: 16px;
@@ -411,14 +444,6 @@ div.tooltip {
 
 .item:hover img,
 .item:focus img{
-	opacity: 1;
-	border: 3px solid #A020F0;
-	margin: -3px;
-	border-radius: 3px;
-}
-
-.item:hover img,
-.item:focus img {
 	opacity: 1;
 	border: 3px solid #A020F0;
 	margin: -3px;

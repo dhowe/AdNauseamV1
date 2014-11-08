@@ -1,4 +1,10 @@
-self.port && self.port.on('refresh-ads', layoutAds);
+
+self.port && self.port.on('refresh-ad', function(data) {
+	// refresh in-place
+});
+
+self.port && self.port.on('refresh-ads', layoutAds); // refresh all
+
 
 self.port && self.port.on('refresh-panel', function(opts) {
 
@@ -133,14 +139,14 @@ function createHtml(ads) {
 			html += '" onError="this.onerror=null; this.src=\'img/blank.png\';"';
 			html += '" alt="ad thumb"></span><span class="title">'; 
 			html +=  ads[i].title ? ads[i].title  : "#"+ads[i].id;
-			html += '</span><cite>'+targetDomain(ads[i].targetUrl)+'</cite></a></li>\n\n';
+			html += '</span><cite>'+targetDomain(ads[i])+'</cite></a></li>\n\n';
 		}
 		else if (ads[i].contentType === 'text') {
 
 			html += '<li class="ad-item-text';
 			html += visitedState(ads[i]) + '""><span class="thumb">';
 			html += 'Text Ad</span><h3><a target="new" href="' + ads[i].targetUrl + '">';
-			html += ads[i].title + '</a></h3><cite>' + targetDomain(ads[i].targetUrl);
+			html += ads[i].title + '</a></h3><cite>' + targetDomain(ads[i]);
 			html += '</cite><div class="ads-creative">' + ads[i].contentData +'</div></li>\n\n';
 		}
 	}
@@ -152,15 +158,19 @@ function createHtml(ads) {
 
 function visitedState(ad) {
 
-	return ad.visitedTs > 0 ? '-visited' : (ad.visitedTs < 0 ? '-errored' : '');  
+	return ad.visitedTs > 0 ? '-visited' 
+		: (ad.visitedTs < 0 ? '-errored' : '');  
 }
 
 
-function targetDomain(text) {
+/* 
+ * Start with resolvedTargetUrl if available, else use targetUrl
+ * Then extract the last domain from the (possibly complex) url 
+ */
+function targetDomain(ad) {
 
-	var doms = extractDomains(text);
-	var dom = doms[doms.length-1];
-	return new URL(dom).hostname;
+	var url = ad.resolvedTargetUrl || ad.targetUrl;
+	return new URL(extractDomains(url).pop()).hostname;
 }
 
 function extractDomains(text) {

@@ -47,8 +47,6 @@ function makeAdVault() { // should happen once
 
 	allAds = ads.slice();
 
-	if (!sliderCreated) createSlider();
-
 	addInterfaceHandlers();
 
 	generateHtml(allAds);
@@ -577,6 +575,8 @@ function clearAds() {
 
 
 function addInterfaceHandlers() {
+
+	if (!sliderCreated) createSlider();
 
 	/////////// RESIZE-PANELS
 

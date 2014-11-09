@@ -1,8 +1,12 @@
-var xAxis, format = d3.time.format("%a %b %d %Y");
+var xAxis, all, format = d3.time.format("%a %b %d %Y");
+var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
+var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
-function createSlider() { // should happen just once
+function createSlider(ads) { // should happen just once
 
+	var all = ads.slice();
 	
+	console.log("createSlider(once-only): "+ads.length);
 	//sliderCreated = true;
 
 	// setting up the position of the chart:
@@ -114,7 +118,7 @@ function createSlider() { // should happen just once
 		if (max - min <= 1) return; // fix for gh #100
 		tmpAds = dateFilter(min, max);
 		if (!arraysEqual(ads, tmpAds))
-			generateHtml(ads = tmpAds);
+			createHtml(ads = tmpAds);
 	}
 
 	function arraysEqual(a, b) {
@@ -146,7 +150,8 @@ function createSlider() { // should happen just once
 
 		//log('dateFilter: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
 
-		var filtered = [], ads = allAds.slice();
+		var filtered = [], ads = all.slice(); // need to start from full-set here
+		
 		for (var i=0, j = ads.length; i<j; i++) {
 
 			//ads[i].filtered = false;

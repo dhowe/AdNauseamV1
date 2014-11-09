@@ -81,7 +81,7 @@ function processAdData(adhash, pageUrl) {
 		ad.count = hash[ad.contentData];
 	}
 
-	return { ads: ads, onpage: onpage };
+	return { ads: ads, onpage: onpage, unique: unique };
 }
 
 function currentPage() {

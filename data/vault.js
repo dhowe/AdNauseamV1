@@ -1,8 +1,8 @@
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
-function layoutAds(adHashAndPageObj) {
-
+function layoutAds(adHashAndPageObj) { // NOTE: this can be called multiple times
+   
 	var ads = processAdData(adHashAndPageObj.data).ads;
 	
 	log('Vault.layoutAds: '+ads.length);
@@ -23,10 +23,8 @@ function updateAds(adHashAndPageObj) {
 
 	all = ads.slice(); // save original set
 	
-	// change class, title, visited, resolved 
-	for (var i=0, j = updates.length; i<j; i++)
-		doUpdate(updates[i]); // use map
-    //updates.map(doUpdate);
+	// update class/title/visited/resolved-url
+    updates.map(doUpdate);
 
 	computeStats(ads);	
 }
@@ -565,6 +563,7 @@ function addInterfaceHandlers(ads) {
 	//log('addInterfaceHandlers');
 
 	if (!sliderCreated) {
+	    
 	    createSlider(ads);
 	}
 	else {
@@ -580,6 +579,7 @@ function addInterfaceHandlers(ads) {
 
 	$(document).mouseup(function(e) {
 
+        // TODO: reset slider width here 
     	resizing = false;
     	e.preventDefault();
 	});

@@ -82,3 +82,6 @@ function toAdArray(adhash, filter) {
 
     return all;
 }
+
+function log(m) { console.log(m); }
+

@@ -1,9 +1,8 @@
-
-
-self.port && self.port.on('refresh-ads', layoutAds); // refresh all
+self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
+self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
-self.port && self.port.on('refresh-panel', function(opts) {
+function refreshPanel(opts) {
 
 	var img = 'img/adn_active.png', label = 'Pause AdNauseam';
 
@@ -18,19 +17,7 @@ self.port && self.port.on('refresh-panel', function(opts) {
 
 	$('#toggle-button').css('background-image', 'url('+img+')');
 	$('#pause-button').text(label);
-});
-
-self.port && self.port.on("close-panel", function() {
-	//console.log("popup.close-panel: ");
-});
-
-self.port && self.port.on("open-panel", function() {
-	console.log("popup.open-panel: ");
-});
-
-self.port && self.port.on("load-advault", function() {
-	console.log("popup.load-advault: ");
-});
+}
 
 function processAdData(adhash, pageUrl) {
 
@@ -95,9 +82,6 @@ function updateAds(obj) {
 
 	var adhash = obj.data, updates = obj.updates, page = obj.page;
 
-	//console.log("updates: "+updates.length);
-	//console.log("ads: "+toAdArray(adhash).length);
-
 	// change class, {title, (visitedTs) resolved}
 	for (var i=0, j = updates.length; i<j; i++) {
 
@@ -115,9 +99,6 @@ function updateAds(obj) {
 
 	var data = processAdData(adhash, page);
 	$('#visited-count').text(visitedCount(data.onpage)+' ads visited');
-
-	//console.log('UPDATES COMPLETE!');
-	//setCounts(data.onpage.length, visitedCount, data.ads.length);
 }
 
 

@@ -270,9 +270,9 @@ div.tooltip {
 @keyframes pop {
    from {
      transform: scale(0.8,0.8);
-			 opacity: 0.3;
-					 /*top: 5000px;
-					left: 5000px;*/
+	 opacity: 0.3;
+	 /*top: 5000px;
+	   left: 5000px;*/
    }
 }
 
@@ -644,7 +644,7 @@ aside .details {
 	right: 0;
 	bottom: 0;
 	height: 130px;
-	border-bottom: 20px solid #ccc;
+	border-bottom: 30px solid #ccc;
 	background: rgba(220,220,220,0.90);
 	font-size: 12px;
 }

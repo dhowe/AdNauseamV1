@@ -1,34 +1,107 @@
-self.port && self.port.on('refresh-ads', layoutAds); // refresh all
+self.port && self.port.on('layout-ads', layoutAds); // refresh all
+self.port && self.port.on('update-ads', updateAds); // update some
 
 function layoutAds(adHashAndPageObj) {
 
-	var adhash = adHashAndPageObj.data;
-	var ads = processAdData(adhash, null).ads;
+	log('Vault.layoutAds');
 
-console.log('Vault: ads-count: ' + ads.length);
-	
+	var ads = processAdData(adHashAndPageObj.data).ads;	
+	all = ads.slice(); // save original set
 	addInterfaceHandlers(ads);
-	createHtml(ads);
-	positionAdview(); // autozoom & center
+	doLayout(ads, true);
 }
 
-function createHtml(theAds) {
+function updateAds(adHashAndPageObj) {
 
-	if (!theAds) throw Error("No ads!");
-
-	var result = formatDivs(theAds);
-
-	if (0)console.log("generateHtml: "+theAds.length+" result:\n"+result+"\n");
+	log('Vault.updateAds()');
 	
-	$('#container').html(result);
+    var ads = processAdData(adHashAndPageObj.data).ads, 
+       vdate, updates = adHashAndPageObj.updates;           
+	   
+	all = ads.slice(); // save original set
+	
+	// change class, title, visited, resolved 
+	for (var i=0, j = updates.length; i<j; i++) {
 
-	computeStats(theAds);
+		doUpdate(updates[i]);
+    }
 
-	enableInspector();
+	computeStats(ads);	
+}
 
-	repack(theAds);
+function findAdById(id, ads) {
+    
+    for (i=0, j=ads.length; i< j; i++) {
+        
+        if (ads[i].id === id)
+            return ads[i]
+    }
+    
+    return null;
+}
 
-	//dbugOffsets && addTestDivs();
+function doUpdate(updated) {
+
+        var sel = '#ad' + updated.id;
+
+        // update the title
+        $(sel).attr('data-title', updated.title);
+        
+        // update the visit-time
+        var vdate = formatDate(updated.visitedTs);
+        $(sel).attr('data-visitedTs', vdate);
+        
+        // update the target-url
+        if (updated.resolvedTargetUrl) {
+            
+            //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
+            $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
+        }
+
+        // update the class (now visited)
+        $(sel).removeClass('pending');
+        $(sel).addClass((updated.visitedTs > 0) ? 'visited' : 'errored');
+        
+        // Update inspector fields with (title,visitedTs,targetUrl)
+        if ($(sel).hasClass('inspectee')) 
+            updateInspector(updated, vdate);
+}
+
+function updateInspector(updated, vdate) {
+    
+    if (inspectorData && inspectorData.length) {
+        
+        // update the existing inspector object
+        for (var i=0, j = inspectorData.length; i<j; i++) {
+            
+            inspectorData[i].visited = vdate;
+            inspectorData[i].title = updated.title;
+            if (updated.resolvedTargetUrl)
+                inspectorData[i].target =updated.resolvedTargetUrl;
+        }
+    
+        // update all phases of the animation
+        $('.panes > li').each(function() {
+                 
+            populateInspectorDetails(this, inspectorData[0]);
+        });
+    }
+}
+
+function doLayout(theAds, resetLayout) {
+
+    if (!theAds) throw Error("No ads!");
+
+    var result = formatDivs(theAds);
+
+    $('#container').html(result);
+
+    computeStats(theAds);
+
+    enableInspector();
+
+    repack(theAds, resetLayout);
+    //dbugOffsets && addTestDivs();
 }
 
 function computeStats(theAds) {
@@ -37,9 +110,9 @@ function computeStats(theAds) {
 }
 
 
-function repack(theAds) {
+function repack(theAds, resetLayout) {
 
-	console.log("vault.repack()");
+	log("Vault.repack()");
 	
 	showAlert(false);
 
@@ -47,14 +120,18 @@ function repack(theAds) {
 	
 	if (visible > 1) { // count non-hidden ads
 	
-		pack = new Packery(
-			'#container', {
-				centered : { y : 5000 }, // centered half min-height
-				itemSelector : '.item',
-				gutter : 1
-		});
+		setTimeout(function() {
+
+			pack = new Packery(
+				'#container', {
+					centered : { y : 5000 }, // centered half min-height
+					itemSelector : '.item',
+					gutter : 1
+			});
+			
+			if (resetLayout) positionAds();
 		
-		return true; 
+		}, 300);		
 	}
 	else if (visible === 1) {
 
@@ -65,27 +142,12 @@ function repack(theAds) {
 	else {
 
 		showAlert('no ads found');
-	}
-	
-	return false;
-}
-
-function showAlert(msg) {
-	
-	if (msg) {
-		
-		$("#alert").removeClass('hide');
-		$("#alert p").text(msg);
-	}
-	else {
-		
-		$("#alert").addClass('hide');
-	}
+	}	
 }
 
 function formatDivs(ads) {
 
-	//console.log('formatDivs: '+ads.length);
+	//log('formatDivs: '+ads.length);
 
 	var textAds = 0, html = '';
 
@@ -104,24 +166,25 @@ function formatDivs(ads) {
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 
 			if (ad.visitedTs == 0) html += 'pending ';
-			if (ad.visitedTs < 0)  html += 'failed ';
+			if (ad.visitedTs < 0)  html += 'errored ';
+			if (ad.visitedTs > 0)  html += 'visited ';
 
 			// TODO: what if text-ad?
 
 			html += 'dup-count-'+ad.count+'" ';
-			html += 'data-detected="'+formatDate(ad.foundTs)+'" ';
-			html += 'data-visited="'+formatDate(ad.visitedTs)+'" ';
-			html += 'data-target="'+ad.targetUrl+'" ';
-			html += 'data-url="'+ad.contentData+'" ';
-			html += 'data-origin="'+ad.pageUrl+'">';
+			html += 'data-title="'+ad.title+'" ';
+			html += 'data-foundTs="'+formatDate(ad.foundTs)+'" ';
+			html += 'data-visitedTs="'+formatDate(ad.visitedTs)+'" ';
+			html += 'data-targetUrl="'+ad.targetUrl+'" ';
+			html += 'data-contentData="'+ad.contentData+'" ';
+			html += 'data-pageUrl="'+ad.pageUrl+'">';
 
 			if (!ad.hidden)
 			{
 				html += '<span class="counter">'+ad.count+'</span>';
 				//html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
-				html += '<img id="img'+ad.id+'" src="' + ad.contentData + '" alt="ad-image"';
+				html += '<img id="img'+ad.id+'" src="' + ad.contentData + '" alt=""';
 				html += ' onError="this.onerror=null; this.src=\'img/blank.png\';">';
-
 			}
 
 			html += '</div>\n';
@@ -129,41 +192,23 @@ function formatDivs(ads) {
 
 	}
 
-	console.log("Ignoring "+textAds + ' text-ads');
+	log("Ignoring "+textAds + ' text-ads');
 
 	return html;
 }
 
 // --------------------------- shared (extract) -----------------------------
-
-function formatStats(ads) {
-
-	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
-	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
-}
-
-function numVisited(ads) {
-
-	var numv = 0;
-	for (var i=0, j = ads.length; i<j; i++) {
-
-		if (ads[i].visitedTs > 0)
-			numv++;
+function showAlert(msg) { // shared
+	
+	if (msg) {
+		
+		$("#alert").removeClass('hide');
+		$("#alert p").text(msg);
 	}
-	return numv;
-}
-
-function sinceTime(ads) {
-
-	var oldest = +new Date(), idx = 0;
-	for (var i=0, j = ads.length; i<j; i++) {
-
-		if (ads[i].foundTs < oldest) {
-			oldest = ads[i].foundTs;
-			idx = i;
-		}
+	else {
+		
+		$("#alert").addClass('hide');
 	}
-	return oldest;
 }
 
 function processAdData(adhash, pageUrl/*null*/) { // shared
@@ -237,6 +282,35 @@ function toAdArray(adhash, filter) { // shared
 
 // --------------------------- end shared -----------------------------
 
+function formatStats(ads) {
+
+	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
+	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
+}
+
+function numVisited(ads) {
+
+	var numv = 0;
+	for (var i=0, j = ads.length; i<j; i++) {
+
+		if (ads[i].visitedTs > 0)
+			numv++;
+	}
+	return numv;
+}
+
+function sinceTime(ads) {
+
+	var oldest = +new Date(), idx = 0;
+	for (var i=0, j = ads.length; i<j; i++) {
+
+		if (ads[i].foundTs < oldest) {
+			oldest = ads[i].foundTs;
+			idx = i;
+		}
+	}
+	return oldest;
+}
 
 function dragStart(event) {
 
@@ -261,7 +335,7 @@ function _drag(event) {
 	var offset = event.dataTransfer.getData("text/plain").split(',');
    	var dm  = document.querySelector('#container');
 
-   	//console.log("_drag: ", event.clientX, event.clientY, offset);
+   	//log("_drag: ", event.clientX, event.clientY, offset);
 
 	/*  CS: get pixel values from margin-left and margin-top instead of left and top */
     dm.style.marginLeft = (event.clientX + parseInt(offset[0], 10)) + 'px';
@@ -311,48 +385,60 @@ function resizeHistorySlider() {
 
 	var haveOpts = (typeof options !== 'undefined');
 	if (!haveOpts)
-		console.log("[WARN] No options, using test Ad data!");
+		log("[WARN] No options, using test Ad data!");
 
 	historySlider( (haveOpts ? options : test).ads); // TODO:
 }
-function enableInspector() {
 
-	$('.item').mouseenter(function() {
+function enableInspector(force) {
 
-		// don't re-animate the same ad
-		if ($(this).hasClass('inspectee'))
-			return;
-
-		// remember this as last in the inspector
-		$(this).addClass('inspectee').siblings()
-			.removeClass('inspectee');
-
-		// load primary ad and any dups for inspector
-		inspectorData = loadInspectorData(this);
-
-		// fill fields for first empty pane & set class to 'full'
-		populateInspector(inspectorData, inspectorIdx=0);
-
-		// make/layout controls for duplicates
-		makeDuplicateControls(inspectorData);
-
-		doAnimation(inspectorData);
-
-		if (inspectorData.length>1)
-			 cycleThroughDuplicates();
-	});
+	$('.item').mouseenter(function() { 
+	    
+	    // populate the inspector & animate if dups
+	    setInspectorFields(this, false);
+    });
 
 	$('.item').mouseleave(function() {
 
 		// kill any remaining dup animations
-		animatorId && clearTimeout(animatorId);
+		clearInspector();
 	});
+}
+
+function clearInspector() {
+    
+    animatorId && clearTimeout(animatorId);
+}
+
+function setInspectorFields(ele, forceRebuild) {
+
+    // don't reset animatation of the same ad
+    if (forceRebuild || !$(ele).hasClass('inspectee')) {
+
+        // remember this as last in the inspector
+        $(ele).addClass('inspectee').siblings()
+            .removeClass('inspectee');
+
+        // load primary ad & all dups for inspector
+        inspectorData = loadInspectorData(ele);
+
+        // fill fields for first empty pane & set class to 'full'
+        populateInspector(inspectorData, inspectorIdx=0);
+
+        // make/layout controls for duplicates
+        makeDuplicateControls(inspectorData);
+
+        doAnimation(inspectorData);
+    }
+
+    if (inspectorData.length>1)  // but cycle either way
+         cycleThroughDuplicates();
 }
 
 function loadInspectorData(ele) {
 
 	var data = [ createInspectorObj(ele) ];
-	return findDuplicates(data);
+	return findDuplicates(data); // returns data
 }
 
 function createInspectorObj(item) {
@@ -361,32 +447,35 @@ function createInspectorObj(item) {
 
 		imgsrc : $('img', item).attr('src'),
 		imgalt : $('img', item).attr('alt'),
-		target : $(item).attr('data-target'),
-		origin : $(item).attr('data-origin'),
-		visited : $(item).attr('data-visited'),
-		detected : $(item).attr('data-detected')
+		title: $(item).attr('data-title'),
+		target : $(item).attr('data-targetUrl'),
+		origin : $(item).attr('data-pageUrl'),
+		visited : $(item).attr('data-visitedTs'),
+		detected : $(item).attr('data-foundTs')
 	}
 }
 
-function findDuplicates(data) { // contains template at index=0
+function findDuplicates(insDataArr) { // contains template at index=0
 
 	$(".item-hidden").each(function(i) {
 
-		var next, url = $(this).attr('data-url');
-		if (url === data[0].imgsrc) { // same ad-image?
+		var next, url = $(this).attr('data-contentData');
+		
+		if (url === insDataArr[0].imgsrc) { // same ad-image?
 
 			next = createInspectorObj(this);
-			data.push(next);
+			insDataArr.push(next);
 		}
 	});
 
-	return data;
+	return insDataArr;
 }
 
 function makeDuplicateControls(data) {
 
-	// reset the controls (small dots below the image)
+	// reset the controls (small dots below img)
 	$(".controls" ).empty();
+	
 	for (var i=0; i < data.length; i++) {
 
 		var li = '<li data-idx="'+i+'" class=';
@@ -409,6 +498,7 @@ function doAnimation(data) {
 
 		$( this ).removeClass('out').addClass('empty');
 		if ($( this ).hasClass('in')) {
+		    
 			$( this ).removeClass().addClass('out');
 		}
 		else { // hack to get correct img in place for dups
@@ -424,7 +514,7 @@ function doAnimation(data) {
 
 function cycleThroughDuplicates() {
 
-	//console.log('cycleThroughDuplicates()');
+	//log('cycleThroughDuplicates()');
 	animatorId && clearTimeout(animatorId);
 	animatorId = setTimeout(inspectorAnimator, animateMs);
 }
@@ -437,8 +527,6 @@ function inspectorAnimator() {
 
 		populateInspector(inspectorData, inspectorIdx);
 
-		//console.log($('img', $('.ready').first()).attr('src'));
-
 		doAnimation(inspectorData);
 
 		cycleThroughDuplicates(); // next
@@ -447,22 +535,13 @@ function inspectorAnimator() {
 
 function populateInspector(iData, dupIdx) {
 
-	//console.log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
+	//log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
 
-	var ele = $('.empty').first(), ad = iData[dupIdx];
+	var ele = $('.empty').first(), insp = iData[dupIdx];
 
-	if (!ad)
-		throw Error('no inspectorData['+dupIdx +']:', iData);
+	if (!insp) throw Error('no inspectorData['+dupIdx+']', iData);
 
-	// update image-src and image-alt tags
-	$('img', ele).attr('src', ad.imgsrc);
-	$('img', ele).attr('alt',  ad.imgalt);
-
-	// update inspector fields
-	$('.target',   ele).text(ad.target);
-	$('.origin',   ele).text(ad.origin);
-	$('.visited',  ele).text(ad.visited);
-	$('.detected', ele).text(ad.detected);
+    populateInspectorDetails(ele, insp);
 
 	// set the active dot in the dup-control
 	$('.controls li:nth-child('+(inspectorIdx+1)+')')
@@ -471,6 +550,22 @@ function populateInspector(iData, dupIdx) {
 	// tell the world we are ready to slide 'in'
 	$(ele).removeClass().addClass('ready');
 }
+    
+function populateInspectorDetails(ele, insp) {
+    
+    // update image-src and image-alt tags
+    $(ele).find('img')
+        .attr('src', insp.imgsrc)
+        .attr('alt',  insp.imgalt);
+    
+    // update inspector fields  
+    $(ele).find('.title').text(insp.title);
+    $(ele).find('.target').text(insp.target);
+    $(ele).find('.origin').text(insp.origin);
+    $(ele).find('.visited').text(insp.visited);
+    $(ele).find('.detected').text(insp.detected);
+}
+
 
 function attachTests() {
 
@@ -513,9 +608,9 @@ function setZoom(idx) {
 }
 
 
-function positionAdview() {
+function positionAds() { // autozoom & center
 
-	console.log("positionAdview");
+	log("Vault.positionAds");
 
 	var percentVisible = .6,
 		winH = $('#svgcon').offset().top,
@@ -540,13 +635,13 @@ function positionAdview() {
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
 
-			//console.log(i+")",x,y,w,h);
-			// COMPARE-TO (console): $('.item img').each(function(i, img) { console.log( i+") "+Math.round($(this).offset().left)) });
+			//log(i+")",x,y,w,h);
+			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i+") "+Math.round($(this).offset().left)) });
 
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
 				zoomOut();
-				console.log('Ad('+$(this).attr('id')+') offscreen, zoom='+zoomStyle);
+				log('Ad('+$(this).attr('id')+') offscreen, zoom='+zoomStyle);
 				return (problem = true); // break jquery each() loop
 			}
 		});
@@ -557,10 +652,9 @@ function positionAdview() {
 
 function addInterfaceHandlers(ads) {
 
-	//console.log('addInterfaceHandlers');
+	//log('addInterfaceHandlers');
 
-	//if (!sliderCreated) 
-	createSlider(ads);
+	if (!sliderCreated) createSlider(ads);
 
 	/////////// RESIZE-PANELS
 

@@ -1,13 +1,12 @@
-var xAxis, all, format = d3.time.format("%a %b %d %Y");
+var xAxis, all, format = d3.time.format("%a %b %d %Y"), sliderCreated = 0;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
 function createSlider(ads) { // should happen just once
 
-	var all = ads.slice();
+	log('Vault-UI.createSlider(only-once)');
 	
-	console.log("createSlider(once-only): "+ads.length);
-	//sliderCreated = true;
+	sliderCreated = true;
 
 	// setting up the position of the chart:
 	var margin = { top: 50, right: 40, bottom: 20, left: 20 },
@@ -118,7 +117,7 @@ function createSlider(ads) { // should happen just once
 		if (max - min <= 1) return; // fix for gh #100
 		tmpAds = dateFilter(min, max);
 		if (!arraysEqual(ads, tmpAds))
-			createHtml(ads = tmpAds);
+			doLayout(ads = tmpAds, false);
 	}
 
 	function arraysEqual(a, b) {
@@ -148,33 +147,25 @@ function createSlider(ads) { // should happen just once
 
 	function dateFilter(min, max) {
 
-		//log('dateFilter: '+ads.length+' ads, min='+formatDate(min)+', max='+formatDate(max));
+		//log('dateFilter: '+ads.length+' all, min='+formatDate(min)+', max='+formatDate(max));
 
-		var filtered = [], ads = all.slice(); // need to start from full-set here
+		var filtered = []; 
 		
-		for (var i=0, j = ads.length; i<j; i++) {
+		for (var i=0, j = all.length; i<j; i++) { // need to start from full-set here
 
-			//ads[i].filtered = false;
+			if (!(all[i].foundTs < min || all[i].foundTs > max)) {
 
-			if (ads[i].foundTs < min || ads[i].foundTs > max) {
-
-				//log('ad#'+ads[i].id+' filtered: '+formatDate(ads[i].foundTs));
-			}
-			else {
-
-				filtered.push(ads[i]);
+                filtered.push(all[i]);
 			}
 		}
-		log('filter: in='+ads.length+' out='+filtered.length);
+		
+		//log('filter: in='+all.length+' out='+filtered.length);
 
 		return filtered;
 	}
 
 
-	function brushstart() {
-
-		//svg.classed("selecting", true);
-	}
+	function brushstart() {	}
 
 	function brushmove() {
 
@@ -188,6 +179,7 @@ function createSlider(ads) { // should happen just once
 	}
 
 	function randomDate(start, end) {
+		
 	    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 	}
 }

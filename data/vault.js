@@ -6,9 +6,11 @@ function layoutAds(adHashAndPageObj) {
 	var ads = processAdData(adHashAndPageObj.data).ads;
 	
 	log('Vault.layoutAds: '+ads.length);
-		
+	
 	all = ads.slice(); // save original set
+	 
 	addInterfaceHandlers(ads);
+	
 	doLayout(ads, true);
 }
 
@@ -22,10 +24,9 @@ function updateAds(adHashAndPageObj) {
 	all = ads.slice(); // save original set
 	
 	// change class, title, visited, resolved 
-	for (var i=0, j = updates.length; i<j; i++) {
-
-		doUpdate(updates[i]);
-    }
+	for (var i=0, j = updates.length; i<j; i++)
+		doUpdate(updates[i]); // use map
+    //updates.map(doUpdate);
 
 	computeStats(ads);	
 }
@@ -110,14 +111,13 @@ function computeStats(theAds) {
 	$('#stats').html(formatStats(theAds));
 }
 
-
 function repack(theAds, resetLayout) {
 
 	log("Vault.repack()");
-	
-	showAlert(false);
 
 	var visible =  $(".item").length;
+	
+    showAlert(visible ? false : 'no ads found');
 	
 	if (visible > 1) { // count non-hidden ads
 	
@@ -140,29 +140,24 @@ function repack(theAds, resetLayout) {
 		var sz = realSize($('.item img'));
 		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2)+'px' } );
 	}
-	else {
-
-		showAlert('no ads found');
-	}	
 }
 
 function formatDivs(ads) {
 
 	//log('formatDivs: '+ads.length);
 
-	var textAds = 0, html = '';
+	var ad, textAds = 0, html = '';
 
 	for (var i=0, j = ads.length; i<j; i++) {
 
-		if (ads[i].contentType === 'text') {
+        ad = ads[i];
+        
+		if (ad.contentType === 'text') {
 
 			textAds++;
 		}
 		else // assume: contentType === 'img'
 		{
-
-			var ad = ads[i];
-
 			html += '<a href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 
@@ -575,7 +570,6 @@ function addInterfaceHandlers(ads) {
 	else {
 	    console.log('SKIPPING SLIDER!');
 	}
-
 	/////////// RESIZE-PANELS
 
 	$('#handle').mousedown(function(e){

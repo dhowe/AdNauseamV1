@@ -2,6 +2,18 @@ var xAxis, all, format = d3.time.format("%a %b %d %Y"), sliderCreated = 0;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
 
+const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
+    customTimeFormat = d3.time.format.multi([
+        [".%L", function(d)     { return d.getMilliseconds(); }],
+        [":%S", function(d)     { return d.getSeconds(); }],
+        ["%I:%M", function(d)   { return d.getMinutes(); }],
+        ["%I %p", function(d)   { return d.getHours(); }],
+        ["%a %d", function(d)   { return d.getDay() && d.getDate() != 1; }],
+        ["%b %d", function(d)   { return d.getDate() != 1; }],
+        ["%B", function(d)      { return d.getMonth(); }],
+        ["%Y", function()       { return true; }]
+]);
+
 function createSlider(ads) { // should happen just once
 
     if (!ads || !ads.length) return;

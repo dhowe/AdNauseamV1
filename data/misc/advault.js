@@ -1,4 +1,4 @@
-var testAdFile = "../lib/test/lots-of-ads.json"; // "../lib/test/lots-of-ads.json"
+var testAdFile = "../lib/test/test-ad-data.json"; // "../lib/test/lots-of-ads.json"
 
 var dbugOffsets = 0, sliderCreated = false,  allAds;
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;

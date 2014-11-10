@@ -15,25 +15,19 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
         ["%Y", function()       { return true; }]
 ]);
 
-// NEXT: extract code for updateSlider 
-
-function updateSlider(ads) { // happens repeately
-}
-
-function createXScale() {
-}
-     
 function createSlider(ads) { // happens just once
 
     if (!ads || !ads.length) return;
      
-	console.log('Vault-UI.createSlider(only-once)');
-	
-	sliderCreated = true;
+	console.log('Vault-UI.createSlider');
 
+    // clear all the old svg
+    d3.select("g.parent").selectAll("*").remove();
+    d3.select("svg").remove(); 
+    
 	// setting up the position of the chart:
-	var width = parseInt(d3.select("#left").style("width"), 10)
-	    - (margin.left + margin.right + 100);
+	var iconW = 100, width = parseInt(d3.select("#left").style("width"))
+	    - (margin.left + margin.right + iconW);
 	    //barw = 3, // individual bar width [dyn] // not used now
 	    //barg = 1; // gap between individual bars [dyn] // not used now
 
@@ -162,7 +156,7 @@ function createSlider(ads) { // happens just once
 
 		var filtered = []; 
 		
-		for (var i=0, j = all.length; i<j; i++) { // need to start from full-set here
+		for (var i=0, j = all.length; i<j; i++) { // need to start from full-set (all) here
 
 			if (!(all[i].foundTs < min || all[i].foundTs > max)) {
 

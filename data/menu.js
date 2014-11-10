@@ -19,92 +19,20 @@ function refreshPanel(opts) {
 	$('#pause-button').text(label);
 }
 
-/*function processAdData(adhash, pageUrl) {
-
-	var ads = toAdArray(adhash);
-
-//console.warn("processAdData: "+ads.length+", "+pageUrl);
-
-	var ad, unique=0, onpage=[], soFar, hash = {};
-
-	// set hidden val for each ad
-	for (var i=0, j = ads.length; i<j; i++) {
-
-		ad = ads[i];
-
-		if (!ad.contentData) continue;
-
-		soFar = hash[ad.contentData];
-		if (!soFar) {
-
-			// new: add a hash entry
-			hash[ad.contentData] = 1;
-			ad.hidden = false;
-
-			// update count on this page
-			if (pageUrl === ads[i].pageUrl ||
-				(typeof testPageUrl != 'undefined' &&
-					testPageUrl === ads[i].pageUrl))  // for testing
-			{
-				// TODO: don't count old ads from same url
-				onpage.push(ads[i]);
-			}
-
-			// update total (unique) count
-			unique++;
-		}
-		else {
-
-			// dup: update the count
-			hash[ad.contentData]++;
-			ad.hidden = true;
-		}
-	}
-
-	// update the count for each ad from hash
-	for (var i=0, j = ads.length; i<j; i++) {
-
-		ad = ads[i];
-		ad.count = hash[ad.contentData];
-	}
-
-	return { ads: ads, onpage: onpage, unique: unique };
-}
-
-function currentPage() {
-
-	var url = window && window.top
-		 && window.top.getBrowser().selectedBrowser.contentWindow.location.href;
-	return url && url != "about:blank" ? url : null;
-}
-
-function toAdArray(adhash, filter) {
-
-    var all = [], keys = Object.keys(adhash);
-    for (var i = 0, j = keys.length; i < j; i++) {
-
-        var ads = adhash[keys[i]];
-        for (var k=0; k < ads.length; k++) {
-
-            if (!filter || filter(ads[k]))
-                all.push(ads[k]);
-        }
-    }
-
-    return all;
-}*/
-
 function layoutAds(adHashAndPageObj) {
 
 	var adhash = adHashAndPageObj.data;
+	
 	var page = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : adHashAndPageObj.page;
+		
 	var data = processAdData(adhash, page);
 
 	//console.log('Menu: ads.total=' + data.ads.length
 		//+', ads.onpage=' + data.onpage.length+", page="+page);
 
 	$('#ad-list-items').html(createHtml(data.onpage));
+
 	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
 }
 
@@ -130,6 +58,17 @@ function updateAds(obj) {
 
     $('#visited-count').text(visitedCount
         (processAdData(adhash, page).onpage)+' ads visited');
+        
+    animateIcon(500);
+}
+
+function animateIcon(ms) {
+    
+    var down = 'img/adn_visited.png', up = 'img/adn_active.png';
+    $('#toggle-button').css('background-image', 'url('+down+')');
+    setTimeout(function() {
+        $('#toggle-button').css('background-image', 'url('+up+')');
+    }, ms);
 }
 
 function setCounts(found, visited, total) {

@@ -8,8 +8,10 @@ function layoutAds(adHashAndPageObj) { // NOTE: this can be called multiple time
 	log('Vault.layoutAds: '+ads.length);
 	
 	all = ads.slice(); // save original set
-	 
-	addInterfaceHandlers(ads);
+
+	addInterfaceHandlers();
+
+    createSlider(ads);
 	
 	doLayout(ads, true);
 }
@@ -284,19 +286,10 @@ function formatDate(ts) {
 		+ meridian.toLowerCase();
 }
 
-// TODO: This should only reset the x-axis, not recreate everything
+// TODO: This should only reset the x-axis/scale, not recreate everything
 function resizeHistorySlider() {
 
-	return; // TMP
-
-	$("svg").remove();
-	$(".tooltip").remove();
-
-	var haveOpts = (typeof options !== 'undefined');
-	if (!haveOpts)
-		log("[WARN] No options, using test Ad data!");
-
-	historySlider( (haveOpts ? options : test).ads); // TODO:
+	createSlider(all); // is this ok, or need a copy? 
 }
 
 function enableInspector(force) {
@@ -560,15 +553,7 @@ function positionAds() { // autozoom & center
 
 function addInterfaceHandlers(ads) {
 
-	//log('addInterfaceHandlers');
 
-	if (!sliderCreated) {
-	    
-	    createSlider(ads);
-	}
-	else {
-	    console.log('SKIPPING SLIDER!');
-	}
 	/////////// RESIZE-PANELS
 
 	$('#handle').mousedown(function(e){
@@ -579,7 +564,6 @@ function addInterfaceHandlers(ads) {
 
 	$(document).mouseup(function(e) {
 
-        // TODO: reset slider width here 
     	resizing = false;
     	e.preventDefault();
 	});
@@ -598,10 +582,9 @@ function addInterfaceHandlers(ads) {
 	    	var w = $('body').width(),
 	    		lw = e.pageX = Math.min(Math.max(w*.3, e.pageX), w*.9);
 
-	      	$('#left').css('width', lw);
-	        $('#right').css('width', w - e.pageX);
+	      	$('#left').width(lw);
+	        $('#right').width(w - e.pageX);
 
-	        // TODO: need to do this as we are dragging
 	        resizeHistorySlider();
 	    }
 
@@ -625,5 +608,20 @@ function addInterfaceHandlers(ads) {
 		e.preventDefault();
 	});
 
-	$(window).resize(resizeHistorySlider);
+    $(window).resize(function() {
+
+        if ( typeof resizeTimer == 'undefined')
+            var resizeTimer = 0;
+            
+        clearTimeout(resizeTimer);
+        
+        resizeTimer = setTimeout(function() {
+            
+            $('#left').width(''); // hack so that a panel-drag doesnt 
+            $('#right').width(''); //  break window-resizing
+            
+            resizeHistorySlider();
+            
+        }, 500); // not sure if we need this delay
+    }); 
 }

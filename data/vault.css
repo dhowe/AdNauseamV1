@@ -300,6 +300,27 @@ div.tooltip {
 	/*opacity: 0.8;*/
 }
 
+.item.justVisited {
+	background: none;
+	animation: 1000ms ease-in-out justVisited;
+}
+
+.item.justVisited img {
+	animation: 1000ms ease-in-out justVisitedImg;
+}
+
+@keyframes justVisited {
+	from {
+		background: #BD10E0;
+	}
+}
+
+@keyframes justVisitedImg {
+	from {
+		opacity: 0;
+	}
+}
+
 .item span{
 	display: block;
 	position: absolute;
@@ -458,6 +479,10 @@ div.tooltip {
 
 .item.pending:hover img {
 	border: 3px solid #00f;
+}
+
+.item.failed:hover img {
+	border-style: dashed;
 }
 
 /***************************************************

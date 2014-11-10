@@ -60,7 +60,7 @@ function doUpdate(updated) {
 
         // update the class (now visited)
         $(sel).removeClass('pending');
-        $(sel).addClass((updated.visitedTs > 0) ? 'visited' : 'errored');
+        $(sel).addClass((updated.visitedTs > 0) ? 'visited' : 'failed');
         
         // Update inspector fields with (title,visitedTs,targetUrl)
         if ($(sel).hasClass('inspectee')) 
@@ -166,7 +166,7 @@ function formatDivs(ads) {
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 
 			if (ad.visitedTs == 0) html += 'pending ';
-			if (ad.visitedTs < 0)  html += 'errored ';
+			if (ad.visitedTs < 0)  html += 'failed ';
 			if (ad.visitedTs > 0)  html += 'visited ';
 
 			// TODO: what if text-ad?
@@ -566,9 +566,8 @@ function populateInspectorDetails(ele, insp) {
     $(ele).find('.detected').text(insp.detected);
 }
 
-
 function attachTests() {
-
+    
 	$.getJSON(TEST_ADS, function(jsonObj) {
 
 		console.warn("Vault.js :: Loading test-ads: "+TEST_ADS);

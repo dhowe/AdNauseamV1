@@ -80,27 +80,27 @@ function currentPage() {
 
 function updateAds(obj) {
 
-	var adhash = obj.data, updates = obj.updates, page = obj.page;
+	var sel, td, adhash = obj.data, updates = obj.updates, page = obj.page;
 
 	// change class, {title, (visitedTs) resolved}
 	for (var i=0, j = updates.length; i<j; i++) {
 
 		// update the title
-		var sel = '#ad' + updates[i].id + ' .title';
+		sel = '#ad' + updates[i].id + ' .title';
 		$(sel).text(updates[i].title);
 
 		// update the url
-		var sel = '#ad' + updates[i].id + ' cite';
-		$(sel).text(updates[i].resolvedTargetUrl);
+		sel = '#ad' + updates[i].id + ' cite';
+		td = targetDomain(updates[i]);
+		if (td) $(sel).text(td);
 
 		// update the class
 		$(sel).addClass('visited');
 	}
 
-	var data = processAdData(adhash, page);
-	$('#visited-count').text(visitedCount(data.onpage)+' ads visited');
+	$('#visited-count').text(visitedCount
+	    (processAdData(adhash, page).onpage)+' ads visited');
 }
-
 
 function layoutAds(adHashAndPageObj) {
 
@@ -185,7 +185,7 @@ function createHtml(ads) {
 function visitedClass(ad) {
 
 	return ad.visitedTs > 0 ? ' visited' :
-		(ad.visitedTs < 0 ? ' errored' : '');
+		(ad.visitedTs < 0 ? ' failed' : '');
 }
 
 /*
@@ -194,16 +194,23 @@ function visitedClass(ad) {
  */
 function targetDomain(ad) {
 
-	var url = ad.resolvedTargetUrl || ad.targetUrl;
-	return new URL(extractDomains(url).pop()).hostname;
+	var result, url = ad.resolvedTargetUrl || ad.targetUrl;
+        domains = extractDomains(url);
+	
+	if (domains.length)  
+	   result = new URL(domains.pop()).hostname;
+	else
+	   console.warn("ERROR: " + ad.targetUrl, url);
+	 
+    return result;
 }
 
-function extractDomains(text) {
+function extractDomains(fullUrl) {
 
 	var result = [], matches,
 		regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 
-	while (matches = regexp.exec(text))
+	while (matches = regexp.exec(fullUrl))
 	    result.push(matches[0]);
 
 	return result;
@@ -217,6 +224,19 @@ function param(name) {
 }
 
 function attachTests() {
+    
+    console.log('attachTests()');
+    
+    function assert(test, exp, msg) {
+        msg = msg || 'expecting "' + exp + '", but got';
+        console.log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
+    }
+
+    var test = 'http://www.rolex.com/watches/cellini.html?cmpid=dw201406035';
+    assert(new URL(extractDomains(test).pop()).hostname, 'www.rolex.com'); 
+    
+    var test = 'http://www.rolex.com/watches/cellini.html?cmpid=dw201406035$';
+    assert(new URL(extractDomains(test).pop()).hostname, 'www.rolex.com'); 
 
 	$('#log-button').off('click').click(function() {
 		window.location.href = "log.html"
@@ -240,7 +260,7 @@ function attachTests() {
 
 (function() {
 
-	console.log('INIT_HANDLERS');
+	console.log('Ready: INIT_MENU_HANDLERS');
 
 	$('#log-button').click(function(e) {
 		//console.log('#log-button.click');

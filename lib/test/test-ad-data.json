@@ -1,7 +1,7 @@
 {
   "https://hk.yahoo.com/?p=us": [
   {
-    "id": 1,
+    "id": 7,
     "contentType": "img",
     "contentData": "https://s.yimg.com/gs/apex/mediastore/01dc223e-1bae-4918-bdfb-be002ea25d7d",
     "count": 1,
@@ -43,8 +43,6 @@
       "visitedTs": 0,
       "title": "Ad Title (pending)",     
       "errors": [
-        {
-        }
       ],
       "path": [
       ],

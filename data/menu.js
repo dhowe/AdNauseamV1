@@ -1,9 +1,8 @@
-
-
-self.port && self.port.on('refresh-ads', layoutAds); // refresh all
+self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
+self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
-self.port && self.port.on('refresh-panel', function(opts) {
+function refreshPanel(opts) {
 
 	var img = 'img/adn_active.png', label = 'Pause AdNauseam';
 
@@ -18,21 +17,9 @@ self.port && self.port.on('refresh-panel', function(opts) {
 
 	$('#toggle-button').css('background-image', 'url('+img+')');
 	$('#pause-button').text(label);
-});
+}
 
-self.port && self.port.on("close-panel", function() {
-	//console.log("popup.close-panel: ");
-});
-
-self.port && self.port.on("open-panel", function() {
-	console.log("popup.open-panel: ");
-});
-
-self.port && self.port.on("load-advault", function() {
-	console.log("popup.load-advault: ");
-});
-
-function processAdData(adhash, pageUrl) {
+/*function processAdData(adhash, pageUrl) {
 
 	var ads = toAdArray(adhash);
 
@@ -81,7 +68,7 @@ function processAdData(adhash, pageUrl) {
 		ad.count = hash[ad.contentData];
 	}
 
-	return { ads: ads, onpage: onpage };
+	return { ads: ads, onpage: onpage, unique: unique };
 }
 
 function currentPage() {
@@ -91,35 +78,21 @@ function currentPage() {
 	return url && url != "about:blank" ? url : null;
 }
 
-function updateAds(obj) {
+function toAdArray(adhash, filter) {
 
-	var adhash = obj.data, updates = obj.updates, page = obj.page;
+    var all = [], keys = Object.keys(adhash);
+    for (var i = 0, j = keys.length; i < j; i++) {
 
-	//console.log("updates: "+updates.length);
-	//console.log("ads: "+toAdArray(adhash).length);
+        var ads = adhash[keys[i]];
+        for (var k=0; k < ads.length; k++) {
 
-	// change class, {title, (visitedTs) resolved}
-	for (var i=0, j = updates.length; i<j; i++) {
+            if (!filter || filter(ads[k]))
+                all.push(ads[k]);
+        }
+    }
 
-		// update the title
-		var sel = '#ad' + updates[i].id + ' .title';
-		$(sel).text(updates[i].title);
-
-		// update the url
-		var sel = '#ad' + updates[i].id + ' cite';
-		$(sel).text(updates[i].resolvedTargetUrl);
-
-		// update the class
-		$(sel).addClass('visited');
-	}
-
-	var data = processAdData(adhash, page);
-	$('#visited-count').text(visitedCount(data.onpage)+' ads visited');
-
-	//console.log('UPDATES COMPLETE!');
-	//setCounts(data.onpage.length, visitedCount, data.ads.length);
-}
-
+    return all;
+}*/
 
 function layoutAds(adHashAndPageObj) {
 
@@ -135,20 +108,28 @@ function layoutAds(adHashAndPageObj) {
 	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
 }
 
-function toAdArray(adhash, filter) {
+function updateAds(obj) {
 
-	var all = [], keys = Object.keys(adhash);
-	for (var i = 0, j = keys.length; i < j; i++) {
+    var sel, td, adhash = obj.data, updates = obj.updates, page = obj.page;
 
-		var ads = adhash[keys[i]];
-		for (var k=0; k < ads.length; k++) {
+    // change class, {title, (visitedTs) resolved}
+    for (var i=0, j = updates.length; i<j; i++) {
 
-			if (!filter || filter(ads[k]))
-				all.push(ads[k]);
-		}
-	}
+        // update the title
+        sel = '#ad' + updates[i].id + ' .title';
+        $(sel).text(updates[i].title);
 
-	return all;
+        // update the url
+        sel = '#ad' + updates[i].id + ' cite';
+        td = targetDomain(updates[i]);
+        if (td) $(sel).text(td);
+
+        // update the class
+        $(sel).addClass('visited');
+    }
+
+    $('#visited-count').text(visitedCount
+        (processAdData(adhash, page).onpage)+' ads visited');
 }
 
 function setCounts(found, visited, total) {
@@ -171,6 +152,8 @@ function visitedCount(arr) {
 function createHtml(ads) {
 
 	var html = '';
+	
+	showAlert(ads.length ? false : 'no ads found on page');
 
 	for (var i=0, j = ads.length; i<j; i++) {
 
@@ -195,7 +178,7 @@ function createHtml(ads) {
 			html += '</cite><div class="ads-creative">' + ads[i].contentData +'</div></li>\n\n';
 		}
 	}
-
+	
 //console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
@@ -204,7 +187,7 @@ function createHtml(ads) {
 function visitedClass(ad) {
 
 	return ad.visitedTs > 0 ? ' visited' :
-		(ad.visitedTs < 0 ? ' errored' : '');
+		(ad.visitedTs < 0 ? ' failed' : '');
 }
 
 /*
@@ -213,16 +196,23 @@ function visitedClass(ad) {
  */
 function targetDomain(ad) {
 
-	var url = ad.resolvedTargetUrl || ad.targetUrl;
-	return new URL(extractDomains(url).pop()).hostname;
+	var result, url = ad.resolvedTargetUrl || ad.targetUrl;
+        domains = extractDomains(url);
+	
+	if (domains.length)  
+	   result = new URL(domains.pop()).hostname;
+	else
+	   console.warn("ERROR: " + ad.targetUrl, url);
+	 
+    return result;
 }
 
-function extractDomains(text) {
+function extractDomains(fullUrl) {
 
 	var result = [], matches,
 		regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 
-	while (matches = regexp.exec(text))
+	while (matches = regexp.exec(fullUrl))
 	    result.push(matches[0]);
 
 	return result;
@@ -236,6 +226,13 @@ function param(name) {
 }
 
 function attachTests() {
+    
+    //console.log('attachTests()');
+    
+    function assert(test, exp, msg) {
+        msg = msg || 'expecting "' + exp + '", but got';
+        console.log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
+    }
 
 	$('#log-button').off('click').click(function() {
 		window.location.href = "log.html"
@@ -259,7 +256,7 @@ function attachTests() {
 
 (function() {
 
-	console.log('INIT_HANDLERS');
+	console.log('Ready: INIT_MENU_HANDLERS');
 
 	$('#log-button').click(function(e) {
 		//console.log('#log-button.click');
@@ -280,6 +277,7 @@ function attachTests() {
 		// remove all visible ads from menu
 		$('.ad-item').remove();
 		$('.ad-item-text').remove();
+		
 		setCounts(0, 0, 0);
 
 		// trigger closing of settings
@@ -287,6 +285,8 @@ function attachTests() {
 
 		// call addon to clear simple-storage
 		self.port && self.port.emit("clear-ads");
+		
+		createHtml([]);
 	});
 
 	$('#pause-button').click(function() {

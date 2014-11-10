@@ -287,7 +287,7 @@ header{
   border: 1px solid #BD10E0;
 }
 
-.ad-item-img-errored {
+.ad-item-img-failed {
   max-height: 60px;
   max-width: 80px;
   margin: 10px;

@@ -19,7 +19,7 @@ function refreshPanel(opts) {
 	$('#pause-button').text(label);
 }
 
-function processAdData(adhash, pageUrl) {
+/*function processAdData(adhash, pageUrl) {
 
 	var ads = toAdArray(adhash);
 
@@ -78,29 +78,21 @@ function currentPage() {
 	return url && url != "about:blank" ? url : null;
 }
 
-function updateAds(obj) {
+function toAdArray(adhash, filter) {
 
-	var sel, td, adhash = obj.data, updates = obj.updates, page = obj.page;
+    var all = [], keys = Object.keys(adhash);
+    for (var i = 0, j = keys.length; i < j; i++) {
 
-	// change class, {title, (visitedTs) resolved}
-	for (var i=0, j = updates.length; i<j; i++) {
+        var ads = adhash[keys[i]];
+        for (var k=0; k < ads.length; k++) {
 
-		// update the title
-		sel = '#ad' + updates[i].id + ' .title';
-		$(sel).text(updates[i].title);
+            if (!filter || filter(ads[k]))
+                all.push(ads[k]);
+        }
+    }
 
-		// update the url
-		sel = '#ad' + updates[i].id + ' cite';
-		td = targetDomain(updates[i]);
-		if (td) $(sel).text(td);
-
-		// update the class
-		$(sel).addClass('visited');
-	}
-
-	$('#visited-count').text(visitedCount
-	    (processAdData(adhash, page).onpage)+' ads visited');
-}
+    return all;
+}*/
 
 function layoutAds(adHashAndPageObj) {
 
@@ -116,20 +108,28 @@ function layoutAds(adHashAndPageObj) {
 	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
 }
 
-function toAdArray(adhash, filter) {
+function updateAds(obj) {
 
-	var all = [], keys = Object.keys(adhash);
-	for (var i = 0, j = keys.length; i < j; i++) {
+    var sel, td, adhash = obj.data, updates = obj.updates, page = obj.page;
 
-		var ads = adhash[keys[i]];
-		for (var k=0; k < ads.length; k++) {
+    // change class, {title, (visitedTs) resolved}
+    for (var i=0, j = updates.length; i<j; i++) {
 
-			if (!filter || filter(ads[k]))
-				all.push(ads[k]);
-		}
-	}
+        // update the title
+        sel = '#ad' + updates[i].id + ' .title';
+        $(sel).text(updates[i].title);
 
-	return all;
+        // update the url
+        sel = '#ad' + updates[i].id + ' cite';
+        td = targetDomain(updates[i]);
+        if (td) $(sel).text(td);
+
+        // update the class
+        $(sel).addClass('visited');
+    }
+
+    $('#visited-count').text(visitedCount
+        (processAdData(adhash, page).onpage)+' ads visited');
 }
 
 function setCounts(found, visited, total) {
@@ -152,6 +152,8 @@ function visitedCount(arr) {
 function createHtml(ads) {
 
 	var html = '';
+	
+	showAlert(ads.length ? false : 'no ads found on page');
 
 	for (var i=0, j = ads.length; i<j; i++) {
 
@@ -176,7 +178,7 @@ function createHtml(ads) {
 			html += '</cite><div class="ads-creative">' + ads[i].contentData +'</div></li>\n\n';
 		}
 	}
-
+	
 //console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
@@ -225,18 +227,12 @@ function param(name) {
 
 function attachTests() {
     
-    console.log('attachTests()');
+    //console.log('attachTests()');
     
     function assert(test, exp, msg) {
         msg = msg || 'expecting "' + exp + '", but got';
         console.log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
     }
-
-    var test = 'http://www.rolex.com/watches/cellini.html?cmpid=dw201406035';
-    assert(new URL(extractDomains(test).pop()).hostname, 'www.rolex.com'); 
-    
-    var test = 'http://www.rolex.com/watches/cellini.html?cmpid=dw201406035$';
-    assert(new URL(extractDomains(test).pop()).hostname, 'www.rolex.com'); 
 
 	$('#log-button').off('click').click(function() {
 		window.location.href = "log.html"
@@ -281,6 +277,7 @@ function attachTests() {
 		// remove all visible ads from menu
 		$('.ad-item').remove();
 		$('.ad-item-text').remove();
+		
 		setCounts(0, 0, 0);
 
 		// trigger closing of settings
@@ -288,6 +285,8 @@ function attachTests() {
 
 		// call addon to clear simple-storage
 		self.port && self.port.emit("clear-ads");
+		
+		createHtml([]);
 	});
 
 	$('#pause-button').click(function() {

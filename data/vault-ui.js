@@ -4,6 +4,8 @@ var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.
 
 function createSlider(ads) { // should happen just once
 
+    if (!ads || !ads.length) return;
+     
 	log('Vault-UI.createSlider(only-once)');
 	
 	sliderCreated = true;

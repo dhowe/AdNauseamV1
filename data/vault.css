@@ -277,7 +277,9 @@ div.tooltip {
 }
 
 .title {
-	display: none;
+	/*display: none;*/
+	margin-left: 10px;
+	margin-top: 10px;
 }
 
 .item-hidden {

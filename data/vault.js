@@ -44,29 +44,29 @@ function findAdById(id, ads) {
 
 function doUpdate(updated) {
 
-        var sel = '#ad' + updated.id;
+    var sel = '#ad' + updated.id;
 
-        // update the title
-        $(sel).attr('data-title', updated.title);
+    // update the title
+    $(sel).attr('data-title', updated.title);
+    
+    // update the visit-time
+    var vdate = formatDate(updated.visitedTs);
+    $(sel).attr('data-visitedTs', vdate);
+    
+    // update the target-url
+    if (updated.resolvedTargetUrl) {
         
-        // update the visit-time
-        var vdate = formatDate(updated.visitedTs);
-        $(sel).attr('data-visitedTs', vdate);
-        
-        // update the target-url
-        if (updated.resolvedTargetUrl) {
-            
-            //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
-            $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
-        }
+        //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
+        $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
+    }
 
-        // update the class (now visited)
-        $(sel).removeClass('pending');
-        $(sel).addClass((updated.visitedTs > 0) ? 'visited' : 'failed');
-        
-        // Update inspector fields with (title,visitedTs,targetUrl)
-        if ($(sel).hasClass('inspectee')) 
-            updateInspector(updated, vdate);
+    // update the class (now visited)
+    $(sel).removeClass('pending').addClass((updated.visitedTs > 0) ? 'visited' : 'failed');
+    $(sel).removeClass('just-visited').addClass('just-visited');
+    
+    // Update inspector fields with (title,visitedTs,targetUrl)
+    if ($(sel).hasClass('inspectee')) 
+        updateInspector(updated, vdate);
 }
 
 function updateInspector(updated, vdate) {

@@ -53,7 +53,8 @@ function updateAds(obj) {
         if (td) $(sel).text(td);
 
         // update the class
-        $(sel).addClass('visited');
+        $(sel).addClass(updates[i].visitedTs > 0 ? 'visited' : 'failed');
+        $(sel).removeClass('just-visited').addClass('just-visited');
     }
 
     $('#visited-count').text(visitedCount

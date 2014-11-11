@@ -300,22 +300,22 @@ div.tooltip {
 	/*opacity: 0.8;*/
 }
 
-.item.justVisited {
+.item.just-visited {
 	background: none;
-	animation: 1000ms ease-in-out justVisited;
+	animation: 1000ms ease-in-out just-visited;
 }
 
-.item.justVisited img {
-	animation: 1000ms ease-in-out justVisitedImg;
+.item.just-visited img {
+	animation: 1000ms ease-in-out just-visited-img;
 }
 
-@keyframes justVisited {
+@keyframes just-visited {
 	from {
 		background: #BD10E0;
 	}
 }
 
-@keyframes justVisitedImg {
+@keyframes just-visited-img {
 	from {
 		opacity: 0;
 	}

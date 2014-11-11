@@ -265,7 +265,7 @@ header{
   border: 1px solid #BD10E0;
 }
 
-.ad-item.justVisited {
+.ad-item.just-visited {
   background: none;
   animation: 1000ms ease-in-out visit;
 }

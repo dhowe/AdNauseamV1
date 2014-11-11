@@ -1,3 +1,5 @@
+var TEST_APPEND_IDS = true;
+
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
@@ -53,8 +55,11 @@ function updateAds(obj) {
         if (td) $(sel).text(td);
 
         // update the class
+        sel = '#ad' + updates[i].id;
         $(sel).addClass(updates[i].visitedTs > 0 ? 'visited' : 'failed');
         $(sel).removeClass('just-visited').addClass('just-visited');
+        
+        //console.log("UPDATE-CLASSES: "+$(sel)[0].classList);
     }
 
     $('#visited-count').text(visitedCount
@@ -101,20 +106,20 @@ function createHtml(ads) {
 
 		if (ads[i].contentType === 'img') {
 
-			html += '<li id="ad'+ads[i].id+'" class="ad-item'+visitedClass(ads[i]);
+			html += '<li id="ad' + ads[i].id +'" class="ad-item' + visitedClass(ads[i]);
 			html += '"><a target="new" href="' + ads[i].targetUrl;
 			html += '"><span class="thumb"><img src="' + ads[i].contentData;
 			html += '" class="ad-item-img"';// + visitedState(ads[i]);
 			html += ' onError="this.onerror=null; this.src=\'img/blank.png\';"';
 			html += '" alt="ad thumb"></span><span class="title">';
-			html +=  ads[i].title ? ads[i].title  : "#"+ads[i].id;
-			html += '</span><cite>'+targetDomain(ads[i])+'</cite></a></li>\n\n';
+			html +=  ads[i].title ? ads[i].title  : "#" + ads[i].id;
+			html += '</span><cite>' + targetDomain(ads[i]) + '</cite></a></li>\n\n';
 		}
 		else if (ads[i].contentType === 'text') {
 
-			html += '<li id="ad'+ads[i].id+'" class="ad-item-text'+visitedClass(ads[i]);
+			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
 			html += '""><span class="thumb">Text Ad</span><h3><a target="new" href="'
-			html += ads[i].targetUrl + '">'+ads[i].title + '</a></h3><cite>' + targetDomain(ads[i]);
+			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + targetDomain(ads[i]);
 			html += '</cite><div class="ads-creative">' + ads[i].contentData +'</div></li>\n\n';
 		}
 	}
@@ -143,7 +148,10 @@ function targetDomain(ad) {
 	   result = new URL(domains.pop()).hostname;
 	else
 	   console.warn("ERROR: " + ad.targetUrl, url);
-	 
+	
+	if (result &&  TEST_APPEND_IDS)
+	   result += ' (#'+ad.id+')';
+	   
     return result;
 }
 

@@ -1,3 +1,6 @@
+var inspectorData, inspectorIdx, animatorId, pack, container, animateMs = 2000;
+var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
@@ -18,13 +21,15 @@ function layoutAds(adHashAndPageObj) { // NOTE: this can be called multiple time
 
 function updateAds(adHashAndPageObj) {
 
+console.log("Vault.updateAds: ", inspectorData); // PROBLEM: NULL IF ITEM IN INSPECTOR ALREADY (need to pass back/forth to addon)
+
     var ads = processAdData(adHashAndPageObj.data).ads, 
        vdate, updates = adHashAndPageObj.updates;           
        
 	log('Vault.updateAds(): '+ads.length);
 
 	all = ads.slice(); // save original set
-	
+		
 	// update class/title/visited/resolved-url
     updates.map(doUpdate);
 
@@ -43,12 +48,12 @@ function findAdById(id, ads) {
 }
 
 function doUpdate(updated) {
-
+    
     var sel = '#ad' + updated.id;
 
     // update the title
     $(sel).attr('data-title', updated.title);
-    
+
     // update the visit-time
     var vdate = formatDate(updated.visitedTs);
     $(sel).attr('data-visitedTs', vdate);
@@ -63,16 +68,16 @@ function doUpdate(updated) {
     // update the class (now visited)
     $(sel).removeClass('pending').addClass((updated.visitedTs > 0) ? 'visited' : 'failed');
     $(sel).removeClass('just-visited').addClass('just-visited');
-    
+       
     // Update inspector fields with (title,visitedTs,targetUrl)
     if ($(sel).hasClass('inspectee')) 
         updateInspector(updated, vdate);
 }
 
 function updateInspector(updated, vdate) {
-    
+
     if (inspectorData && inspectorData.length) {
-        
+ 
         // update the existing inspector object
         for (var i=0, j = inspectorData.length; i<j; i++) {
             
@@ -81,7 +86,7 @@ function updateInspector(updated, vdate) {
             if (updated.resolvedTargetUrl)
                 inspectorData[i].target =updated.resolvedTargetUrl;
         }
-    
+
         // update all phases of the animation
         $('.panes > li').each(function() {
                  
@@ -292,12 +297,12 @@ function resizeHistorySlider() {
 	createSlider(all); // is this ok, or need a copy? 
 }
 
-function enableInspector(force) {
+function enableInspector() {
 
 	$('.item').mouseenter(function() { 
 	    
 	    // populate the inspector & animate if dups
-	    setInspectorFields(this, false);
+	    setInspectorFields(this);
     });
 
 	$('.item').mouseleave(function() {
@@ -312,10 +317,10 @@ function clearInspector() {
     animatorId && clearTimeout(animatorId);
 }
 
-function setInspectorFields(ele, forceRebuild) {
-
+function setInspectorFields(ele) {
+       
     // don't reset animatation of the same ad
-    if (forceRebuild || !$(ele).hasClass('inspectee')) {
+    if (!$(ele).hasClass('inspectee')) {
 
         // remember this as last in the inspector
         $(ele).addClass('inspectee').siblings()
@@ -323,7 +328,7 @@ function setInspectorFields(ele, forceRebuild) {
 
         // load primary ad & all dups for inspector
         inspectorData = loadInspectorData(ele);
-
+        
         // fill fields for first empty pane & set class to 'full'
         populateInspector(inspectorData, inspectorIdx=0);
 
@@ -334,7 +339,7 @@ function setInspectorFields(ele, forceRebuild) {
     }
 
     if (inspectorData.length>1)  // but cycle either way
-         cycleThroughDuplicates();
+         cycleThroughDuplicates();         
 }
 
 function loadInspectorData(ele) {
@@ -552,7 +557,6 @@ function positionAds() { // autozoom & center
 }
 
 function addInterfaceHandlers(ads) {
-
 
 	/////////// RESIZE-PANELS
 

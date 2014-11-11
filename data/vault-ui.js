@@ -1,6 +1,4 @@
-var xAxis, all, sliderCreated = 0;
-var inspectorData, inspectorIdx, animatorId, pack, container, animateMs=2000;
-var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+var xAxis, all;
 
 const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
     format = d3.time.format("%a %b %d %Y"), 
@@ -156,7 +154,7 @@ function createSlider(ads) { // happens just once
 
 		var filtered = []; 
 		
-		for (var i=0, j = all.length; i<j; i++) { // need to start from full-set (all) here
+		for (var i=0, j = all.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
 
 			if (!(all[i].foundTs < min || all[i].foundTs > max)) {
 

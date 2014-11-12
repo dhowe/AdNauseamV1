@@ -184,7 +184,8 @@ section p a:visited {
 }
 
 #install > a{
-  background-image: url(../img/install.png);
+  background-image: url(../img/install@2x.png);
+  background-size: 303px 88px;
   width: 283px;
   height: 43px;
   display: block;

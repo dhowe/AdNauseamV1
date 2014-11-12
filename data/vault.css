@@ -198,8 +198,9 @@ div.tooltip {
 	top: 65px;
 	left: 17px;
 	z-index: 100;
-	font-size: 9px;
+	font-size: 12px;
 	color: #999;
+	font-family: bebas_neue_regularregular;
 }
 
 .svg-container {
@@ -221,12 +222,23 @@ div.tooltip {
 	bottom: 82px;
 	left: 24px;
 	z-index: 100;
-	font-size: 12px;
-	color: #999;
+	font-size: 16px;
+	font-family: bebas_neue_regularregular;
+	color: #4C4D4C;
 	text-shadow: 1px  1px 2px #000,
 				-1px  1px 2px #000,
 				-1px -1px 2px #000,
 				 1px -1px 2px #000;
+}
+
+.session-sum .clicked{
+	font-weight: 700;
+	color: #BD10E0;
+}
+
+.session-sum .detected{
+	font-weight: 700;
+	color: #0076FF;
 }
 
 #logo{
@@ -495,7 +507,7 @@ aside {
 	right: 0;
 	top:0;
 	bottom: 0;
-	/*background: url(img/bg_panel.png);*/
+	background: url(img/bg_panel.png);
 	z-index: 10000;
 }
 
@@ -700,7 +712,7 @@ aside .details dd,
 aside .details dt {
 	margin: 0;
 	padding: 2px 0px 5px;
-	width: 30%;
+	width: 20%;
 	display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -717,10 +729,11 @@ aside .details dl dt:nth-child(5) {
 aside .details dd {
 	text-indent: 12px;
 	margin: 0 -4px;
+	font-family: bebas_neue_regularregular;
 }
 aside .details dt{
-	min-width: 70%;
-	font-weight: 700;
+	min-width: 80%;
+	/*font-weight: 700;*/
 }
 aside .details dt a.visited {
 	color: #A020F0;
@@ -755,12 +768,12 @@ svg {
 
 .axis text {
   font: 10px sans-serif;
-  fill: #ccc;
+  fill: #4C4D4C;
 }
 
 .axis line,
 .axis path {
   fill: none;
-  stroke: #ccc;
+  stroke: #4C4D4C;
   shape-rendering: crispEdges;
 }

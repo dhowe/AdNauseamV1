@@ -4,6 +4,7 @@
 		<meta charset="utf-8" />
 		<title>AdNauseam</title>
 		<link rel="stylesheet" href="vault.css">
+		<link rel="stylesheet" href="font/stylesheet.css">
 		<link rel="icon" type="image/png" href="img/icon-32.png">
 		<script src="lib/jquery-1.10.2.min.js"></script>
 		<script src="lib/packery.min.js"></script>
@@ -11,33 +12,33 @@
         <script src="shared.js"></script>
 		<script src="../lib/config.js"></script>
 		<script>
-	
+
 			// enable/disable TEST_MODE in ../lib/config.js
-	
+
 			if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
-	
+
 				$(function() {
-					
+
 					$.getScript("vault-ui.js")
 					.done(function() {
-						
+
 						$.getScript("vault.js")
 						.done(function() {
-							
+
 							attachTests();
 						})
 						.fail(function(xhr, data, e ) {
-							
+
 							 console.error("json(2): ", e);
 						});
 					})
 					.fail(function(xhr, data, e ) {
-						
+
 						 console.error("json(1): ", e);
 					});
 				});
 			}
-	
+
 		</script>
 	</head>
 	<body>
@@ -61,18 +62,18 @@
 		</div>
 
 		<aside id="right">
-	
+
 			<div id="logo"><a href="#"></a></div>
 
 			<a href="#" id="handle" class="panel-resize" draggable="true"></a>
-			
+
 			<div class="inspect carousel">
 				<ul class="panes">
 					<ul class="controls"></ul>
 
 					<li id="pane1" class="empty">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
-						
+
 						<div class="details">
 
 							<div id="ad-title" class="title">pending</div><br>
@@ -93,7 +94,7 @@
 
 					<li id="pane2" class="">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
-						
+
 						<div class="details">
 							<div id="ad-title" class="title">pending</div><br>
 
@@ -116,7 +117,7 @@
 
 					<li id="pane3" class="">
 						<a href="#"><img class="inspected" src="#" alt=""></a>
-						
+
 						<div class="details">
 							<div id="ad-title" class="title">pending</div><br>
 
@@ -140,8 +141,8 @@
 				</ul>
 			</div>
 		</aside>
-		
+
 		<div id='ratio'>100%</div>
-		
+
 	</body>
 </html>

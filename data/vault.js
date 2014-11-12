@@ -5,17 +5,17 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
 function layoutAds(adHashAndPageObj) { // NOTE: this can be called multiple times
-   
+
 	var ads = processAdData(adHashAndPageObj.data).ads;
-	
+
 	log('Vault.layoutAds: '+ads.length);
-	
+
 	all = ads.slice(); // save original set
 
 	addInterfaceHandlers();
 
     createSlider(ads);
-	
+
 	doLayout(ads, true);
 }
 
@@ -23,32 +23,32 @@ function updateAds(adHashAndPageObj) {
 
 console.log("Vault.updateAds: ", inspectorData); // PROBLEM: NULL IF ITEM IN INSPECTOR ALREADY (need to pass back/forth to addon)
 
-    var ads = processAdData(adHashAndPageObj.data).ads, 
-       vdate, updates = adHashAndPageObj.updates;           
-       
+    var ads = processAdData(adHashAndPageObj.data).ads,
+       vdate, updates = adHashAndPageObj.updates;
+
 	log('Vault.updateAds(): '+ads.length);
 
 	all = ads.slice(); // save original set
-		
+
 	// update class/title/visited/resolved-url
     updates.map(doUpdate);
 
-	computeStats(ads);	
+	computeStats(ads);
 }
 
 function findAdById(id, ads) {
-    
+
     for (i=0, j=ads.length; i< j; i++) {
-        
+
         if (ads[i].id === id)
             return ads[i]
     }
-    
+
     return null;
 }
 
 function doUpdate(updated) {
-    
+
     var sel = '#ad' + updated.id;
 
     // update the title
@@ -57,10 +57,10 @@ function doUpdate(updated) {
     // update the visit-time
     var vdate = formatDate(updated.visitedTs);
     $(sel).attr('data-visitedTs', vdate);
-    
+
     // update the target-url
     if (updated.resolvedTargetUrl) {
-        
+
         //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
         $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
     }
@@ -68,19 +68,19 @@ function doUpdate(updated) {
     // update the class (now visited)
     $(sel).removeClass('pending').addClass((updated.visitedTs > 0) ? 'visited' : 'failed');
     $(sel).removeClass('just-visited').addClass('just-visited');
-       
+
     // Update inspector fields with (title,visitedTs,targetUrl)
-    if ($(sel).hasClass('inspectee')) 
+    if ($(sel).hasClass('inspectee'))
         updateInspector(updated, vdate);
 }
 
 function updateInspector(updated, vdate) {
 
     if (inspectorData && inspectorData.length) {
- 
+
         // update the existing inspector object
         for (var i=0, j = inspectorData.length; i<j; i++) {
-            
+
             inspectorData[i].visited = vdate;
             inspectorData[i].title = updated.title;
             if (updated.resolvedTargetUrl)
@@ -89,7 +89,7 @@ function updateInspector(updated, vdate) {
 
         // update all phases of the animation
         $('.panes > li').each(function() {
-                 
+
             populateInspectorDetails(this, inspectorData[0]);
         });
     }
@@ -121,11 +121,11 @@ function repack(theAds, resetLayout) {
 	log("Vault.repack()");
 
 	var visible =  $(".item").length;
-	
+
     showAlert(visible ? false : 'no ads found');
-	
+
 	if (visible > 1) { // count non-hidden ads
-	
+
 		setTimeout(function() {
 
 			pack = new Packery(
@@ -134,10 +134,10 @@ function repack(theAds, resetLayout) {
 					itemSelector : '.item',
 					gutter : 1
 			});
-			
+
 			if (resetLayout) positionAds();
-		
-		}, 300);		
+
+		}, 300);
 	}
 	else if (visible === 1) {
 
@@ -156,14 +156,14 @@ function formatDivs(ads) {
 	for (var i=0, j = ads.length; i<j; i++) {
 
         ad = ads[i];
-        
+
 		if (ad.contentType === 'text') {
 
 			textAds++;
 		}
 		else // assume: contentType === 'img'
 		{
-			html += '<a href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
+			html += '<a data-href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 
 			if (ad.visitedTs == 0) html += 'pending ';
@@ -200,8 +200,8 @@ function formatDivs(ads) {
 
 function formatStats(ads) {
 
-	return 'Since '+ formatDate(sinceTime(ads)) + ': <strong>' + // yuck, get rid of html here
-	ads.length+' ads detected, '+numVisited(ads)+' visited.</strong>';
+	return 'Since '+ formatDate(sinceTime(ads)) + ': <span class="clicked">' + // yuck, get rid of html here
+	numVisited(ads)+' ads clicked</span>, out of the <span class="detected">'+ads.length+' detected.</span>';
 }
 
 function numVisited(ads) {
@@ -294,13 +294,13 @@ function formatDate(ts) {
 // TODO: This should only reset the x-axis/scale, not recreate everything
 function resizeHistorySlider() {
 
-	createSlider(all); // is this ok, or need a copy? 
+	createSlider(all); // is this ok, or need a copy?
 }
 
 function enableInspector() {
 
-	$('.item').mouseenter(function() { 
-	    
+	$('.item').mouseenter(function() {
+
 	    // populate the inspector & animate if dups
 	    setInspectorFields(this);
     });
@@ -313,12 +313,12 @@ function enableInspector() {
 }
 
 function clearInspector() {
-    
+
     animatorId && clearTimeout(animatorId);
 }
 
 function setInspectorFields(ele) {
-       
+
     // don't reset animatation of the same ad
     if (!$(ele).hasClass('inspectee')) {
 
@@ -328,7 +328,7 @@ function setInspectorFields(ele) {
 
         // load primary ad & all dups for inspector
         inspectorData = loadInspectorData(ele);
-        
+
         // fill fields for first empty pane & set class to 'full'
         populateInspector(inspectorData, inspectorIdx=0);
 
@@ -339,7 +339,7 @@ function setInspectorFields(ele) {
     }
 
     if (inspectorData.length>1)  // but cycle either way
-         cycleThroughDuplicates();         
+         cycleThroughDuplicates();
 }
 
 function loadInspectorData(ele) {
@@ -367,7 +367,7 @@ function findDuplicates(insDataArr) { // contains template at index=0
 	$(".item-hidden").each(function(i) {
 
 		var next, url = $(this).attr('data-contentData');
-		
+
 		if (url === insDataArr[0].imgsrc) { // same ad-image?
 
 			next = createInspectorObj(this);
@@ -382,7 +382,7 @@ function makeDuplicateControls(data) {
 
 	// reset the controls (small dots below img)
 	$(".controls" ).empty();
-	
+
 	for (var i=0; i < data.length; i++) {
 
 		var li = '<li data-idx="'+i+'" class=';
@@ -405,7 +405,7 @@ function doAnimation(data) {
 
 		$( this ).removeClass('out').addClass('empty');
 		if ($( this ).hasClass('in')) {
-		    
+
 			$( this ).removeClass().addClass('out');
 		}
 		else { // hack to get correct img in place for dups
@@ -457,15 +457,15 @@ function populateInspector(iData, dupIdx) {
 	// tell the world we are ready to slide 'in'
 	$(ele).removeClass().addClass('ready');
 }
-    
+
 function populateInspectorDetails(ele, insp) {
-    
+
     // update image-src and image-alt tags
     $(ele).find('img')
         .attr('src', insp.imgsrc)
         .attr('alt',  insp.imgalt);
-    
-    // update inspector fields  
+
+    // update inspector fields
     $(ele).find('.title').text(insp.title);
     $(ele).find('.target').text(insp.target);
     $(ele).find('.origin').text(insp.origin);
@@ -474,7 +474,7 @@ function populateInspectorDetails(ele, insp) {
 }
 
 function attachTests() {
-    
+
 	$.getJSON(TEST_ADS, function(jsonObj) {
 
 		console.warn("Vault.js :: Loading test-ads: "+TEST_ADS);
@@ -616,16 +616,16 @@ function addInterfaceHandlers(ads) {
 
         if ( typeof resizeTimer == 'undefined')
             var resizeTimer = 0;
-            
+
         clearTimeout(resizeTimer);
-        
+
         resizeTimer = setTimeout(function() {
-            
-            $('#left').width(''); // hack so that a panel-drag doesnt 
+
+            $('#left').width(''); // hack so that a panel-drag doesnt
             $('#right').width(''); //  break window-resizing
-            
+
             resizeHistorySlider();
-            
+
         }, 500); // not sure if we need this delay
-    }); 
+    });
 }

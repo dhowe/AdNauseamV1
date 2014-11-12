@@ -120,6 +120,13 @@ body {
     color: #eee;
 }
 
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  body {
+    background-image: url('/images/my_image@2x.png');
+    background-size: 105px 105px;
+  }
+}
+
 ::selection {
 	background: #B96AFF; /* Safari */
 }
@@ -176,8 +183,8 @@ section p a:visited {
   text-align: right;
 }
 
-#install>a{
-  background: url(../img/install.png);
+#install > a{
+  background-image: url(../img/install.png);
   width: 283px;
   height: 43px;
   display: block;
@@ -186,6 +193,13 @@ section p a:visited {
   color: #fff;
   text-align: left;
   padding: 45px 0 0 20px;
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+  #install > a {
+    background-image: url(../img/install@2x.png);
+    background-size: 303px 88px;
+  }
 }
 
 #install span {

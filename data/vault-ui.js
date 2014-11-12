@@ -1,7 +1,7 @@
 var xAxis, all;
 
 const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
-    format = d3.time.format("%a %b %d %Y"), 
+    format = d3.time.format("%a %b %d %Y"),
     customTimeFormat = d3.time.format.multi([
         [".%L", function(d)     { return d.getMilliseconds(); }],
         [":%S", function(d)     { return d.getSeconds(); }],
@@ -16,13 +16,13 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
 function createSlider(ads) { // happens just once
 
     if (!ads || !ads.length) return;
-     
+
 	console.log('Vault-UI.createSlider');
 
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();
-    d3.select("svg").remove(); 
-    
+    d3.select("svg").remove();
+
 	// setting up the position of the chart:
 	var iconW = 100, width = parseInt(d3.select("#left").style("width"))
 	    - (margin.left + margin.right + iconW);
@@ -44,7 +44,7 @@ function createSlider(ads) { // happens just once
    // setup the histogram layout:
    var histogram = d3.layout.histogram()
       .bins(120) // how many groups? [dyn] base on width
-      //.bins(width/(barw-barg))     [dyn] 
+      //.bins(width/(barw-barg))     [dyn]
       (map)
 
    //log(histogram);
@@ -53,11 +53,11 @@ function createSlider(ads) { // happens just once
    xAxis = d3.svg.axis()
 	      .scale(xScale)
 	      .tickFormat(customTimeFormat)
-	      .ticks(7); // [dyn] 
+	      .ticks(7); // [dyn]
 
    // position the SVG
    var svg = d3.select("#svgcon")
-        .append("svg")              
+        .append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", /*height +*/ margin.top + margin.bottom)
 	    .append("g")
@@ -109,8 +109,8 @@ function createSlider(ads) { // happens just once
 
 	// set the height of the brush to that of the chart
 	gBrush.selectAll("rect")
-		.attr("height", 39)
-		.attr("y", -40);
+		.attr("height", 49)
+		.attr("y", -50);
 
 	// ---------------------------- functions ------------------------------
 
@@ -152,8 +152,8 @@ function createSlider(ads) { // happens just once
 
 		//log('dateFilter: '+ads.length+' all, min='+formatDate(min)+', max='+formatDate(max));
 
-		var filtered = []; 
-		
+		var filtered = [];
+
 		for (var i=0, j = all.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
 
 			if (!(all[i].foundTs < min || all[i].foundTs > max)) {
@@ -161,7 +161,7 @@ function createSlider(ads) { // happens just once
                 filtered.push(all[i]);
 			}
 		}
-		
+
 		//log('filter: in='+all.length+' out='+filtered.length);
 
 		return filtered;
@@ -181,7 +181,7 @@ function createSlider(ads) { // happens just once
 	}
 
 	function randomDate(start, end) {
-		
+
 	    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 	}
 }

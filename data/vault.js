@@ -1,12 +1,16 @@
 var inspectorData, inspectorIdx, animatorId, pack, container, animateMs = 2000;
 var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+itemClicked = false;
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
-function layoutAds(adHashAndPageObj) { // NOTE: this can be called multiple times
+function layoutAds(addonData) { // NOTE: this can be called multiple times
    
-	var ads = processAdData(adHashAndPageObj.data).ads;
+    if (!this.inspectorData)
+        this.inspectorData = addonData.inspectorData;
+        
+	var ads = processAdData(addonData.data).ads;
 	
 	log('Vault.layoutAds: '+ads.length);
 	
@@ -19,12 +23,16 @@ function layoutAds(adHashAndPageObj) { // NOTE: this can be called multiple time
 	doLayout(ads, true);
 }
 
-function updateAds(adHashAndPageObj) {
+function updateAds(addonData) {
 
-console.log("Vault.updateAds: ", inspectorData); // PROBLEM: NULL IF ITEM IN INSPECTOR ALREADY (need to pass back/forth to addon)
+    if (!this.inspectorData)
+        this.inspectorData = addonData.inspectorData;
+    
+    //// PROBLEM: NULL IF ITEM IN INSPECTOR ALREADY (need to pass back/forth to addon)
+    //console.log("Vault.updateAds***: ", inspectorData); 
 
-    var ads = processAdData(adHashAndPageObj.data).ads, 
-       vdate, updates = adHashAndPageObj.updates;           
+    var ads = processAdData(addonData.data).ads, 
+       vdate, updates = addonData.updates;           
        
 	log('Vault.updateAds(): '+ads.length);
 
@@ -97,6 +105,8 @@ function updateInspector(updated, vdate) {
 
 function doLayout(theAds, resetLayout) {
 
+console.log('Vault.doLayout: '+theAds.length);
+
     if (!theAds) throw Error("No ads!");
 
     var result = formatDivs(theAds);
@@ -163,7 +173,7 @@ function formatDivs(ads) {
 		}
 		else // assume: contentType === 'img'
 		{
-			html += '<a href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
+			html += '<a id="ad'+ad.id+'" class="item';
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 
 			if (ad.visitedTs == 0) html += 'pending ';
@@ -268,7 +278,7 @@ function formatDate(ts) {
 
 	if (!ts) return 'pending';
 
-	if (ts < 0)  return 'error';
+	if (ts < 0)  return 'Unable to Visit';
 
 	var date = new Date(ts), days = ["Sunday", "Monday",
 		"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -302,13 +312,35 @@ function enableInspector() {
 	$('.item').mouseenter(function() { 
 	    
 	    // populate the inspector & animate if dups
-	    setInspectorFields(this);
+        if (!$('#container').hasClass('lightbox-view')) 
+        {
+	       setInspectorFields(this);
+        }
+    });
+    
+    $('.item').click(function(e) { 
+        
+        e.preventDefault();
+        
+        setInspectorFields(this);
+        
+        $(this).addClass('lightbox-selected')
+            .siblings().removeClass('lightbox-selected');
+            
+        $('#container').toggleClass('lightbox-view');
+        
+        //console.log( 'lightbox: '+$('#container').hasClass('lightbox-view') ); 
+        
+        itemClicked = true; 
     });
 
 	$('.item').mouseleave(function() {
-
-		// kill any remaining dup animations
-		clearInspector();
+	    
+        if (!$('#container').hasClass('lightbox-view')) 
+        {
+		  // kill any remaining dup animations
+		  clearInspector();
+        }
 	});
 }
 
@@ -329,6 +361,8 @@ function setInspectorFields(ele) {
         // load primary ad & all dups for inspector
         inspectorData = loadInspectorData(ele);
         
+        notifyAddon(inspectorData);
+        
         // fill fields for first empty pane & set class to 'full'
         populateInspector(inspectorData, inspectorIdx=0);
 
@@ -338,8 +372,24 @@ function setInspectorFields(ele) {
         doAnimation(inspectorData);
     }
 
+//console.log("setInspectorFields(): "+inspectorData.length);
+
     if (inspectorData.length>1)  // but cycle either way
          cycleThroughDuplicates();         
+}
+
+function notifyAddon(idata) {
+    
+    if ( typeof notifyTimer == 'undefined')
+        var notifyTimer = 0;
+        
+    clearTimeout(notifyTimer);
+    
+    notifyTimer = setTimeout(function() {
+
+        self.port.emit("update-inspector", idata);
+        
+    }, 200); // not sure if we need this delay
 }
 
 function loadInspectorData(ele) {
@@ -358,7 +408,8 @@ function createInspectorObj(item) {
 		target : $(item).attr('data-targetUrl'),
 		origin : $(item).attr('data-pageUrl'),
 		visited : $(item).attr('data-visitedTs'),
-		detected : $(item).attr('data-foundTs')
+		detected : $(item).attr('data-foundTs'),
+		content: $(item).attr('data-contentData')
 	}
 }
 
@@ -368,7 +419,9 @@ function findDuplicates(insDataArr) { // contains template at index=0
 
 		var next, url = $(this).attr('data-contentData');
 		
-		if (url === insDataArr[0].imgsrc) { // same ad-image?
+		//console.log(url+' ?= '+insDataArr[0].imgsrc);
+		
+		if (url === insDataArr[0].content) { // same ad-image?
 
 			next = createInspectorObj(this);
 			insDataArr.push(next);
@@ -562,15 +615,23 @@ function addInterfaceHandlers(ads) {
 
 	$('#handle').mousedown(function(e){
 
+        e.preventDefault();
 	    resizing = true;
-	    e.preventDefault();
 	});
 
 	$(document).mouseup(function(e) {
-
+	    
+        e.preventDefault();
     	resizing = false;
-    	e.preventDefault();
 	});
+	
+    $(document).click(function(e) {
+        
+        e.preventDefault();
+        (!itemClicked) && $('#container').removeClass('lightbox-view');
+        itemClicked = false;
+    });
+
 
 	/////////// DRAG-STAGE
 

@@ -61,6 +61,9 @@ function processAdData(adhash, pageUrl) {
 
         ad = ads[i];
         ad.count = hash[ad.contentData];
+
+        //  console.log("ad#"+ad.id+" "+ad.count);
+
     }
 
     return { ads: ads, onpage: onpage, unique: unique };

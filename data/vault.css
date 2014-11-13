@@ -300,6 +300,8 @@ div.tooltip {
 	/*opacity: 0.8;*/
 }
 
+
+
 .item.just-visited {
 	background: none;
 	animation: 1000ms ease-in-out just-visited;
@@ -377,6 +379,15 @@ div.tooltip {
 
 .item:focus span.eye:hover {
 	background-image: url(img/link.svg);
+}
+
+.lightbox-view .item {
+	opacity: .3;
+}
+
+.lightbox-view .lightbox-selected {
+	opacity: 1;
+	transform: 			scale(1.5, 1.5);
 }
 
 .z-75 .item:hover span {

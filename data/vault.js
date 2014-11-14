@@ -328,7 +328,17 @@ function enableInspector() {
         
         $(this).addClass('lightbox-selected')
             .siblings().removeClass('lightbox-selected');
-            
+
+        /*var $item = $(this);
+        var pos = $item.position();
+        $item.data('orig-x', pos.left);
+        $item.data('orig-y', pos.top);
+        //console.log(centerX-pos.left,centerY-pos.top);
+        $item.transition({
+            x : 5000 - pos.left,
+            y : 5000 - pos.top
+        });
+        */        
         $('#container').toggleClass('lightbox-view');
         
         //console.log( 'lightbox: '+$('#container').hasClass('lightbox-view') ); 
@@ -585,12 +595,13 @@ function positionAds() { // autozoom & center
 		// loop over each image, checking that they (enough) onscreen
 		$('.item img').each(function(i, img) {
 
-			x = $(this).offset().left,
-			y = $(this).offset().top,
+            $img = $(this);
+			x = $img.offset().left,
+			y = $img.offset().top,
 			scale = zooms[zoomIdx] / 100,
-			sz = realSize($(this)), // original size
-			w = sz.w * scale, // scaled width
-			h = sz.h * scale, // scaled height
+			sz = realSize($img),      // original size
+			w = sz.w * scale,        // scaled width
+			h = sz.h * scale,        // scaled height
 			minX = (-w * (1 - percentVisible)),
 			maxX = (winW - (w * percentVisible)),
 			minY = (-h * (1 - percentVisible)),
@@ -602,7 +613,7 @@ function positionAds() { // autozoom & center
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
 				zoomOut();
-				log('Ad('+$(this).attr('id')+') offscreen, zoom='+zoomStyle);
+				log('Ad('+$img.attr('id')+') offscreen, zoom='+zoomStyle);
 				return (problem = true); // break jquery each() loop
 			}
 		});

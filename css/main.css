@@ -279,7 +279,9 @@ section p a:visited {
   #mushon   {left: 150px;  top: 736px; -webkit-animation-delay: 2000ms; animation-delay: 2000ms}
   #essay    {left: 199px; top: 1512px; -webkit-animation-delay: 2200ms; animation-delay: 2200ms}
   #symposium{left: 428px; top: 1700px; -webkit-animation-delay: 2400ms; animation-delay: 2400ms}
-  #chrome   {left: 615px; top: 910px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
+  #chrome   {left: 615px; top: 915px; -webkit-animation-delay: 3000ms; animation-delay: 3000ms}
+  #twitter  {left: 428px; top: 910px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
+  #facebook {left: 779px; top: 1250px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
   #scrn1    {left: 516px; top: 957px; -webkit-animation-delay: 2800ms; animation-delay: 2800ms}
   #scrn2    {left: 0px;   top: 1230px;-webkit-animation-delay: 3000ms; animation-delay: 3000ms}
 

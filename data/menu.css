@@ -246,7 +246,7 @@ header{
 
 .ad-item a {
   display: block;
-  padding: 20px 20px 0 130px;
+  padding: 17px 20px 0px 130px;
   color: #B2B1B0;
 }
 
@@ -378,6 +378,9 @@ header{
 .ad-item span.title {
   display: block;
   width: 250px;
+  overflow: hidden;
+  max-height: 2.3em;
+  line-height: 1.15em;
 }
 
 #ad-list li cite {

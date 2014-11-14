@@ -187,7 +187,7 @@ function attachTests() {
 	});
 
 	$('#vault-button').off('click').click(function() {
-		window.location.href = "advault.html"
+		window.location.href = "vault.html"
 	});
 
 	$('#about-button').off('click').click(function() {

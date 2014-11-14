@@ -1,6 +1,7 @@
 /* ============================================================
   RESET
 ============================================================ */
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -154,4 +155,28 @@ button {
 button:hover{
   background: #fff;
   color: #000;
+}
+
+#firstrun-close {
+	display: block;
+	color: #fff;
+	opacity: 0.85;
+	width: 50px;
+	height: 100px;
+	padding-top: 10px;
+	font-family: bebas_neue_regularregular;
+	font-size: 40px;
+	text-align: center;
+	z-index: 1000;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+#firstrun-close:hover {
+	opacity: 1;
+}
+
+body.hide {
+  display: none;
 }

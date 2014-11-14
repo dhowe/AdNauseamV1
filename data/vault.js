@@ -56,7 +56,7 @@ function findAdById(id, ads) {
 
 function doUpdate(updated) {
 
-    var sel = '#ad' + updated.id;
+    var sel = '#ad' + updated.id, newClass;
 
     // update the title
     $(sel).attr('data-title', updated.title);
@@ -73,7 +73,8 @@ function doUpdate(updated) {
     }
 
     // update the class (now visited)
-    $(sel).removeClass('pending').addClass((updated.visitedTs > 0) ? 'visited' : 'failed');
+    newClass = (updated.visitedTs > 0) ? 'visited' : 'failed';
+    $(sel).removeClass('pending').addClass(newClass);
     $(sel).removeClass('just-visited').addClass('just-visited');
 
     // Update inspector fields with (title,visitedTs,targetUrl)
@@ -172,7 +173,7 @@ function formatDivs(ads) {
 		}
 		else // assume: contentType === 'img'
 		{
-			html += '<a id="ad'+ad.id+'" class="item';
+			html += '<div id="ad'+ad.id+'" class="item';
 			//html += '<a data-href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
 
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
@@ -422,7 +423,7 @@ function findDuplicates(insDataArr) { // contains template at index=0
 				
 		if (url === insDataArr[0].content) { // same ad-image?
 
-		//if (url === insDataArr[0].imgsrc) { // same ad-image?
+		    //if (url === insDataArr[0].imgsrc) { // same ad-image?
 
 			next = createInspectorObj(this);
 			insDataArr.push(next);

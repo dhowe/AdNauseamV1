@@ -387,7 +387,7 @@ function notifyAddon(idata) {
     
     notifyTimer = setTimeout(function() {
 
-        self.port.emit("update-inspector", idata);
+        self.port && self.port.emit("update-inspector", idata);
         
     }, 200); // not sure if we need this delay
 }

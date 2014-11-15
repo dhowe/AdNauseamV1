@@ -4,23 +4,6 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
-function refreshPanel(opts) {
-
-	var img = 'img/adn_active.png', label = 'Pause AdNauseam';
-
-	$('#pause-button').removeClass('disabled');
-
-	if (!opts.enabled) {
-
-		img = 'img/adn_disabled.png';
-		label = 'Start AdNauseam';
-		$('#pause-button').addClass('disabled');
-	}
-
-	$('#toggle-button').css('background-image', 'url('+img+')');
-	$('#pause-button').text(label);
-}
-
 function layoutAds(adHashAndPageObj) {
 
 	var adhash = adHashAndPageObj.data;
@@ -68,11 +51,35 @@ function updateAds(obj) {
     animateIcon(500);
 }
 
+function refreshPanel(opts) {
+
+    //console.log('refreshPanel: opts: ',opts);
+
+    var img = 'img/adn_active.png', label = 'Pause AdNauseam';
+
+    $('#pause-button').removeClass('disabled');
+
+    if (!opts.enabled) {
+
+        img = 'img/adn_disabled.png';
+        label = 'Start AdNauseam';
+        $('#pause-button').addClass('disabled');
+    }
+    
+    $('#cmn-toggle-1').prop('checked', opts.disableLogs); 
+    $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
+
+    $('#toggle-button').css('background-image', 'url('+img+')');
+    $('#pause-button').text(label);
+}
+
 function animateIcon(ms) {
     
     var down = 'img/adn_visited.png', up = 'img/adn_active.png';
     $('#toggle-button').css('background-image', 'url('+down+')');
+    
     setTimeout(function() {
+        
         $('#toggle-button').css('background-image', 'url('+up+')');
     }, ms);
 }
@@ -254,7 +261,7 @@ function attachTests() {
 
 	$('#settings-open').click(function() {
 
-		//console.log('#settings-open.click');
+		console.log('#settings-open.click');
 
 		$('.page').toggleClass('hide');
 		$('.settings').toggleClass('hide');
@@ -268,12 +275,20 @@ function attachTests() {
 		self.port && self.port.emit('show-about');
 	});
 
-	$('#cmn-toggle-1').click(function() {
+	$('#cmn-toggle-1').click(function() { // logging
 
 		var val = $(this).prop('checked');
 
 		//console.log('#disable-logs.click: '+val);
 		self.port && self.port.emit('disable-logs', { 'value' : val });
 	});
+	
+    $('#cmn-toggle-2').click(function() { // referer
+
+        var val = $(this).prop('checked');
+
+        //console.log('#disable-logs.click: '+val);
+        self.port && self.port.emit('disable-referer', { 'value' : val });
+    });
 
 })();

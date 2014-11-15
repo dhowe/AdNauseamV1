@@ -16,6 +16,6 @@
     
     $('#video').click(function() {
             
-        window.open('http://dhowe.github.io/AdNauseam/');
+        window.open('https://vimeo.com/111943439');
     });
 });

@@ -267,7 +267,7 @@ header{
 
 .ad-item.just-visited {
   background: none;
-  animation: 1000ms ease-in-out visit;
+  animation: 1500ms ease-in-out visit;
 }
 
 @keyframes visit {

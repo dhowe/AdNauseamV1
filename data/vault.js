@@ -1,6 +1,8 @@
-var inspectorData, inspectorIdx, animatorId, pack, container, animateMs = 2000;
-var zoomStyle, zoomIdx = 0, resizing = false, zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
-itemClicked = false;
+var inspectorData, inspectorIdx, animatorId, pack,
+    itemClicked = false, container, animateMs = 2000,
+    zoomStyle, zoomIdx = 0, resizing = false, 
+    zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
@@ -624,6 +626,8 @@ function positionAds() { // autozoom & center
 
 function addInterfaceHandlers(ads) {
 
+    console.log('addInterfaceHandlers');
+
 	/////////// RESIZE-PANELS
 
 	$('#handle').mousedown(function(e){
@@ -631,6 +635,11 @@ function addInterfaceHandlers(ads) {
         e.preventDefault();
 	    resizing = true;
 	});
+	
+    $('#x-close-button').click(function(e) {
+        
+        self.port && self.port.emit("close-vault");
+    });
 
 	$(document).mouseup(function(e) {
 	    
@@ -639,7 +648,7 @@ function addInterfaceHandlers(ads) {
 	});
 	
     $(document).click(function(e) {
-        
+             
         e.preventDefault();
         (!itemClicked) && $('#container').removeClass('lightbox-view');
         itemClicked = false;
@@ -672,15 +681,16 @@ function addInterfaceHandlers(ads) {
 
 	/////////// ZOOM-STAGE
 
+
 	// click zoom-in
-	$('#z-in').unbind().click(function(e) {
+	$('#z-in').click(function(e) {
 
 		zoomIn();
 		e.preventDefault();
 	});
 
 	// click zoom-out
-	$('#z-out').unbind().click(function(e) {
+	$('#z-out').click(function(e) {
 
 		zoomOut();
 		e.preventDefault();

@@ -157,7 +157,7 @@ button:hover{
   color: #000;
 }
 
-#firstrun-close {
+#x-close-button {
 	display: block;
 	color: #fff;
 	opacity: 0.85;
@@ -173,10 +173,7 @@ button:hover{
 	right: 0px;
 }
 
-#firstrun-close:hover {
+#x-close-button:hover {
 	opacity: 1;
 }
 
-body.hide {
-  display: none;
-}

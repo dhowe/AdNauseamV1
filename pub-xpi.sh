@@ -10,7 +10,7 @@ then
 fi
 
 
-$ADDON_SDK/bin/cfx xpi
+/Users/dhowe/bin/cfx xpi
 
 USR="dhowe"
 XPI_DIR="/Library/WebServer/Documents/adnauseam/"

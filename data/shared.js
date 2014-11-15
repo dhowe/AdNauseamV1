@@ -13,8 +13,7 @@ function tagCurrentAd(currentAd) {
         //if ($(sel).hasClass('pending')); // need to check its not already visited?
         $(sel).addClass('current-ad').siblings().removeClass('current-ad');
     }
-    else
-        console.log("FAIL ON CURRENT-AD: ",  'No match for: '+sel);
+    //else console.log("FAIL ON CURRENT-AD: ",  'No match for: '+sel);
 }
 
 function showAlert(msg) {

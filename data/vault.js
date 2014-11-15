@@ -11,7 +11,7 @@ function layoutAds(addonData) {
 	var ads = processAdData(addonData.data).ads,
         currentAd = addonData.currentAd;
 
-	log('Vault.layoutAds: '+ads.length);
+	//log('Vault.layoutAds: '+ads.length);
 
 	all = ads.slice(); // save original set
 

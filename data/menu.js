@@ -8,7 +8,7 @@ function layoutAds(obj) {
 
 	var adhash = obj.data, currentAd = obj.currentAd;
 
-    console.log('Menu::layoutAds: '+currentAd);
+    //console.log('Menu::layoutAds: '+currentAd ? currentAd.id : 'none');
     	
 	var page = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : obj.page;
@@ -32,7 +32,7 @@ function updateAds(obj) {
         updates = obj.updates, 
         page = obj.page;
 
-    console.log('Menu::updateAds: '+currentAd);
+    //console.log('Menu::updateAds: '+currentAd);
     
     // change class, {title, (visitedTs) resolved}
     for (var i=0, j = updates.length; i<j; i++) {
@@ -59,7 +59,6 @@ function updateAds(obj) {
     $('#visited-count').text(visitedCount
         (processAdData(adhash, page).onpage)+' ads visited');
     
-   
     animateIcon(500);
 }
 
@@ -93,6 +92,7 @@ function animateIcon(ms) {
     setTimeout(function() {
         
         $('#toggle-button').css('background-image', 'url('+up+')');
+        
     }, ms);
 }
 
@@ -115,7 +115,7 @@ function visitedCount(arr) {
 
 function createHtml(ads) {
 
-	var html = '';
+	var html = ''; 
 	
 	showAlert(ads.length ? false : 'no ads found on page');
 

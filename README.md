@@ -24,3 +24,4 @@ We conceptualize AdNauseam within a broader class of software systems that serve
 #### Can I contribute?
 --------
 Absolutely! We are looking for more coders and designers to help... Just press *Fork* at the top of this github page and get started...
+If you're looking for a place to start, definitely look into the [issues labeled "HELP US CODE"](https://github.com/dhowe/AdNauseam/labels/HELP-US-CODE). Thanks!

@@ -6,11 +6,8 @@ var inspectorData, inspectorIdx, animatorId, pack,
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
-function layoutAds(addonData) { // NOTE: this can be called multiple times
+function layoutAds(addonData) { 
    
-    //if (!this.inspectorData)
-        //this.inspectorData = addonData.inspectorData;
-        
 	var ads = processAdData(addonData.data).ads;
 
 	log('Vault.layoutAds: '+ads.length);
@@ -722,7 +719,8 @@ function addInterfaceHandlers(ads) {
 
 	/////////// DRAG-STAGE
 
-	document.querySelector('#container').addEventListener('dragstart', dragStart, false);
+    var sel = document.querySelector('#container');
+	sel && sel.addEventListener('dragstart', dragStart, false);
 	document.body.addEventListener('dragover', dragOver, false);
 	document.body.addEventListener('drop', drop, false);
 	  // from: http://jsfiddle.net/robertc/kKuqH/

@@ -204,7 +204,7 @@ function attachTests() {
 
 (function() {
 
-	console.log('Ready: INIT_MENU_HANDLERS');
+	//console.log('Ready: INIT_MENU_HANDLERS');
 
 	$('#log-button').click(function(e) {
 		//console.log('#log-button.click');

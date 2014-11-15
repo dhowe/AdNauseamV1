@@ -1,14 +1,15 @@
 var inspectorData, inspectorIdx, animatorId, pack,
     itemClicked = false, container, animateMs = 2000,
     zoomStyle, zoomIdx = 0, resizing = false,
-    zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
+    zooms = [ 100, 50, 25, 12.5, 6.25 ];
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
 function layoutAds(addonData) { 
    
-	var ads = processAdData(addonData.data).ads;
+	var ads = processAdData(addonData.data).ads,
+        currentAd = addonData.currentAd;
 
 	log('Vault.layoutAds: '+ads.length);
 
@@ -19,12 +20,15 @@ function layoutAds(addonData) {
     createSlider(ads);
 
 	doLayout(ads, true);
+	
+    currentAd && tagCurrentAd(currentAd);
 }
 
 function updateAds(addonData) {
 
     var ads = processAdData(addonData.data).ads, 
        vdate, updates = addonData.updates,
+        currentAd = addonData.currentAd,
        inspectorId = addonData.inspectorDataId;     
              
 	//log('Vault.updateAds(): inspectorId='+inspectorId);
@@ -70,6 +74,8 @@ function updateAds(addonData) {
 
         //doAnimation(inspectorData);
     }
+
+    currentAd && tagCurrentAd(currentAd);
 
 	computeStats(ads);
 }

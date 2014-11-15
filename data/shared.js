@@ -1,6 +1,22 @@
 
 // functions shared between various views
 
+function tagCurrentAd(currentAd) {
+    
+    console.log('tagCurrentAd('+currentAd.id+')');
+    
+    sel = '#ad' + currentAd.id;
+    
+    if ($(sel).length) {
+        
+        console.log("SET CURRENT-AD: ",  $(sel)[0].classList);
+        //if ($(sel).hasClass('pending')); // need to check its not already visited?
+        $(sel).addClass('current-ad').siblings().removeClass('current-ad');
+    }
+    else
+        console.log("FAIL ON CURRENT-AD: ",  'No match for: '+sel);
+}
+
 function showAlert(msg) {
     
     if (msg) {

@@ -4,13 +4,15 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
-function layoutAds(adHashAndPageObj) {
+function layoutAds(obj) {
 
-	var adhash = adHashAndPageObj.data;
-	
+	var adhash = obj.data, currentAd = obj.currentAd;
+
+    console.log('Menu::layoutAds: '+currentAd);
+    	
 	var page = typeof TEST_MODE != 'undefined'
-		&& TEST_MODE ? TEST_PAGE : adHashAndPageObj.page;
-		
+		&& TEST_MODE ? TEST_PAGE : obj.page;
+	   
 	var data = processAdData(adhash, page);
 
 	//console.log('Menu: ads.total=' + data.ads.length
@@ -18,13 +20,20 @@ function layoutAds(adHashAndPageObj) {
 
 	$('#ad-list-items').html(createHtml(data.onpage));
 
+    currentAd && tagCurrentAd(currentAd);
+
 	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
 }
 
 function updateAds(obj) {
 
-    var sel, td, adhash = obj.data, updates = obj.updates, page = obj.page;
+    var sel, td, adhash = obj.data, 
+        currentAd = obj.currentAd,
+        updates = obj.updates, 
+        page = obj.page;
 
+    console.log('Menu::updateAds: '+currentAd);
+    
     // change class, {title, (visitedTs) resolved}
     for (var i=0, j = updates.length; i<j; i++) {
 
@@ -45,9 +54,12 @@ function updateAds(obj) {
         //console.log("UPDATE-CLASSES: "+$(sel)[0].classList);
     }
 
+    currentAd && tagCurrentAd(currentAd);
+    
     $('#visited-count').text(visitedCount
         (processAdData(adhash, page).onpage)+' ads visited');
-        
+    
+   
     animateIcon(500);
 }
 

@@ -1,16 +1,15 @@
 var inspectorData, inspectorIdx, animatorId, pack,
     itemClicked = false, container, animateMs = 2000,
-    zoomStyle, zoomIdx = 0, resizing = false, 
+    zoomStyle, zoomIdx = 0, resizing = false,
     zooms = [ 100, /*75,*/ 50, 25, 12.5, 6.25 ];
-
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
 function layoutAds(addonData) { // NOTE: this can be called multiple times
    
-    if (!this.inspectorData)
-        this.inspectorData = addonData.inspectorData;
+    //if (!this.inspectorData)
+        //this.inspectorData = addonData.inspectorData;
         
 	var ads = processAdData(addonData.data).ads;
 
@@ -27,36 +26,60 @@ function layoutAds(addonData) { // NOTE: this can be called multiple times
 
 function updateAds(addonData) {
 
-    if (!this.inspectorData)
-        this.inspectorData = addonData.inspectorData;
-    
-    //console.log("Vault.updateAds***: ", inspectorData); 
-
     var ads = processAdData(addonData.data).ads, 
-       vdate, updates = addonData.updates;     
+       vdate, updates = addonData.updates,
+       inspectorId = addonData.inspectorDataId;     
              
-	log('Vault.updateAds(): '+ads.length);
-
+	//log('Vault.updateAds(): inspectorId='+inspectorId);
+	
 	all = ads.slice(); // save original set
 
 	// update class/title/visited/resolved-url
     updates.map(doUpdate);
 
+    if (inspectorId) {
+        inspectorData = null;
+        
+        var $item = $("#ad"+inspectorId);
+        var insp = createInspectorObj($item);
+ 
+         $('.panes>li').each(function(i) {
+    
+            var $this = $(this);
+    
+        // update image-src and image-alt tags
+            // $this.find('img')
+                // .attr('src', insp.imgsrc)
+                // .attr('alt',  insp.imgalt);
+// 
+            // // update inspector fields
+            // $this.find('.title').text(insp.title);
+            // $this.find('.target').text(insp.target);
+            // $this.find('.origin').text(insp.origin);
+            // $this.find('.visited').text(insp.visited);
+            // $this.find('.detected').text(insp.detected);
+        });
+        // //$item.mouseleave();
+        //$item.addClass('inspectee').siblings()
+          //  .removeClass('inspectee');
+
+        //inspectorData = loadInspectorData($item);
+
+        // fill fields for first empty pane & set class to 'full'
+        //populateInspector(inspectorData, inspectorIdx=0);
+
+        // make/layout controls for duplicates
+        //makeDuplicateControls(inspectorData);
+
+        //doAnimation(inspectorData);
+    }
+
 	computeStats(ads);
 }
 
-function findAdById(id, ads) {
-
-    for (i=0, j=ads.length; i< j; i++) {
-
-        if (ads[i].id === id)
-            return ads[i]
-    }
-
-    return null;
-}
-
 function doUpdate(updated) {
+
+    //console.log('doUpdate: #'+updated.id);
 
     var sel = '#ad' + updated.id, newClass;
 
@@ -80,34 +103,13 @@ function doUpdate(updated) {
     $(sel).removeClass('just-visited').addClass('just-visited');
 
     // Update inspector fields with (title,visitedTs,targetUrl)
-    if ($(sel).hasClass('inspectee'))
-        updateInspector(updated, vdate);
-}
-
-function updateInspector(updated, vdate) {
-
-    if (inspectorData && inspectorData.length) {
-
-        // update the existing inspector object
-        for (var i=0, j = inspectorData.length; i<j; i++) {
-
-            inspectorData[i].visited = vdate;
-            inspectorData[i].title = updated.title;
-            if (updated.resolvedTargetUrl)
-                inspectorData[i].target = updated.resolvedTargetUrl;
-        }
-
-        // update all phases of the animation
-        $('.panes > li').each(function() {
-
-            populateInspectorDetails(this, inspectorData[0]);
-        });
-    }
+    //if ($(sel).hasClass('inspectee'))
+        //updateInspector(updated, vdate);
 }
 
 function doLayout(theAds, resetLayout) {
 
-console.log('Vault.doLayout: '+theAds.length);
+//console.log('Vault.doLayout: '+theAds.length);
 
     if (!theAds) throw Error("No ads!");
 
@@ -185,8 +187,10 @@ function formatDivs(ads) {
 			if (ad.visitedTs > 0)  html += 'visited ';
 
 			// TODO: what if text-ad?
-
+			
+            
 			html += 'dup-count-'+ad.count+'" ';
+			html += 'data-id="'+ad.id+'" ';
 			html += 'data-title="'+ad.title+'" ';
 			html += 'data-foundTs="'+formatDate(ad.foundTs)+'" ';
 			html += 'data-visitedTs="'+formatDate(ad.visitedTs)+'" ';
@@ -350,20 +354,23 @@ function enableInspector() {
 
 	$('.item').mouseleave(function() {
 	    
+	    //console.log("mouseleave ***");
         if (!$('#container').hasClass('lightbox-view')) 
         {
 		  // kill any remaining dup animations
-		  clearInspector();
+		  stopInspectorAnimations();
         }
 	});
 }
 
-function clearInspector() {
+function stopInspectorAnimations() {
 
     animatorId && clearTimeout(animatorId);
 }
 
 function setInspectorFields(ele) {
+
+//console.log("setInspectorFields(): "+$(ele).attr('id')+" has="+$(ele).hasClass('inspectee'));
 
     // don't reset animatation of the same ad
     if (!$(ele).hasClass('inspectee')) {
@@ -372,10 +379,12 @@ function setInspectorFields(ele) {
         $(ele).addClass('inspectee').siblings()
             .removeClass('inspectee');
 
+//console.log("pre-notify: "+$(ele).attr('id'));
+
         // load primary ad & all dups for inspector
         inspectorData = loadInspectorData(ele);
-        
-        notifyAddon(inspectorData);
+
+        notifyAddon(inspectorData[0].id);
 
         // fill fields for first empty pane & set class to 'full'
         populateInspector(inspectorData, inspectorIdx=0);
@@ -383,27 +392,29 @@ function setInspectorFields(ele) {
         // make/layout controls for duplicates
         makeDuplicateControls(inspectorData);
 
+//console.log('doAnimation1 *********');
         doAnimation(inspectorData);
     }
 
 //console.log("setInspectorFields(): "+inspectorData.length);
 
-    if (inspectorData.length>1)  // but cycle either way
+    if (inspectorData.length > 1)  // but cycle either way
          cycleThroughDuplicates();
 }
 
-function notifyAddon(idata) {
+function notifyAddon(adId) {
     
-    if ( typeof notifyTimer == 'undefined')
-        var notifyTimer = 0;
+    //console.log("Vault.notify:"+adId);
+    //if ( typeof notifyTimer == 'undefined')
+      //  var notifyTimer = 0;
         
-    clearTimeout(notifyTimer);
+    //clearTimeout(notifyTimer);
     
-    notifyTimer = setTimeout(function() {
+    //notifyTimer = setTimeout(function() {
 
-        self.port && self.port.emit("update-inspector", idata);
+    self.port && self.port.emit("update-inspector", { "id": adId } );
         
-    }, 200); // not sure if we need this delay
+    //}, 200); // not sure if we need this delay
 }
 
 function loadInspectorData(ele) {
@@ -413,17 +424,23 @@ function loadInspectorData(ele) {
 }
 
 function createInspectorObj(item) {
+    
+    $item = $(item);
+    $img = $('img', item);
+    
+//console.log('createInspectorObj: ad#'+$item.attr('data-id')+"/"+$item.attr('data-title'));
 
 	return {
 
-		imgsrc : $('img', item).attr('src'),
-		imgalt : $('img', item).attr('alt'),
-		title: $(item).attr('data-title'),
-		target : $(item).attr('data-targetUrl'),
-		origin : $(item).attr('data-pageUrl'),
-		visited : $(item).attr('data-visitedTs'),
-		detected : $(item).attr('data-foundTs'),
-		content: $(item).attr('data-contentData')
+        id: $item.attr('data-id'),
+		imgsrc : $img.attr('src'),
+		imgalt : $img.attr('alt'),
+		title: $item.attr('data-title'),
+		target : $item.attr('data-targetUrl'),
+		origin : $item.attr('data-pageUrl'),
+		visited : $item.attr('data-visitedTs'),
+		detected : $item.attr('data-foundTs'),
+		content: $item.attr('data-contentData')
 	}
 }
 
@@ -467,19 +484,18 @@ function makeDuplicateControls(data) {
  */
 function doAnimation(data) {
 
+    $('.inspected').attr('src', data[0].imgsrc)
+        .attr('alt',  data[0].imgalt);
+            
 	// move pane 'out' to 'empty', move 'in' to 'out'
 	$('.panes>li').each(function(i) {
 
-		$( this ).removeClass('out').addClass('empty');
-		if ($( this ).hasClass('in')) {
-
-			$( this ).removeClass().addClass('out');
-		}
-		else { // hack to get correct img in place for dups
-
-			$('img', $( this )).attr('src', data[0].imgsrc);
-			$('img', $( this )).attr('alt',  data[0].imgalt);
-		}
+        var $this = $(this);
+        
+		$this.removeClass('out').addClass('empty');
+		
+		if ($this.hasClass('in'))
+			$this.removeClass().addClass('out');
 	});
 
 	// set current pane (class='ready') to 'in'
@@ -488,7 +504,6 @@ function doAnimation(data) {
 
 function cycleThroughDuplicates() {
 
-	//log('cycleThroughDuplicates()');
 	animatorId && clearTimeout(animatorId);
 	animatorId = setTimeout(inspectorAnimator, animateMs);
 }
@@ -507,14 +522,46 @@ function inspectorAnimator() {
 	}
 }
 
+function updateInspector(updated, vdate) {
+
+    if (inspectorData && inspectorData.length) {
+
+        // update the existing inspector object
+        for (var i=0, j = inspectorData.length; i<j; i++) {
+            
+            inspectorData[i].visited = vdate;
+            inspectorData[i].title = updated.title;
+            //console.log(i+") TITLE:"+inspectorData[i].title);
+            if (updated.resolvedTargetUrl)
+                inspectorData[i].target = updated.resolvedTargetUrl;
+        }
+
+/*
+        // update all phases of the animation
+        console.log('updating panes: '+updated.id);
+        $('.panes > li').each(function() {
+
+            console.log('pre-populateInspectorDetails-updateA: ',$(this).prop("tagName")+"/"+$(this).attr("id"));
+            populateInspectorDetails($(this), inspectorData[0]);
+        });
+        console.log('done updating panes\n');
+   
+        // TODO: print values for all panes here
+   
+    */
+    }
+}
+
 function populateInspector(iData, dupIdx) {
 
-	//log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
+//log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
 
-	var ele = $('.empty').first(), insp = iData[dupIdx];
+	var insp = iData[dupIdx];
+	var ele = $('.empty').first();
 
 	if (!insp) throw Error('no inspectorData['+dupIdx+']', iData);
 
+//console.log('pre-populateInspectorDetails-normal: ',ele.prop("tagName")+" ele.id"+ele.attr('id'));
     populateInspectorDetails(ele, insp);
 
 	// set the active dot in the dup-control
@@ -527,17 +574,23 @@ function populateInspector(iData, dupIdx) {
 
 function populateInspectorDetails(ele, insp) {
 
+    $ele = $(ele);
+
+///console.log('populateInspectorDetails() :: '+$ele.attr('id')+".img.src="+insp.imgsrc);
+    
+//console.log('populateInspectorDetails: ad#'+insp.id+": '"+insp.title+"' ele.id="+$ele.attr('id'));
+
     // update image-src and image-alt tags
-    $(ele).find('img')
+    $ele.find('img')
         .attr('src', insp.imgsrc)
         .attr('alt',  insp.imgalt);
 
     // update inspector fields
-    $(ele).find('.title').text(insp.title);
-    $(ele).find('.target').text(insp.target);
-    $(ele).find('.origin').text(insp.origin);
-    $(ele).find('.visited').text(insp.visited);
-    $(ele).find('.detected').text(insp.detected);
+    $ele.find('.title').text(insp.title);
+    $ele.find('.target').text(insp.target);
+    $ele.find('.origin').text(insp.origin);
+    $ele.find('.visited').text(insp.visited);
+    $ele.find('.detected').text(insp.detected);
 }
 
 function attachTests() {
@@ -583,7 +636,7 @@ function setZoom(idx) {
 
 function positionAds() { // autozoom & center
 
-	log("Vault.positionAds");
+	//log("Vault.positionAds");
 
 	var percentVisible = .6,
 		winH = $('#svgcon').offset().top,
@@ -615,7 +668,7 @@ function positionAds() { // autozoom & center
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
 				zoomOut();
-				log('Ad('+$img.attr('id')+') offscreen, zoom='+zoomStyle);
+				//log('Ad('+$img.attr('id')+') offscreen, zoom='+zoomStyle);
 				return (problem = true); // break jquery each() loop
 			}
 		});
@@ -624,9 +677,21 @@ function positionAds() { // autozoom & center
 	}
 }
 
+
+function findAdById(id, ads) {
+
+    for (i=0, j=ads.length; i< j; i++) {
+
+        if (ads[i].id === id)
+            return ads[i]
+    }
+
+    return null;
+}
+
 function addInterfaceHandlers(ads) {
 
-    console.log('addInterfaceHandlers');
+    //console.log('addInterfaceHandlers');
 
 	/////////// RESIZE-PANELS
 

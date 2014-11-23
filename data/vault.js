@@ -692,6 +692,12 @@ function findAdById(id, ads) {
     return null;
 }
 
+function openInNewTab(url) {
+    
+  var win = window.open(url, '_blank');
+  win.focus();
+}
+
 function addInterfaceHandlers(ads) {
 
     //console.log('addInterfaceHandlers');
@@ -707,6 +713,11 @@ function addInterfaceHandlers(ads) {
     $('#x-close-button').click(function(e) {
         
         self.port && self.port.emit("close-vault");
+    });
+    
+    $('#logo').click(function(e) {
+        
+        openInNewTab('http://dhowe.github.io/AdNauseam/');
     });
 
 	$(document).mouseup(function(e) {

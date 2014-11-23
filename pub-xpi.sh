@@ -22,6 +22,9 @@ echo "  to $RED:$XPI_DIR"
 #scp adnauseam.xpi$RED:$XPI_DIR/$XPI_FILE
 
 cat adnauseam.xpi | /usr/bin/ssh ${USR}@${RED} "(cd ${XPI_DIR} && /bin/rm -f $XPI_FILE && cat - > $XPI_FILE && ln -fs $XPI_FILE adnauseam.xpi && ls -l)" 
+
+exit
+
 rm www/adnauseam*.xpi
 mv adnauseam.xpi www/adnauseam-$1.xpi
 cd www

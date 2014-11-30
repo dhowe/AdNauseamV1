@@ -3,13 +3,14 @@
 
 function tagCurrentAd(currentAd) {
     
-    console.log('tagCurrentAd('+currentAd.id+')');
+    //console.log('tagCurrentAd('+currentAd.id+')');
     
     sel = '#ad' + currentAd.id;
     
     if ($(sel).length) {
         
-        console.log("SET CURRENT-AD: ",  $(sel)[0].classList);
+        //console.log("SET CURRENT-AD: ",  $(sel)[0].classList);
+        
         //if ($(sel).hasClass('pending')); // need to check its not already visited?
         $(sel).addClass('current-ad').siblings().removeClass('current-ad');
     }

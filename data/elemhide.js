@@ -9,9 +9,9 @@ $(function() {
         //}
     }, false);*/
     //console.log( $('#rhs_block > #mbEnd').find("li").size() );
-    console.log( $('#bottomads').length ); 
-    $('#bottomads').hide();   
-        
+    //console.log( $('#bottomads').length ); 
+    // $(/'#bottomads').hide();   
+    console.log("page-ready");  
 });
 
 /*

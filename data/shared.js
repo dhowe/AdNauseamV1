@@ -32,30 +32,33 @@ function showAlert(msg) {
 
 function processAdData(adhash, pageUrl) {
 
-    var ads = toAdArray(adhash);
-
+    var ads = toAdArray(adhash), onpage=[],
+        ad, unique=0, soFar, hash = {};
 //console.warn("processAdData: "+ads.length+", "+pageUrl);
-
-    var ad, unique=0, onpage=[], soFar, hash = {};
 
     // set hidden val for each ad
     for (var i=0, j = ads.length; i<j; i++) {
 
         ad = ads[i];
-
-        if (!ad.contentData) continue;
-
-        soFar = hash[ad.contentData];
+        
+        key = ad.hashKey || ad.contentData; // backwards-compat.
+        
+        if (!key) {
+            
+            console.log("shared.js::ignore->no key!!!",ad);
+            continue;
+        }
+        
+        soFar = hash[key];
         if (!soFar) {
 
             // new: add a hash entry
-            hash[ad.contentData] = 1;
+            hash[key] = 1;
             ad.hidden = false;
 
             // update count on this page
             if (pageUrl === ads[i].pageUrl ||
-                (typeof testPageUrl != 'undefined' &&
-                    testPageUrl === ads[i].pageUrl))  // for testing
+                (typeof testPageUrl != 'undefined' && testPageUrl === ads[i].pageUrl))  // for testing
             {
                 // TODO: don't count old ads from same url
                 onpage.push(ads[i]);
@@ -67,7 +70,7 @@ function processAdData(adhash, pageUrl) {
         else {
 
             // dup: update the count
-            hash[ad.contentData]++;
+            hash[key]++;
             ad.hidden = true;
         }
     }
@@ -76,10 +79,9 @@ function processAdData(adhash, pageUrl) {
     for (var i=0, j = ads.length; i<j; i++) {
 
         ad = ads[i];
-        ad.count = hash[ad.contentData];
-
-        //  console.log("ad#"+ad.id+" "+ad.count);
-
+        ad.count = hash[ad.hashKey || ad.contentData]; // backwards-compat.
+ 
+        // console.log("ad#"+ad.id+" "+ad.count);
     }
 
     return { ads: ads, onpage: onpage, unique: unique };

@@ -261,14 +261,6 @@ header{
   text-align: center;
 }
 
-.ad-item.visited img{
-  border: 1px solid #BD10E0;
-}
-
-.ad-item.just-visited {
-  background: none;
-  animation: 1500ms ease-in-out visit;
-}
 
 @keyframes visit {
    from {
@@ -276,9 +268,7 @@ header{
    }
 }
 
-.ad-item.failed img {
-  border-style: dashed;
-}
+/* -------------------------------------------------- */
 
 .ad-item img {
   max-height: 60px;
@@ -289,6 +279,82 @@ header{
   border: 1px solid #0076FF;
 }
 
+.ad-item.visited img {
+  border: 1px solid #BD10E0;
+}
+
+.ad-item.just-visited {
+  background: none;
+  animation: 1500ms ease-in-out visit;
+}
+
+.ad-item.failed img {
+  border-style: dashed;
+}
+
+.ad-item span.title {
+  display: block;
+  width: 250px;
+  overflow: hidden;
+  max-height: 2.3em;
+  line-height: 1.15em;
+}
+
+/* -------------------------------------------------- */
+
+.ad-item-text {
+  padding: 10px 20px 0 130px;
+  font-size: 10px;
+}
+
+.ad-item-text .thumb {
+  height: 54px;
+  width: 54px;
+  border: 2px dashed #0076FF;
+  border-radius: 5px;
+  color: #0076FF;
+  font-size: 16px;
+  line-height: 1em;
+  padding: 10px;
+  font-family: bebas_neue_regularregular;
+  top: 40px;
+  left: 63px;
+}
+
+.ad-item-text .ads-creative {
+  font-size: 0.8em;
+  color: #979797;
+}
+
+.ad-item-text h3 a {
+  color: #ababab;
+  text-decoration: none;
+  
+  display: block;
+  width: 250px;
+  overflow: hidden;
+  max-height: 2.3em;
+  line-height: 1.15em;
+}
+
+.ad-item-text.visited .thumb {
+
+  border: 2px dashed #BD10E0;
+  color: #BD10E0;
+}
+
+.ad-item-text.failed .thumb {
+  border: 2px dashed #F00;
+  color: #F00;
+}}
+
+.ad-item-text.just-visited {
+  background: none;
+  animation: 1500ms ease-in-out visit;
+}
+
+/* -------------------------------------------------- */
+/*
 .ad-item-img {
   max-height: 60px;
   max-width: 80px;
@@ -360,28 +426,21 @@ header{
   text-decoration: none;
 }
 
-.ad-item-text-visited h3 a{
+.ad-item-text-visited h3 a {
   color: #ababab;
   text-decoration: none;
 }
 
-.ad-item-text .ads-creative{
+.ad-item-text .ads-creative {
   font-size: 0.8em;
   color: #979797;
 }
 
-.ad-item-text-visited .ads-creative{
+.ad-item-text-visited .ads-creative {
   font-size: 0.8em;
   color: #979797;
 }
-
-.ad-item span.title {
-  display: block;
-  width: 250px;
-  overflow: hidden;
-  max-height: 2.3em;
-  line-height: 1.15em;
-}
+*/
 
 #ad-list li cite {
   display: block;

@@ -15,8 +15,9 @@ function layoutAds(obj) {
 	   
 	var data = processAdData(adhash, page);
 
-	//console.log('Menu: ads.total=' + data.ads.length
-		//+', ads.onpage=' + data.onpage.length+", page="+page);
+	//console.log('Menu: ads.total=' + data.ads.length 
+	   //+ ' ads.duplicates='+(data.ads.length-data.unique));
+		//', ads.onpage=' + data.onpage.length+", page="+page);
 
 	$('#ad-list-items').html(createHtml(data.onpage));
 
@@ -32,7 +33,7 @@ function updateAds(obj) {
         updates = obj.updates, 
         page = obj.page;
 
-    //console.log('Menu::updateAds: '+currentAd);
+    //console.log('Menu::updateAds: ', currentAd);
     
     // change class, {title, (visitedTs) resolved}
     for (var i=0, j = updates.length; i<j; i++) {
@@ -41,15 +42,18 @@ function updateAds(obj) {
         sel = '#ad' + updates[i].id + ' .title';
         $(sel).text(updates[i].title);
 
-        // update the url
-        sel = '#ad' + updates[i].id + ' cite';
-        td = targetDomain(updates[i]);
-        if (td) $(sel).text(td);
+        if (updates[i].contentType !== 'text') {
+            
+            // update the url    
+            sel = '#ad' + updates[i].id + ' cite';
+            td = targetDomain(updates[i]);
+            if (td) $(sel).text(td);
+        }
 
         // update the class
         sel = '#ad' + updates[i].id;
-        $(sel).addClass(updates[i].visitedTs > 0 ? 'visited' : 'failed');
-        $(sel).removeClass('just-visited').addClass('just-visited');
+        $(sel).addClass(updates[i].visitedTs > 0 ? 'visited' : 'failed')
+            .removeClass('just-visited').addClass('just-visited');
         
         //console.log("UPDATE-CLASSES: "+$(sel)[0].classList);
     }
@@ -137,9 +141,10 @@ function createHtml(ads) {
 		else if (ads[i].contentType === 'text') {
 
 			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
-			html += '""><span class="thumb">Text Ad</span><h3><a target="new" href="'
-			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + targetDomain(ads[i]);
-			html += '</cite><div class="ads-creative">' + ads[i].contentData +'</div></li>\n\n';
+			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
+			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
+			 if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
+			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
 		}
 	}
 	
@@ -168,7 +173,7 @@ function targetDomain(ad) {
 	else
 	   console.warn("ERROR: " + ad.targetUrl, url);
 	
-	if (result &&  TEST_APPEND_IDS)
+	if (result && TEST_APPEND_IDS)
 	   result += ' (#'+ad.id+')';
 	   
     return result;

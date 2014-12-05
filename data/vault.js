@@ -6,6 +6,13 @@ var inspectorData, inspectorIdx, animatorId, pack,
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
+function computeStats(ads) {
+
+    $('.since').text(formatDate(sinceTime(ads)));
+    $('.clicked').text(numVisited(ads) + ' ads clicked');
+    $('.detected').text(ads.length + ' detected.');
+}
+
 function layoutAds(addonData) { 
    
 	var ads = processAdData(addonData.data).ads,
@@ -128,11 +135,6 @@ function doLayout(theAds, resetLayout) {
     //dbugOffsets && addTestDivs();
 }
 
-function computeStats(theAds) {
-
-	$('#stats').html(formatStats(theAds));
-}
-
 function repack(theAds, resetLayout) {
 
 	log("Vault.repack()");
@@ -164,7 +166,7 @@ function repack(theAds, resetLayout) {
 	}
 }
 
-function formatDivs(ads) {
+function formatDivs(ads) { // TODO: this is rather hideous
 
 	//log('formatDivs: '+ads.length);
 
@@ -177,6 +179,38 @@ function formatDivs(ads) {
 		if (ad.contentType === 'text') {
 
 			textAds++;
+			
+            html += '<div id="ad'+ad.id+'" class="item-text item';
+            //html += '<a data-href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
+
+            html += ad.hidden ? '-hidden ' : ' '; // hidden via css
+
+            if (ad.visitedTs == 0) html += 'pending ';
+            if (ad.visitedTs  < 0) html += 'failed ';
+            if (ad.visitedTs  > 0) html += 'visited ';
+
+            // TODO: what if text-ad?
+            
+            html += 'dup-count-'+ad.count+'" ';
+            html += 'data-id="'+ad.id+'" ';
+            html += 'data-title="'+ad.title+'" ';
+            html += 'data-type="'+ad.contentType+'" ';
+            html += 'data-foundTs="'+formatDate(ad.foundTs)+'" ';
+            html += 'data-visitedTs="'+formatDate(ad.visitedTs)+'" ';
+            html += 'data-targetUrl="'+ad.targetUrl+'" ';
+            html += 'data-contentData="'+ad.contentData.text+'/'+ad.contentData.site+'" ';
+            html += 'data-pageUrl="'+ad.pageUrl+'">';
+
+            if (!ad.hidden)
+            {
+                html += '<span class="counter">'+ad.count+'</span>';
+                //html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
+                html += '<span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
+                html += ad.targetUrl + '">' + ad.title + '</a></h3><cite>' + ad.contentData.site;
+                html += '</cite><div class="ads-creative">' + ad.contentData.text +'</div>\n';
+            }
+
+            html += '</div>\n';
 		}
 		else // assume: contentType === 'img'
 		{
@@ -186,26 +220,26 @@ function formatDivs(ads) {
 			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
 
 			if (ad.visitedTs == 0) html += 'pending ';
-			if (ad.visitedTs < 0)  html += 'failed ';
-			if (ad.visitedTs > 0)  html += 'visited ';
+			if (ad.visitedTs  < 0) html += 'failed ';
+			if (ad.visitedTs  > 0) html += 'visited ';
 
-			// TODO: what if text-ad?
+			var imgSrc = (ad.contentData.src || ad.contentData); // bc
 			
-            
 			html += 'dup-count-'+ad.count+'" ';
 			html += 'data-id="'+ad.id+'" ';
 			html += 'data-title="'+ad.title+'" ';
+			html += 'data-type="'+ad.contentType+'" ';
 			html += 'data-foundTs="'+formatDate(ad.foundTs)+'" ';
 			html += 'data-visitedTs="'+formatDate(ad.visitedTs)+'" ';
 			html += 'data-targetUrl="'+ad.targetUrl+'" ';
-			html += 'data-contentData="'+ad.contentData+'" ';
+			html += 'data-contentData="'+ imgSrc+'" ';
 			html += 'data-pageUrl="'+ad.pageUrl+'">';
 
 			if (!ad.hidden)
 			{
 				html += '<span class="counter">'+ad.count+'</span>';
 				//html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
-				html += '<img id="img'+ad.id+'" src="' + ad.contentData + '" alt=""';
+				html += '<img id="img'+ad.id+'" src="' + imgSrc + '" alt=""';
 				html += ' onError="this.onerror=null; this.src=\'img/blank.png\';">';
 			}
 
@@ -214,15 +248,9 @@ function formatDivs(ads) {
 
 	}
 
-	log("Ignoring "+textAds + ' text-ads');
+	log("Found "+textAds + ' text-ads');
 
 	return html;
-}
-
-function formatStats(ads) {
-
-	return 'Since '+ formatDate(sinceTime(ads)) + ': <span class="clicked">' + // yuck, get rid of html here
-	numVisited(ads)+' ads clicked</span>, out of the <span class="detected">'+ads.length+' detected.</span>';
 }
 
 function numVisited(ads) {

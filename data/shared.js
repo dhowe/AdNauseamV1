@@ -41,11 +41,11 @@ function processAdData(adhash, pageUrl) {
 
         ad = ads[i];
         
-        key = ad.hashKey || ad.contentData; // backwards-compat.
+        key = hashKey(ad); 
         
         if (!key) {
             
-            console.log("shared.js::ignore->no key!!!",ad);
+            console.log("*** shared.js::ignore->no key!!!",ad);
             continue;
         }
         
@@ -58,7 +58,7 @@ function processAdData(adhash, pageUrl) {
 
             // update count on this page
             if (pageUrl === ads[i].pageUrl ||
-                (typeof testPageUrl != 'undefined' && testPageUrl === ads[i].pageUrl))  // for testing
+                (typeof testPageUrl != 'undefined' && testPageUrl===ads[i].pageUrl))  // testing
             {
                 // TODO: don't count old ads from same url
                 onpage.push(ads[i]);
@@ -79,7 +79,7 @@ function processAdData(adhash, pageUrl) {
     for (var i=0, j = ads.length; i<j; i++) {
 
         ad = ads[i];
-        ad.count = hash[ad.hashKey || ad.contentData]; // backwards-compat.
+        ad.count = hash[hashKey(ad)]; // backwards-compat.
  
         // console.log("ad#"+ad.id+" "+ad.count);
     }
@@ -87,6 +87,11 @@ function processAdData(adhash, pageUrl) {
     return { ads: ads, onpage: onpage, unique: unique };
 }
 
+function hashKey(ad) { 
+    
+    // a backwards-compatible hash-key
+    return ad.hashKey || ad.contentData.src || ad.contentData;
+}
 
 function toAdArray(adhash, filter) { 
 

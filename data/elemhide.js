@@ -20,15 +20,15 @@ $(function() {
 
             if ($this.hasClass(clz)) {
                 
-                var ad = parseGoogleText($this, '.'+clz);
+                var ad = parseGoogleText($this, '.' + clz);
                 if (ad) {
-                    // console.log(ad);
+                    console.log(ad);
                     ads.push(ad);
                 }
             }
             else {
                 
-                console.log('ElemHide.js::ignore #' + $this.attr('id') +
+                console.log('elemhide.js::ignore #' + $this.attr('id') +
                      " /("+$(this)[0].classList+")\n\t\t"+document.URL);
             } 
         });
@@ -54,13 +54,16 @@ function parseGoogleText($ele, sel) {
             
             return {
                 
-                selector : sel,
+                selector : sel, 
+                network : 'google',
+                
                 pageUrl : document.URL,
                 targetUrl : anchor.attr('href'),
                 title : anchor.text(),
                 
                 textHtml : text.html(),
                 siteHtml : site.html(),
+                
                 // OR
                 text : text.text(),
                 site : site.text()

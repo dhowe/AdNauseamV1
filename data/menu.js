@@ -131,7 +131,7 @@ function createHtml(ads) {
 
 			html += '<li id="ad' + ads[i].id +'" class="ad-item' + visitedClass(ads[i]);
 			html += '"><a target="new" href="' + ads[i].targetUrl;
-			html += '"><span class="thumb"><img src="' + ads[i].contentData;
+			html += '"><span class="thumb"><img src="' + (ads[i].contentData.src || ads[i].contentData);
 			html += '" class="ad-item-img"';// + visitedState(ads[i]);
 			html += ' onError="this.onerror=null; this.src=\'img/blank.png\';"';
 			html += '" alt="ad thumb"></span><span class="title">';

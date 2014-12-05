@@ -279,6 +279,68 @@ div.tooltip {
 	opacity: 1;
 }
 
+/* -----------------------TMP--------------------------- */
+
+.item-text {
+  padding: 10px 20px 0 130px;
+  font-size: 10px;
+  height: 70px;
+}
+
+.item-text .title {
+  margin-left: 0px;
+  margin-top: -10px;
+}
+
+.item-text .thumb {
+  height: 54px;
+  width: 54px;
+  text-indent: 0px;
+  background: none repeat scroll 0% 0%;
+  border: 2px dashed #0076FF;
+  border-radius: 5px;
+  color: #0076FF;
+  font-size: 16px;
+  line-height: 1em;
+  padding: 10px;
+  font-family: bebas_neue_regularregular;
+  top: 0px;
+  left: 0px;
+}
+
+.item-text .ads-creative {
+  font-size: 0.8em;
+  color: #979797;
+}
+
+.item-text h3 a {
+  color: #ababab;
+  text-decoration: none;
+  font-size: 14px;
+  display: block;
+  width: 250px;
+  overflow: hidden;
+  max-height: 2.3em;
+  line-height: 1.15em;
+}
+
+.item-text.visited .thumb {
+
+  border: 2px dashed #BD10E0;
+  color: #BD10E0;
+}
+
+.item-text.failed .thumb {
+  border: 2px dashed #F00;
+  color: #F00;
+}}
+
+.ad-item-text.just-visited {
+  background: none;
+  animation: 1500ms ease-in-out visit;
+}
+/* ----------------------------------------------------- */
+
 @keyframes pop {
    from {
      transform: scale(0.8,0.8);

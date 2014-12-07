@@ -22,14 +22,14 @@ $(function() {
                 
                 var ad = parseGoogleText($this, '.' + clz);
                 if (ad) {
-                    console.log(ad);
+                    //console.log(ad);
                     ads.push(ad);
                 }
             }
             else {
                 
                 console.log('elemhide.js::ignore #' + $this.attr('id') +
-                     " /("+$(this)[0].classList+")\n\t\t"+document.URL);
+                     " /("+$(this)[0].classList+") page: "+document.URL);
             } 
         });
         

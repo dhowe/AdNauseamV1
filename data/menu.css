@@ -459,6 +459,16 @@ header{
   font-size: 12px;
 }
 
+#version-disp a {
+  color: #0076FF;
+  text-decoration: none;
+  text-align: right;
+  margin:30px 30px 30px 30px;
+  display: block;
+  font-size: 10px;
+}
+
+
 /* ============================================================
   SETTINGS
 ============================================================ */

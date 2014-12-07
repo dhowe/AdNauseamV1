@@ -61,6 +61,8 @@ function processAdData(adhash, pageUrl) {
                 (typeof testPageUrl != 'undefined' && testPageUrl===ads[i].pageUrl))  // testing
             {
                 // TODO: don't count old ads from same url
+                // TODO: need to check pageview hash?
+                // WORKING HERE ***
                 onpage.push(ads[i]);
             }
 

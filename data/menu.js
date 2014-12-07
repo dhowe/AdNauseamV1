@@ -81,11 +81,13 @@ function refreshPanel(opts) {
         $('#pause-button').addClass('disabled');
     }
     
+    $('#version-disp').text('v'+opts.version);
     $('#cmn-toggle-1').prop('checked', opts.disableLogs); 
     $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
 
     $('#toggle-button').css('background-image', 'url('+img+')');
     $('#pause-button').text(label);
+    
 }
 
 function animateIcon(ms) {
@@ -253,7 +255,7 @@ function attachTests() {
 		setCounts(0, 0, 0);
 
 		// trigger closing of settings
-		$("#settings-close").trigger( "click" );
+		$("#settings-close").trigger("click");
 
 		// call addon to clear simple-storage
 		self.port && self.port.emit("clear-ads");

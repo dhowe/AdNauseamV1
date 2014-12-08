@@ -34,7 +34,6 @@ function processAdData(adhash, pageUrl) {
 
     var ads = toAdArray(adhash), onpage=[],
         ad, unique=0, soFar, hash = {};
-//console.warn("processAdData: "+ads.length+", "+pageUrl);
 
     // set hidden val for each ad
     for (var i=0, j = ads.length; i<j; i++) {
@@ -70,6 +69,8 @@ function processAdData(adhash, pageUrl) {
             unique++;
         }
         else {
+            
+            //console.log('processAdData: dup: '+key);
 
             // dup: update the count
             hash[key]++;
@@ -92,7 +93,13 @@ function processAdData(adhash, pageUrl) {
 function hashKey(ad) { 
     
     // a backwards-compatible hash-key
-    return ad.hashKey || ad.contentData.src || ad.contentData;
+    if (ad.hashKey) return ad.hashKey;
+    
+    var res = ad.contentData.src || ad.contentData;
+    
+    console.warn("[WARN] Invalid(deprecated) hashKey for: "+res);
+    
+    return res;
 }
 
 function toAdArray(adhash, filter) { 

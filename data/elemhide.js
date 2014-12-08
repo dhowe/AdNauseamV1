@@ -1,88 +1,90 @@
 
+var textAdSelectors = [ 
+    { selector: 'ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
+    { selector: 'results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' }
+];
+
 $(function() {
-
-    console.log("page-ready: "+document.URL);
     
-    setTimeout(function() {  
+    var $hidden = $("*").filter(function() {
 
-        console.log("timer-ready");
-
-        var $hidden = $("*").filter(function() {
-            
-            return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
-        });
-
-        var ads = [];// s = '\n';
-        
-        $hidden.each(function() {
-            
-            $this = $(this), clz = 'ads-ad';
-
-            if ($this.hasClass(clz)) {
-                
-                var ad = parseGoogleText($this, '.' + clz);
-                if (ad) {
-                    //console.log(ad);
-                    ads.push(ad);
-                }
-            }
-            else {
-                
-                console.log('elemhide.js::ignore #' + $this.attr('id') +
-                     " /("+$(this)[0].classList+") page: "+document.URL);
-            } 
-        });
-        
-        console.log('Found '+ads.length+' ads ');
-        
-        ads.length && self.port && self.port.emit('parsed-text-ads', ads);
-
-    }, 200);  // TODO: why is this needed (extra-time to apply moz-binding?)
+        return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
+    });
+    
+    $hidden.each(function() {
+    
+        for (var i=0; i < textAdSelectors.length; i++) {
    
+            var data = textAdSelectors[i];
+            
+            var clz = data.selector, sel = '.' + clz;
+            
+            //console.log("CHECK: "+$(this)[0].classList +" hasClass: "+clz);
+                    
+            if ( $(this).hasClass(clz) ) {
+               
+                waitForKeyElements(sel + ' ' + data.waitfor, 
+                    data.handler.bind( $(this) ));
+    
+            }
+               
+        };
+    });
 });
 
-function parseGoogleText($ele, sel) {
+// TODO: combine the functions below?
+function googleText(anchor) {
     
-    var text = $ele.find('div.ads-creative');
-    var site = $ele.find('div.ads-visurl cite');
+    var text = this.find('div.ads-creative');
+    var site = this.find('div.ads-visurl cite');
     
     if (text.length && site.length) {
-     
-        var anchor =  $ele.find("a[class^='r-']"); // r-bottomads-,r-taw-,r-rhscol-
-
-        if (anchor.length == 1) {
+ 
+        var ad = {
             
-            return {
-                
-                selector : sel, 
-                network : 'google',
-                
-                pageUrl : document.URL,
-                targetUrl : anchor.attr('href'),
-                title : anchor.text(),
-                
-                textHtml : text.html(),
-                siteHtml : site.html(),
-                
-                // OR
-                text : text.text(),
-                site : site.text()
-            };
-        }
-        else {
+            network : 'google',            
+            pageUrl : document.URL,
             
-            console.log('parseGoogleText.anchor-fail(len='+anchor.length + 
-                '):', sel, 'id='+$ele.attr('id'), '\n', $ele.contents() );
+            targetUrl : anchor.attr('href'),
+            title : anchor.text(),
+            text : text.text(),
+            site : site.text()
         }
+        
+        self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
         
-        console.log('parseGoogleText.fail: ', sel, text, site);
+        console.log('googleText.fail: ', text, site);
     }
-    
-    return null;
 }
- 
+
+function duckDuckText(anchor) {
+                    
+    var text = this.find('div.result__snippet a');
+    var site = this.find('a.result__url');
+    
+    if (text.length && site.length) {
+        
+        var ad = {
+
+            pageUrl : document.URL,
+            network : 'duckduckgo',
+            
+            targetUrl : anchor.attr('href'),
+            title : anchor.text(),
+            text : text.text(),
+            site : site.text()
+        }
+        
+        self.port && self.port.emit('parsed-text-ad', ad);
+    } 
+    else {
+        
+        console.log('duckDuckText.fail: ',  text, site);
+    }
+}
+
 /*  A utility function, for Greasemonkey scripts,
     that detects and handles AJAXed content.
 
@@ -101,7 +103,7 @@ function parseGoogleText($ele, sel) {
     IMPORTANT: This function requires your script to have loaded jQuery.
 */
 // from: https://gist.github.com/BrockA/2625891
-function waitForKeyElements (
+function waitForKeyElements(
     
     selectorTxt,    /* Required: The jQuery selector string that
                         specifies the desired element(s).

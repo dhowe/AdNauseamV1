@@ -8,10 +8,10 @@
 .settings/org.eclipse.wst.jsdt.ui.superType.name
 www/files/.DS_Store
 todo.txt
-adnauseam.xpi
 backup.sh
 data/adviewD3.html
 data/sliderD3.js
+adnauseam.xpi
 *.sketch
 todo.txt
 data/lib/npm-debug.log

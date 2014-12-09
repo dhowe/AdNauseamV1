@@ -1,10 +1,11 @@
 
 var textAdSelectors = [ 
-    { selector: 'ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
-    { selector: 'results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' }
+    { adclass: 'ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
+    { adclass: 'results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
+    { adclass: 'ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
 ];
 
-$(function() {
+$(function() { // page-is-ready
     
     var $hidden = $("*").filter(function() {
 
@@ -16,23 +17,42 @@ $(function() {
         for (var i=0; i < textAdSelectors.length; i++) {
    
             var data = textAdSelectors[i];
-            
-            var clz = data.selector, sel = '.' + clz;
-            
-            //console.log("CHECK: "+$(this)[0].classList +" hasClass: "+clz);
-                    
-            if ( $(this).hasClass(clz) ) {
+                waitSel = '.' + data.adclass + ' ' + data.waitfor;
+
+            if ( $(this).hasClass(data.adclass) ) {
                
-                waitForKeyElements(sel + ' ' + data.waitfor, 
+                waitForKeyElements(waitSel, 
                     data.handler.bind( $(this) ));
-    
             }
-               
-        };
+        }
     });
 });
 
-// TODO: combine the functions below?
+function yahooText(anchor) {
+    
+    //console.log("HIT *** anchor: "+anchor[0].classList);
+
+    var title = anchor.find("div[class$='ad-ttl'] a");
+    var text = anchor.find('div.abs a');
+    var site = anchor.find('em a');    
+    
+    /*console.log("    *** title: "+title.text());
+    console.log("    *** text: "+text.text());
+    console.log("    *** site: "+site.text());
+    console.log("    *** targetUrl: "+title.attr('href'));*/
+    
+    if (text.length && site.length) {
+ 
+        var ad = createAd('yahoo', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('yahooText.fail: ', text, site);
+    }
+}
+    
 function googleText(anchor) {
     
     var text = this.find('div.ads-creative');
@@ -40,22 +60,13 @@ function googleText(anchor) {
     
     if (text.length && site.length) {
  
-        var ad = {
-            
-            network : 'google',            
-            pageUrl : document.URL,
-            
-            targetUrl : anchor.attr('href'),
-            title : anchor.text(),
-            text : text.text(),
-            site : site.text()
-        }
-        
+        var ad = createAd('google', anchor.text(), 
+            text.text(), site.text(), anchor.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
         
-        console.log('googleText.fail: ', text, site);
+        console.warn('googleText.fail: ', text, site);
     }
 }
 
@@ -66,24 +77,28 @@ function duckDuckText(anchor) {
     
     if (text.length && site.length) {
         
-        var ad = {
-
-            pageUrl : document.URL,
-            network : 'duckduckgo',
-            
-            targetUrl : anchor.attr('href'),
-            title : anchor.text(),
-            text : text.text(),
-            site : site.text()
-        }
-        
+        var ad = createAd('duckduckgo', anchor.text(), 
+            text.text(), site.text(), anchor.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     } 
     else {
         
-        console.log('duckDuckText.fail: ',  text, site);
+        console.warn('duckDuckText.fail: ',  text, site);
     }
 }
+
+function createAd(network,title,text,site,target) {
+    
+    return  {
+        network : network,            
+        pageUrl : document.URL,
+        title : title,
+        text : text,
+        site : site,
+        targetUrl : target
+    };
+}
+    
 
 /*  A utility function, for Greasemonkey scripts,
     that detects and handles AJAXed content.

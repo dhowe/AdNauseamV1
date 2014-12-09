@@ -34,9 +34,9 @@ function layoutAds(addonData) {
 function updateAds(addonData) {
 
     var ads = processAdData(addonData.data).ads, 
-       vdate, updates = addonData.updates,
+        vdate, updates = addonData.updates,
         currentAd = addonData.currentAd,
-       inspectorId = addonData.inspectorDataId;     
+        inspectorId = addonData.inspectorDataId; // remove?
              
 	//log('Vault.updateAds(): inspectorId='+inspectorId);
 	
@@ -46,21 +46,22 @@ function updateAds(addonData) {
     updates.map(doUpdate);
 
     if (inspectorId) {
+        
         inspectorData = null;
         
         var $item = $("#ad"+inspectorId);
         var insp = createInspectorObj($item);
  
-         $('.panes>li').each(function(i) {
+        $('.panes>li').each(function(i) {
     
             var $this = $(this);
     
-        // update image-src and image-alt tags
+            // update image-src and image-alt tags
             // $this.find('img')
                 // .attr('src', insp.imgsrc)
                 // .attr('alt',  insp.imgalt);
-// 
-            // // update inspector fields
+
+            // update inspector fields
             // $this.find('.title').text(insp.title);
             // $this.find('.target').text(insp.target);
             // $this.find('.origin').text(insp.origin);
@@ -258,8 +259,10 @@ function numVisited(ads) {
 	var numv = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
 
-		if (ads[i].visitedTs > 0)
+		if (ads[i].visitedTs > 0) {
+		    //console.log('Found visited: #'+ads[i].id);
 			numv++;
+        }
 	}
 	return numv;
 }

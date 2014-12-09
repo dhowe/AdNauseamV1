@@ -140,14 +140,18 @@ button:hover{
 }
 
 #alert {
-    height: 100%;
+    height: 200;
     width: 100%;
     position: relative;
 }
 
+.recent-ads {
+	margin: 125px 0px 0px 0px;
+}
+
 #alert img {
   position: absolute;
-  top: 50%;
+  top: 50px;
   left: 50%;
   margin: -36px 0px 0px -36px;
   width: 72px;
@@ -159,8 +163,8 @@ button:hover{
 
 #alert p {
   position: absolute;
-  top: 50%;
-  margin-top: 50px;
+  top: 85px;
+  margin-top: 5px;
   text-align: center;
   width: 100%;
   padding: 0px 10%;

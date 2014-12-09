@@ -90,14 +90,13 @@ function processAdData(adhash, pageUrl) {
     return { ads: ads, onpage: onpage, unique: unique };
 }
 
-function hashKey(ad) { 
+function hashKey(ad) { // a backwards-compatible hash-key 
     
-    // a backwards-compatible hash-key
-    if (ad.hashKey) return ad.hashKey;
+    if (ad.hashKey) return ad.hashKey; // if we have one, use it
     
-    var res = ad.contentData.src || ad.contentData;
+    var res = ad.contentData.src || ad.contentData; // otherwise, use what we can
     
-    console.warn("[WARN] Invalid(deprecated) hashKey for: "+res);
+    console.warn("[WARN] Deprecated hashKey found for ad#"+ad.id+"\n\t\t"+res);
     
     return res;
 }

@@ -19,7 +19,7 @@ function layoutAds(obj) {
 	   //+ ' ads.duplicates='+(data.ads.length-data.unique));
 		//', ads.onpage=' + data.onpage.length+", page="+page);
 
-	$('#ad-list-items').html(createHtml(data.onpage));
+	$('#ad-list-items').html(createHtml(data));
 
     currentAd && tagCurrentAd(currentAd);
 
@@ -28,7 +28,8 @@ function layoutAds(obj) {
 
 function updateAds(obj) {
 
-    var sel, td, adhash = obj.data, 
+    var sel, td, onpage,
+        adhash = obj.data, 
         currentAd = obj.currentAd,
         updates = obj.updates, 
         page = obj.page;
@@ -60,8 +61,9 @@ function updateAds(obj) {
 
     currentAd && tagCurrentAd(currentAd);
     
-    $('#visited-count').text(visitedCount
-        (processAdData(adhash, page).onpage)+' ads visited');
+    onpage = processAdData(adhash, page).onpage; 
+    
+    $('#visited-count').text(visitedCount(onpage)+' ads visited');
     
     animateIcon(500);
 }
@@ -119,11 +121,37 @@ function visitedCount(arr) {
 	return visitedCount;
 }
 
-function createHtml(ads) {
+function getRecentAds(ads, num) {
+    
+    ads.sort(byField('visitedTs'));
+    var recent = [];
+    
+    for (var i=0; recent.length < num && i < ads.length; i++) {
+      if (ads[i].visitedTs == 0)
+        recent.push(ads[i]);
+    }
+    
+    for (var i=0; recent.length < num && i < ads.length; i++) 
+        recent.push(ads[i]);
+        
+    // TODO: make sure currently-being-attempted ad is first
 
-	var html = ''; 
+    return recent;
+}
+        
+function createHtml(data) { // { fields: ads, onpage, unique };
+
+	var html = '', ads = data && data.onpage;
 	
-	showAlert(ads.length ? false : 'no ads found on page');
+	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
+	    
+        showAlert('no ads found on this page (showing recent)');
+        ads = getRecentAds(data.ads.slice(), 5);
+        
+        $('#ad-list-items').attr('class','recent-ads');
+        
+        console.log('Handle case: no-ads on page *** '+ads.length+' recent ads');
+    }
 
 	for (var i=0, j = ads.length; i<j; i++) {
 
@@ -153,6 +181,18 @@ function createHtml(ads) {
 //console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
+}
+
+function byField(prop) {
+    var sortOrder = 1;
+    if(prop[0] === "-") {
+        sortOrder = -1;
+        prop = prop.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[prop] < b[prop]) ? -1 : (a[prop] > b[prop]) ? 1 : 0;
+        return result * sortOrder;
+    }
 }
 
 function visitedClass(ad) {
@@ -260,7 +300,7 @@ function attachTests() {
 		// call addon to clear simple-storage
 		self.port && self.port.emit("clear-ads");
 		
-		createHtml([]);
+		createHtml();
 	});
 
 	$('#pause-button').click(function() {

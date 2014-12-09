@@ -148,8 +148,11 @@ function createHtml(data) { // { fields: ads, onpage, unique };
 	
 	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
 	    
-        showAlert('no ads found on this page (showing recent)');
         ads = getRecentAds(data.ads.slice(), 5);
+        
+        var msg = 'no ads found on this page';
+        if (ads && ads.length) msg += ' (showing recent)';
+        showAlert(msg);
         
         $('#ad-list-items').addClass('recent-ads');
         

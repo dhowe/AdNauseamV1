@@ -143,12 +143,15 @@ function createHtml(data) { // { fields: ads, onpage, unique };
 
 	var html = '', ads = data && data.onpage;
 	
+	showAlert(false);
+	$('#ad-list-items').removeClass();
+	
 	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
 	    
         showAlert('no ads found on this page (showing recent)');
         ads = getRecentAds(data.ads.slice(), 5);
         
-        $('#ad-list-items').attr('class','recent-ads');
+        $('#ad-list-items').addClass('recent-ads');
         
         console.log('Handle case: no-ads on page *** '+ads.length+' recent ads');
     }

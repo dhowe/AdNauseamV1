@@ -144,9 +144,10 @@ function createHtml(data) { // { fields: ads, onpage, unique };
 	var html = '', ads = data && data.onpage;
 	
 	showAlert(false);
+	
 	$('#ad-list-items').removeClass();
 	
-	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
+	if ((!ads || !ads.length) && data) { // no-ads on this page, show 5 recent instead
 	    
         ads = getRecentAds(data.ads.slice(), 5);
         

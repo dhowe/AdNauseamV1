@@ -26,34 +26,36 @@ function layoutAds(obj) {
 	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
 }
 
+// CHANGED(12/19): Each ad is now visited separately
 function updateAds(obj) {
 
     var sel, td, onpage,
         adhash = obj.data, 
         currentAd = obj.currentAd,
-        updates = obj.updates, 
+        update = obj.update, 
         page = obj.page;
 
     //console.log('Menu::updateAds: ', currentAd);
     
     // change class, {title, (visitedTs) resolved}
-    for (var i=0, j = updates.length; i<j; i++) {
+    //for (var i=0, j = updates.length; i<j; i++) 
+    {
 
         // update the title
-        sel = '#ad' + updates[i].id + ' .title';
-        $(sel).text(updates[i].title);
+        sel = '#ad' + update.id + ' .title';
+        $(sel).text(update.title);
 
-        if (updates[i].contentType !== 'text') {
+        if (update.contentType !== 'text') {
             
             // update the url    
-            sel = '#ad' + updates[i].id + ' cite';
-            td = targetDomain(updates[i]);
+            sel = '#ad' + update.id + ' cite';
+            td = targetDomain(update);
             if (td) $(sel).text(td);
         }
 
         // update the class
-        sel = '#ad' + updates[i].id;
-        $(sel).addClass(updates[i].visitedTs > 0 ? 'visited' : 'failed')
+        sel = '#ad' + update.id;
+        $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
             .removeClass('just-visited').addClass('just-visited');
         
         //console.log("UPDATE-CLASSES: "+$(sel)[0].classList);
@@ -141,13 +143,15 @@ function getRecentAds(ads, num) {
         
 function createHtml(data) { // { fields: ads, onpage, unique };
 
-	var html = '', ads = data && data.onpage;
+    if (!data) return;
+    
+	var html = '', ads = data.onpage;
 	
 	showAlert(false);
 	
 	$('#ad-list-items').removeClass();
 	
-	if ((!ads || !ads.length) && data) { // no-ads on this page, show 5 recent instead
+	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
 	    
         ads = getRecentAds(data.ads.slice(), 5);
         

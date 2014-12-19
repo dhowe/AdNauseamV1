@@ -33,7 +33,7 @@ function showAlert(msg) {
 function processAdData(adhash, pageUrl) {
 
     var ads = toAdArray(adhash), onpage=[],
-        ad, unique=0, soFar, hash = {};
+        ad, unique=0, hash = {};
 
     // set hidden val for each ad
     for (var i=0, j = ads.length; i<j; i++) {
@@ -48,8 +48,7 @@ function processAdData(adhash, pageUrl) {
             continue;
         }
         
-        soFar = hash[key];
-        if (!soFar) {
+        if (!hash[key]) {
 
             // new: add a hash entry
             hash[key] = 1;
@@ -61,7 +60,7 @@ function processAdData(adhash, pageUrl) {
             {
                 // TODO: don't count old ads from same url
                 // TODO: need to check pageview hash?
-                // WORKING HERE ***
+                // WORKING HERE ON #162***
                 onpage.push(ads[i]);
             }
 

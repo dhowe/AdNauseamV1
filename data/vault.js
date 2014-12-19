@@ -31,57 +31,30 @@ function layoutAds(addonData) {
     currentAd && tagCurrentAd(currentAd);
 }
 
+// CHANGED(12/19): Each ad is now visited separately
 function updateAds(addonData) {
 
     var ads = processAdData(addonData.data).ads, 
-        vdate, updates = addonData.updates,
+        vdate, update = addonData.update,
         currentAd = addonData.currentAd,
-        inspectorId = addonData.inspectorDataId; // remove?
+        //inspectorId = addonData.inspectorDataId; // remove?
              
 	//log('Vault.updateAds(): inspectorId='+inspectorId);
 	
 	all = ads.slice(); // save original set
 
 	// update class/title/visited/resolved-url
-    updates.map(doUpdate);
+    //updates.map(doUpdate);
+    doUpdate(update);
 
-    if (inspectorId) {
+    /*if (inspectorId) { // TODO: need this still?
         
         inspectorData = null;
         
         var $item = $("#ad"+inspectorId);
         var insp = createInspectorObj($item);
- 
-        $('.panes>li').each(function(i) {
-    
-            var $this = $(this);
-    
-            // update image-src and image-alt tags
-            // $this.find('img')
-                // .attr('src', insp.imgsrc)
-                // .attr('alt',  insp.imgalt);
-
-            // update inspector fields
-            // $this.find('.title').text(insp.title);
-            // $this.find('.target').text(insp.target);
-            // $this.find('.origin').text(insp.origin);
-            // $this.find('.visited').text(insp.visited);
-            // $this.find('.detected').text(insp.detected);
-        });
-        // //$item.mouseleave();
-        //$item.addClass('inspectee').siblings()
-          //  .removeClass('inspectee');
-
-        //inspectorData = loadInspectorData($item);
-
-        // fill fields for first empty pane & set class to 'full'
-        //populateInspector(inspectorData, inspectorIdx=0);
-
-        // make/layout controls for duplicates
-        //makeDuplicateControls(inspectorData);
-
-        //doAnimation(inspectorData);
-    }
+        
+    }*/
 
     currentAd && tagCurrentAd(currentAd);
 

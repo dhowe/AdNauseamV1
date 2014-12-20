@@ -1,6 +1,6 @@
-var inspectorData, inspectorIdx, animatorId, pack,
+var //inspectorData, inspectorIdx, animatorId,
     itemClicked = false, container, animateMs = 2000,
-    zoomStyle, zoomIdx = 0, resizing = false,
+    zoomStyle, zoomIdx = 0, resizing = false,  pack,
     zooms = [ 100, 50, 25, 12.5, 6.25 ];
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
@@ -111,9 +111,9 @@ function doLayout(theAds, resetLayout) {
 
 function repack(theAds, resetLayout) {
 
-	log("Vault.repack()");
-
 	var visible =  $(".item").length;
+	
+	log("Vault.repack() :: "+visible);
 
     showAlert(visible ? false : 'no ads found');
 
@@ -135,14 +135,19 @@ function repack(theAds, resetLayout) {
 	else if (visible === 1) {
 
 		// center single ad here (no pack)
-		var sz = realSize($('.item img'));
-		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2)+'px' } );
+		var sz = realSize( $('.item img') );
+
+        console.log("SINGLE PACK: ", sz);// $('#right').width());
+        
+        if (!sz.w) console.warn("No width for image! "+sz.w);
+		
+		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2)+'px' } ); // sz.w/2
 	}
 }
 
 function formatDivs(ads) { // TODO: this is rather hideous
 
-	//log('formatDivs: '+ads.length);
+	log('formatDivs: '+ads.length);
 
 	var ad, textAds = 0, html = '';
 
@@ -162,9 +167,7 @@ function formatDivs(ads) { // TODO: this is rather hideous
             if (ad.visitedTs == 0) html += 'pending ';
             if (ad.visitedTs  < 0) html += 'failed ';
             if (ad.visitedTs  > 0) html += 'visited ';
-
-            // TODO: what if text-ad?
-            
+   
             html += 'dup-count-'+ad.count+'" ';
             html += 'data-id="'+ad.id+'" ';
             html += 'data-title="'+ad.title+'" ';
@@ -222,7 +225,7 @@ function formatDivs(ads) { // TODO: this is rather hideous
 
 	}
 
-	log("Found "+textAds + ' text-ads');
+	//log("Found "+textAds + ' text-ads');
 
 	return html;
 }
@@ -278,7 +281,6 @@ function _drag(event) {
 
    	//log("_drag: ", event.clientX, event.clientY, offset);
 
-	/*  CS: get pixel values from margin-left and margin-top instead of left and top */
     dm.style.marginLeft = (event.clientX + parseInt(offset[0], 10)) + 'px';
     dm.style.marginTop = (event.clientY + parseInt(offset[1], 10)) + 'px';
 
@@ -329,7 +331,7 @@ function enableInspector() {
 	    // populate the inspector & animate if dups
         if (!$('#container').hasClass('lightbox-view')) 
         {
-	       setInspectorFields(this);
+	       //setInspectorFields(this);
         }
     });
     
@@ -337,7 +339,7 @@ function enableInspector() {
         
         e.preventDefault();
         
-        setInspectorFields(this);
+        //setInspectorFields(this);
         
         $(this).addClass('lightbox-selected')
             .siblings().removeClass('lightbox-selected');
@@ -483,110 +485,10 @@ function makeDuplicateControls(data) {
 	}
 }
 
-/* Swap-panes
- * ----------
- * out   ->  empty
- * in    ->  out
- * ready ->  in
- */
-function doAnimation(data) {
-
-    $('.inspected').attr('src', data[0].imgsrc)
-        .attr('alt',  data[0].imgalt);
-            
-	// move pane 'out' to 'empty', move 'in' to 'out'
-	$('.panes>li').each(function(i) {
-
-        var $this = $(this);
-        
-		$this.removeClass('out').addClass('empty');
-		
-		if ($this.hasClass('in'))
-			$this.removeClass().addClass('out');
-	});
-
-	// set current pane (class='ready') to 'in'
-	$('.ready').removeClass().addClass('in');
-}
-
-function cycleThroughDuplicates() {
-
-	animatorId && clearTimeout(animatorId);
-	animatorId = setTimeout(inspectorAnimator, animateMs);
-}
-
-function inspectorAnimator() {
-
-	if (inspectorData && inspectorData.length>1) { // is it a dup?
-
-		inspectorIdx = ++inspectorIdx >= inspectorData.length ? 0 : inspectorIdx;
-
-		populateInspector(inspectorData, inspectorIdx);
-
-		doAnimation(inspectorData);
-
-		cycleThroughDuplicates(); // next
-	}
-}
-
-function updateInspector(updated, vdate) {
-
-    if (inspectorData && inspectorData.length) {
-
-        // update the existing inspector object
-        for (var i=0, j = inspectorData.length; i<j; i++) {
-            
-            inspectorData[i].visited = vdate;
-            inspectorData[i].title = updated.title;
-            //console.log(i+") TITLE:"+inspectorData[i].title);
-            if (updated.resolvedTargetUrl)
-                inspectorData[i].target = updated.resolvedTargetUrl;
-        }
-
-/*
-        // update all phases of the animation
-        console.log('updating panes: '+updated.id);
-        $('.panes > li').each(function() {
-
-            console.log('pre-populateInspectorDetails-updateA: ',$(this).prop("tagName")+"/"+$(this).attr("id"));
-            populateInspectorDetails($(this), inspectorData[0]);
-        });
-        console.log('done updating panes\n');
-   
-        // TODO: print values for all panes here
-   
-    */
-    }
-}
-
-function populateInspector(iData, dupIdx) {
-
-//log('populateInspector('+dupIdx+') '+new Date().getMilliseconds());
-
-	var insp = iData[dupIdx];
-	var ele = $('.empty').first();
-
-	if (!insp) throw Error('no inspectorData['+dupIdx+']', iData);
-
-//console.log('pre-populateInspectorDetails-normal: ',ele.prop("tagName")+" ele.id"+ele.attr('id'));
-    populateInspectorDetails(ele, insp);
-
-	// set the active dot in the dup-control
-	$('.controls li:nth-child('+(inspectorIdx+1)+')')
-		.addClass('active').siblings().removeClass('active');
-
-	// tell the world we are ready to slide 'in'
-	$(ele).removeClass().addClass('ready');
-}
-
 function populateInspectorDetails(ele, insp) {
 
     $ele = $(ele);
-
-///console.log('populateInspectorDetails() :: '+$ele.attr('id')+".img.src="+insp.imgsrc);
     
-//console.log('populateInspectorDetails: ad#'+insp.id+": '"+insp.title+"' ele.id="+$ele.attr('id'));
-
     // update image-src and image-alt tags
     $ele.find('img')
         .attr('src', insp.imgsrc)
@@ -647,7 +549,7 @@ function positionAds() { // autozoom & center
 
 	var percentVisible = .6,
 		winH = $('#svgcon').offset().top,
-		winW = $(window).width() -  $('#right').width(),
+		winW = $("container").width()// -  $('#right').width(),
 		i, x, y, w, h, minX, maxX, minY, maxY, problem;
 
 	for (i=0; i < zooms.length; i++) {
@@ -708,11 +610,11 @@ function addInterfaceHandlers(ads) {
 
 	/////////// RESIZE-PANELS
 
-	$('#handle').mousedown(function(e){
+	/*$('#handle').mousedown(function(e){
 
         e.preventDefault();
 	    resizing = true;
-	});
+	});*/
 	
     $('#x-close-button').click(function(e) {
         
@@ -746,7 +648,7 @@ function addInterfaceHandlers(ads) {
 	document.body.addEventListener('drop', drop, false);
 	  // from: http://jsfiddle.net/robertc/kKuqH/
 
-	$(document).mousemove(function(e) {
+	/*$(document).mousemove(function(e) {
 
 	    if (resizing) {  // constrain drag width here
 
@@ -760,7 +662,7 @@ function addInterfaceHandlers(ads) {
 	    }
 
 	    e.preventDefault();
-	});
+	});*/
 
 
 	/////////// ZOOM-STAGE
@@ -780,7 +682,9 @@ function addInterfaceHandlers(ads) {
 		e.preventDefault();
 	});
 
-    $(window).resize(function() {
+    $(window).resize(resizeHistorySlider);
+
+    /*$(window).resize(function() {
 
         if ( typeof resizeTimer == 'undefined')
             var resizeTimer = 0;
@@ -795,5 +699,5 @@ function addInterfaceHandlers(ads) {
             resizeHistorySlider();
 
         }, 500); // not sure if we need this delay
-    });
+    });*/
 }

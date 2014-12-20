@@ -1,4 +1,5 @@
 .settings
+.git
 *.swo
 *.swp
 *.patch

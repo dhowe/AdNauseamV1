@@ -1,6 +1,5 @@
-var //inspectorData, inspectorIdx, animatorId,
-    itemClicked = false, container, animateMs = 2000,
-    zoomStyle, zoomIdx = 0, resizing = false,  pack,
+//inspectorData, inspectorIdx, animatorId, resizing = false, , animateMs = 2000, container, pack;
+var itemClicked = false, zoomStyle, zoomIdx = 0;
     zooms = [ 100, 50, 25, 12.5, 6.25 ];
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
@@ -103,7 +102,7 @@ function doLayout(theAds, resetLayout) {
 
     computeStats(theAds);
 
-    enableInspector();
+    enableLightbox();
 
     repack(theAds, resetLayout);
     //dbugOffsets && addTestDivs();
@@ -121,7 +120,7 @@ function repack(theAds, resetLayout) {
 
 		setTimeout(function() {
 
-			pack = new Packery(
+			new Packery(
 				'#container', {
 					centered : { y : 5000 }, // centered half min-height
 					itemSelector : '.item',
@@ -168,6 +167,8 @@ function formatDivs(ads) { // TODO: this is rather hideous
             if (ad.visitedTs  < 0) html += 'failed ';
             if (ad.visitedTs  > 0) html += 'visited ';
    
+            // TODO: replace with a binding from DOM-element to object
+            // http://stackoverflow.com/questions/16483560/how-to-implement-dom-data-binding-in-javascript
             html += 'dup-count-'+ad.count+'" ';
             html += 'data-id="'+ad.id+'" ';
             html += 'data-title="'+ad.title+'" ';
@@ -202,6 +203,8 @@ function formatDivs(ads) { // TODO: this is rather hideous
 
 			var imgSrc = (ad.contentData.src || ad.contentData); // bc
 			
+			// TODO: replace with a binding from DOM-element to object
+			// http://stackoverflow.com/questions/16483560/how-to-implement-dom-data-binding-in-javascript
 			html += 'dup-count-'+ad.count+'" ';
 			html += 'data-id="'+ad.id+'" ';
 			html += 'data-title="'+ad.title+'" ';
@@ -256,39 +259,34 @@ function sinceTime(ads) {
 	return oldest;
 }
 
-function dragStart(event) {
+function dragStart(e) {
 
     var style = window.getComputedStyle(document.querySelector('#container'), null);
+	   x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
+	   y = parseInt(style.getPropertyValue("margin-top"),  10) - e.clientY;
 
-	/*  CS: get pixel values from margin-left and margin-top instead of left and top */
-	var x = parseInt(style.getPropertyValue("margin-left"), 10) - event.clientX;
-	var y = parseInt(style.getPropertyValue("margin-top"),  10) - event.clientY;
-
-    event.dataTransfer.setData("text/plain", x + ',' + y);
+    e.dataTransfer.setData("text/plain", x + ',' + y);   
 }
 
-function handleDragStart(e) {
+/*function handleDragStart(e) {
 	this.style.opacity = '0.4';  // this / e.target is the source node.
-}
+}*/
 
-function dragOver(event) {	return _drag(event); }
-function drop(event) { return _drag(event); }
+//function dragOver(e) {	return _drag(e); }
 
-function _drag(event) {
+//function drop(e) { return _drag(e); }
 
-	var offset = event.dataTransfer.getData("text/plain").split(',');
-   	var dm  = document.querySelector('#container');
+function drag(e) {
+    
+	var offset = e.dataTransfer.getData("text/plain").split(','),
+        dm  = document.querySelector('#container');
 
-   	//log("_drag: ", event.clientX, event.clientY, offset);
-
-    dm.style.marginLeft = (event.clientX + parseInt(offset[0], 10)) + 'px';
-    dm.style.marginTop = (event.clientY + parseInt(offset[1], 10)) + 'px';
+    dm.style.marginLeft = (e.clientX + parseInt(offset[0], 10)) + 'px';
+    dm.style.marginTop = (e.clientY + parseInt(offset[1], 10)) + 'px';
 
 	//dbugOffsets && updateTestDivs();
 
-    event.preventDefault();
-
-    return false;
+    e.preventDefault();
 }
 
 function formatDate(ts) {
@@ -324,7 +322,7 @@ function resizeHistorySlider() {
 	createSlider(all); // is this ok, or need a copy?
 }
 
-function enableInspector() {
+function enableLightbox() {
 
 	$('.item').mouseenter(function() {
 
@@ -367,7 +365,7 @@ function enableInspector() {
         if (!$('#container').hasClass('lightbox-view')) 
         {
 		  // kill any remaining dup animations
-		  stopInspectorAnimations();
+		  //stopInspectorAnimations();
         }
 	});
 }
@@ -548,10 +546,12 @@ function positionAds() { // autozoom & center
 	//log("Vault.positionAds");
 
 	var percentVisible = .6,
-		winH = $('#svgcon').offset().top,
-		winW = $("container").width()// -  $('#right').width(),
+		winW = $("#left").width(),
+		winH = $('#svgcon').offset().top, 
 		i, x, y, w, h, minX, maxX, minY, maxY, problem;
 
+    //log('winW: '+winW+' winH: '+winH);
+    
 	for (i=0; i < zooms.length; i++) {
 
 		problem = false; // no problem at start
@@ -626,14 +626,12 @@ function addInterfaceHandlers(ads) {
         openInNewTab('http://dhowe.github.io/AdNauseam/');
     });
 
-	$(document).mouseup(function(e) {
-	    
-        e.preventDefault();
-    	resizing = false;
-	});
+	// $(document).mouseup(function(e) {
+        // e.preventDefault();
+    	// ///resizing = false;
+	// });
 	
     $(document).click(function(e) {
-             
         e.preventDefault();
         (!itemClicked) && $('#container').removeClass('lightbox-view');
         itemClicked = false;
@@ -642,10 +640,9 @@ function addInterfaceHandlers(ads) {
 
 	/////////// DRAG-STAGE
 
-    var sel = document.querySelector('#container');
-	sel && sel.addEventListener('dragstart', dragStart, false);
-	document.body.addEventListener('dragover', dragOver, false);
-	document.body.addEventListener('drop', drop, false);
+	document.querySelector('#container').addEventListener('dragstart', dragStart, false);
+	document.body.addEventListener('dragover', drag, false);
+	document.body.addEventListener('drop', drag, false);
 	  // from: http://jsfiddle.net/robertc/kKuqH/
 
 	/*$(document).mousemove(function(e) {

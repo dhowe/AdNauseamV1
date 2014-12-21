@@ -411,9 +411,10 @@ div.bullets { display: none; } /* hide by default */
 /* -----------------------TMP--------------------------- */
 
 .item-text {
-  padding: 10px 20px 0 130px;
+  padding: 10px;
   font-size: 10px;
   height: 70px;
+	border: 3px dashed;
 }
 
 .item-text .title {

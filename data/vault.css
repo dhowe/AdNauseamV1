@@ -292,6 +292,10 @@ div.tooltip {
 	height: 20px;
 	text-indent: 0px;
 }
+span.counter span { display: none; } /* hide by default */
+.item.inspected span.counter span {
+	display: inline;
+}
 .item.inspected img {
 	opacity: 1;
 	border: 3px solid;
@@ -408,38 +412,31 @@ div.bullets { display: none; } /* hide by default */
 .counter-visited { background-color: #A020F0;}
 .counter-failed { background-color: #B80606;}
 
-/* -----------------------TMP--------------------------- */
+/* --------------------TEXT ADS----------------------- */
 
 .item-text {
   padding: 10px;
-  font-size: 10px;
+  font-size: 12px;
   height: 70px;
 	border: 3px dashed;
+	border-radius: 5px;
+}
+
+.item-text > h3 {
+	margin: 0 0 2px;
+}
+
+.item-text > cite {
+	margin: 0 0 3px;
+	display: block;
 }
 
 .item-text .title {
-  margin-left: 0px;
-  margin-top: -10px;
-}
-
-.item-text .thumb {
-  height: 54px;
-  width: 54px;
-  text-indent: 0px;
-  background: none repeat scroll 0% 0%;
-  border: 2px dashed #0076FF;
-  border-radius: 5px;
-  color: #0076FF;
-  font-size: 16px;
-  line-height: 1em;
-  padding: 10px;
-  font-family: bebas_neue_regularregular;
-  top: 0px;
-  left: 0px;
+  margin: 0;
 }
 
 .item-text .ads-creative {
-  font-size: 0.8em;
+
   color: #979797;
 }
 
@@ -454,16 +451,19 @@ div.bullets { display: none; } /* hide by default */
   line-height: 1.15em;
 }
 
-.item-text.visited .thumb {
-
-  border: 2px dashed #BD10E0;
-  color: #BD10E0;
+.item-text:hover{
+	box-shadow: 0px 0px 40px 5px rgba(0, 0, 0, 0.9);
 }
 
-.item-text.failed .thumb {
-  border: 2px dashed #F00;
-  color: #F00;
-}}
+.item-text.visited:hover,
+.item-text.visited.inspected {
+  border-color: #BD10E0;
+}
+
+.item-text.failed:hover,
+.item-text.failed.inspected {
+	border-color: #B80606;
+}
 
 .ad-item-text.just-visited {
   background: none;

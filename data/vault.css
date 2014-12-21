@@ -27,35 +27,17 @@ div.tooltip {
   z-index: 10000;
 }
 
-/* STAGE */
-#left{
+/************************************
+
+ STAGE
+
+*************************************/
+
+#stage{
   float:left;
   width:100%;
 	height: 100%;
 	overflow: hidden;
-}
-
-#right{
-    float:left;
-    width:0%;
-}
-
-#handle{
-    float:left;
-	position: absolute;
-	top:0;
-	left: 0;
-	bottom: 0;
-	width: 2px;
-	background: #aaa;
-	border: 1px solid #777;
-	border-width: 0 1px;
-	display: block;
-	z-index: 200;
-	cursor: col-resize;
-}
-
-.stage {
 }
 
 #container {
@@ -269,8 +251,6 @@ div.tooltip {
 }
 
 .item {
-	/* margin-bottom: -6px; */
-	background: #000;
 	display: inline-block;
 	position: relative;
 	animation: 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275) 0s normal forwards 1 pop;
@@ -278,6 +258,143 @@ div.tooltip {
 	margin: 0;
 	opacity: 1;
 }
+
+/* -------------------INSPECTION----------------------- */
+
+#overlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+	z-index: 1000;
+	background: rgba(0,0,0,0.85);
+}
+
+.item.inspected {
+	z-index: 2000;
+}
+
+/* AD */
+
+.item.inspected > .ad{
+	position: relative;
+	display: inline-block;
+}
+.item.inspected span.counter {
+	top: -10px;
+	right: -20px;
+	width: 40px;
+	height: 20px;
+	text-indent: 0px;
+}
+.item.inspected img {
+	opacity: 1;
+	border: 3px solid;
+	margin: -3px;
+	border-radius: 3px;
+}
+
+/* BULLETS LIST */
+
+.item.inspected div.bullets{
+	width: 15px;
+	height: auto;
+	position: absolute;
+	left: -18px;
+	bottom: 105px;
+}
+
+.bullets ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.bullets ul li {
+	margin: 15px 3px;
+	height: 0px;
+	width: 0px;
+	border: 3px solid white;
+	border-radius: 6px;
+}
+
+.bullets ul li.active{
+	margin: 9px 0;
+	height: 6px;
+	width: 6px;
+}
+
+/* META LIST */
+
+.item.inspected .meta {
+	height: 110px;
+	overflow: hidden;
+	position: relative;
+	margin-left: -100px;
+	padding-left: 100px;
+}
+
+.item.inspected .meta ul {
+	margin: 0; /* negative margin-top is set in JS to animate through items */
+	padding: 0;
+	list-style: none;
+}
+
+.item.inspected .meta li>div{
+	font-size: 12px;
+	width: 600px;
+	height: 50px;
+	position: relative;
+	margin: 5px 0;
+}
+.item.inspected .meta h3 {
+	position: absolute;
+	font-weight: 400;
+	font-family: bebas_neue_regularregular;
+	width: 100px;
+	top: 0;
+	left: -110px;
+	margin: 0;
+	text-align: right;
+	color: #666;
+}
+.item.inspected .meta li>div * {
+	display: block;
+	line-height: 15px;
+}
+.item.inspected .meta li>div a{
+	font-size: 14px;
+	line-height: 13px;
+	margin-bottom: 4px;
+}
+.item.inspected .meta li>div.target a{
+	font-weight: 700;
+}
+.item.inspected .meta li>div span {
+	color: #666;
+}
+
+/* STATUS-COLORS */
+
+.inspected .pending {
+	color: #0076FF;
+	border-color: #0076FF;
+}
+.inspected .visited {
+	color: #A020F0;
+	border-color: #A020F0;
+}
+.inspected .failed {
+	color: #B80606;
+	border-color: #B80606;
+}
+
+.counter-pending { background-color: #0076FF;}
+.counter-visited { background-color: #A020F0;}
+.counter-failed { background-color: #B80606;}
 
 /* -----------------------TMP--------------------------- */
 
@@ -395,7 +512,7 @@ div.tooltip {
 	}
 }
 
-.item span{
+.item span.counter{
 	display: block;
 	position: absolute;
 	right: 2px;
@@ -408,10 +525,10 @@ div.tooltip {
 	border-radius: 360px;
 	text-align: center;
 	font-size: 12px;
-	box-shadow:   -4px 4px 10px 0px rgba(0,0,0,0.20);
+	box-shadow: -4px 4px 10px 0px rgba(0,0,0,0.20);
 	z-index: 1000;
 	color: #fff;
-	line-height: 1.5em;
+	line-height: 1.7em;
 }
 
 .item span.eye {
@@ -423,8 +540,11 @@ div.tooltip {
 }
 
 .item:hover {
-	box-shadow:   0px 0px 40px 5px rgba(0,0,0,0.90);
 	z-index: 100000;
+}
+
+.item:hover img {
+	box-shadow:   0px 0px 40px 5px rgba(0,0,0,0.90);
 }
 
 .item:hover .counter,
@@ -566,248 +686,6 @@ div.tooltip {
 
 .item.failed:hover img {
 	border-style: dashed;
-}
-
-/***************************************************
- 	SIDE PANEL
- ***************************************************/
-
-aside {
-	width: 0%;
-	position: fixed;
-	right: 0;
-	top:0;
-	bottom: 0;
-	background: url(img/bg_panel.png);
-	z-index: 10000;
-}
-
-aside .panel-resize {
-	position: absolute;
-	top:0;
-	left: 0;
-	bottom: 0;
-	width: 2px;
-	background: #aaa;
-	border: 1px solid #777;
-	border-width: 0 1px;
-	display: block;
-	z-index: 200;
-	cursor: col-resize;
-}
-
-/***************************************************
- 	SIDE PANEL: CONTROLS
- ***************************************************/
-
-
-aside .controls {
-	bottom: 180px;
-	margin: 0 auto;
-	z-index: 200;
-	position: absolute;
-	text-align: center;
-}
-
-aside .controls li {
-	margin: 0 auto;
-	list-style: none;
-	margin-right: 10px;
-	display: inline-block;
-}
-
-aside .controls a {
-	width: 4px;
-	height: 4px;
-	border: 2px solid #F2F2F2;
-	border-radius: 4px;
-	display: block;
-}
-
-aside .controls li.active a {
-	background: #F2F2F2;
-}
-
-/***************************************************
- 	SIDE PANEL: INSPECTOR
- ***************************************************/
-
-.inspect {
-	top:0;
-	right:0;
-	bottom: 0;
-	left: 0;
-	position: absolute;
-	background-image: linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(10,10,10,0.21) 100%);
-}
-
-/*------------------------------------*\
-    $CAROUSEL
-\*------------------------------------*/
-
-.carousel{
-  overflow:hidden;
-  width:100%;
-}
-
-.panes{
-	margin: 0;
-	padding: 0;
-	list-style:none;
-	position: relative;
-	top: 0; bottom: 0;
-	height: 100%;
-	width: 100%;
-	overflow:hidden; /* This is used solely to clear floats, it does not add functionality. */
-}
-
-/*.panes.animate{
-  -moz-animation:carousel 30s infinite;
-  -webkit-animation:carousel 30s infinite;
-  animation:carousel 30s infinite;
-}*/
-
-.panes > li{
-  position: absolute;
-  display: block;
-  float: left;
-  overflow: visible;
-  white-space: nowrap;
-  width: 100%;
-  top:0; bottom: 0;
-	height: 100%;
-	right: -100%;
-}
-
-.panes > li.in,
-.panes > li.out {
-	-webkit-transition: right 1s;
-	transition: 				right 1s;
-	right: 0;
-}
-
-.panes > li.out {
-	right: 100%;
-}
-
-.panes > li.empty {
-	right: -100%;
-}
-
-
-.panes > li > a{
-	display: block;
-	margin: auto;
-	top: 0; right: 0; bottom: 100px; left: 0;
-	position: absolute;
-	overflow: hidden;
-}
-.carousel img{
-	display: block;
-	margin: auto;
-	top: 0; right: 0; bottom: 0; left: 0;
-	position: absolute;
-	-moz-box-shadow:    0px 8px 10px 0px rgba(0,0,0,0.20);
-	-webkit-box-shadow: 0px 8px 10px 0px rgba(0,0,0,0.20);
-	box-shadow:         0px 8px 10px 0px rgba(0,0,0,0.20);
-}
-
-.carousel div.num-of{
-	position: absolute;
-	bottom: 100px;
-	text-align: center;
-	width: 100%;
-	font-size: 2em;
-	color: #999;
-	font-family: Georgia, "Times New Roman", Serif;
-	font-style: italic;
-	margin-bottom: 20px;
-}
-
-.carousel div.num-of span:last-child {
-	line-height: .5em;
-}
-
-@keyframes carousel{
-  0%    { left:0; }
-  11%   { left:0; }
-  12.5% { left:-100%; }
-  23.5% { left:-100%; }
-  25%   { left:-200%; }
-  36%   { left:-200%; }
-  37.5% { left:-300%; }
-  48.5% { left:-300%; }
-  50%   { left:-400%; }
-  61%   { left:-400%; }
-  62.5% { left:-300%; }
-  73.5% { left:-300%; }
-  75%   { left:-200%; }
-  86%   { left:-200%; }
-  87.5% { left:-100%; }
-  98.5% { left:-100%; }
-  100%  { left:0; }
-}
-
-aside .details {
-	position: absolute;
-	left: 4px;
-	right: 0;
-	bottom: 0;
-	height: 130px;
-	border-bottom: 30px solid #ccc;
-	background: rgba(220,220,220,0.90);
-	font-size: 12px;
-}
-
-aside .details dl {
-	line-height: 18px;
-	margin: 0;
-	padding: 6px 0 0 40px;
-	background: url(img/eye.svg) no-repeat 10px center;
-	background-size: 16px;
-}
-
-aside .details dl.leads-to {
-	background-image: url(img/external-link.svg)
-}
-
-aside .details dl.leads-to.visited {
-	background-image: url(img/external-link-visited.svg)
-}
-
-aside .details dl:first-child {
-	border-bottom: 1px solid #BFBFBF;
-}
-
-aside .details dd,
-aside .details dt {
-	margin: 0;
-	padding: 2px 0px 5px;
-	width: 20%;
-	display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-	border-bottom: 1px solid #BFBFBF;
-}
-
-aside .details dl dd:nth-child(4),
-aside .details dl dt:nth-child(5) {
-	border: 0;
-	padding-bottom: 0;
-}
-
-aside .details dd {
-	text-indent: 12px;
-	margin: 0 -4px;
-	font-family: bebas_neue_regularregular;
-}
-aside .details dt{
-	min-width: 80%;
-	/*font-weight: 700;*/
-}
-aside .details dt a.visited {
-	color: #A020F0;
 }
 
 /******************************

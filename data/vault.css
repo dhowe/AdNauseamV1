@@ -379,6 +379,10 @@ div.tooltip {
 
 /* STATUS-COLORS */
 
+.inspected a {
+	color: #ccc;
+}
+
 .inspected .pending {
 	color: #0076FF;
 	border-color: #0076FF;

@@ -417,7 +417,6 @@ div.bullets { display: none; } /* hide by default */
 .item-text {
   padding: 10px;
   font-size: 12px;
-  height: 70px;
 	border: 3px dashed;
 	border-radius: 5px;
 }
@@ -445,7 +444,6 @@ div.bullets { display: none; } /* hide by default */
   text-decoration: none;
   font-size: 14px;
   display: block;
-  width: 250px;
   overflow: hidden;
   max-height: 2.3em;
   line-height: 1.15em;

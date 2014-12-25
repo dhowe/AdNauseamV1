@@ -17,7 +17,7 @@ function createSlider(ads) { // happens just once
 
     if (!ads || !ads.length) return;
 
-	//console.log('Vault-UI.createSlider');
+	console.log('Vault-UI.createSlider');
 
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();

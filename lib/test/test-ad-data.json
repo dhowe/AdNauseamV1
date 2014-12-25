@@ -2,20 +2,31 @@
   "https://hk.yahoo.com/?p=us": [
 	  {
 	    "id": 7,
-	    "hashKey": "https://hk.yahoo.com/?p=us/https://s.yimg.com/gs/apex/mediastore/01dc223e-1bae-4918-bdfb-be002ea25d7d ",
+	    "hashKey": "https://hk.yahoo.com/?p=us/http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg",
 	    "contentType": "img",
-	    "contentData": { "src": "https://s.yimg.com/gs/apex/mediastore/01dc223e-1bae-4918-bdfb-be002ea25d7d" },
+	    "contentData": { "src": "http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg" },
 	    "count": 1,
 	    "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
 	    "pageUrl": "https://hk.yahoo.com/?p=us",
 	    "foundTs": 1404835703162,
 	    "visitedTs": 1407052467940,
 	     "title": "Visited Ad Title",     
-	     "path": [
-		],
-	    "errors": [
-	    ],
-	    "hidden": false
+	     "path": [],
+	     "errors": []
+	  },
+	  {
+	    "id": 6,
+	    "hashKey": "https://hk.yahoo.com/?p=us/http://broken.jpg",
+	    "contentType": "img",
+	    "contentData": { "src": "http://broken.jpg" },
+	    "count": 1,
+	    "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
+	    "pageUrl": "https://hk.yahoo.com/?p=us",
+	    "foundTs": 1404835703192,
+	    "visitedTs": 0,
+	     "title": "Ad Title (pending)",     
+	     "path": [],
+	     "errors": []
 	  }
   ],
   
@@ -30,12 +41,22 @@
       "foundTs": 1407052450784,
       "visitedTs": 1407052467940,
       "title": "Visited Ad Title",   
-      "errors": [
-      ],
-      "path": [
-      ],
-      "width": null,
-      "height": null
+      "path": [],
+      "errors": []
+    }, 
+	{
+	  "COMMENT": "DUP OF #8",
+      "id": 12, 
+      "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+      "contentType": "img",
+      "contentData": { "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png" },
+      "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+      "pageUrl": "http://www.nytimes.com/",
+      "foundTs": 1407052450789,
+      "visitedTs": 0,
+      "title": "Visited Ad Title",   
+      "path": [],
+      "errors": []
     },
     {
       "id": 9,
@@ -47,10 +68,8 @@
       "foundTs": 1407052450100,
       "visitedTs": 0,
       "title": "Ad_Title (pending)",     
-      "errors": [
-      ],
-      "path": [
-      ],
+      "path": [],
+      "errors": [],
       "width": null,
       "height": null
     },
@@ -64,10 +83,8 @@
       "foundTs": 1407052450789,
       "visitedTs": 0,
       "title": "Cartier Bridal Collection - cartier.hk",     
-      "errors": [
-      ],
-      "path": [
-      ],
+      "path": [],
+      "errors": [],
       "width": null,
       "height": null
     }

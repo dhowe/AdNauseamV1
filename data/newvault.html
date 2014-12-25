@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>AdNauseam</title>
+        <link rel="stylesheet" href="vault.css">
+        <link rel="stylesheet" href="font/stylesheet.css">
+        <link rel="icon" type="image/png" href="img/icon-32.png">
+        <script src="lib/jquery-1.10.2.min.js"></script>
+
+        <script src="lib/packery.min.js"></script>
+        <script src="lib/d3.min.js"></script>
+        <script src="ad-display.js"></script>
+        <script src="shared.js"></script>
+        <script src="../lib/config.js"></script>
+        <script>
+
+            // enable/disable TEST_MODE in ../lib/config.js
+
+            if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
+            
+             $(function() {
+            
+                 $.getScript("vault-ui.js")
+                 .done(function() {
+            
+                     $.getScript("newvault.js")
+                     .done(function() {
+            
+                         attachTests();
+                     })
+                     .fail(function(xhr, data, e) {
+                         
+                            console.warn("json(2): ", e);
+                     });
+                 })
+                 .fail(function(xhr, data, e) {
+                     
+                      console.warn("json(1): ", e);
+                 });
+             });
+            }
+
+        </script>
+    </head>
+    <body>
+
+        <div id="stage" class="stage">
+
+            <div class="zoom">
+                <a href="" id="z-in">&#43;</a>
+                <a href="" id="z-out">&#8211;</a>
+            </div>
+
+            <div id="stats" class="session-sum">
+                Since
+                <span class="since">Wednesday July 9 2014 0:08am</span>
+                <span class="clicked">X ads clicked</span>
+                , out of the
+                <span class="detected">Y detected.</span>
+            </div>
+
+            <div id="alert" class="hide">
+                <img src="img/adn_alert.png" alt="alert">
+                <p>Alert goes here</p>
+            </div>
+
+            <div style="position: relative; height: 5519.67px;" id="container" class="z-100" draggable="true">
+
+                <div id="overlay"></div>
+
+            </div>
+
+            <div id="svgcon" class="svg-container"></div>
+
+        </div>
+
+        <div id='ratio'>100%</div>
+
+    </body>
+</html>

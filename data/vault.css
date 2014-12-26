@@ -271,7 +271,7 @@ div.tooltip {
 /* -------------------INSPECTION----------------------- */
 
 /* SETUP */
-
+	
 .lightbox #overlay {
 	width: 100%;
 	height: 100%;
@@ -598,15 +598,6 @@ div.bullets { display: none; } /* hide by default */
 
 .item:focus span.eye:hover {
 	background-image: url(img/link.svg);
-}
-
-.lightbox-view .item {
-	opacity: .3;
-}
-
-.lightbox-view .lightbox-selected {
-	opacity: 1;
-	transform: scale(1.3, 1.3);
 }
 
 .z-75 .item:hover span {

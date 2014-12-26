@@ -1,10 +1,18 @@
 //inspectorData, inspectorIdx, animatorId, resizing = false, , animateMs = 2000, container, pack;
-var viewState = { zoom: 100, offset: { x:0, y:0 } },
+var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ]; 
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
+/* NEXT: 
+    -- add multiple meta-datas
+    -- handle-visited-state(*) 
+    -- animate-bullets
+    -- fix-centering (figure offset from 5000 at start)
+    DONE
+    -- check broken image handling in menu
+*/         
 function createDivs(ads) {
     
     for (i=0; i < ads.length; i++) {
@@ -42,9 +50,11 @@ function bindImageAd($div, adDisp) {
     // TODO: add 'state' (visited?) to div/img, and?
     //$div.addClass('visited');
 }
+
 function appendTextDisplayTo($pdiv, adDisp) {
 
     var $div = $('<div/>', { class: 'item-text-div' }).appendTo($pdiv);
+    var total = adDisp.count(), visited = adDisp.visitedCount();
 
     var ad = adDisp.child(0);
         
@@ -54,6 +64,13 @@ function appendTextDisplayTo($pdiv, adDisp) {
         text: adDisp.count()
         
     }).appendTo($div);
+    
+    var $cv = $('<span/>', {
+        
+        class: 'counter counter-visited',
+        text: visited +'/'+total
+        
+    }).appendTo($div).hide();
     
     var $h3 = $('<h3/>', {}).appendTo($div);
     
@@ -79,28 +96,61 @@ function appendTextDisplayTo($pdiv, adDisp) {
 function appendDisplayTo($div, adDisp) {
 
     var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
+    var total = adDisp.count(), visited = adDisp.visitedCount();
     
     var $span = $('<span/>', {
         
         class: 'counter',
-        text: adDisp.count()
+        text: total
         
     }).appendTo($ad);
     
-    var img = $('<img/>', {
+    var $cv = $('<span/>', {
         
-        //id: 'img' + ad.id,
-        //class: 'visited',
-        src: adDisp.children[0].contentData.src
+        class: 'counter counter-visited',
+        text: visited +'/'+total
+        
+    }).appendTo($ad).hide();
+    
+    var img = $('<img/>', {
+
+        src: adDisp.child(0).contentData.src,
+        onerror: "this.onerror=null; this.width=200; this.height=100; this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
         
     }).appendTo($ad);
 }
 
+function bulletIndex($div, adDisp) {
+    
+    //console.log('bulletIndex: '+adDisp.count());
+    var lis = $div.find('.bullet');
+    $(lis[adDisp.index]).addClass('active').siblings().removeClass('active');
+}
+
 function appendBulletsTo($div, adDisp) {
     
-    var $bullets = $('<div/>', { class: 'bullets'  }).appendTo($div);
+    var count = adDisp.count();
     
-    // add items based on count/state
+    if (count > 1) {
+        
+        var $bullets = $('<div/>', { class: 'bullets'  }).appendTo($div);
+        var $ul = $('<ul/>', {}).appendTo($bullets);
+    
+        // add items based on count/state
+        for (var i=0; i < adDisp.count(); i++) {
+            
+            var $li = $('<li/>', { 'data-idx': i, 'class': 'bullet '+ adDisp.state(i) }).appendTo($ul);
+            $li.click(function(e) {
+                
+                adDisp.index = parseInt($(this).attr('data-idx'));
+                //console.log('item.clicked: '+adDisp.index);
+                bulletIndex($div, adDisp);
+                e.stopPropagation();
+            });
+        }
+    }
+    
+    bulletIndex($div, adDisp);
 }
 
 function appendMetaTo($div, adDisp) {
@@ -235,8 +285,9 @@ function repack(resetLayout) {
 
 	if (visible > 1) { // count non-hidden ads
 
-		setTimeout(function() { // do we need this delay?
-
+		//setTimeout(function() { // do we need this delay?
+        var $container = $('#container').imagesLoaded( function() {
+            
 			new Packery(
 				'#container', {
 					centered : { y : 5000 }, // centered half min-height
@@ -245,8 +296,8 @@ function repack(resetLayout) {
 			});
 
 			if (resetLayout) positionAds();
-
-		}, 300);
+        });
+		//}, 300);
 	}
 	else if (visible === 1) {
 
@@ -265,7 +316,7 @@ function numVisited(ads) {
 	var numv = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
 
-		numv += (ads[i].visited());
+		numv += (ads[i].visitedCount());
 	}
 	return numv;
 }
@@ -351,7 +402,7 @@ function formatDate(ts) {
 		+ meridian.toLowerCase();
 }
 
-// TODO: This should only reset the x-axis/scale, not recreate everything
+// TODO: This should only reset the x-axis/scale, not recreate everything?
 function resizeHistorySlider() {
 
 	createSlider(all); // is this ok, or need a copy?
@@ -367,30 +418,68 @@ function enableLightbox() {
     });
 }
 
+function centerZoom($ele) {
+    
+    var dm  = document.querySelector('#container');
+    
+    if ($ele) { // save zoom-state
+        
+        viewState.zoomIdx = zoomIdx; 
+        viewState.left = dm.style.marginLeft;
+        viewState.top = dm.style.marginTop;
+    
+        dm.style.marginLeft = (-5000 + $ele.width()/2)+'px'; // TODO: also needs offset from collage center 
+        dm.style.marginTop = (-5000 + $ele.height()/2)+'px'; // TODO: also needs offset from collage center
+        
+        setZoom(zoomIdx = 0);
+    }       
+    else { // restore zoom-state
+        
+        setZoom(zoomIdx = viewState.zoomIdx); 
+        
+        dm.style.marginLeft = viewState.left;
+        dm.style.marginTop = viewState.top;
+    }
+}
+
 function lightboxMode(selected) {
     
     //console.log('lightboxMode: '+selected);
-    
-    if (selected && !$(selected).hasClass('inspected')) {
+
+    var $selected = selected && $(selected);
+
+    if ($selected && !$selected.hasClass('inspected')) {
         
+        var $selected = $(selected);
+        
+        centerZoom($selected);
         // TODO: start animation if we have one
         
-        $(selected).addClass('inspected').siblings().removeClass('inspected');
+        $selected.addClass('inspected').siblings().removeClass('inspected');
+        
+        if ($selected.find('.bullet').length > 1) 
+            $selected.find('span.counter-visited').show();
+        
         $('#container').addClass('lightbox');
     }
     else {
         
-        $('.item').removeClass('inspected');
+        centerZoom(false);
+        
+        var $item = $('.item');
+        $item.removeClass('inspected');
+        $item.find('span.counter-visited').hide();
+        
         $('#container').removeClass('lightbox');
     }
 }
 
-function stopInspectorAnimations() {
+function stopInspectorAnimations() {  // TODO: remove
 
     animatorId && clearTimeout(animatorId);
 }
 
-function setInspectorFields(ele) {
+function setInspectorFields(ele) { // TODO: remove
 
 //console.log("setInspectorFields(): "+$(ele).attr('id')+" has="+$(ele).hasClass('inspectee'));
 
@@ -439,13 +528,13 @@ function notifyAddon(adId) {
     //}, 200); // not sure if we need this delay
 }
 
-function loadInspectorData(ele) {
+function loadInspectorData(ele) { // TODO: remove
 
 	var data = [ createInspectorObj(ele) ];
 	return findDuplicates(data); // returns data
 }
 
-function createInspectorObj(item) {
+function createInspectorObj(item) { // TODO: remove
 
     $item = $(item);
     $img = $('img', item);
@@ -466,7 +555,10 @@ function createInspectorObj(item) {
 	}
 }
 
-function findDuplicates(insDataArr) { // contains template at index=0
+
+function findDuplicates(insDataArr) { // TODO: remove
+    
+    // contains template at index=0
 
 	$(".item-hidden").each(function(i) {
 
@@ -484,7 +576,7 @@ function findDuplicates(insDataArr) { // contains template at index=0
 	return insDataArr;
 }
 
-function makeDuplicateControls(data) {
+function makeDuplicateControls(data) {  // TODO: remove
 
 	// reset the controls (small dots below img)
 	$(".controls" ).empty();
@@ -498,7 +590,7 @@ function makeDuplicateControls(data) {
 	}
 }
 
-function populateInspectorDetails(ele, insp) {
+function populateInspectorDetails(ele, insp) {  // TODO: remove
 
     $ele = $(ele);
 
@@ -601,18 +693,6 @@ function positionAds() { // autozoom & center
 	}
 }
 
-/*
-function findAdById(id, ads) {
-
-    for (i=0, j=ads.length; i< j; i++) {
-
-        if (ads[i].id === id)
-            return ads[i]
-    }
-
-    return null;
-}*/
-
 function openInNewTab(url) {
 
   var win = window.open(url, '_blank');
@@ -649,12 +729,14 @@ function addInterfaceHandlers(ads) {
 	$('#z-in').click(function(e) {
 
 		zoomIn();
+		e.preventDefault();
 	});
 
 	// click zoom-out
 	$('#z-out').click(function(e) {
 
 		zoomOut();
+        e.preventDefault();
 	});
 
     $(window).resize(resizeHistorySlider);

@@ -7,7 +7,13 @@ function AdDisplay(ad) {
     this.add(ad);
 }
 
-AdDisplay.prototype.visited = function() {
+AdDisplay.prototype.state = function(i) {
+    
+    var visitedTs = this.children[i].visitedTs;
+    return (visitedTs == 0) ? 'pending' : (visitedTs  < 0 ? 'failed' : 'visited' );
+}
+
+AdDisplay.prototype.visitedCount = function() {
 
     var numv = 0;
     for (var i=0, j = this.children.length; i<j; i++) {

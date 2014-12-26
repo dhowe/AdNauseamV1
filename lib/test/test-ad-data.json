@@ -1,99 +1,170 @@
 {
-  "https://hk.yahoo.com/?p=us": [
-	  {
-	    "id": 7,
-	    "hashKey": "https://hk.yahoo.com/?p=us/http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg",
-	    "contentType": "img",
-	    "contentData": { "src": "http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg" },
-	    "count": 1,
-	    "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
-	    "pageUrl": "https://hk.yahoo.com/?p=us",
-	    "foundTs": 1404835703162,
-	    "visitedTs": 1407052467940,
-	     "title": "Visited Ad Title",   
-	     "pageTitle": "Page Title",  
-	     "path": [],
-	     "errors": []
-	  },
-	  {
-	    "id": 6,
-	    "hashKey": "https://hk.yahoo.com/?p=us/http://broken.jpg",
-	    "contentType": "img",
-	    "contentData": { "src": "http://broken.jpg" },
-	    "count": 1,
-	    "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
-	    "pageUrl": "https://hk.yahoo.com/?p=us",
-	    "foundTs": 1404835703192,
-	    "visitedTs": 0,
-	     "title": "Ad Title (pending)", 
-	     "pageTitle": "Page Title",
-	     "path": [],
-	     "errors": []
-	  }
-  ],
-  
-  "http://www.nytimes.com/": [
-	{
-      "id": 8,
-      "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
-      "contentType": "img",
-      "contentData": { "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png" },
-      "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
-      "pageUrl": "http://www.nytimes.com/",
-      "foundTs": 1407052450784,
-      "visitedTs": 1407052467940,
-      "title": "Visited Ad Title",   
-	  "pageTitle": "Page Title",
-      "path": [],
-      "errors": []
-    }, 
-	{
-	  "COMMENT": "DUP OF #8",
-      "id": 12, 
-      "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
-      "contentType": "img",
-      "contentData": { "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png" },
-      "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
-      "pageUrl": "http://www.nytimes.com/",
-      "foundTs": 1407052450789,
-      "visitedTs": 0,
-      "title": "Visited Ad Title",   
-	  "pageTitle": "Page Title",
-      "path": [],
-      "errors": []
-    },
-    {
-      "id": 9,
-      "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/13/ad.371338/bar1-2panel-inyt-logo_v2.png",
-      "contentType": "img",
-      "contentData":  { "src": "http://graphics8.nytimes.com/adx/images/ADS/37/13/ad.371338/bar1-2panel-inyt-logo_v2.png" },
-      "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Bar1&sn2=5b35bc29/49f095e7&sn1=62e94681/bce3a3c3&camp=inyt2014_bar1_jun_test_var2_46KF8_46KFF&ad=inyt2014_bar1_jun_test_var2_46KF8_46KFF_46KFJ&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D245529%26adxa%3D371338%26page%3Dhomepage.nytimes.com/index.html%26pos%3DBar1%26campaignId%3D46KFF",
-      "pageUrl": "http://www.nytimes.com/",
-      "foundTs": 1407052450100,
-      "visitedTs": 0,
-      "title": "Ad_Title (pending)",
-	  "pageTitle": "Page Title",
-      "path": [],
-      "errors": [],
-      "width": null,
-      "height": null
-    },
-    {
-      "id": 11,
-      "hashKey": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or./Cartier Bridal Collection - cartier.hk/www.cartier.hk//Discover your dream piece of jewellery a heavenly jewel by Cartier",
-      "contentType": "text",
-      "contentData": { "text": "Discover your dream piece of jewellery a heavenly jewel by Cartier", "site": "www.cartier.hk/" },
-      "targetUrl": "http://www.cartier.hk/en-gb/collections/bridal?mckv=s4RCPLyia_dc",
-      "pageUrl": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or.",
-      "foundTs": 1407052450789,
-      "visitedTs": 0,
-      "title": "Cartier Bridal Collection - cartier.hk",   
-	  "pageTitle": "Page Title",  
-      "path": [],
-      "errors": [],
-      "width": null,
-      "height": null
-    }
-    
-  ]
+    "https://hk.yahoo.com/?p=us": [
+        {
+            "id": 7,
+            "hashKey": "https://hk.yahoo.com/?p=us/http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg"
+            },
+            "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
+            "pageUrl": "https://hk.yahoo.com/?p=us",
+            "foundTs": 1404835703162,
+            "visitedTs": 1407052467940,
+            "title": "Visited Ad Title",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 6,
+            "hashKey": "https://hk.yahoo.com/?p=us/http://broken.jpg",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://broken.jpg"
+            },
+            "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
+            "pageUrl": "https://hk.yahoo.com/?p=us",
+            "foundTs": 1404835703192,
+            "visitedTs": 0,
+            "title": "Ad Title (pending)",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 13,
+            "hashKey": "https://hk.yahoo.com/?p=us/http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg"
+            },
+            "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
+            "pageUrl": "https://hk.yahoo.com/?p=us",
+            "foundTs": 1404835703169,
+            "visitedTs": 1407052467944,
+            "title": "Visited Ad Title",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 14,
+            "hashKey": "https://hk.yahoo.com/?p=us/http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg"
+            },
+            "targetUrl": "https://clicks.beap.bc.yahoo.com/yc/YnY9MS4wLjAmYnM9KDE3Z2txZG00NihnaWQkc1hLLjEwb0dwbDlpZGVGTlU0TlVQeW5DUk8yTTQxUEFxME1BQkRucCxzdCQxNDA1MTM1NjgzMjgzNDUwLHNpJDIwNTA2MSxzcCQxMTk3NzQ1MTI4LGNyJDU5NTE3MzU2MSx2JDIuMCxhaWQkZ0dQREpHS0xjMlEtLGN0JDI1LHlieCRGRnVicWZ6dFBMcnloSGh3SDNZaWtBLGJpJDE3MDc3MTU2MSxtbWUkMzgxNTI1ODM2NjE0MTQ0MDk3OCxyJDAscmQkMTN1aG9nNjloLHlvbyQxLGFncCQyMDEzMjA5NDksYXAkV1NNKSk/1/*https://ad.doubleclick.net/ddm/trackclk/N4517.165020.1153891477521/B8033279.109761520;dc_trk_aid=282876811;dc_trk_cid=58572337",
+            "pageUrl": "https://hk.yahoo.com/?p=us",
+            "foundTs": 1404835703190,
+            "visitedTs": 0,
+            "title": "Visited Ad Title",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        }
+    ],
+    "http://www.nytimes.com/": [
+        {
+            "id": 8,
+            "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png"
+            },
+            "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+            "pageUrl": "http://www.nytimes.com/",
+            "foundTs": 1407052450784,
+            "visitedTs": 1407052467940,
+            "title": "Visited Ad Title",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "COMMENT": "DUP OF #8",
+            "id": 12,
+            "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png"
+            },
+            "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+            "pageUrl": "http://www.nytimes.com/",
+            "foundTs": 1407052450789,
+            "visitedTs": 0,
+            "title": "Visited Ad Title",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 9,
+            "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/13/ad.371338/bar1-2panel-inyt-logo_v2.png",
+            "contentType": "img",
+            "contentData": {
+                "src": "http://graphics8.nytimes.com/adx/images/ADS/37/13/ad.371338/bar1-2panel-inyt-logo_v2.png"
+            },
+            "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Bar1&sn2=5b35bc29/49f095e7&sn1=62e94681/bce3a3c3&camp=inyt2014_bar1_jun_test_var2_46KF8_46KFF&ad=inyt2014_bar1_jun_test_var2_46KF8_46KFF_46KFJ&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D245529%26adxa%3D371338%26page%3Dhomepage.nytimes.com/index.html%26pos%3DBar1%26campaignId%3D46KFF",
+            "pageUrl": "http://www.nytimes.com/",
+            "foundTs": 1407052450100,
+            "visitedTs": 0,
+            "title": "Ad_Title (pending)",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 15,
+            "hashKey": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or./Cartier Bridal Collection - cartier.hk/www.cartier.hk//Discover your dream piece of jewellery a heavenly jewel by Cartier",
+            "contentType": "text",
+            "contentData": {
+                "text": "Discover your dream piece of jewellery a heavenly jewel by Cartier",
+                "site": "www.cartier.hk/"
+            },
+            "targetUrl": "http://www.cartier.hk/en-gb/collections/bridal?mckv=s4RCPLyia_dc",
+            "pageUrl": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or.",
+            "foundTs": 1407052450789,
+            "visitedTs": 0,
+            "title": "Cartier Bridal Collection - cartier.hk",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 16,
+            "hashKey": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or./Cartier Bridal Collection - cartier.hk/www.cartier.hk//Discover your dream piece of jewellery a heavenly jewel by Cartier",
+            "contentType": "text",
+            "contentData": {
+                "text": "Discover your dream piece of jewellery a heavenly jewel by Cartier",
+                "site": "www.cartier.hk/"
+            },
+            "targetUrl": "http://www.cartier.hk/en-gb/collections/bridal?mckv=s4RCPLyia_dc",
+            "pageUrl": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or.",
+            "foundTs": 1407052450789,
+            "visitedTs": 0,
+            "title": "Cartier Bridal Collection - cartier.hk",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        },
+        {
+            "id": 11,
+            "hashKey": "https://www.google.com.hk/Tiffany's Collection/www.tiffanys.com.hk//A dream piece of jewellery by Tiffany's",
+            "contentType": "text",
+            "contentData": {
+                "text": "A dream piece of jewellery by Tiffany's",
+                "site": "www.tiffanys.com.hk/"
+            },
+            "targetUrl": "http://www.cartier.hk/en-gb/collections/bridal?mckv=s4RCPLyia_dc",
+            "pageUrl": "https://www.google.com.hk",
+            "foundTs": 1407052454789,
+            "visitedTs": 0,
+            "title": "Tiffany's Collection",
+            "pageTitle": "Page Title",
+            "path": [],
+            "errors": []
+        }
+    ]
 }

@@ -8,6 +8,7 @@
         <link rel="icon" type="image/png" href="img/icon-32.png">
         <script src="lib/jquery-1.10.2.min.js"></script>
 
+        <script src="lib/imagesloaded.pkgd.min.js"></script>
         <script src="lib/packery.min.js"></script>
         <script src="lib/d3.min.js"></script>
         <script src="ad-display.js"></script>
@@ -30,7 +31,7 @@
                          attachTests();
                      })
                      .fail(function(xhr, data, e) {
-                         
+                            
                             console.warn("json(2): ", e);
                      });
                  })

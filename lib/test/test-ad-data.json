@@ -10,7 +10,8 @@
 	    "pageUrl": "https://hk.yahoo.com/?p=us",
 	    "foundTs": 1404835703162,
 	    "visitedTs": 1407052467940,
-	     "title": "Visited Ad Title",     
+	     "title": "Visited Ad Title",   
+	     "pageTitle": "Page Title",  
 	     "path": [],
 	     "errors": []
 	  },
@@ -24,7 +25,8 @@
 	    "pageUrl": "https://hk.yahoo.com/?p=us",
 	    "foundTs": 1404835703192,
 	    "visitedTs": 0,
-	     "title": "Ad Title (pending)",     
+	     "title": "Ad Title (pending)", 
+	     "pageTitle": "Page Title",
 	     "path": [],
 	     "errors": []
 	  }
@@ -41,6 +43,7 @@
       "foundTs": 1407052450784,
       "visitedTs": 1407052467940,
       "title": "Visited Ad Title",   
+	  "pageTitle": "Page Title",
       "path": [],
       "errors": []
     }, 
@@ -55,6 +58,7 @@
       "foundTs": 1407052450789,
       "visitedTs": 0,
       "title": "Visited Ad Title",   
+	  "pageTitle": "Page Title",
       "path": [],
       "errors": []
     },
@@ -67,7 +71,8 @@
       "pageUrl": "http://www.nytimes.com/",
       "foundTs": 1407052450100,
       "visitedTs": 0,
-      "title": "Ad_Title (pending)",     
+      "title": "Ad_Title (pending)",
+	  "pageTitle": "Page Title",
       "path": [],
       "errors": [],
       "width": null,
@@ -82,7 +87,8 @@
       "pageUrl": "https://www.google.com.hk/search?q=modern+jewelry+&bav=on.2,or.",
       "foundTs": 1407052450789,
       "visitedTs": 0,
-      "title": "Cartier Bridal Collection - cartier.hk",     
+      "title": "Cartier Bridal Collection - cartier.hk",   
+	  "pageTitle": "Page Title",  
       "path": [],
       "errors": [],
       "width": null,

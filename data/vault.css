@@ -218,6 +218,10 @@ div.tooltip {
 				 1px -1px 2px #000;
 }
 
+.inspected-title {
+	text-decoration: none;
+}
+	
 .session-sum .clicked{
 	font-weight: 700;
 	color: #BD10E0;
@@ -420,31 +424,38 @@ div.bullets { display: none; } /* hide by default */
 /* --------------------TEXT ADS----------------------- */
 
 .item-text {
+	
   padding: 10px;
   font-size: 12px;
+
+}
+
+.item-text .item-text-div {
+	padding: 10px;
 	border: 3px dashed;
 	border-radius: 5px;
 }
 
-.item-text > h3 {
+.item-text-div > h3 {
 	margin: 0 0 2px;
 }
 
-.item-text > cite {
+.item-text-div > cite {
 	margin: 0 0 3px;
 	display: block;
 }
 
-.item-text .title {
+.item-text-div .title {
   margin: 0;
+  color: #ababab;
 }
 
-.item-text .ads-creative {
+.item-text-div .ads-creative {
 
   color: #979797;
 }
 
-.item-text h3 a {
+.item-text-div h3 a {
   color: #ababab;
   text-decoration: none;
   font-size: 14px;

@@ -1,6 +1,8 @@
 
 // functions shared between various views
 
+var TEST_APPEND_IDS = true;
+
 function tagCurrentAd(currentAd) {
     
     //console.log('tagCurrentAd('+currentAd.id+')');
@@ -17,6 +19,37 @@ function tagCurrentAd(currentAd) {
     //else console.log("FAIL ON CURRENT-AD: ",  'No match for: '+sel);
 }
 
+/*
+ * Start with resolvedTargetUrl if available, else use targetUrl
+ * Then extract the last domain from the (possibly complex) url
+ */
+function targetDomain(ad) {
+
+    var result, url = ad.resolvedTargetUrl || ad.targetUrl;
+        domains = extractDomains(url);
+    
+    if (domains.length)  
+       result = new URL(domains.pop()).hostname;
+    else
+       console.warn("ERROR: " + ad.targetUrl, url);
+    
+    if (result && TEST_APPEND_IDS)
+       result += ' (#'+ad.id+')';
+       
+    return result;
+}
+
+function extractDomains(fullUrl) { // used in targetDomain()
+
+    var result = [], matches,
+        regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+
+    while (matches = regexp.exec(fullUrl))
+        result.push(matches[0]);
+
+    return result;
+}
+
 function showAlert(msg) {
     
     if (msg) {
@@ -29,6 +62,45 @@ function showAlert(msg) {
         $("#alert").addClass('hide');
     }
 }
+
+function createAdDisplay(adhash) {
+    
+    var ads = toAdArray(adhash), 
+        ad, hash = {}, displays = [];
+
+//console.log(adhash,ads);
+
+    // set hidden val for each ad
+    for (var i=0, j = ads.length; i<j; i++) {
+
+        ad = ads[i];
+        
+        key = hashKey(ad); 
+        
+        if (!key) {
+            
+            console.log("*** shared.js::ignore->no key!!!", ad);
+            continue;
+        }
+        
+        if (!hash[key]) {
+
+            // new: add a hash entry
+            hash[key] = new AdDisplay(ad);
+            displays.push(hash[key]);
+        }
+        else {
+            
+            //console.log('processAdData: dup: '+key);
+
+            // dup: update the count
+            hash[key].add(ad);
+        }
+    }
+
+    return displays;
+}
+
 
 function processAdData(adhash, pageUrl) {
 

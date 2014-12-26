@@ -7,101 +7,135 @@ self.port && self.port.on('update-ads', updateAds); // update some
 
 function createDivs(ads) {
     
-
     for (i=0; i < ads.length; i++) {
 
-        var ad = ads[i];
-        if (!ad.hidden) {
-            var fun = ad.contentType !== 'text' ? bindImageAd : bindTextAd; 
-            fun(ad);
-        }
-    }
+        var $div = $('<div/>', {
+            
+            //id: 'ad' + ad.id,
+            style: "position: absolute; left: 5000px; top: 5000px;",
+            class: 'item dup-count-'+ads[i].count()
+            
+        }).appendTo('#container');
 
-    /*<div ... data-id="889650" \
-        data-title="Free Design Resources With Extended Licence | InkyDeals" \
-        data-type="img" \
-        data-foundts="Wednesday December 17 2014 11:57am" \
-        data-visitedts="Wednesday December 17 2014 11:58am" \
-        data-contentdata="http://s3.buysellads.com/1266443/154943-1359561149.png" \
-        data-targeturl="http://stats.buysellads.com/click.go?z=1266443&amp;b=3576725&amp;g=&amp;s=&amp;sw=1440&amp;sh=900&amp;br=firefox,33,mac&amp;r=0.1935486249334838&amp;link=http://www.inkydeals.com/deal/free-web-design-bundle-new/?utm_source=smashinghub.com&amp;utm_medium=display&amp;utm_content=web-free-bundle-new&amp;utm_campaign=smashinghub-web-free-bundle-new" \
-        data-pageurl="http://stackoverflow.com/questions/16473948/static-backgrounds-with-scrolling-content-on-top"> */
+        (ads[i].child(0).contentType !== 'text' ? bindImageAd : bindTextAd)($div, ads[i]);
+    }
 }
 
-function bindTextAd(ad) {
-
-    var $div = $('<div/>', {
-        
-        id: 'ad' + ad.id,
-        style: "position: absolute; left: 5000px; top: 5000px;",
-        class: 'item-text item dup-count-'+ad.count
-        
-    }).appendTo('#container');
+function bindTextAd($div, adDisp) {
+ 
+    $div.addClass('item-text');
     
+    appendTextDisplayTo($div, adDisp);
+    appendBulletsTo($div, adDisp);
+    appendMetaTo($div, adDisp);
+  
+    // TODO: add 'state' (visited?) to div/img
+    //$div.addClass('visited');
+}
+
+function bindImageAd($div, adDisp) {
+    
+    appendDisplayTo($div, adDisp);
+    appendBulletsTo($div, adDisp);
+    appendMetaTo($div, adDisp);
+    
+    // TODO: add 'state' (visited?) to div/img, and?
+    //$div.addClass('visited');
+}
+function appendTextDisplayTo($pdiv, adDisp) {
+
+    var $div = $('<div/>', { class: 'item-text-div' }).appendTo($pdiv);
+
+    var ad = adDisp.child(0);
+        
     var $span = $('<span/>', {
         
         class: 'counter',
-        text: ad.count
+        text: adDisp.count()
         
     }).appendTo($div);
     
     var $h3 = $('<h3/>', {}).appendTo($div);
     
-    var $a = $('<a/>', { // title/target
+    var $a = $('<div/>', { // title/target
         
         class: 'title',
         text: ad.title,
-        href: ad.targetUrl,
+        //href: ad.targetUrl,
         target: 'new'
         
     }).appendTo($h3);
     
-    var $cite = $('<cite/>', { // site
-        
-        text: ad.contentData.site
-        
-    }).appendTo($div);
-
-    var $div2 = $('<div/>', { // text
+    $('<cite/>', { text: ad.contentData.site }).appendTo($div); // site
+    
+    $('<div/>', { // text
         
         class: 'ads-creative',
         text: ad.contentData.text
         
     }).appendTo($div);
-    
-    // TODO: add 'state' (visited?) to div/img
-    $div.addClass('visited');
 }
 
+function appendDisplayTo($div, adDisp) {
 
-function bindImageAd(ad) {
-
-    var $div = $('<div/>', {
-        
-        id: 'ad' + ad.id,
-        style: "position: absolute; left: 5000px; top: 5000px;",
-        class: 'item dup-count-'+ad.count
-        
-    }).appendTo('#container');
+    var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
     
     var $span = $('<span/>', {
         
         class: 'counter',
-        text: ad.count
+        text: adDisp.count()
         
-    }).appendTo($div);
+    }).appendTo($ad);
     
     var img = $('<img/>', {
         
-        id: 'img' + ad.id,
+        //id: 'img' + ad.id,
         //class: 'visited',
-        src: ad.contentData.src
+        src: adDisp.children[0].contentData.src
         
-    }).appendTo($div);
-    
-    // TODO: add 'state' (visited?) to div/img
-    $div.addClass('visited');
+    }).appendTo($ad);
 }
 
+function appendBulletsTo($div, adDisp) {
+    
+    var $bullets = $('<div/>', { class: 'bullets'  }).appendTo($div);
+    
+    // add items based on count/state
+}
+
+function appendMetaTo($div, adDisp) {
+
+    var $meta = $('<div/>', { class: 'meta' }).appendTo($div);
+    var $ul = $('<ul/>', {  style: 'margin-top: 0px' }).appendTo($meta);
+    
+    for (var i=0; i < adDisp.count(); i++) {
+        
+        var ad = adDisp.child(i);
+        
+        var $li = $('<li/>', { style: 'margin-top: 0px' }).appendTo($ul);
+        
+            var $target = $('<div/>', { class: 'target' }).appendTo($li);
+            
+                $('<h3/>', { text: 'target:' }).appendTo($target);
+                $('<a/>', { class: 'inspected-title', 
+                            href: ad.targetUrl,
+                            text: ad.title
+                }).appendTo($target); // TODO: visited?
+                $('<cite/>', { text: targetDomain(ad) }).appendTo($target);
+                $('<span/>', { class: 'inspected-date', text: formatDate(ad.foundTs) }).appendTo($target); 
+                                
+            var $detected = $('<div/>', { class: 'detected-on' }).appendTo($li);
+            
+                $('<h3/>', { text: 'detected on:' }).appendTo($detected);
+                $('<a/>', { class: 'inspected-title', 
+                            href: ad.pageUrl,
+                            text: ad.pageTitle
+                }).appendTo($detected); // TODO: visited?
+                $('<cite/>', { text: ad.pageUrl }).appendTo($detected);
+                $('<span/>', { class: 'inspected-date', text: formatDate(ad.visitedTs) }).appendTo($detected);                
+    }
+}
+    
 function doLayout(theAds, resetLayout) {
 
     console.log('Vault.doLayout: '+theAds.length);
@@ -114,7 +148,7 @@ function doLayout(theAds, resetLayout) {
 
     enableLightbox();
 
-    repack(theAds, false/*resetLayout*/);
+    repack(resetLayout);
     
     //dbugOffsets && addTestDivs();
 }
@@ -123,17 +157,17 @@ function computeStats(ads) {
 
     $('.since').text(formatDate(sinceTime(ads)));
     $('.clicked').text(numVisited(ads) + ' ads clicked');
-    $('.detected').text(ads.length + ' detected.');
+    $('.detected').text(numFound(ads)+ ' detected.');
 }
 
 function layoutAds(addonData) {
 
-	var ads = processAdData(addonData.data).ads,
+	var ads = createAdDisplay(addonData.data),
         currentAd = addonData.currentAd;
 
+    all = ads.slice(); // save original set
+    
 	log('Vault.layoutAds: '+ads.length);
-
-	all = ads.slice(); // save original set
 
 	addInterfaceHandlers();
 
@@ -191,7 +225,7 @@ function doUpdate(updated) {
         //updateInspector(updated, vdate);
 }
 
-function repack(theAds, resetLayout) {
+function repack(resetLayout) {
 
 	var visible =  $(".item").length;
 
@@ -226,116 +260,35 @@ function repack(theAds, resetLayout) {
 		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2) + 'px' } ); 
 	}
 }
-
-function formatDivsOld(ads) { // TODO: this is rather hideous
-
-	log('formatDivs: '+ads.length);
-
-	var ad, textAds = 0, html = '';
-
-	for (var i=0, j = ads.length; i<j; i++) {
-
-        ad = ads[i];
-
-		if (ad.contentType === 'text') {
-
-			textAds++;
-
-            html += '<div id="ad'+ad.id+'" class="item-text item';
-            //html += '<a data-href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
-
-            html += ad.hidden ? '-hidden ' : ' '; // hidden via css
-
-            if (ad.visitedTs == 0) html += 'pending ';
-            if (ad.visitedTs  < 0) html += 'failed ';
-            if (ad.visitedTs  > 0) html += 'visited ';
-
-            // TODO: replace with a binding from DOM-element to object
-            // http://stackoverflow.com/questions/16483560/how-to-implement-dom-data-binding-in-javascript
-            html += 'dup-count-'+ad.count+'" ';
-            html += 'data-id="'+ad.id+'" ';
-            html += 'data-title="'+ad.title+'" ';
-            html += 'data-type="'+ad.contentType+'" ';
-            html += 'data-foundTs="'+formatDate(ad.foundTs)+'" ';
-            html += 'data-visitedTs="'+formatDate(ad.visitedTs)+'" ';
-            html += 'data-targetUrl="'+ad.targetUrl+'" ';
-            html += 'data-contentData="'+ad.contentData.text+'/'+ad.contentData.site+'" ';
-            html += 'data-pageUrl="'+ad.pageUrl+'">';
-
-            if (!ad.hidden)
-            {
-                html += '<span class="counter">'+ad.count+'</span>';
-                //html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
-                html += '<span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
-                html += ad.targetUrl + '">' + ad.title + '</a></h3><cite>' + ad.contentData.site;
-                html += '</cite><div class="ads-creative">' + ad.contentData.text +'</div>\n';
-            }
-
-            html += '</div>\n';
-		}
-		else // assume: contentType === 'img'
-		{
-			html += '<div id="ad'+ad.id+'" class="item';
-			//html += '<a data-href="'+ad.targetUrl+'" id="ad'+ad.id+'" class="item';
-
-			html += ad.hidden ? '-hidden ' : ' '; // hidden via css
-
-			if (ad.visitedTs == 0) html += 'pending ';
-			if (ad.visitedTs  < 0) html += 'failed ';
-			if (ad.visitedTs  > 0) html += 'visited ';
-
-			var imgSrc = (ad.contentData.src || ad.contentData); // bc
-
-			// TODO: replace with a binding from DOM-element to object
-			// http://stackoverflow.com/questions/16483560/how-to-implement-dom-data-binding-in-javascript
-			html += 'dup-count-'+ad.count+'" ';
-			html += 'data-id="'+ad.id+'" ';
-			html += 'data-title="'+ad.title+'" ';
-			html += 'data-type="'+ad.contentType+'" ';
-			html += 'data-foundTs="'+formatDate(ad.foundTs)+'" ';
-			html += 'data-visitedTs="'+formatDate(ad.visitedTs)+'" ';
-			html += 'data-targetUrl="'+ad.targetUrl+'" ';
-			html += 'data-contentData="'+ imgSrc+'" ';
-			html += 'data-pageUrl="'+ad.pageUrl+'">';
-
-			if (!ad.hidden)
-			{
-				html += '<span class="counter">'+ad.count+'</span>';
-				//html += '<span class="eye" data-href="'+ad.page+'">go to origin link</span>';
-				html += '<img id="img'+ad.id+'" src="' + imgSrc + '" alt=""';
-				html += ' onError="this.onerror=null; this.src=\'img/blank.png\';">';
-			}
-
-			html += '</div>\n';
-		}
-
-	}
-
-	//log("Found "+textAds + ' text-ads');
-
-	return html;
-}
-
 function numVisited(ads) {
 
 	var numv = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
 
-		if (ads[i].visitedTs > 0) {
-		    //console.log('Found visited: #'+ads[i].id);
-			numv++;
-        }
+		numv += (ads[i].visited());
 	}
 	return numv;
 }
+
+function numFound(ads) {
+
+    var numv = 0;
+    for (var i=0, j = ads.length; i<j; i++) {
+
+        numv += (ads[i].count());
+    }
+    return numv;
+}
+
 
 function sinceTime(ads) {
 
 	var oldest = +new Date(), idx = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
 
-		if (ads[i].foundTs < oldest) {
-			oldest = ads[i].foundTs;
+        var foundTs = ads[i].child(0).foundTs;  
+		if (foundTs < oldest) {
+			oldest = foundTs;
 			idx = i;
 		}
 	}
@@ -393,7 +346,7 @@ function formatDate(ts) {
 	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
 	var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
 
-	return days[date.getDay()] + ' ' + months[date.getMonth()] + ' ' + date.getDate()
+	return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate()
 		+ ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes())
 		+ meridian.toLowerCase();
 }
@@ -409,7 +362,6 @@ function enableLightbox() {
     $('.item').click(function(e) {
         
         //console.log('item.clicked');
-        
         e.stopPropagation();
         lightboxMode(this); 
     });
@@ -568,7 +520,7 @@ function attachTests() {
 	$.getJSON(TEST_ADS, function(jsonObj) {
 
 		console.warn("(new)Vault.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds({ data : jsonObj, page : TEST_PAGE });
+	    layoutAds({ data : jsonObj, page : TEST_PAGE, currentAd: null }); // currentAd?
 
 	}).fail(function(e) { console.warn( "error:", e); });
 }
@@ -609,7 +561,7 @@ function positionAds() { // autozoom & center
 	//log("Vault.positionAds");
 
 	var percentVisible = .6,
-		winW = $("#left").width(),
+		winW = $("#container").width(),
 		winH = $('#svgcon').offset().top,
 		i, x, y, w, h, minX, maxX, minY, maxY, problem;
 
@@ -649,7 +601,7 @@ function positionAds() { // autozoom & center
 	}
 }
 
-
+/*
 function findAdById(id, ads) {
 
     for (i=0, j=ads.length; i< j; i++) {
@@ -659,7 +611,7 @@ function findAdById(id, ads) {
     }
 
     return null;
-}
+}*/
 
 function openInNewTab(url) {
 
@@ -680,8 +632,6 @@ function addInterfaceHandlers(ads) {
     });
 
     $(document).click(function(e) {
-        
-        console.log('document.clicked');
         
         if ($('#container').hasClass('lightbox'))
             lightboxMode(false);

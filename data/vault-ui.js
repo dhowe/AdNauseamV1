@@ -17,16 +17,18 @@ function createSlider(ads) { // happens just once
 
     if (!ads || !ads.length) return;
 
-	console.log('Vault-UI.createSlider');
+    !all && (all = ads.slice()); // save original set
+    
+	//console.log('Vault-UI.createSlider');
 
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();
     d3.select("svg").remove();
 
-console.log("w: "+ d3.select("#left").style("width") );
+    //console.log("w: "+ d3.select("#stage").style("width") );
 
 	// setting up the position of the chart:
-	var iconW = 100, width = parseInt( d3.select("#left").style("width") )
+	var iconW = 100, width = parseInt( d3.select("#stage").style("width") )
 	    - (margin.left + margin.right + iconW);
 	    //barw = 3, // individual bar width [dyn] // not used now
 	    //barg = 1; // gap between individual bars [dyn] // not used now

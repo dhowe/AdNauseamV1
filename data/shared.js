@@ -3,7 +3,7 @@
 
 var TEST_APPEND_IDS = true;
 
-function tagCurrentAd(currentAd) {
+function tagCurrentAd(currentAd) { // TODO: fix: this is broken with new layout
     
     //console.log('tagCurrentAd('+currentAd.id+')');
     
@@ -63,7 +63,7 @@ function showAlert(msg) {
     }
 }
 
-function createAdDisplay(adhash) {
+function createAdGroups(adhash) {
     
     var ads = toAdArray(adhash), 
         ad, hash = {}, displays = [];
@@ -86,12 +86,10 @@ function createAdDisplay(adhash) {
         if (!hash[key]) {
 
             // new: add a hash entry
-            hash[key] = new AdDisplay(ad);
+            hash[key] = new AdGroup(ad);
             displays.push(hash[key]);
         }
         else {
-            
-            //console.log('processAdData: dup: '+key);
 
             // dup: update the count
             hash[key].add(ad);

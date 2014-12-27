@@ -10,7 +10,7 @@ self.port && self.port.on('update-ads', updateAds); // update some
     -- animate-bullets
     -- fix-centering (figure offset from 5000 at start)
     -- test updates
-    -- fix slider
+    -- test current-ad handling (broken in shared.js)
     DONE
     -- check broken image handling in menu
 */         
@@ -26,43 +26,42 @@ function createDivs(ads) {
             
         }).appendTo('#container');
 
-        (ads[i].child(0).contentType !== 'text' ? bindImageAd : bindTextAd)($div, ads[i]);
+        (ads[i].child(0).contentType !== 'text' ? 
+            bindImageAd : bindTextAd)($div, ads[i]);
     }
 }
 
-function bindTextAd($div, adDisp) {
+function bindTextAd($div, adgr) {
  
     $div.addClass('item-text');
     
-    appendTextDisplayTo($div, adDisp);
-    appendBulletsTo($div, adDisp);
-    appendMetaTo($div, adDisp);
+    appendTextDisplayTo($div, adgr);
+    appendBulletsTo($div, adgr);
+    appendMetaTo($div, adgr);
   
-    // TODO: add 'state' (visited?) to div/img
-    //$div.addClass('visited');
+    $div.addClass(adgr.groupState());
 }
 
-function bindImageAd($div, adDisp) {
+function bindImageAd($div, adgr) {
     
-    appendDisplayTo($div, adDisp);
-    appendBulletsTo($div, adDisp);
-    appendMetaTo($div, adDisp);
+    appendDisplayTo($div, adgr);
+    appendBulletsTo($div, adgr);
+    appendMetaTo($div, adgr);
     
-    // TODO: add 'state' (visited?) to div/img, and?
-    //$div.addClass('visited');
+    $div.addClass(adgr.groupState());
 }
 
-function appendTextDisplayTo($pdiv, adDisp) {
+function appendTextDisplayTo($pdiv, adgr) {
 
     var $div = $('<div/>', { class: 'item-text-div' }).appendTo($pdiv);
-    var total = adDisp.count(), visited = adDisp.visitedCount();
+    var total = adgr.count(), visited = adgr.visitedCount();
 
-    var ad = adDisp.child(0);
+    var ad = adgr.child(0);
         
     var $span = $('<span/>', {
         
         class: 'counter',
-        text: adDisp.count()
+        text: adgr.count()
         
     }).appendTo($div);
     
@@ -94,10 +93,10 @@ function appendTextDisplayTo($pdiv, adDisp) {
     }).appendTo($div);
 }
 
-function appendDisplayTo($div, adDisp) {
+function appendDisplayTo($div, adgr) {
 
     var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
-    var total = adDisp.count(), visited = adDisp.visitedCount();
+    var total = adgr.count(), visited = adgr.visitedCount();
     
     var $span = $('<span/>', {
         
@@ -115,7 +114,7 @@ function appendDisplayTo($div, adDisp) {
     
     var img = $('<img/>', {
 
-        src: adDisp.child(0).contentData.src,
+        src: adgr.child(0).contentData.src,
         
         onerror: "this.onerror=null; this.width=200; this.height=100; " +
             "this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
@@ -123,25 +122,25 @@ function appendDisplayTo($div, adDisp) {
     }).appendTo($ad);
 }
 
-function bulletIndex($div, adDisp) {
+function bulletIndex($div, adgr) {
     
-    //console.log('bulletIndex: '+adDisp.count());
+    //console.log('bulletIndex: '+adgr.count());
     
     // set the active bullet
     
     var items = $div.find('.bullet');
-    $(items[adDisp.index]).addClass('active')
+    $(items[adgr.index]).addClass('active')
         .siblings().removeClass('active');
     
     // shift the meta-list to show correct info
     
     var $ul = $div.find('.meta-list');
-    $ul.css('margin-top', (adDisp.index * -110) +'px');
+    $ul.css('margin-top', (adgr.index * -110) +'px');
 }
 
-function appendBulletsTo($div, adDisp) {
+function appendBulletsTo($div, adgr) {
     
-    var count = adDisp.count();
+    var count = adgr.count();
     
     if (count > 1) {
         
@@ -149,25 +148,25 @@ function appendBulletsTo($div, adDisp) {
         var $ul = $('<ul/>', {}).appendTo($bullets);
     
         // add items based on count/state
-        for (var i=0; i < adDisp.count(); i++) {
+        for (var i=0; i < adgr.count(); i++) {
             
-            var $li = $('<li/>', { 'data-idx': i, 'class': 'bullet '+ adDisp.state(i) }).appendTo($ul);
+            var $li = $('<li/>', { 'data-idx': i, 'class': 'bullet '+ adgr.state(i) }).appendTo($ul);
             $li.click(function(e) {
                 
-                adDisp.index = parseInt($(this).attr('data-idx'));
+                adgr.index = parseInt($(this).attr('data-idx'));
                 
-                //console.log('item.clicked: '+adDisp.index);
+                //console.log('item.clicked: '+adgr.index);
                 
-                bulletIndex($div, adDisp);
+                bulletIndex($div, adgr);
                 e.stopPropagation();
             });
         }
     }
     
-    bulletIndex($div, adDisp);
+    bulletIndex($div, adgr);
 }
 
-function appendMetaTo($div, adDisp) {
+function appendMetaTo($div, adgr) {
 
     var $meta = $('<div/>', { class: 'meta' }).appendTo($div);
     
@@ -176,9 +175,9 @@ function appendMetaTo($div, adDisp) {
         style: 'margin-top: 0px'
     }).appendTo($meta);
     
-    for (var i=0; i < adDisp.count(); i++) {
+    for (var i=0; i < adgr.count(); i++) {
         
-        var ad = adDisp.child(i);
+        var ad = adgr.child(i);
         
         var $li = $('<li/>', { style: 'margin-top: 0px' }).appendTo($ul);
         
@@ -230,20 +229,27 @@ function computeStats(ads) {
 
 function layoutAds(addonData) {
 
-	var ads = createAdDisplay(addonData.data),
+	var adgr = createAdGroups(addonData.data),
         currentAd = addonData.currentAd;
 
-    all = ads.slice(); // save original set
-    
-	log('Vault.layoutAds: '+ads.length);
+	//log('Vault.layoutAds: '+adgr.length);
 
 	addInterfaceHandlers();
 
-    //createSlider(ads);
+    createSlider(asAdArray(adgr));
 
-	doLayout(ads, true);
+	doLayout(adgr, true);
 
     currentAd && tagCurrentAd(currentAd);
+}
+
+function asAdArray(adGroups) {
+    var ads = [];
+    for (var i=0, j = adGroups.length; i<j; i++) {
+        for (var k=0, m = adGroups[i].children.length; k<m; k++) 
+            ads.push(adGroups[i].children[k]);
+    }
+    return ads;
 }
 
 // CHANGED(12/19): Each ad is now visited separately
@@ -329,13 +335,12 @@ function repack(resetLayout) {
 		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2) + 'px' } ); 
 	}
 }
+
 function numVisited(ads) {
 
 	var numv = 0;
-	for (var i=0, j = ads.length; i<j; i++) {
-
+	for (var i=0, j = ads.length; i<j; i++)
 		numv += (ads[i].visitedCount());
-	}
 	return numv;
 }
 
@@ -423,7 +428,7 @@ function formatDate(ts) {
 // TODO: This should only reset the x-axis/scale, not recreate everything?
 function resizeHistorySlider() {
 
-	createSlider(all); // is this ok, or need a copy?
+	createSlider(all);
 }
 
 function enableLightbox() {

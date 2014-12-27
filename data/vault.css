@@ -427,14 +427,32 @@ div.bullets { display: none; } /* hide by default */
 	
   padding: 10px;
   font-size: 12px;
-
 }
+/*
+.item-text.pending .item-text-div {
+	padding: 10px;
+	border: 3px dashed;
+	border-radius: 5px;
+}*/
 
 .item-text .item-text-div {
 	padding: 10px;
 	border: 3px dashed;
 	border-radius: 5px;
 }
+
+.item-text.visited .item-text-div:hover {
+	border-color: #A020F0;
+}
+
+.item-text.pending .item-text-div:hover {
+	border-color: #0076FF;
+}
+
+.item-text.failed .item-text-div:hover {
+	border-color: #B80606;
+}
+
 
 .item-text-div > h3 {
 	margin: 0 0 2px;

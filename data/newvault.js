@@ -6,10 +6,11 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
 /* NEXT: 
-    -- add multiple meta-datas
     -- handle-visited-state(*) 
     -- animate-bullets
     -- fix-centering (figure offset from 5000 at start)
+    -- test updates
+    -- fix slider
     DONE
     -- check broken image handling in menu
 */         
@@ -74,7 +75,7 @@ function appendTextDisplayTo($pdiv, adDisp) {
     
     var $h3 = $('<h3/>', {}).appendTo($div);
     
-    var $a = $('<div/>', { // title/target
+    var $a = $('<div/>', { // title
         
         class: 'title',
         text: ad.title,
@@ -115,7 +116,9 @@ function appendDisplayTo($div, adDisp) {
     var img = $('<img/>', {
 
         src: adDisp.child(0).contentData.src,
-        onerror: "this.onerror=null; this.width=200; this.height=100; this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
+        
+        onerror: "this.onerror=null; this.width=200; this.height=100; " +
+            "this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
         
     }).appendTo($ad);
 }
@@ -123,8 +126,17 @@ function appendDisplayTo($div, adDisp) {
 function bulletIndex($div, adDisp) {
     
     //console.log('bulletIndex: '+adDisp.count());
-    var lis = $div.find('.bullet');
-    $(lis[adDisp.index]).addClass('active').siblings().removeClass('active');
+    
+    // set the active bullet
+    
+    var items = $div.find('.bullet');
+    $(items[adDisp.index]).addClass('active')
+        .siblings().removeClass('active');
+    
+    // shift the meta-list to show correct info
+    
+    var $ul = $div.find('.meta-list');
+    $ul.css('margin-top', (adDisp.index * -110) +'px');
 }
 
 function appendBulletsTo($div, adDisp) {
@@ -143,7 +155,9 @@ function appendBulletsTo($div, adDisp) {
             $li.click(function(e) {
                 
                 adDisp.index = parseInt($(this).attr('data-idx'));
+                
                 //console.log('item.clicked: '+adDisp.index);
+                
                 bulletIndex($div, adDisp);
                 e.stopPropagation();
             });
@@ -156,7 +170,11 @@ function appendBulletsTo($div, adDisp) {
 function appendMetaTo($div, adDisp) {
 
     var $meta = $('<div/>', { class: 'meta' }).appendTo($div);
-    var $ul = $('<ul/>', {  style: 'margin-top: 0px' }).appendTo($meta);
+    
+    var $ul = $('<ul/>', {  
+        class: 'meta-list', 
+        style: 'margin-top: 0px'
+    }).appendTo($meta);
     
     for (var i=0; i < adDisp.count(); i++) {
         

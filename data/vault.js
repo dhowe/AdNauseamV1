@@ -7,12 +7,75 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
 /* NEXT: 
-    -- animate-bullets
     -- test updates
     -- test current-ad handling (broken in shared.js)
     DONE
     -- check broken image handling in menu
 */         
+function layoutAds(addonData) {
+
+    var adgr = createAdGroups(addonData.data),
+        currentAd = addonData.currentAd;
+
+    //log('Vault.layoutAds: '+adgr.length);
+
+    addInterfaceHandlers();
+
+    createSlider(asAdArray(adgr));
+
+    doLayout(adgr, true);
+
+    currentAd && tagCurrentAd(currentAd);
+}
+
+
+// CHANGED(12/19): Each ad is now visited separately
+function updateAds(addonData) {
+
+    var ads = processAdData(addonData.data).ads,
+        vdate, update = addonData.update,
+        currentAd = addonData.currentAd,
+
+    all = ads.slice(); // save original set
+
+    // update class/title/visited/resolved-url
+    doUpdate(update);
+
+    currentAd && tagCurrentAd(currentAd);
+
+    computeStats(ads);
+}
+
+function doUpdate(updated) {
+
+    //console.log('doUpdate: #'+updated.id);
+
+    var sel = '#ad' + updated.id, newClass;
+
+    // update the title
+    $(sel).attr('data-title', updated.title);
+
+    // update the visit-time
+    var vdate = formatDate(updated.visitedTs);
+    $(sel).attr('data-visitedTs', vdate);
+
+    // update the target-url
+    if (updated.resolvedTargetUrl) {
+
+        //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
+        $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
+    }
+
+    // update the class (now visited)
+    newClass = (updated.visitedTs > 0) ? 'visited' : 'failed';
+    $(sel).removeClass('pending').addClass(newClass);
+    $(sel).removeClass('just-visited').addClass('just-visited');
+
+    // Update inspector fields with (title,visitedTs,targetUrl)
+    //if ($(sel).hasClass('inspectee'))
+        //updateInspector(updated, vdate);
+}
+
 function createDivs(adgr) {
     
     adGroups = adgr;
@@ -221,85 +284,6 @@ function doLayout(theAds, resetLayout) {
     //dbugOffsets && addTestDivs();
 }
 
-function computeStats(ads) {
-
-    $('.since').text(formatDate(sinceTime(ads)));
-    $('.clicked').text(numVisited(ads) + ' ads clicked');
-    $('.detected').text(numFound(ads)+ ' detected.');
-}
-
-function layoutAds(addonData) {
-
-	var adgr = createAdGroups(addonData.data),
-        currentAd = addonData.currentAd;
-
-	//log('Vault.layoutAds: '+adgr.length);
-
-	addInterfaceHandlers();
-
-    createSlider(asAdArray(adgr));
-
-	doLayout(adgr, true);
-
-    currentAd && tagCurrentAd(currentAd);
-}
-
-function asAdArray(adGroups) {
-    var ads = [];
-    for (var i=0, j = adGroups.length; i<j; i++) {
-        for (var k=0, m = adGroups[i].children.length; k<m; k++) 
-            ads.push(adGroups[i].children[k]);
-    }
-    return ads;
-}
-
-// CHANGED(12/19): Each ad is now visited separately
-function updateAds(addonData) {
-
-    var ads = processAdData(addonData.data).ads,
-        vdate, update = addonData.update,
-        currentAd = addonData.currentAd,
-
-	all = ads.slice(); // save original set
-
-	// update class/title/visited/resolved-url
-    doUpdate(update);
-
-    currentAd && tagCurrentAd(currentAd);
-
-	computeStats(ads);
-}
-
-function doUpdate(updated) {
-
-    //console.log('doUpdate: #'+updated.id);
-
-    var sel = '#ad' + updated.id, newClass;
-
-    // update the title
-    $(sel).attr('data-title', updated.title);
-
-    // update the visit-time
-    var vdate = formatDate(updated.visitedTs);
-    $(sel).attr('data-visitedTs', vdate);
-
-    // update the target-url
-    if (updated.resolvedTargetUrl) {
-
-        //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
-        $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
-    }
-
-    // update the class (now visited)
-    newClass = (updated.visitedTs > 0) ? 'visited' : 'failed';
-    $(sel).removeClass('pending').addClass(newClass);
-    $(sel).removeClass('just-visited').addClass('just-visited');
-
-    // Update inspector fields with (title,visitedTs,targetUrl)
-    //if ($(sel).hasClass('inspectee'))
-        //updateInspector(updated, vdate);
-}
-
 function repack(resetLayout) {
 
 	var $items =  $(".item"), visible = $items.length;
@@ -337,6 +321,13 @@ function repack(resetLayout) {
 
 		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2) + 'px' } ); 
 	}
+}
+
+function computeStats(ads) {
+
+    $('.since').text(formatDate(sinceTime(ads)));
+    $('.clicked').text(numVisited(ads) + ' ads clicked');
+    $('.detected').text(numFound(ads)+ ' detected.');
 }
 
 function numVisited(ads) {
@@ -666,6 +657,15 @@ function openInNewTab(url) {
 
   var win = window.open(url, '_blank');
   win.focus();
+}
+
+function asAdArray(adGroups) {
+    var ads = [];
+    for (var i=0, j = adGroups.length; i<j; i++) {
+        for (var k=0, m = adGroups[i].children.length; k<m; k++) 
+            ads.push(adGroups[i].children[k]);
+    }
+    return ads;
 }
 
 function addInterfaceHandlers(ads) {

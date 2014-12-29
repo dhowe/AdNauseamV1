@@ -1,33 +1,34 @@
 //inspectorData, inspectorIdx, animatorId, resizing = false, , animateMs = 2000, container, pack;
-var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
-    zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ]; 
+var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
+    zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ],
+    animatorId, animateMs = 2000, adGroups, selectedGroup;
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 
 /* NEXT: 
-    -- handle-visited-state(*) 
     -- animate-bullets
-    -- fix-centering (figure offset from 5000 at start)
     -- test updates
     -- test current-ad handling (broken in shared.js)
     DONE
     -- check broken image handling in menu
 */         
-function createDivs(ads) {
+function createDivs(adgr) {
     
-    for (i=0; i < ads.length; i++) {
+    adGroups = adgr;
+    
+    for (i=0; i < adgr.length; i++) {
 
         var $div = $('<div/>', {
             
-            //id: 'ad' + ad.id,
             style: "position: absolute; left: 5000px; top: 5000px;",
-            class: 'item dup-count-'+ads[i].count()
+            class: 'item dup-count-'+adgr[i].count(),
+            'data-gid': adgr[i].id,
             
         }).appendTo('#container');
 
-        (ads[i].child(0).contentType !== 'text' ? 
-            bindImageAd : bindTextAd)($div, ads[i]);
+        (adgr[i].child(0).contentType !== 'text' ? 
+            bindImageAd : bindTextAd)($div, adgr[i]);
     }
 }
 
@@ -124,7 +125,7 @@ function appendDisplayTo($div, adgr) {
 
 function bulletIndex($div, adgr) {
     
-    //console.log('bulletIndex: '+adgr.count());
+    //console.log('bulletIndex: '+adgr.index);
     
     // set the active bullet
     
@@ -189,7 +190,7 @@ function appendMetaTo($div, adgr) {
                             text: ad.title
                 }).appendTo($target); // TODO: visited?
                 $('<cite/>', { text: targetDomain(ad) }).appendTo($target);
-                $('<span/>', { class: 'inspected-date', text: formatDate(ad.foundTs) }).appendTo($target); 
+                $('<span/>', { class: 'inspected-date', text: formatDate(ad.visitedTs) }).appendTo($target); 
                                 
             var $detected = $('<div/>', { class: 'detected-on' }).appendTo($li);
             
@@ -199,13 +200,13 @@ function appendMetaTo($div, adgr) {
                             text: ad.pageTitle
                 }).appendTo($detected); // TODO: visited?
                 $('<cite/>', { text: ad.pageUrl }).appendTo($detected);
-                $('<span/>', { class: 'inspected-date', text: formatDate(ad.visitedTs) }).appendTo($detected);                
+                $('<span/>', { class: 'inspected-date', text: formatDate(ad.foundTs) }).appendTo($detected);                
     }
 }
     
 function doLayout(theAds, resetLayout) {
 
-    console.log('Vault.doLayout: '+theAds.length);
+    //console.log('Vault.doLayout: '+theAds.length);
 
     if (!theAds) throw Error("No ads!");
 
@@ -301,9 +302,9 @@ function doUpdate(updated) {
 
 function repack(resetLayout) {
 
-	var visible =  $(".item").length;
+	var $items =  $(".item"), visible = $items.length;
 
-	log("Vault.repack() :: "+visible);
+	//log("Vault.repack() :: "+visible);
 
     showAlert(visible ? false : 'no ads found');
 
@@ -319,6 +320,8 @@ function repack(resetLayout) {
 					gutter : 1
 			});
 
+            storeInitialLayout($items);
+            
 			if (resetLayout) positionAds();
         });
 		//}, 300);
@@ -389,7 +392,7 @@ function dragStart(e) {
 function drag(e) {
 
 	var offset = e.dataTransfer.getData("text/plain").split(','),
-        dm  = document.querySelector('#container');
+        dm = document.querySelector('#container');
 
     dm.style.marginLeft = (e.clientX + parseInt(offset[0], 10)) + 'px';
     dm.style.marginTop = (e.clientY + parseInt(offset[1], 10)) + 'px';
@@ -441,20 +444,40 @@ function enableLightbox() {
     });
 }
 
+function storeInitialLayout($items) {
+    
+    var cx = $(window).width()/2, cy = $(window).height()/2;
+  
+    $items.each(function() {
+         
+        var $this = $(this),
+            offset = $this.offset(),
+            width = $this.width(),
+            height = $this.height(),
+            centerX = offset.left + width / 2,
+            centerY = offset.top + height / 2;
+
+        $this.attr('data-offx', cx - centerX);
+        $this.attr('data-offy', cy - centerY);        
+    });
+}
+
 function centerZoom($ele) {
     
-    var dm  = document.querySelector('#container');
+    var dm = document.querySelector('#container');
     
     if ($ele) { // save zoom-state
         
         viewState.zoomIdx = zoomIdx; 
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;
-    
-        dm.style.marginLeft = (-5000 + $ele.width()/2)+'px'; // TODO: also needs offset from collage center 
-        dm.style.marginTop = (-5000 + $ele.height()/2)+'px'; // TODO: also needs offset from collage center
-        
+          
         setZoom(zoomIdx = 0);
+        
+        var offx = parseInt($ele.attr('data-offx')), offy = parseInt($ele.attr('data-offy'));
+        dm.style.marginLeft = (-5000 + offx)+'px'; // TODO: also needs offset from collage center 
+        dm.style.marginTop = (-5000 + offy)+'px'; // TODO: also needs offset from collage center
+        //console.log("click: ",dm.style.marginLeft,dm.style.marginTop);
     }       
     else { // restore zoom-state
         
@@ -475,8 +498,10 @@ function lightboxMode(selected) {
         
         var $selected = $(selected);
         
+        var inspectedId = parseInt($selected.attr('data-gid'));
+        selectedGroup = findGroupById(inspectedId);
+        
         centerZoom($selected);
-        // TODO: start animation if we have one
         
         $selected.addClass('inspected').siblings().removeClass('inspected');
         
@@ -484,6 +509,8 @@ function lightboxMode(selected) {
             $selected.find('span.counter-visited').show();
         
         $('#container').addClass('lightbox');
+        
+        animateInspector($selected);
     }
     else {
         
@@ -494,46 +521,44 @@ function lightboxMode(selected) {
         $item.find('span.counter-visited').hide();
         
         $('#container').removeClass('lightbox');
+        
+        animateInspector(false);
     }
 }
 
-function stopInspectorAnimations() {  // TODO: remove
+function animateInspector($inspected) {
 
-    animatorId && clearTimeout(animatorId);
+    animatorId && clearTimeout(animatorId); // stop
+    
+    // animate if we have a dup-ad being inspected
+    if ($inspected && selectedGroup && selectedGroup.count()) {
+
+        animatorId = setInterval(function() {
+
+            if (++selectedGroup.index === selectedGroup.count())
+                selectedGroup.index = 0;
+
+            bulletIndex($inspected, selectedGroup);
+
+        }, animateMs);
+    }
 }
 
-function setInspectorFields(ele) { // TODO: remove
+function inspectorAnimator($selected) {
 
-//console.log("setInspectorFields(): "+$(ele).attr('id')+" has="+$(ele).hasClass('inspectee'));
+    console.log('inspectorAnimator()');
+    
 
-    // don't reset animatation of the same ad
-    if (!$(ele).hasClass('inspectee')) {
+}
 
-        // remember this as last in the inspector
-        $(ele).addClass('inspectee').siblings()
-            .removeClass('inspectee');
-
-//console.log("pre-notify: "+$(ele).attr('id'));
-
-        // load primary ad & all dups for inspector
-        inspectorData = loadInspectorData(ele);
-
-        notifyAddon(inspectorData[0].id);
-
-        // fill fields for first empty pane & set class to 'full'
-        populateInspector(inspectorData, inspectorIdx=0);
-
-        // make/layout controls for duplicates
-        makeDuplicateControls(inspectorData);
-
-//console.log('doAnimation1 *********');
-        doAnimation(inspectorData);
+function findGroupById(id) {
+    
+    for(var i=0,j=adGroups.length; i<j; i++){
+      if (adGroups[i].id === id)
+        return adGroups[i];
     }
-
-//console.log("setInspectorFields(): "+inspectorData.length);
-
-    if (inspectorData.length > 1)  // but cycle either way
-         cycleThroughDuplicates();
+    
+    throw Error('No group for: '+id);
 }
 
 function notifyAddon(adId) {
@@ -549,85 +574,6 @@ function notifyAddon(adId) {
     self.port && self.port.emit("update-inspector", { "id": adId } );
 
     //}, 200); // not sure if we need this delay
-}
-
-function loadInspectorData(ele) { // TODO: remove
-
-	var data = [ createInspectorObj(ele) ];
-	return findDuplicates(data); // returns data
-}
-
-function createInspectorObj(item) { // TODO: remove
-
-    $item = $(item);
-    $img = $('img', item);
-
-//console.log('createInspectorObj: ad#'+$item.attr('data-id')+"/"+$item.attr('data-title'));
-
-	return {
-
-        id: $item.attr('data-id'),
-		imgsrc : $img.attr('src'),
-		imgalt : $img.attr('alt'),
-		title: $item.attr('data-title'),
-		target : $item.attr('data-targetUrl'),
-		origin : $item.attr('data-pageUrl'),
-		visited : $item.attr('data-visitedTs'),
-		detected : $item.attr('data-foundTs'),
-		content: $item.attr('data-contentData')
-	}
-}
-
-
-function findDuplicates(insDataArr) { // TODO: remove
-    
-    // contains template at index=0
-
-	$(".item-hidden").each(function(i) {
-
-		var next, url = $(this).attr('data-contentData');
-
-		if (url === insDataArr[0].content) { // same ad-image?
-
-		    //if (url === insDataArr[0].imgsrc) { // same ad-image?
-
-			next = createInspectorObj(this);
-			insDataArr.push(next);
-		}
-	});
-
-	return insDataArr;
-}
-
-function makeDuplicateControls(data) {  // TODO: remove
-
-	// reset the controls (small dots below img)
-	$(".controls" ).empty();
-
-	for (var i=0; i < data.length; i++) {
-
-		var li = '<li data-idx="'+i+'" class=';
-		li += (i == 0)  ? 'active' : 'passive';
-		$('.controls').append(li+'><a href="#"'+
-			 ' class="btn circle"></a></li>');
-	}
-}
-
-function populateInspectorDetails(ele, insp) {  // TODO: remove
-
-    $ele = $(ele);
-
-    // update image-src and image-alt tags
-    $ele.find('img')
-        .attr('src', insp.imgsrc)
-        .attr('alt',  insp.imgalt);
-
-    // update inspector fields
-    $ele.find('.title').text(insp.title);
-    $ele.find('.target').text(insp.target);
-    $ele.find('.origin').text(insp.origin);
-    $ele.find('.visited').text(insp.visited);
-    $ele.find('.detected').text(insp.detected);
 }
 
 function attachTests() {
@@ -671,7 +617,7 @@ function setZoom(idx) {
 }
 
 
-function positionAds() { // autozoom & center
+function positionAds() { // autozoom & center (ugly)
 
 	//log("Vault.positionAds");
 

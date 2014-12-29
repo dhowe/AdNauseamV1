@@ -1,10 +1,13 @@
 const MIN_WIDTH = 150, MAX_WIDTH = 450;
 
+var GID = 0;
+
 function AdGroup(ad) {
     
     this.children = [];
     this.index = 0;
     this.add(ad);
+    this.id = GID++;
 }
 
 /*

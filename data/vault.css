@@ -278,6 +278,7 @@ div.tooltip {
 
 #container.lightbox{
 	transition: transform 0.5s ease 0.1s, margin 0.5s ease;
+	z-index: 1000;
 }
 
 #container.dragged {
@@ -292,7 +293,7 @@ div.tooltip {
 	bottom:0;
 	left:0;
 	right:0;
-	background: rgba(0,0,0,0.85);
+	background: #000;
 	z-index: 0;
 	opacity: 0;
 	transition: opacity 0.3s;
@@ -300,8 +301,8 @@ div.tooltip {
 
 .lightbox #overlay {
 	z-index: 1000;
-	opacity: 1;
-	transition: opacity 1.3s;
+	opacity: 0.9;
+	transition: opacity 1s;
 }
 
 .item.inspected {
@@ -327,9 +328,8 @@ span.counter span { display: none; } /* hide by default */
 }
 .item.inspected img {
 	opacity: 1;
-	border: 3px solid;
+	border: 3px solid transparent;
 	margin: -3px;
-	border-radius: 3px;
 }
 
 /* BULLETS LIST */
@@ -425,15 +425,18 @@ div.bullets { display: none; } /* hide by default */
 	color: #aaa;
 }
 
-.inspected .pending {
+.inspected .bullets .pending,
+.inspected.pending .target .inspected-title {
 	color: #0076FF;
 	border-color: #0076FF;
 }
-.inspected .visited {
+.inspected .bullets .visited,
+.inspected.visited .target .inspected-title  {
 	color: #A020F0;
 	border-color: #A020F0;
 }
-.inspected .failed {
+.inspected .bullets .failed,
+.inspected.failed .target .inspected-title  {
 	color: #B80606;
 	border-color: #B80606;
 }
@@ -456,18 +459,22 @@ div.bullets { display: none; } /* hide by default */
 
 .item-text .item-text-div {
 	padding: 10px;
-	border: 3px dashed;
+	border: 2px dashed;
 	border-radius: 5px;
+	position: relative;
 }
 
+.inspected.visited .item-text-div,
 .item-text.visited .item-text-div:hover {
 	border-color: #A020F0;
 }
 
+.inspected.pending .item-text-div,
 .item-text.pending .item-text-div:hover {
 	border-color: #0076FF;
 }
 
+.inspected.failed .item-text-div,
 .item-text.failed .item-text-div:hover {
 	border-color: #B80606;
 }
@@ -504,7 +511,7 @@ div.bullets { display: none; } /* hide by default */
 
 .inspected .item-text-div {
 	background-color: #fff;
-	border: 2px dashed #111;
+	border: 2px solid;
 }
 
 .inspected .item-text-div .title {
@@ -751,13 +758,19 @@ div.bullets { display: none; } /* hide by default */
 	margin: -3px;
 	border-radius: 3px;
 }
+.item.visited:hover img {
+	border-color: #BD10E0;
+	border-radius: 3px;
+}
 
 .item.pending:hover img {
-	border: 3px solid #00f;
+	border: 3px solid #0076FF;
+	border-radius: 3px;
 }
 
 .item.failed:hover img {
-	border-style: dashed;
+	border-color: #B80606;
+	border-radius: 3px;
 }
 
 /******************************

@@ -273,7 +273,7 @@ div.tooltip {
 /* SETUP */
 
 #container {
-	transition: transform 0.2s ease, margin 0.2s ease;
+	transition: margin 0.5s ease, transform 0.2s ease;
 }
 
 #container.dragged {
@@ -281,7 +281,7 @@ div.tooltip {
 }
 
 #container.lightbox{
-	transition-duration: 0.5s;
+	transition: transform 0.5s ease 0.1s, margin 0.5s ease;
 }
 
 #overlay {
@@ -295,12 +295,13 @@ div.tooltip {
 	background: rgba(0,0,0,0.85);
 	z-index: 0;
 	opacity: 0;
-	transition: opacity 1s;
+	transition: opacity 0.3s;
 }
 
 .lightbox #overlay {
 	z-index: 1000;
 	opacity: 1;
+	transition: opacity 1.3s;
 }
 
 .item.inspected {

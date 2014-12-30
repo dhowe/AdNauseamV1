@@ -441,6 +441,11 @@ div.bullets { display: none; } /* hide by default */
 	border-color: #B80606;
 }
 
+.inspected .target cite{
+	font-style: normal;
+}
+
+
 .item.pending #index-counter, .item.pending span.counter { background-color: #0076FF;}
 .item.visited #index-counter, .item.visited span.counter { background-color: #A020F0;}
 .item.failed  #index-counter, .item.failed  span.counter { background-color: #B80606;}
@@ -486,12 +491,27 @@ div.bullets { display: none; } /* hide by default */
 .item-text-div > cite {
 	margin: 0 0 3px;
 	display: block;
+	font-style: normal;
+}
+
+.item-text-div > cite:before {
+	content: "Ad";
+	background-color: #4C4D4C;
+	color: #000;
+	border-radius: 2px;
+	display: inline-block;
+	font-size: 12px;
+	padding: 0px 2px;
+	margin-right: 4px;
+	line-height: 14px;
+	vertical-align: baseline;
 }
 
 .item-text-div .title {
   margin: 0;
   color: #ababab;
 	font-size: 18px;
+	font-weight: 400;
 }
 
 .item-text-div .ads-creative {
@@ -520,10 +540,16 @@ div.bullets { display: none; } /* hide by default */
 
 .inspected .item-text-div > cite {
 	color: #006621;
+	font-style: normal;
 }
 
 .inspected .item-text-div > .ads-creative {
 	color: #545454;
+}
+
+.inspected .item-text-div > cite:before {
+	background-color: #EFC439;
+	color: #fff;
 }
 
 .item-text:hover{
@@ -615,7 +641,7 @@ div.bullets { display: none; } /* hide by default */
 	font-size: 12px;
 	box-shadow: -4px 4px 10px 0px rgba(0,0,0,0.20);
 	z-index: 1000;
-	color: #fff;
+	color: #000;
 	line-height: 1.7em;
 }
 

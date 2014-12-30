@@ -4,7 +4,7 @@
 var TEST_APPEND_IDS = true;
 
 function tagCurrentAd(currentAd) { // TODO: fix: this is broken with new layout
-    
+        
     //console.log('tagCurrentAd('+currentAd.id+')');
     
     sel = '#ad' + currentAd.id;

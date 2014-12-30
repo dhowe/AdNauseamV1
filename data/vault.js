@@ -132,8 +132,9 @@ function appendTextDisplayTo($pdiv, adgr) {
     
     var $cv = $('<span/>', {
         
+        id : 'index-counter',
         class: 'counter counter-visited',
-        text: visited +'/'+total
+        text: indexCounterText(adgr)
         
     }).appendTo($div).hide();
     
@@ -172,8 +173,9 @@ function appendDisplayTo($div, adgr) {
     
     var $cv = $('<span/>', {
         
+        id : 'index-counter',
         class: 'counter counter-visited',
-        text: visited +'/'+total
+        text:  indexCounterText(adgr)
         
     }).appendTo($ad).hide();
     
@@ -201,6 +203,13 @@ function bulletIndex($div, adgr) {
     
     var $ul = $div.find('.meta-list');
     $ul.css('margin-top', (adgr.index * -110) +'px');
+    
+    $div.find('#index-counter').text(indexCounterText(adgr));
+}
+
+function indexCounterText(adgr) {
+    
+    return (adgr.index+1)+'/'+adgr.count();
 }
 
 function appendBulletsTo($div, adgr) {
@@ -365,21 +374,16 @@ function sinceTime(ads) {
 }
 
 function dragStart(e) {
+    console.log('dragStart');
 
     var style = window.getComputedStyle(document.querySelector('#container'), null);
 	   x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
 	   y = parseInt(style.getPropertyValue("margin-top"),  10) - e.clientY;
 
     e.dataTransfer.setData("text/plain", x + ',' + y);
+    
+    $('#container').addClass('dragged');
 }
-
-/*function handleDragStart(e) {
-	this.style.opacity = '0.4';  // this / e.target is the source node.
-}*/
-
-//function dragOver(e) {	return _drag(e); }
-
-//function drop(e) { return _drag(e); }
 
 function drag(e) {
 
@@ -390,7 +394,11 @@ function drag(e) {
     dm.style.marginTop = (e.clientY + parseInt(offset[1], 10)) + 'px';
 
 	//dbugOffsets && updateTestDivs();
+}
 
+function dragEnd(e) {
+ 
+    $('#container').removeClass('dragged');
 }
 
 function formatDate(ts) {
@@ -689,9 +697,10 @@ function addInterfaceHandlers(ads) {
 
 	/////////// DRAG-STAGE (from: http://jsfiddle.net/robertc/kKuqH/)
 
-	document.querySelector('#container').addEventListener('dragstart', dragStart, false);
-	document.body.addEventListener('dragover', drag, false);
-	document.body.addEventListener('drop', drag, false);
+	var dm = document.querySelector('#container');
+	dm.addEventListener('dragstart', dragStart, false);
+	dm.addEventListener('dragover', drag, false);
+	dm.addEventListener('dragend', dragEnd, false);
 
 	/////////// ZOOM-STAGE
 

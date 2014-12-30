@@ -86,35 +86,55 @@ function createDivs(adgr) {
 
         var $div = $('<div/>', {
             
-            style: "position: absolute; left: 5000px; top: 5000px;",
             class: 'item dup-count-'+adgr[i].count(),
             'data-gid': adgr[i].id,
             
         }).appendTo('#container');
 
-        (adgr[i].child(0).contentType !== 'text' ? 
-            bindImageAd : bindTextAd)($div, adgr[i]);
+        layoutAd($div, adgr[i]);
     }
 }
 
-function bindTextAd($div, adgr) {
- 
-    $div.addClass('item-text');
-    
-    appendTextDisplayTo($div, adgr);
+function layoutAd($div, adgr) {
+       
+    // append the display
+    (adgr.child(0).contentType === 'text' ? 
+        appendTextDisplayTo : appendDisplayTo)($div, adgr);   
+
     appendBulletsTo($div, adgr);
     appendMetaTo($div, adgr);
   
     $div.addClass(adgr.groupState());
 }
 
-function bindImageAd($div, adgr) {
+function appendDisplayTo($div, adgr) {
+
+    var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
+    var total = adgr.count(), visited = adgr.visitedCount();
     
-    appendDisplayTo($div, adgr);
-    appendBulletsTo($div, adgr);
-    appendMetaTo($div, adgr);
+    var $span = $('<span/>', {
+        
+        class: 'counter',
+        text: total
+        
+    }).appendTo($ad);
     
-    $div.addClass(adgr.groupState());
+    var $cv = $('<span/>', {
+        
+        id : 'index-counter',
+        class: 'counter counter-visited',
+        text:  indexCounterText(adgr)
+        
+    }).appendTo($ad).hide();
+    
+    var img = $('<img/>', {
+
+        src: adgr.child(0).contentData.src,
+        
+        onerror: "this.onerror=null; this.width=200; this.height=100; " +
+            "this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
+        
+    }).appendTo($ad);
 }
 
 function appendTextDisplayTo($pdiv, adgr) {
@@ -123,6 +143,8 @@ function appendTextDisplayTo($pdiv, adgr) {
     var total = adgr.count(), visited = adgr.visitedCount();
 
     var ad = adgr.child(0);
+    
+    
         
     var $span = $('<span/>', {
         
@@ -158,36 +180,8 @@ function appendTextDisplayTo($pdiv, adgr) {
         text: ad.contentData.text
         
     }).appendTo($div);
-}
-
-function appendDisplayTo($div, adgr) {
-
-    var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
-    var total = adgr.count(), visited = adgr.visitedCount();
     
-    var $span = $('<span/>', {
-        
-        class: 'counter',
-        text: total
-        
-    }).appendTo($ad);
-    
-    var $cv = $('<span/>', {
-        
-        id : 'index-counter',
-        class: 'counter counter-visited',
-        text:  indexCounterText(adgr)
-        
-    }).appendTo($ad).hide();
-    
-    var img = $('<img/>', {
-
-        src: adgr.child(0).contentData.src,
-        
-        onerror: "this.onerror=null; this.width=200; this.height=100; " +
-            "this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
-        
-    }).appendTo($ad);
+    $div.addClass('item-text');
 }
 
 function bulletIndex($div, adgr) {
@@ -206,6 +200,7 @@ function bulletIndex($div, adgr) {
     $ul.css('margin-top', (adgr.index * -110) +'px');
     
     $div.find('#index-counter').text(indexCounterText(adgr)); 
+    
     states.map(function(d) { $div.removeClass(d) } ); // remove-all
     $div.addClass(adgr.state());
 }
@@ -227,7 +222,11 @@ function appendBulletsTo($div, adgr) {
         // add items based on count/state
         for (var i=0; i < adgr.count(); i++) {
             
-            var $li = $('<li/>', { 'data-idx': i, 'class': 'bullet '+ adgr.state(i) }).appendTo($ul);
+            var $li = $('<li/>', { 
+                'data-idx': i, 
+                'class': 'bullet '+ adgr.state(i) 
+            }).appendTo($ul);
+            
             $li.click(function(e) {
                 
                 adgr.index = parseInt($(this).attr('data-idx'));
@@ -556,7 +555,8 @@ function inspectorAnimator($selected) {
 
 function findGroupById(id) {
     
-    for(var i=0,j=adGroups.length; i<j; i++){
+    for(var i=0, j = adGroups.length; i<j; i++){
+        
       if (adGroups[i].id === id)
         return adGroups[i];
     }

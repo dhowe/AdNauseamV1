@@ -33,6 +33,11 @@ AdGroup.prototype.state = function(i) {
         (visitedTs  < 0 ? 'failed' : 'visited' );
 }
 
+AdGroup.prototype.type = function() {
+    
+    return this.children[i].contentType;
+}
+
 AdGroup.prototype.failedCount = function() {
     
     return this.children.filter(function(d) {

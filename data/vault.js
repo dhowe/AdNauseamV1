@@ -8,6 +8,7 @@ self.port && self.port.on('update-ads', updateAds); // update some
 
 /* NEXT: 
     -- test updates
+    -- store page-title
     -- test current-ad handling (broken in shared.js)
     DONE
     -- check broken image handling in menu

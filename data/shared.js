@@ -6,6 +6,7 @@ var TEST_APPEND_IDS = true;
 function tagCurrentAd(currentAd) { // TODO: fix: this is broken with new layout
         
     //console.log('tagCurrentAd('+currentAd.id+')');
+    if (!currentAd) return;
     
     sel = '#ad' + currentAd.id;
     
@@ -127,6 +128,9 @@ function processAdData(adhash, pageUrl) {
             if (pageUrl === ads[i].pageUrl ||
                 (typeof testPageUrl != 'undefined' && testPageUrl===ads[i].pageUrl))  // testing
             {
+                if (typeof testPageUrl != 'undefined') 
+                    console.log("Menu: using testPageUrl="+testPageUrl);
+                
                 // TODO: don't count old ads from same url
                 // TODO: need to check pageview hash?
                 // WORKING HERE ON #162***

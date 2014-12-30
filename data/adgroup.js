@@ -1,41 +1,43 @@
-const MIN_WIDTH = 150, MAX_WIDTH = 450;
-
-var GID = 0;
+var MIN_WIDTH = 150, MAX_WIDTH = 450, GID = 0;
 
 function AdGroup(ad) {
     
     this.children = [];
     this.index = 0;
     this.add(ad);
-    this.id = GID++;
+    this.gid = GID++;
 }
 
-/*
- * returns 'visited' if any are visited,
- *      'failed' if all are failed or pending,
- *      'pending' if all are pending.
- */
-AdGroup.prototype.groupState = function() {
+AdGroup.prototype.id = function(i) {
     
-    var failed, visited = this.visitedCount();
-    if (visited) return 'visited';
-    
-    failed = this.failedCount();
+    return this.child(i).id;
+}
 
-    return failed ? 'failed' : 'pending';
+AdGroup.prototype.findChildById = function(id) {
+    
+    for (var i=0, j = this.children.length; i<j; i++) {
+        
+      if (this.children[i].id === id)
+        return this.children[i];
+    }
+
+    return null;
+}
+AdGroup.prototype.child = function(i) {
+    
+    return this.children[(typeof i == 'undefined') ? this.index : i];
 }
 
 AdGroup.prototype.state = function(i) {
     
-    var i = (typeof i == 'undefined') ? this.index : i;
-    var visitedTs = this.children[i].visitedTs;
+    var visitedTs = this.child(i).visitedTs;
     return (visitedTs == 0) ? 'pending' :
         (visitedTs  < 0 ? 'failed' : 'visited' );
 }
 
 AdGroup.prototype.type = function() {
     
-    return this.children[i].contentType;
+    return this.children[0].contentType; // same-for-all
 }
 
 AdGroup.prototype.failedCount = function() {
@@ -62,7 +64,17 @@ AdGroup.prototype.add = function(ad) {
      ad && this.children.push(ad);
 }
 
-AdGroup.prototype.child = function(i) {
+/*
+ * returns 'visited' if any are visited,
+ *      'failed' if all are failed or pending,
+ *      'pending' if all are pending.
+ */
+AdGroup.prototype.groupState = function() {
     
-    return this.children[(typeof i == 'undefined') ? this.index : i];
+    var failed, visited = this.visitedCount();
+    if (visited) return 'visited';
+    
+    failed = this.failedCount();
+
+    return failed ? 'failed' : 'pending';
 }

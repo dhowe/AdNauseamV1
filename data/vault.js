@@ -16,41 +16,40 @@ self.port && self.port.on('update-ads', updateAds); // update some
 */         
 function layoutAds(addonData) {
 
-    var adgr = createAdGroups(addonData.data),
-        currentAd = addonData.currentAd;
+    adGroups = createAdGroups(addonData.data);
 
-    //log('Vault.layoutAds: '+adgr.length);
+    log('Vault.layoutAds: '+adGroups.length);
 
     addInterfaceHandlers();
+    
+    createSlider(asAdArray(adGroups));
 
-    createSlider(asAdArray(adgr));
+    doLayout(adGroups, true);
 
-    doLayout(adgr, true);
-
-    currentAd && tagCurrentAd(currentAd);
+    tagCurrentAd(addonData.currentAd);    
 }
 
 
 // CHANGED(12/19): Each ad is now visited separately
 function updateAds(addonData) {
-
-    var ads = processAdData(addonData.data).ads,
-        vdate, update = addonData.update,
-        currentAd = addonData.currentAd,
-
-    all = ads.slice(); // save original set
-
+    
+    adGroups = createAdGroups(addonData.data);
+    
+    log('Vault.updateAds: '+adGroups.length);
+    
     // update class/title/visited/resolved-url
-    doUpdate(update);
+    doUpdate(addonData.update);
 
-    currentAd && tagCurrentAd(currentAd);
+    tagCurrentAd(addonData.currentAd);
 
-    computeStats(ads);
+    computeStats(adGroups);
 }
 
 function doUpdate(updated) {
 
     //console.log('doUpdate: #'+updated.id);
+    var adgr = findByAdId(updated.id).group;
+    var $item = findItemByGid(adgr.gid);
 
     var sel = '#ad' + updated.id, newClass;
 
@@ -78,20 +77,18 @@ function doUpdate(updated) {
         //updateInspector(updated, vdate);
 }
 
-function createDivs(adgr) {
+function createDivs(adgroups) {
     
-    adGroups = adgr;
-    
-    for (i=0; i < adgr.length; i++) {
+    for (i=0; i < adgroups.length; i++) {
 
         var $div = $('<div/>', {
             
-            class: 'item dup-count-'+adgr[i].count(),
-            'data-gid': adgr[i].id,
+            class: 'item dup-count-'+adgroups[i].count(),
+            'data-gid': adgroups[i].gid,
             
         }).appendTo('#container');
 
-        layoutAd($div, adgr[i]);
+        layoutAd($div, adgroups[i]);
     }
 }
 
@@ -143,9 +140,7 @@ function appendTextDisplayTo($pdiv, adgr) {
     var total = adgr.count(), visited = adgr.visitedCount();
 
     var ad = adgr.child(0);
-    
-    
-        
+  
     var $span = $('<span/>', {
         
         class: 'counter',
@@ -181,7 +176,7 @@ function appendTextDisplayTo($pdiv, adgr) {
         
     }).appendTo($div);
     
-    $div.addClass('item-text');
+    $pdiv.addClass('item-text');
 }
 
 function bulletIndex($div, adgr) {
@@ -199,10 +194,15 @@ function bulletIndex($div, adgr) {
     var $ul = $div.find('.meta-list');
     $ul.css('margin-top', (adgr.index * -110) +'px');
     
+    // update the counter bubble
     $div.find('#index-counter').text(indexCounterText(adgr)); 
     
+    // add the state-class to the div
     states.map(function(d) { $div.removeClass(d) } ); // remove-all
     $div.addClass(adgr.state());
+    
+    // tell the addon 
+    self.port && self.port.emit("update-inspector", { "id": adgr.id() } );
 }
 
 function indexCounterText(adgr) {
@@ -279,15 +279,15 @@ function appendMetaTo($div, adgr) {
     }
 }
     
-function doLayout(theAds, resetLayout) {
+function doLayout(adgroups, resetLayout) {
 
-    //console.log('Vault.doLayout: '+theAds.length);
+    //console.log('Vault.doLayout: '+adgroups.length);
 
-    if (!theAds) throw Error("No ads!");
+    if (!adgroups) throw Error("No ads!");
 
-    createDivs(theAds);
+    createDivs(adgroups);
 
-    computeStats(theAds);
+    computeStats(adgroups);
 
     enableLightbox();
 
@@ -306,40 +306,39 @@ function repack(resetLayout) {
 
 	if (visible > 1) { // count non-hidden ads
 
-		//setTimeout(function() { // do we need this delay?
-        var $container = $('#container').imagesLoaded( function() {
+        $('#container').imagesLoaded( function() {
             
-			new Packery(
-				'#container', {
-					centered : { y : 5000 }, // centered half min-height
-					itemSelector : '.item',
-					gutter : 1
+			new Packery('#container', {
+				centered : { y : 5000 }, // centered half min-height
+				itemSelector : '.item',
+				gutter : 1
 			});
 
             storeInitialLayout($items);
             
 			if (resetLayout) positionAds();
         });
-		//}, 300);
 	}
 	else if (visible === 1) {
 
 		// center single ad here (no pack)
-		var sz = realSize( $('.item img') );
-    
-        console.log("SINGLE PACK: ", sz);// $('#right').width());
+		var $item = $('.item');
 
-        if (!sz.w) console.warn("No width for image! "+sz.w);
+        if (!$item.width()) // remove
+            console.warn("No width for image! "+sz.w);
 
-		$(".item").css({ top: '5000px' , left: (5000 - sz.w/2) + 'px' } ); 
+		$(".item").css({ 
+		    top: (5000 - $item.height()/2) + 'px', 
+		    left: (5000 - $item.width()/2) + 'px' 
+        } ); 
 	}
 }
 
-function computeStats(ads) {
+function computeStats(adgroups) {
 
-    $('.since').text(formatDate(sinceTime(ads)));
-    $('.clicked').text(numVisited(ads) + ' ads clicked');
-    $('.detected').text(numFound(ads)+ ' detected.');
+    $('.since').text(sinceTime(adgroups));
+    $('.clicked').text(numVisited(adgroups) + ' ads clicked');
+    $('.detected').text(numFound(adgroups)+ ' detected.');
 }
 
 function numVisited(ads) {
@@ -360,24 +359,24 @@ function numFound(ads) {
     return numv;
 }
 
-
 function sinceTime(ads) {
 
 	var oldest = +new Date(), idx = 0;
 	for (var i=0, j = ads.length; i<j; i++) {
-
+ 
         var foundTs = ads[i].child(0).foundTs;  
 		if (foundTs < oldest) {
+		    
 			oldest = foundTs;
 			idx = i;
 		}
 	}
-	return oldest;
+	
+	return formatDate(oldest);
 }
 
 function dragStart(e) {
-    console.log('dragStart');
-
+ 
     var style = window.getComputedStyle(document.querySelector('#container'), null);
 	   x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
 	   y = parseInt(style.getPropertyValue("margin-top"),  10) - e.clientY;
@@ -500,8 +499,8 @@ function lightboxMode(selected) {
         
         var $selected = $(selected);
         
-        var inspectedId = parseInt($selected.attr('data-gid'));
-        selectedGroup = findGroupById(inspectedId);
+        var inspectedGid = parseInt($selected.attr('data-gid'));
+        selectedGroup = findGroupByGid(inspectedGid);
         
         centerZoom($selected);
         
@@ -546,37 +545,39 @@ function animateInspector($inspected) {
     }
 }
 
-function inspectorAnimator($selected) {
+function findByAdId(id) {
 
-    console.log('inspectorAnimator()');
-    
+    for (var i = 0, j = adGroups.length; i < j; i++) {
 
+        var ad = adGroups[i].findChildById(id);
+        if (ad) return {
+            ad : ad,
+            group : adGroups[i]
+        };
+    }
+
+    throw Error('No ad for id: ' + id);
 }
 
-function findGroupById(id) {
+function findItemByGid(gid) {
     
-    for(var i=0, j = adGroups.length; i<j; i++){
+    var items = $('item');
+    for (var i=0; i < $items.length; i++) {
         
-      if (adGroups[i].id === id)
+      // WORKING HERE ***
+      
+      //if ($(items[i]).attr(data'.gid'))
+    };
+}
+function findGroupByGid(gid) {
+    
+    for (var i=0, j = adGroups.length; i<j; i++) {
+        
+      if (adGroups[i].gid === gid)
         return adGroups[i];
     }
     
-    throw Error('No group for: '+id);
-}
-
-function notifyAddon(adId) {
-
-    //console.log("Vault.notify:"+adId);
-    //if ( typeof notifyTimer == 'undefined')
-      //  var notifyTimer = 0;
-
-    //clearTimeout(notifyTimer);
-
-    //notifyTimer = setTimeout(function() {
-
-    self.port && self.port.emit("update-inspector", { "id": adId } );
-
-    //}, 200); // not sure if we need this delay
+    throw Error('No group for gid: '+gid);
 }
 
 function attachTests() {
@@ -619,10 +620,7 @@ function setZoom(idx) {
 	//dbugOffsets && updateTestDivs();
 }
 
-
 function positionAds() { // autozoom & center (ugly)
-
-	//log("Vault.positionAds");
 
 	var percentVisible = .6,
 		winW = $("#container").width(),
@@ -651,7 +649,8 @@ function positionAds() { // autozoom & center (ugly)
 			maxY = (winH - (h * percentVisible));
 
 			//log(i+")",x,y,w,h);
-			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i+") "+Math.round($(this).offset().left)) });
+			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i
+			    //+") "+Math.round($(this).offset().left)) });
 
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
@@ -671,11 +670,12 @@ function openInNewTab(url) {
   win.focus();
 }
 
-function asAdArray(adGroups) {
+function asAdArray(adgroups) {
+    
     var ads = [];
-    for (var i=0, j = adGroups.length; i<j; i++) {
-        for (var k=0, m = adGroups[i].children.length; k<m; k++) 
-            ads.push(adGroups[i].children[k]);
+    for (var i=0, j = adgroups.length; i<j; i++) {
+        for (var k=0, m = adgroups[i].children.length; k<m; k++) 
+            ads.push(adgroups[i].children[k]);
     }
     return ads;
 }
@@ -698,23 +698,22 @@ function addInterfaceHandlers(ads) {
             lightboxMode(false);
     });
 
-	/////////// DRAG-STAGE (from: http://jsfiddle.net/robertc/kKuqH/)
+	/////////// DRAG-STAGE ///////////
+	// (from: http://jsfiddle.net/robertc/kKuqH/)
 
 	var dm = document.querySelector('#container');
 	dm.addEventListener('dragstart', dragStart, false);
 	dm.addEventListener('dragover', drag, false);
 	dm.addEventListener('dragend', dragEnd, false);
 
-	/////////// ZOOM-STAGE
+	/////////// ZOOM-STAGE ///////////
 
-	// click zoom-in
 	$('#z-in').click(function(e) {
 
 		zoomIn();
 		e.preventDefault();
 	});
 
-	// click zoom-out
 	$('#z-out').click(function(e) {
 
 		zoomOut();
@@ -722,21 +721,4 @@ function addInterfaceHandlers(ads) {
 	});
 
     $(window).resize(resizeHistorySlider);
-
-    /*$(window).resize(function() {
-
-        if ( typeof resizeTimer == 'undefined')
-            var resizeTimer = 0;
-
-        clearTimeout(resizeTimer);
-
-        resizeTimer = setTimeout(function() {
-
-            $('#left').width(''); // hack so that a panel-drag doesnt
-            $('#right').width(''); //  break window-resizing
-
-            resizeHistorySlider();
-
-        }, 500); // not sure if we need this delay
-    });*/
 }

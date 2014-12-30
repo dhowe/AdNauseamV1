@@ -438,9 +438,9 @@ div.bullets { display: none; } /* hide by default */
 	border-color: #B80606;
 }
 
-.pending #index-counter { background-color: #0076FF;}
-.visited #index-counter { background-color: #A020F0;}
-.failed  #index-counter { background-color: #B80606;}
+.item.pending #index-counter, .item.pending span.counter { background-color: #0076FF;}
+.item.visited #index-counter, .item.visited span.counter { background-color: #A020F0;}
+.item.failed  #index-counter, .item.failed  span.counter { background-color: #B80606;}
 
 /* --------------------TEXT ADS----------------------- */
 

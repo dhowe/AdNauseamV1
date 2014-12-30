@@ -382,7 +382,7 @@ div.bullets { display: none; } /* hide by default */
 
 .item.inspected .meta li>div{
 	font-size: 12px;
-	width: 600px;
+	/*width: 600px;*/
 	height: 50px;
 	position: relative;
 	margin: 5px 0;
@@ -467,7 +467,6 @@ div.bullets { display: none; } /* hide by default */
 	border-color: #B80606;
 }
 
-
 .item-text-div > h3 {
 	margin: 0 0 2px;
 }
@@ -480,6 +479,7 @@ div.bullets { display: none; } /* hide by default */
 .item-text-div .title {
   margin: 0;
   color: #ababab;
+	font-size: 18px;
 }
 
 .item-text-div .ads-creative {
@@ -495,6 +495,23 @@ div.bullets { display: none; } /* hide by default */
   overflow: hidden;
   max-height: 2.3em;
   line-height: 1.15em;
+}
+
+.inspected .item-text-div {
+	background-color: #fff;
+	border: 2px dashed #111;
+}
+
+.inspected .item-text-div .title {
+	color: #1A0DAB;
+}
+
+.inspected .item-text-div > cite {
+	color: #006621;
+}
+
+.inspected .item-text-div > .ads-creative {
+	color: #545454;
 }
 
 .item-text:hover{

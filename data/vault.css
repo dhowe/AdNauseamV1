@@ -221,7 +221,7 @@ div.tooltip {
 .inspected-title {
 	text-decoration: none;
 }
-	
+
 .session-sum .clicked{
 	font-weight: 700;
 	color: #BD10E0;
@@ -271,8 +271,16 @@ div.tooltip {
 /* -------------------INSPECTION----------------------- */
 
 /* SETUP */
-	
-.lightbox #overlay {
+
+#container {
+	transition: transform 0.2s ease, margin 0.2s ease;
+}
+
+#container.lightbox{
+	transition-duration: 0.5s;
+}
+
+#overlay {
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -280,8 +288,15 @@ div.tooltip {
 	bottom:0;
 	left:0;
 	right:0;
-	z-index: 1000;
 	background: rgba(0,0,0,0.85);
+	z-index: 0;
+	opacity: 0;
+	transition: opacity 0.5s;
+}
+
+.lightbox #overlay {
+	z-index: 1000;
+	opacity: 1;
 }
 
 .item.inspected {
@@ -362,6 +377,7 @@ div.bullets { display: none; } /* hide by default */
 	margin: 0; /* negative margin-top is set in JS to animate through items */
 	padding: 0;
 	list-style: none;
+	transition: margin 0.3s;
 }
 
 .item.inspected .meta li>div{
@@ -424,8 +440,6 @@ div.bullets { display: none; } /* hide by default */
 /* --------------------TEXT ADS----------------------- */
 
 .item-text {
-	
-  padding: 10px;
   font-size: 12px;
 }
 /*

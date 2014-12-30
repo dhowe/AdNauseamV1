@@ -11,6 +11,7 @@ self.port && self.port.on('update-ads', updateAds); // update some
     -- test updates
     -- store page-title
     -- test current-ad handling (broken in shared.js)
+    -- check version in menu
     DONE
     -- check broken image handling in menu
 */         
@@ -45,38 +46,6 @@ function updateAds(addonData) {
     computeStats(adGroups);
 }
 
-function doUpdate(updated) {
-
-    //console.log('doUpdate: #'+updated.id);
-    var adgr = findByAdId(updated.id).group;
-    var $item = findItemByGid(adgr.gid);
-
-    var sel = '#ad' + updated.id, newClass;
-
-    // update the title
-    $(sel).attr('data-title', updated.title);
-
-    // update the visit-time
-    var vdate = formatDate(updated.visitedTs);
-    $(sel).attr('data-visitedTs', vdate);
-
-    // update the target-url
-    if (updated.resolvedTargetUrl) {
-
-        //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
-        $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
-    }
-
-    // update the class (now visited)
-    newClass = (updated.visitedTs > 0) ? 'visited' : 'failed';
-    $(sel).removeClass('pending').addClass(newClass);
-    $(sel).removeClass('just-visited').addClass('just-visited');
-
-    // Update inspector fields with (title,visitedTs,targetUrl)
-    //if ($(sel).hasClass('inspectee'))
-        //updateInspector(updated, vdate);
-}
-
 function createDivs(adgroups) {
     
     for (i=0; i < adgroups.length; i++) {
@@ -104,142 +73,42 @@ function layoutAd($div, adgr) {
     $div.addClass(adgr.groupState());
 }
 
-function appendDisplayTo($div, adgr) {
+function doUpdate(updated) {
 
-    var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
-    var total = adgr.count(), visited = adgr.visitedCount();
+    //console.log('doUpdate: #'+updated.id);
+    var groupInfo = findByAdId(updated.id), 
+        $item = findItemByGid(groupInfo.group.gid);
+        adgr = groupInfo.group,
     
-    var $span = $('<span/>', {
-        
-        class: 'counter',
-        text: total
-        
-    }).appendTo($ad);
+    console.log("gid: "+adgr.gid, "ad-idx: "+groupInfo.index, '$item: '+typeof $item);
     
-    var $cv = $('<span/>', {
-        
-        id : 'index-counter',
-        class: 'counter counter-visited',
-        text:  indexCounterText(adgr)
-        
-    }).appendTo($ad).hide();
+    // update the adgroup
+    adgr.index = groupInfo.index;
+    bulletIndex($item, adgr);
+    return;
     
-    var img = $('<img/>', {
+    // now update the ad
 
-        src: adgr.child(0).contentData.src,
-        
-        onerror: "this.onerror=null; this.width=200; this.height=100; " +
-            "this.alt='unable to load image'; this.src=\'img/placeholder.svg\'",
-        
-    }).appendTo($ad);
-}
+    // update the title
+    $item.attr('data-title', updated.title);
 
-function appendTextDisplayTo($pdiv, adgr) {
+    // update the visit-time
+    var vdate = formatDate(updated.visitedTs);
+    $(sel).attr('data-visitedTs', vdate);
 
-    var $div = $('<div/>', { class: 'item-text-div' }).appendTo($pdiv);
-    var total = adgr.count(), visited = adgr.visitedCount();
+    // update the target-url
+    if (updated.resolvedTargetUrl) {
 
-    var ad = adgr.child(0);
-  
-    var $span = $('<span/>', {
-        
-        class: 'counter',
-        text: adgr.count()
-        
-    }).appendTo($div);
-    
-    var $cv = $('<span/>', {
-        
-        id : 'index-counter',
-        class: 'counter counter-visited',
-        text: indexCounterText(adgr)
-        
-    }).appendTo($div).hide();
-    
-    var $h3 = $('<h3/>', {}).appendTo($div);
-    
-    var $a = $('<div/>', { // title
-        
-        class: 'title',
-        text: ad.title,
-        //href: ad.targetUrl,
-        target: 'new'
-        
-    }).appendTo($h3);
-    
-    $('<cite/>', { text: ad.contentData.site }).appendTo($div); // site
-    
-    $('<div/>', { // text
-        
-        class: 'ads-creative',
-        text: ad.contentData.text
-        
-    }).appendTo($div);
-    
-    $pdiv.addClass('item-text');
-}
-
-function bulletIndex($div, adgr) {
-    
-    //console.log('bulletIndex: '+adgr.index);
-    
-    // set the active bullet
-    
-    var items = $div.find('.bullet');
-    $(items[adgr.index]).addClass('active')
-        .siblings().removeClass('active');
-    
-    // shift the meta-list to show correct info
-    
-    var $ul = $div.find('.meta-list');
-    $ul.css('margin-top', (adgr.index * -110) +'px');
-    
-    // update the counter bubble
-    $div.find('#index-counter').text(indexCounterText(adgr)); 
-    
-    // add the state-class to the div
-    states.map(function(d) { $div.removeClass(d) } ); // remove-all
-    $div.addClass(adgr.state());
-    
-    // tell the addon 
-    self.port && self.port.emit("update-inspector", { "id": adgr.id() } );
-}
-
-function indexCounterText(adgr) {
-    
-    return (adgr.index+1)+'/'+adgr.count();
-}
-
-function appendBulletsTo($div, adgr) {
-    
-    var count = adgr.count();
-    
-    if (count > 1) {
-        
-        var $bullets = $('<div/>', { class: 'bullets'  }).appendTo($div);
-        var $ul = $('<ul/>', {}).appendTo($bullets);
-    
-        // add items based on count/state
-        for (var i=0; i < adgr.count(); i++) {
-            
-            var $li = $('<li/>', { 
-                'data-idx': i, 
-                'class': 'bullet '+ adgr.state(i) 
-            }).appendTo($ul);
-            
-            $li.click(function(e) {
-                
-                adgr.index = parseInt($(this).attr('data-idx'));
-                
-                //console.log('item.clicked: '+adgr.index);
-                
-                bulletIndex($div, adgr);
-                e.stopPropagation();
-            });
-        }
+        //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
+        $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
     }
+
+    // update the class (now visited)
+    newClass = (updated.visitedTs > 0) ? 'visited' : 'failed';
+    $(sel).removeClass('pending').addClass(newClass);
+    $(sel).removeClass('just-visited').addClass('just-visited');
     
-    bulletIndex($div, adgr);
+    // update the group state
 }
 
 function appendMetaTo($div, adgr) {
@@ -277,6 +146,147 @@ function appendMetaTo($div, adgr) {
                 $('<cite/>', { text: ad.pageUrl }).appendTo($detected);
                 $('<span/>', { class: 'inspected-date', text: formatDate(ad.foundTs) }).appendTo($detected);                
     }
+}
+
+function bulletIndex($div, adgr) {
+    
+    //console.log('bulletIndex: '+adgr.index);
+    
+    // set the active bullet
+    
+    var items = $div.find('.bullet');
+    $(items[adgr.index]).addClass('active')
+        .siblings().removeClass('active');
+    
+    // shift the meta-list to show correct info
+    
+    var $ul = $div.find('.meta-list');
+    $ul.css('margin-top', (adgr.index * -110) +'px');
+    
+    // update the counter bubble
+    $div.find('#index-counter').text(indexCounterText(adgr)); 
+    
+    // add the state-class to the div
+    states.map(function(d) { $div.removeClass(d) } ); // remove-all
+    $div.addClass(adgr.state());
+    
+    // tell the addon 
+    self.port && self.port.emit("update-inspector", { "id": adgr.id() } );
+}
+
+function appendDisplayTo($div, adgr) {
+
+    var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
+    var total = adgr.count(), visited = adgr.visitedCount();
+    
+    var $span = $('<span/>', {
+        
+        class: 'counter',
+        text: total
+        
+    }).appendTo($ad);
+    
+    var $cv = $('<span/>', {
+        
+        id : 'index-counter',
+        class: 'counter counter-visited',
+        text:  indexCounterText(adgr)
+        
+    }).appendTo($ad).hide();
+    
+    var img = $('<img/>', {
+
+        src: adgr.child(0).contentData.src,
+        
+        onerror: "this.onerror=null; this.width=200; this.height=100; " +
+            "this.alt='unable to load image'; this.src='img/placeholder.svg'",
+        
+    }).appendTo($ad);
+}
+
+function appendTextDisplayTo($pdiv, adgr) {
+
+    var total = adgr.count(), visited = adgr.visitedCount(), ad = adgr.child(0);
+
+    $pdiv.addClass('item-text');
+    
+    var $div = $('<div/>', { 
+        
+        class: 'item-text-div', 
+        width: rand(TEXT_MINW, TEXT_MAXW) 
+        
+    }).appendTo($pdiv);
+
+    var $span = $('<span/>', {
+        
+        class: 'counter',
+        text: adgr.count()
+        
+    }).appendTo($div);
+    
+    var $cv = $('<span/>', {
+        
+        id : 'index-counter',
+        class: 'counter counter-visited',
+        text: indexCounterText(adgr)
+        
+    }).appendTo($div).hide();
+    
+    var $h3 = $('<h3/>', {}).appendTo($div);
+    
+    $('<div/>', { // title
+        
+        class: 'title',
+        text: ad.title,
+        target: 'new'
+        
+    }).appendTo($h3);
+    
+    $('<cite/>', { text: ad.contentData.site }).appendTo($div); // site
+    
+    $('<div/>', { // text
+        
+        class: 'ads-creative',
+        text: ad.contentData.text
+        
+    }).appendTo($div);
+}
+
+function indexCounterText(adgr) {
+    
+    return (adgr.index+1)+'/'+adgr.count();
+}
+
+function appendBulletsTo($div, adgr) {
+    
+    var count = adgr.count();
+    
+    if (count > 1) {
+        
+        var $bullets = $('<div/>', { class: 'bullets'  }).appendTo($div);
+        var $ul = $('<ul/>', {}).appendTo($bullets);
+    
+        // add items based on count/state
+        for (var i=0; i < adgr.count(); i++) {
+            
+            var $li = $('<li/>', { 
+                'data-idx': i, 
+                'class': 'bullet '+ adgr.state(i) 
+            }).appendTo($ul);
+            
+            $li.click(function(e) {
+                
+                adgr.index = parseInt($(this).attr('data-idx'));
+                
+                //console.log('item.clicked: '+adgr.index);
+                
+                bulletIndex($div, adgr);
+                e.stopPropagation();
+            });
+        }
+    }
+    
+    bulletIndex($div, adgr);
 }
     
 function doLayout(adgroups, resetLayout) {
@@ -317,6 +327,8 @@ function repack(resetLayout) {
             storeInitialLayout($items);
             
 			if (resetLayout) positionAds();
+			
+			log('------------------------------------------------');
         });
 	}
 	else if (visible === 1) {
@@ -547,12 +559,16 @@ function animateInspector($inspected) {
 
 function findByAdId(id) {
 
+    log('findByAdId: '+id);
+
     for (var i = 0, j = adGroups.length; i < j; i++) {
 
-        var ad = adGroups[i].findChildById(id);
-        if (ad) return {
-            ad : ad,
-            group : adGroups[i]
+        var childIdx = adGroups[i].findChildById(id);
+        
+        if (childIdx > -1) return {
+            ad : adGroups[i].child(childIdx),
+            group : adGroups[i],
+            index : childIdx
         };
     }
 
@@ -561,14 +577,19 @@ function findByAdId(id) {
 
 function findItemByGid(gid) {
     
+    
     var items = $('item');
-    for (var i=0; i < $items.length; i++) {
+    for (var i=0; i < items.length; i++) {
         
       // WORKING HERE ***
-      
-      //if ($(items[i]).attr(data'.gid'))
-    };
+      $item = $(items[i]);
+      if (parseInt($item.attr('data-.gid')) === gid)
+        return $item;
+    }
+    
+    throw Error('No $item for gid: '+gid);
 }
+
 function findGroupByGid(gid) {
     
     for (var i=0, j = adGroups.length; i<j; i++) {
@@ -634,19 +655,21 @@ function positionAds() { // autozoom & center (ugly)
 		problem = false; // no problem at start
 
 		// loop over each image, checking that they (enough) onscreen
-		$('.item img').each(function(i, img) {
+		$('.item').each(function(i, img) {
 
-            $img = $(this);
-			x = $img.offset().left,
-			y = $img.offset().top,
-			scale = zooms[zoomIdx] / 100,
-			sz = realSize($img),      // original size
-			w = sz.w * scale,        // scaled width
-			h = sz.h * scale,        // scaled height
+            $this = $(this);
+
+			scale = zooms[zoomIdx] / 100, 
+            x = $this.offset().left, 
+            y = $this.offset().top,
+			w = $this.width() * scale,    // scaled width
+			h = $this.height() * scale,   // scaled height
+			
 			minX = (-w * (1 - percentVisible)),
 			maxX = (winW - (w * percentVisible)),
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
+
 
 			//log(i+")",x,y,w,h);
 			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i
@@ -655,7 +678,7 @@ function positionAds() { // autozoom & center (ugly)
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
 				zoomOut();
-				//log('Ad('+$img.attr('id')+') offscreen, zoom='+zoomStyle);
+				log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle);
 				return (problem = true); // break jquery each() loop
 			}
 		});

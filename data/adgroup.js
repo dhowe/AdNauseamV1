@@ -1,11 +1,14 @@
-var MIN_WIDTH = 150, MAX_WIDTH = 450, GID = 0;
+var TEXT_MINW = 150, TEXT_MAXW = 450;
 
 function AdGroup(ad) {
     
+    if (typeof GID == 'undefined')
+        var GID = 0;
+        
+    this.gid = ++GID;
     this.children = [];
     this.index = 0;
     this.add(ad);
-    this.gid = GID++;
 }
 
 AdGroup.prototype.id = function(i) {
@@ -18,10 +21,10 @@ AdGroup.prototype.findChildById = function(id) {
     for (var i=0, j = this.children.length; i<j; i++) {
         
       if (this.children[i].id === id)
-        return this.children[i];
+        return i;
     }
 
-    return null;
+    return -1;
 }
 AdGroup.prototype.child = function(i) {
     

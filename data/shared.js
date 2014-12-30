@@ -189,5 +189,21 @@ function toAdArray(adhash, filter) {
     return all;
 }
 
+
+function rand(min, max) {
+    
+    if (arguments.length == 1) {
+        max = min;
+        min = 0;
+    } 
+    else if (!arguments.length) {
+        max = 1;
+        min = 0;
+    }
+    
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+
 function log(m) { console.log(m); }
 

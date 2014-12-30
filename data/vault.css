@@ -276,12 +276,12 @@ div.tooltip {
 	transition: margin 0.5s ease, transform 0.2s ease;
 }
 
-#container.dragged {
-	transition: none;
-}
-
 #container.lightbox{
 	transition: transform 0.5s ease 0.1s, margin 0.5s ease;
+}
+
+#container.dragged {
+	transition: none;
 }
 
 #overlay {
@@ -438,9 +438,9 @@ div.bullets { display: none; } /* hide by default */
 	border-color: #B80606;
 }
 
-.counter-pending { background-color: #0076FF;}
-.counter-visited { background-color: #A020F0;}
-.counter-failed { background-color: #B80606;}
+.pending #index-counter { background-color: #0076FF;}
+.visited #index-counter { background-color: #A020F0;}
+.failed  #index-counter { background-color: #B80606;}
 
 /* --------------------TEXT ADS----------------------- */
 

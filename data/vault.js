@@ -1,7 +1,8 @@
 //inspectorData, inspectorIdx, animatorId, resizing = false, , animateMs = 2000, container, pack;
 var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
     zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ],
-    animatorId, animateMs = 2000, adGroups, selectedGroup;
+    animatorId, animateMs = 2000, adGroups, selectedGroup,
+    states = ['pending', 'visited', 'failed' ]; 
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
@@ -204,7 +205,9 @@ function bulletIndex($div, adgr) {
     var $ul = $div.find('.meta-list');
     $ul.css('margin-top', (adgr.index * -110) +'px');
     
-    $div.find('#index-counter').text(indexCounterText(adgr));
+    $div.find('#index-counter').text(indexCounterText(adgr)); 
+    states.map(function(d) { $div.removeClass(d) } ); // remove-all
+    $div.addClass(adgr.state());
 }
 
 function indexCounterText(adgr) {

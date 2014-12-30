@@ -99,7 +99,6 @@ function createAdGroups(adhash) {
     return displays;
 }
 
-
 function processAdData(adhash, pageUrl) {
 
     var ads = toAdArray(adhash), onpage=[],

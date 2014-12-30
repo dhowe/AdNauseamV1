@@ -27,6 +27,7 @@ AdGroup.prototype.groupState = function() {
 
 AdGroup.prototype.state = function(i) {
     
+    var i = (typeof i == 'undefined') ? this.index : i;
     var visitedTs = this.children[i].visitedTs;
     return (visitedTs == 0) ? 'pending' :
         (visitedTs  < 0 ? 'failed' : 'visited' );
@@ -58,5 +59,5 @@ AdGroup.prototype.add = function(ad) {
 
 AdGroup.prototype.child = function(i) {
     
-     return this.children[i];
+    return this.children[(typeof i == 'undefined') ? this.index : i];
 }

@@ -5,14 +5,17 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     states = ['pending', 'visited', 'failed' ]; 
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
-self.port && self.port.on('update-ads', updateAds); // update some
+self.port && self.port.on('update-ad', updateAds); // update some
 
 /* NEXT: 
+    -- BUG: counters are leaking info between adgroups
+    -- BUG: Updates: multiple layouts happening
+    
     -- test updates
     -- store page-title
     -- test current-ad handling (broken in shared.js)
     -- check version in menu
-    DONE
+    
     -- check broken image handling in menu
 */         
 function layoutAds(addonData) {
@@ -33,6 +36,8 @@ function layoutAds(addonData) {
 
 // CHANGED(12/19): Each ad is now visited separately
 function updateAds(addonData) {
+    
+    console.log('Vault.updateAds()');
     
     adGroups = createAdGroups(addonData.data);
     
@@ -75,40 +80,27 @@ function layoutAd($div, adgr) {
 
 function doUpdate(updated) {
 
-    //console.log('doUpdate: #'+updated.id);
+    log('doUpdate: #'+updated.id);
+
     var groupInfo = findByAdId(updated.id), 
         $item = findItemByGid(groupInfo.group.gid);
-        adgr = groupInfo.group,
+        adgr = groupInfo.group;
     
-    console.log("gid: "+adgr.gid, "ad-idx: "+groupInfo.index, '$item: '+typeof $item);
+    log("gid: "+adgr.gid+", ad-idx: "+groupInfo.index+', $item: '+typeof $item);
     
     // update the adgroup
     adgr.index = groupInfo.index;
     bulletIndex($item, adgr);
-    return;
     
     // now update the ad
-
-    // update the title
-    $item.attr('data-title', updated.title);
-
-    // update the visit-time
-    var vdate = formatDate(updated.visitedTs);
-    $(sel).attr('data-visitedTs', vdate);
-
-    // update the target-url
-    if (updated.resolvedTargetUrl) {
-
-        //log(sel+": resolvedTargetUrl="+updated.resolvedTargetUrl);
-        $(sel).attr('data-targetUrl', updated.resolvedTargetUrl);
-    }
-
-    // update the class (now visited)
-    newClass = (updated.visitedTs > 0) ? 'visited' : 'failed';
-    $(sel).removeClass('pending').addClass(newClass);
-    $(sel).removeClass('just-visited').addClass('just-visited');
+    updateMetaTarget($item.find('.target'), updated);
+    
+    // update the class (just-visited)
+    $item.addClass('just-visited').siblings().removeClass('just-visited');
     
     // update the group state
+    states.map(function(d) { $item.removeClass(d) } ); // remove-all
+    $item.addClass(adgr.state());
 }
 
 function appendMetaTo($div, adgr) {
@@ -116,41 +108,81 @@ function appendMetaTo($div, adgr) {
     var $meta = $('<div/>', { class: 'meta' }).appendTo($div);
     
     var $ul = $('<ul/>', {  
+        
         class: 'meta-list', 
         style: 'margin-top: 0px'
+        
     }).appendTo($meta);
     
     for (var i=0; i < adgr.count(); i++) {
         
-        var ad = adgr.child(i);
+        var ad = adgr.child(i), 
+            $li = $('<li/>', { style: 'margin-top: 0px' }).appendTo($ul);
         
-        var $li = $('<li/>', { style: 'margin-top: 0px' }).appendTo($ul);
-        
-            var $target = $('<div/>', { class: 'target' }).appendTo($li);
-            
-                $('<h3/>', { text: 'target:' }).appendTo($target);
-                $('<a/>', { class: 'inspected-title', 
-                            href: ad.targetUrl,
-                            text: ad.title
-                }).appendTo($target); // TODO: visited?
-                $('<cite/>', { text: targetDomain(ad) }).appendTo($target);
-                $('<span/>', { class: 'inspected-date', text: formatDate(ad.visitedTs) }).appendTo($target); 
-                                
-            var $detected = $('<div/>', { class: 'detected-on' }).appendTo($li);
-            
-                $('<h3/>', { text: 'detected on:' }).appendTo($detected);
-                $('<a/>', { class: 'inspected-title', 
-                            href: ad.pageUrl,
-                            text: ad.pageTitle
-                }).appendTo($detected); // TODO: visited?
-                $('<cite/>', { text: ad.pageUrl }).appendTo($detected);
-                $('<span/>', { class: 'inspected-date', text: formatDate(ad.foundTs) }).appendTo($detected);                
+        var $target = $('<div/>', { class: 'target' }).appendTo($li);
+        appendTargetTo($target, ad);
+                            
+        var $detected = $('<div/>', { class: 'detected-on' }).appendTo($li);
+        appendDetectedTo($detected, ad);            
     }
+}
+
+function appendDetectedTo($detected, ad) {
+    
+    $('<h3/>', { text: 'detected on:' }).appendTo($detected);
+    $('<a/>', { class: 'inspected-title', 
+                href: ad.pageUrl,
+                text: ad.pageTitle
+    }).appendTo($detected); 
+    $('<cite/>', { text: ad.pageUrl }).appendTo($detected);
+    $('<span/>', { 
+        class: 'inspected-date', 
+        text: formatDate(ad.foundTs) 
+    }).appendTo($detected);  
+}
+
+function appendTargetTo($target, ad) {
+
+    $('<h3/>', { text: 'target:' }).appendTo($target);
+    
+    $('<a/>', { 
+        
+        id: 'target-title',
+        class: 'inspected-title', 
+        href: ad.targetUrl,
+        text: ad.title
+                
+    }).appendTo($target);
+    
+    $('<cite/>', { 
+        
+        id: 'target-domain',
+        class: 'target-cite', 
+        text: targetDomain(ad) 
+        
+    }).appendTo($target);
+    
+    $('<span/>', { 
+        
+        id: 'target-date',
+        class: 'inspected-date', 
+        text: formatDate(ad.visitedTs) 
+        
+    }).appendTo($target); 
+}
+
+function updateMetaTarget($target, ad) {
+
+    $target.find('#target-domain').text(targetDomain(ad));
+    $target.find('#target-date').text(formatDate(ad.visitedTs));
+    $title = $target.find('#target-title').text('href', ad.title);
+    if (ad.resolvedTargetUrl)
+        $title.attr('href', ad.resolvedTargetUrl);
 }
 
 function bulletIndex($div, adgr) {
     
-    //console.log('bulletIndex: '+adgr.index);
+    //log('bulletIndex: '+adgr.index);
     
     // set the active bullet
     
@@ -159,7 +191,6 @@ function bulletIndex($div, adgr) {
         .siblings().removeClass('active');
     
     // shift the meta-list to show correct info
-    
     var $ul = $div.find('.meta-list');
     $ul.css('margin-top', (adgr.index * -110) +'px');
     
@@ -278,7 +309,7 @@ function appendBulletsTo($div, adgr) {
                 
                 adgr.index = parseInt($(this).attr('data-idx'));
                 
-                //console.log('item.clicked: '+adgr.index);
+                //log('item.clicked: '+adgr.index);
                 
                 bulletIndex($div, adgr);
                 e.stopPropagation();
@@ -291,9 +322,11 @@ function appendBulletsTo($div, adgr) {
     
 function doLayout(adgroups, resetLayout) {
 
-    //console.log('Vault.doLayout: '+adgroups.length);
+    //log('Vault.doLayout: '+adgroups.length);
 
     if (!adgroups) throw Error("No ads!");
+    
+    $('.item').remove();
 
     createDivs(adgroups);
 
@@ -451,7 +484,7 @@ function enableLightbox() {
 
     $('.item').click(function(e) {
         
-        //console.log('item.clicked');
+        //log('item.clicked');
         e.stopPropagation();
         lightboxMode(this); 
     });
@@ -490,7 +523,7 @@ function centerZoom($ele) {
         var offx = parseInt($ele.attr('data-offx')), offy = parseInt($ele.attr('data-offy'));
         dm.style.marginLeft = (-5000 + offx)+'px'; // TODO: also needs offset from collage center 
         dm.style.marginTop = (-5000 + offy)+'px'; // TODO: also needs offset from collage center
-        //console.log("click: ",dm.style.marginLeft,dm.style.marginTop);
+        //log("click: ",dm.style.marginLeft,dm.style.marginTop);
     }       
     else { // restore zoom-state
         
@@ -503,7 +536,7 @@ function centerZoom($ele) {
 
 function lightboxMode(selected) {
     
-    //console.log('lightboxMode: '+selected);
+    //log('lightboxMode: '+selected);
 
     var $selected = selected && $(selected);
 
@@ -541,6 +574,8 @@ function lightboxMode(selected) {
 
 function animateInspector($inspected) {
 
+    //log('animateInspector:'+selectedGroup.count());
+    
     animatorId && clearTimeout(animatorId); // stop
     
     // animate if we have a dup-ad being inspected
@@ -559,7 +594,7 @@ function animateInspector($inspected) {
 
 function findByAdId(id) {
 
-    log('findByAdId: '+id);
+    //log('findByAdId: '+id);
 
     for (var i = 0, j = adGroups.length; i < j; i++) {
 
@@ -577,13 +612,12 @@ function findByAdId(id) {
 
 function findItemByGid(gid) {
     
-    
-    var items = $('item');
+    var items = $('.item');
     for (var i=0; i < items.length; i++) {
         
       // WORKING HERE ***
       $item = $(items[i]);
-      if (parseInt($item.attr('data-.gid')) === gid)
+      if (parseInt($item.attr('data-gid')) === gid)
         return $item;
     }
     
@@ -594,8 +628,8 @@ function findGroupByGid(gid) {
     
     for (var i=0, j = adGroups.length; i<j; i++) {
         
-      if (adGroups[i].gid === gid)
-        return adGroups[i];
+        if (adGroups[i].gid === gid)
+            return adGroups[i];
     }
     
     throw Error('No group for gid: '+gid);
@@ -609,16 +643,6 @@ function attachTests() {
 	    layoutAds({ data : jsonObj, page : TEST_PAGE, currentAd: null }); // currentAd?
 
 	}).fail(function(e) { console.warn( "error:", e); });
-}
-
-function realSize(theImage) { // use cache?
-
-	// Create new offscreen image
-	var theCopy = new Image();
-	theCopy.src = theImage.attr("src");
-
-	// Get accurate measurements from it
-	return { w: theCopy.width, h: theCopy.height };
 }
 
 function zoomIn() {

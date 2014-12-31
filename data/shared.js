@@ -205,5 +205,5 @@ function rand(min, max) {
 }
 
 
-function log(m) { console.log(m); }
+function log() { console.log.apply(console, arguments); }
 

@@ -1,10 +1,7 @@
-var TEXT_MINW = 150, TEXT_MAXW = 450;
+var TEXT_MINW = 150, TEXT_MAXW = 450, GID = 0;
 
 function AdGroup(ad) {
-    
-    if (typeof GID == 'undefined')
-        var GID = 0;
-        
+            
     this.gid = ++GID;
     this.children = [];
     this.index = 0;

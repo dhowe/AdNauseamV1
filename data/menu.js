@@ -5,8 +5,10 @@ self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
 function layoutAds(json) {
 
-	var adArray = json.data, currentAd = json.currentAd;
+	var adArray = json.data, pageUrl = json.page// currentAd = json.currentAd;
 
+    if (!adArray) return;
+    
 log('Menu::layoutAds: '+adArray.length + " ads");
     	
 	var pageUrl = typeof TEST_MODE != 'undefined'
@@ -149,7 +151,9 @@ function getRecentAds(ads, num) {
 
     return recent;
 }
-        
+
+
+// TODO: redo this ugliness  
 function createHtml(ads, all) { // { fields: ads, onpage, unique };
  
 	var html = '';
@@ -228,7 +232,7 @@ function param(name) {
 
 function attachMenuTests() {
     
-    //console.log('attachTests()');
+    console.log('attachMenuTests()');
     
     function assert(test, exp, msg) {
         msg = msg || 'expecting "' + exp + '", but got';
@@ -247,10 +251,10 @@ function attachMenuTests() {
 		window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help"
 	});
 
-	$.getJSON(TEST_ADS, function(jsonObj) {
+	$.getJSON(TEST_ADS, function(json) {
 
 		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds({ data : jsonObj, page : TEST_PAGE });
+	    layoutAds({ data : toAdArray(json), page : TEST_PAGE });
 
 	}).fail(function(e) { console.warn( "error:", e); });
 }

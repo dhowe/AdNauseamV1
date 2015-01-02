@@ -39,14 +39,18 @@ function layoutAds(json) {
 // CHANGED(12/19): Each ad is now visited separately
 function updateAd(json) {
 
-    log('Vault.js::updateAds() :: '+json.update);
-
-    LOG_ADSET('UA');
+    log('Vault.updateAds() :: '+json.update.id);
+//     
+    // if (json.update.id !== 14) {
+        // log('Vault.updateAds() :: ignoring #'+json.update.id);
+        // return;
+    // }
 
     // update class/title/visited/resolved-url
     doUpdate(json.update);
 
     //tagCurrentAd(addonData.currentAd);
+    
     computeStats(adSets);
 }
 
@@ -94,16 +98,17 @@ function layoutAd($div, adset) {
     appendMetaTo($div, adset);
   
     var state = adset.groupState();
-    //log('1.setGroupState: '+state);
+    //log('setGroupState: '+$div.length,state);
     setItemClass($div, state);
 }
 
 function doUpdate(updated) {
 
-    //log('doUpdate: #'+updated.id);
+    log('doUpdate: #'+updated.id);
+    
     var groupInfo = findByAdId(updated.id),
         $item = findItemByGid(groupInfo.group.gid),
-        adset = groupInfo.group;
+        adset = groupInfo.group, itemClass;
 
     //log('doUpdate: '+groupInfo.group.gid+"/idx="+groupInfo.index);
 
@@ -112,23 +117,29 @@ function doUpdate(updated) {
     adset.children[adset.index] = updated;
     
     // update the ad data
-    //updateMetaTarget($item.find('.target'), updated);
     updateMetaTarget($item.find('.target[data-idx='+adset.index+']'), updated);
     
     // update the class (just-visited)
-    $item.addClass('just-visited').siblings().removeClass('just-visited');
+    itemClass = updated.visitedTs > 0 ? 'just-visited' : 'just-failed';
+    $item.addClass(itemClass).siblings()
+        .removeClass('just-visited')
+        .removeClass('just-failed');
 
-    adset.count() && bulletIndex($item, adset);
-
-    // update the group state
-    var state = adset.groupState();
-    setItemClass($item, state);
+    log('doUpdate: #'+updated.id+".setItemClass(pre)");
+    setItemClass($item, adset.groupState());
+    
+    log('doUpdate: #'+updated.id+".bulletIndex(pre)");
+    (adset.count() > 1) && bulletIndex($item, adset);    
 }
 
 function setItemClass($item, state) {
     
+    //log('setItemClass:'+$item[0].classList+"->"+state);
+
     states.map(function(d) { $item.removeClass(d) } ); // remove-all
     $item.addClass(state);
+    
+    //log('\t\t'+$item[0].classList);
 }
 
 function appendMetaTo($div, adset) {
@@ -219,10 +230,8 @@ function appendTargetTo($target, ad) {
 
 function updateMetaTarget($target, ad) {
 
-log("*** updateMetaTarget:"+$target.length);
-
-    //var m = $(bullets[adset.index]);
-        
+    //log("*** updateMetaTarget:"+$target.length);
+      
     $target.find('#target-domain').text(targetDomain(ad));
     $target.find('#target-date').text(formatDate(ad.visitedTs));
     $titleA = $target.find('#target-title').text(ad.title);
@@ -230,12 +239,12 @@ log("*** updateMetaTarget:"+$target.length);
         $titleA.attr('href', ad.resolvedTargetUrl);
 }
 
-function bulletIndex($div, adset) {
+function bulletIndex($div, adset) { // adset.index must be updated first!
     
-    //log('bulletIndex: '+adset.index);
-    
-    var $bullet = $div.find('.bullet[data-idx='+adset.index+']'),
+    var $bullet = $div.find('.bullet[data-idx='+(adset.index)+']'),
         state = adset.state(), $ul;
+    
+    log('bulletIndex: '+adset.gid+" children["+adset.index+"]="+adset.child().id+"-> "+ adset.state());
     
     // set the state for the bullet 
     setItemClass($bullet, state);
@@ -253,12 +262,15 @@ function bulletIndex($div, adset) {
 
     if ($div.hasClass('inspected')) {
 
+        log('\t\t TMP-SET GROUP: '+state);
         // (temporarily) add the state-class to the div
         setItemClass($div, state);
         
         // tell the addon 
         //self.port && self.port.emit("update-inspector", { "id": adset.id() } );
     }
+    
+    log('\t\t CLASSES: '+($bullet[0] ? $bullet[0].classList : 'NO CLASS LIST'));
 }
 
 function appendDisplayTo($div, adset) {
@@ -370,9 +382,6 @@ function appendBulletsTo($div, adset) {
                 adset.index = parseInt( $(this).attr('data-idx') );
                 
                 bulletIndex($div, adset);
-                
-                log('item.clicked: '+adset.index);
-                
             });
         }
     }    
@@ -524,7 +533,7 @@ function enableLightbox() {
 
     $('.item').click(function(e) {
        
-        //log('item.clicked');
+        log('item.clicked');
         e.stopPropagation();
         lightboxMode(this);         
     });
@@ -585,7 +594,8 @@ function centerZoom($ele) {
 
 function lightboxMode(selected) {
     
-    //log('lightboxMode: '+selected);
+    log('lightboxMode: '+selected);
+    
     if (selected) var $selected = $(selected);
 
     if ($selected && !$selected.hasClass('inspected')) {
@@ -605,18 +615,18 @@ function lightboxMode(selected) {
     }
     else {
         
-        $selected = null;
-        selectedAdSet = null;
-        
         var $item = $('.item');
         
+        // reset the class to the group class
         $inspected = $item.find('.inspected');
-        
-        if (!$inspected.length)
-            setItemClass($inspected, selectedAdSet);
+        if ($inspected.length) // c??
+          setItemClass($inspected, selectedAdSet.groupState());
            
         $item.removeClass('inspected');
-        $item.find('span.counter-index').hide();    
+        $item.find('span.counter-index').hide(); 
+        
+        $selected = null;
+        selectedAdSet = null;
         
         $('#container').removeClass('lightbox');
     }
@@ -627,7 +637,7 @@ function lightboxMode(selected) {
 
 function animateInspector($inspected) {
 
-    //log('animateInspector:'+selectedAdSet.count());
+    log('animateInspector: '+$inspected);
     
     animatorId && clearTimeout(animatorId); // stop
     
@@ -693,10 +703,10 @@ function findGroupByGid(gid) {
 
 function attachTests() {
 
-	$.getJSON(TEST_ADS, function(jsonObj) {
+	$.getJSON(TEST_ADS, function(json) {
 
 		console.warn("Vault.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds({ data : toAdArray(jsonObj), page : TEST_PAGE, currentAd: null }); // currentAd?
+	    layoutAds({ data : toAdArray(json), page : TEST_PAGE }); // currentAd?
 
 	}).fail(function(e) { console.warn( "error:", e); });
 }

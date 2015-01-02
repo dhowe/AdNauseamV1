@@ -568,7 +568,12 @@ div.bullets { display: none; } /* hide by default */
 
 .ad-item-text.just-visited {
   background: none;
-  animation: 1500ms ease-in-out visit;
+  animation: 1500ms ease-in-out just-visited;
+}
+
+.ad-item-text.just-failed {
+  background: none;
+  animation: 1500ms ease-in-out just-failed;
 }
 /* ----------------------------------------------------- */
 
@@ -614,9 +619,24 @@ div.bullets { display: none; } /* hide by default */
 	animation: 1500ms ease-in-out just-visited-img;
 }
 
+.item.just-failed {
+	background: none;
+	animation: 1500ms ease-in-out just-failed;
+}
+
+.item.just-failed img {
+	animation: 1500ms ease-in-out just-visited-img;
+}
+
 @keyframes just-visited {
 	from {
 		background: #BD10E0;
+	}
+}
+
+@keyframes just-failed {
+	from {
+		background: #B80606;
 	}
 }
 

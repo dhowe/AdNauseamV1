@@ -19,12 +19,14 @@
 			$(function() {
 			    
 				$.getScript("menu.js")
-				.done(function() {
-					attachTests();
-				})
-				.fail(function(xhr, data, e ) {
-					 console.error("json: ", e);
-				});
+    				.done(function() {
+    				    
+    					attachMenuTests();
+    				})
+    				.fail(function(xhr, data, e ) {
+    				    
+    					 console.error("menu.getScript: ", e);
+    				});
 			});
 		}
 

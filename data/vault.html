@@ -11,34 +11,27 @@
         <script src="lib/packery.min.js"></script>
         <script src="lib/imagesloaded.pkgd.min.js"></script>
         <script src="lib/d3.min.js"></script>
-        <script src="adgroup.js"></script>
-        <script src="shared.js"></script>
+        
         <script src="../lib/config.js"></script>
+        
         <script>
+            $(function() {
 
-                $(function() {
-        
-                    console.log('vault.js ready()');
+                // enable/disable TEST_MODE in ../lib/config.js
+                
+                if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
                     
-                    // enable/disable TEST_MODE in ../lib/config.js
-                    if ( typeof TEST_MODE != 'undefined' && TEST_MODE) {
-        
-                        $.getScript("vault-ui.js").done(function() {
-            
-                            $.getScript("vault.js").done(function() {
-            
-                                attachTests();
-                            }).fail(function(xhr, data, e) {
-            
-                                console.warn("json(2): ", e);
-                            });
-                        }).fail(function(xhr, data, e) {
-            
-                            console.warn("json(1): ", e);
-                        });
-                    }
-                });
-
+                    // load addon-injected js here for testing
+                    $.when(
+                           $.getScript( "adset.js" ),
+                           $.getScript( "shared.js" ),
+                           $.getScript( "vault-ui.js" ),
+                           $.getScript( "vault.js" ),
+                           $.Deferred(function( deferred ) {
+                                $( deferred.resolve );
+                        })).done(function() { attachTests(); });
+                }
+            });
         </script>
     </head>
     <body>
@@ -52,10 +45,9 @@
 
             <div id="stats" class="session-sum">
                 Since
-                <span class="since">Wednesday July 9 2014 0:08am</span>
-                <span class="clicked">X ads clicked</span>
-                , out of the
-                <span class="detected">Y detected.</span>
+                <span class="since">Wednesday July 9 2014 0:08am</span>,
+                <span class="clicked">X ads clicked</span> of the
+                <span class="detected">Y detected</span>
             </div>
 
             <div id="alert" class="hide">

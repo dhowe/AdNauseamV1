@@ -3,6 +3,22 @@
 
 var TEST_APPEND_IDS = true;
 
+function toAdArray(adhash, filter) { 
+
+    var all = [], keys = Object.keys(adhash);
+    for (var i = 0, j = keys.length; i < j; i++) {
+
+        var ads = adhash[keys[i]];
+        for (var k=0; k < ads.length; k++) {
+
+            if (!filter || filter(ads[k]))
+                all.push(ads[k]);
+        }
+    }
+
+    return all;
+}
+
 function tagCurrentAd(currentAd) { // TODO: fix: this is broken with new layout
         
     //console.log('tagCurrentAd('+currentAd.id+')');
@@ -64,40 +80,17 @@ function showAlert(msg) {
     }
 }
 
-function createAdGroups(adhash) {
+function computeHashKey(ad) { // dup in shared.js
     
-    var ads = toAdArray(adhash), 
-        ad, hash = {}, displays = [];
-
-//console.log(adhash,ads);
-
-    // set hidden val for each ad
-    for (var i=0, j = ads.length; i<j; i++) {
-
-        ad = ads[i];
-        
-        key = hashKey(ad); 
-        
-        if (!key) {
-            
-            console.log("*** shared.js::ignore->no key!!!", ad);
-            continue;
-        }
-        
-        if (!hash[key]) {
-
-            // new: add a hash entry
-            hash[key] = new AdGroup(ad);
-            displays.push(hash[key]);
-        }
-        else {
-
-            // dup: update the count
-            hash[key].add(ad);
-        }
-    }
-
-    return displays;
+    // a backwards-compatible hash-key 
+    
+    if (ad.hashKey) return ad.hashKey; // if we have one, use it
+    
+    var res = ad.contentData.src || ad.contentData; // otherwise, use what we can
+    
+    console.warn("[WARN] Deprecated hashKey found for ad#"+ad.id+"\n\t\t"+res);
+    
+    return res;
 }
 
 function processAdData(adhash, pageUrl) {
@@ -110,7 +103,7 @@ function processAdData(adhash, pageUrl) {
 
         ad = ads[i];
         
-        key = hashKey(ad); 
+        key = computeHashKey(ad); 
         
         if (!key) {
             
@@ -154,41 +147,13 @@ function processAdData(adhash, pageUrl) {
     for (var i=0, j = ads.length; i<j; i++) {
 
         ad = ads[i];
-        ad.count = hash[hashKey(ad)]; // backwards-compat.
+        ad.count = hash[computeHashKey(ad)]; // backwards-compat.
  
         // console.log("ad#"+ad.id+" "+ad.count);
     }
 
     return { ads: ads, onpage: onpage, unique: unique };
 }
-
-function hashKey(ad) { // a backwards-compatible hash-key 
-    
-    if (ad.hashKey) return ad.hashKey; // if we have one, use it
-    
-    var res = ad.contentData.src || ad.contentData; // otherwise, use what we can
-    
-    console.warn("[WARN] Deprecated hashKey found for ad#"+ad.id+"\n\t\t"+res);
-    
-    return res;
-}
-
-function toAdArray(adhash, filter) { 
-
-    var all = [], keys = Object.keys(adhash);
-    for (var i = 0, j = keys.length; i < j; i++) {
-
-        var ads = adhash[keys[i]];
-        for (var k=0; k < ads.length; k++) {
-
-            if (!filter || filter(ads[k]))
-                all.push(ads[k]);
-        }
-    }
-
-    return all;
-}
-
 
 function rand(min, max) {
     

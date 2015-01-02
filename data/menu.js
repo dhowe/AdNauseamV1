@@ -3,26 +3,30 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ads', updateAds); // update some
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
-function layoutAds(obj) {
+function layoutAds(json) {
 
-	var adhash = obj.data, currentAd = obj.currentAd;
+	var adArray = json.data, currentAd = json.currentAd;
 
-    //console.log('Menu::layoutAds: '+currentAd ? currentAd.id : 'none');
+log('Menu::layoutAds: '+json.data.length + " ads");
     	
-	var page = typeof TEST_MODE != 'undefined'
-		&& TEST_MODE ? TEST_PAGE : obj.page;
+	var pageUrl = typeof TEST_MODE != 'undefined'
+		&& TEST_MODE ? TEST_PAGE : json.page;
 	   
-	var data = processAdData(adhash, page);
+    var adsOnPage = adArray.filter(function(a) {
+        
+        return (a.pageUrl === pageUrl);
+    });
 
 	//console.log('Menu: ads.total=' + data.ads.length 
 	   //+ ' ads.duplicates='+(data.ads.length-data.unique));
 		//', ads.onpage=' + data.onpage.length+", page="+page);
 
-	$('#ad-list-items').html(createHtml(data));
+    var theHtml = createHtml(adsOnPage, adArray);
+	$('#ad-list-items').html(theHtml);
 
-    currentAd && tagCurrentAd(currentAd);
+    //currentAd && tagCurrentAd(currentAd);
 
-	setCounts(data.onpage.length, visitedCount(data.onpage), data.ads.length);
+	setCounts(adsOnPage.length, visitedCount(adsOnPage), adArray.length);
 }
 
 // CHANGED(12/19): Each ad is now visited separately
@@ -124,27 +128,31 @@ function visitedCount(arr) {
 
 function getRecentAds(ads, num) {
     
-    ads.sort(byField('visitedTs'));
+    ads.sort(byField('foundTs')); // sort by found-time (check this)
+    
     var recent = [];
     
+    // put pending ads first
     for (var i=0; recent.length < num && i < ads.length; i++) {
-      if (ads[i].visitedTs == 0)
-        recent.push(ads[i]);
+        
+        (ads[i].visitedTs == 0)  && recent.push(ads[i]);
     }
     
-    for (var i=0; recent.length < num && i < ads.length; i++) 
-        recent.push(ads[i]);
+    // now fill with the rest
+    for (var i=0; recent.length < num && i < ads.length; i++) {
         
+        if (recent.indexOf(ads[i]) < 0)
+            recent.push(ads[i]);
+    }      
+    
     // TODO: make sure currently-being-attempted ad is first
 
     return recent;
 }
         
-function createHtml(data) { // { fields: ads, onpage, unique };
-
-    if (!data) return;
-    
-	var html = '', ads = data.onpage;
+function createHtml(ads, all) { // { fields: ads, onpage, unique };
+ 
+	var html = '';
 	
 	showAlert(false);
 	
@@ -152,7 +160,7 @@ function createHtml(data) { // { fields: ads, onpage, unique };
 	
 	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
 	    
-        ads = getRecentAds(data.ads.slice(), 5);
+        ads = getRecentAds(all, 5);
         
         var msg = 'no ads found on this page';
         if (ads && ads.length) msg += ' (showing recent)';
@@ -218,7 +226,7 @@ function param(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-function attachTests() {
+function attachMenuTests() {
     
     //console.log('attachTests()');
     

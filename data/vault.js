@@ -4,30 +4,27 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     animatorId, animateMs = 2000, selectedAdSet, adSets,
     states = ['pending', 'visited', 'failed' ]; 
 
-
 /* NEXT: 
-    -- BUG: counters are leaking info between adsets
-    -- BUG: Updates: multiple layouts happening
-    
-    -- test updates
-    -- store page-title
-    -- test current-ad handling (broken in shared.js)
-    -- check version in menu
-    
+ 
+    -- test new add addition
     -- check broken image handling in menu
+    -- test storing of new page-titles
+    -- check version in menu
+        
+    -- CURRENT-AD:
+    -- test current-ad handling (broken in shared.js)
 */         
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
-self.port && self.port.on('update-ad', updateAds); // update some
+self.port && self.port.on('update-ad', updateAd); // update some
 
 function layoutAds(json) {
-
+    
     var adArray = json.data;
-log(adArray);
+
     adSets = createAdSets(adArray); 
     
-log('Vault.layoutAds: '+adSets.length+" "+ window);
-LOG_ADSET('LA');
+    log('Vault.layoutAds: '+adSets.length);
 
     addInterfaceHandlers();
     
@@ -40,26 +37,36 @@ LOG_ADSET('LA');
 
 
 // CHANGED(12/19): Each ad is now visited separately
-function updateAds(addonData) {
+function updateAd(json) {
 
-    log('Vault.updateAds() :: ' + window);
-    
-    var adArray = json.data;
-    
-    adSets = createAdSets(adArray);
-    
-    //log('Vault.updateAds() - OriginalState: '+adSets[0].groupState());
-    //log(addonData.data,'\n\n',adSets,'\n\n', addonData.update);
+    log('Vault.js::updateAds() :: '+json.update);
+
     LOG_ADSET('UA');
 
-return;
-         
     // update class/title/visited/resolved-url
     doUpdate(json.update);
 
     //tagCurrentAd(addonData.currentAd);
-    
     computeStats(adSets);
+}
+
+function doLayout(adsets, resetLayout) {
+
+    log('Vault.doLayout: '+adsets.length);
+
+    if (!adsets) throw Error("No ads!");
+    
+    $('.item').remove();
+
+    createDivs(adsets);
+
+    computeStats(adsets);
+
+    enableLightbox();
+
+    repack(resetLayout);
+    
+    //dbugOffsets && addTestDivs();
 }
 
 function createDivs(adsets) {
@@ -94,26 +101,25 @@ function layoutAd($div, adset) {
 function doUpdate(updated) {
 
     //log('doUpdate: #'+updated.id);
-
-    var groupInfo = findByAdId(updated.id);
-    var $item = findItemByGid(groupInfo.group.gid),
+    var groupInfo = findByAdId(updated.id),
+        $item = findItemByGid(groupInfo.group.gid),
         adset = groupInfo.group;
-    
-    //log("gid: "+adset.gid+", ad-idx: "+groupInfo.index+', $item: '+typeof $item);
-    //log("gstate: "+adset.groupState()+", astate: "+adset.state()+", SETstate: "+adSets[0].groupState());
-    //log('B: '+adSets[0].groupState()+' '+adSets[0].child().visitedTs);
-    
+
+    //log('doUpdate: '+groupInfo.group.gid+"/idx="+groupInfo.index);
+
     // update the adgroup
     adset.index = groupInfo.index;
-    //adset.children[adset.index] = updated;
-    //adset.count() && bulletIndex($item, adset);
+    adset.children[adset.index] = updated;
     
-    // now update the ad
-    updateMetaTarget($item.find('.target'), updated);
+    // update the ad data
+    //updateMetaTarget($item.find('.target'), updated);
+    updateMetaTarget($item.find('.target[data-idx='+adset.index+']'), updated);
     
     // update the class (just-visited)
     $item.addClass('just-visited').siblings().removeClass('just-visited');
-    
+
+    adset.count() && bulletIndex($item, adset);
+
     // update the group state
     var state = adset.groupState();
     setItemClass($item, state);
@@ -138,10 +144,21 @@ function appendMetaTo($div, adset) {
     
     for (var i=0; i < adset.count(); i++) {
         
-        var ad = adset.child(i), 
-            $li = $('<li/>', { style: 'margin-top: 0px' }).appendTo($ul);
+        var ad = adset.child(i);
         
-        var $target = $('<div/>', { class: 'target' }).appendTo($li);
+        var $li = $('<li/>', { 
+                
+            'style': 'margin-top: 0px', 
+            
+        }).appendTo($ul);
+        
+        var $target = $('<div/>', { 
+            
+            class: 'target', 
+            'data-idx': i 
+            
+        }).appendTo($li);
+        
         appendTargetTo($target, ad);
                             
         var $detected = $('<div/>', { class: 'detected-on' }).appendTo($li);
@@ -152,14 +169,21 @@ function appendMetaTo($div, adset) {
 function appendDetectedTo($detected, ad) {
     
     $('<h3/>', { text: 'detected on:' }).appendTo($detected);
-    $('<a/>', { class: 'inspected-title', 
+    
+    $('<a/>', { class: 'inspected-title',
+     
                 href: ad.pageUrl,
                 text: ad.pageTitle
+                
     }).appendTo($detected); 
+    
     $('<cite/>', { text: ad.pageUrl }).appendTo($detected);
+    
     $('<span/>', { 
+        
         class: 'inspected-date', 
-        text: formatDate(ad.foundTs) 
+        text: formatDate(ad.foundTs)
+         
     }).appendTo($detected);  
 }
 
@@ -195,6 +219,10 @@ function appendTargetTo($target, ad) {
 
 function updateMetaTarget($target, ad) {
 
+log("*** updateMetaTarget:"+$target.length);
+
+    //var m = $(bullets[adset.index]);
+        
     $target.find('#target-domain').text(targetDomain(ad));
     $target.find('#target-date').text(formatDate(ad.visitedTs));
     $titleA = $target.find('#target-title').text(ad.title);
@@ -204,15 +232,20 @@ function updateMetaTarget($target, ad) {
 
 function bulletIndex($div, adset) {
     
-    log('bulletIndex: '+adset.index);
+    //log('bulletIndex: '+adset.index);
     
-    // set the active bullet
-    var items = $div.find('.bullet');
-    $(items[adset.index]).addClass('active')
+    var $bullet = $div.find('.bullet[data-idx='+adset.index+']'),
+        state = adset.state(), $ul;
+    
+    // set the state for the bullet 
+    setItemClass($bullet, state);
+
+    // set the active class for bullet
+    $bullet.addClass('active')
         .siblings().removeClass('active');
     
     // shift the meta-list to show correct info
-    var $ul = $div.find('.meta-list');
+    $ul = $div.find('.meta-list');
     $ul.css('margin-top', (adset.index * -110) +'px');
     
     // update the counter bubble
@@ -221,12 +254,10 @@ function bulletIndex($div, adset) {
     if ($div.hasClass('inspected')) {
 
         // (temporarily) add the state-class to the div
-        var state = adset.state();
-        //log('3.setGroupState: '+state,adset.index, adset.child().visitedTs);
         setItemClass($div, state);
         
         // tell the addon 
-        self.port && self.port.emit("update-inspector", { "id": adset.id() } );
+        //self.port && self.port.emit("update-inspector", { "id": adset.id() } );
     }
 }
 
@@ -325,9 +356,11 @@ function appendBulletsTo($div, adset) {
         // add items based on count/state
         for (var i=0; i < adset.count(); i++) {
             
-            var $li = $('<li/>', { 
+            var $li = $('<li/>', {
+                 
                 'data-idx': i, 
                 'class': 'bullet '+ adset.state(i) 
+                
             }).appendTo($ul);
             
             $li.click(function(e) {
@@ -342,44 +375,30 @@ function appendBulletsTo($div, adset) {
                 
             });
         }
-    }
-    
-    //bulletIndex($div, adset);
-}
-    
-function doLayout(adsets, resetLayout) {
-
-    log('Vault.doLayout: '+adsets.length);
-
-    if (!adsets) throw Error("No ads!");
-    
-    $('.item').remove();
-
-    createDivs(adsets);
-
-    computeStats(adsets);
-
-    enableLightbox();
-
-    repack(resetLayout);
-    
-    //dbugOffsets && addTestDivs();
+    }    
 }
 
+function centerSingle($item) {
+    
+  
+    
+    //$('#svgcon').hide();
+}
+        
 function repack(resetLayout) {
 
+    //log("Vault.repack() :: "+visible);
+    
 	var $items =  $(".item"), visible = $items.length;
-
-	//log("Vault.repack() :: "+visible);
 
     showAlert(visible ? false : 'no ads found');
 
-    $('#container').imagesLoaded( function() {
-       
-    	if (visible > 1) { // count non-hidden ads
-    
+    $('#container').imagesLoaded(function() {
          
+    	if (visible > 1) {
+    
     		new Packery('#container', {
+    		    
     			centered : { y : 5000 }, // centered half min-height
     			itemSelector : '.item',
     			gutter : 1
@@ -391,18 +410,11 @@ function repack(resetLayout) {
     		
     		log('------------------------------------------------');
     	}
-    	else if (visible == 1) {
-    
-            // center single ad here (no pack)
-            var $item = $('.item');
-    
-            $item.css({
-                top : (5000 - $item.height() / 2) + 'px',
-                left : (5000 - $item.width() / 2) + 'px'
-            });
-    
-            $('#svgcon').hide();
-        }
+        else if (visible == 1)  $items.css({ // center single
+            
+            top : (5000 - $items.height() / 2) + 'px',
+            left : (5000 - $items.width() / 2) + 'px'
+        });
     });
 }
 
@@ -481,16 +493,15 @@ function formatDate(ts) {
 	if (ts < 0)  return 'Unable to Visit';
 
 	var date = new Date(ts), days = ["Sunday", "Monday",
-		"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-	var months = ["January", "February", "March", "April", "May",
-		"June", "July", "August", "September", "October",
-		"November", "December"];
+		  "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        months = ["January", "February", "March", "April", "May",
+    		"June", "July", "August", "September", "October",
+    		"November", "December"];
 
 	var pad = function(str) {
 
-		str = String(str);
-		return (str.length < 2) ? "0" + str : str;
+		var s = String(str);
+		return (s.length < 2) ? "0" + s : s;
 	}
 
 	var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
@@ -512,9 +523,7 @@ function resizeHistorySlider() {
 function enableLightbox() {
 
     $('.item').click(function(e) {
-        
-        LOG_ADSET('CL');
-        
+       
         //log('item.clicked');
         e.stopPropagation();
         lightboxMode(this);         
@@ -591,9 +600,12 @@ function lightboxMode(selected) {
             $selected.find('span.counter-index').show();
             bulletIndex($selected, selectedAdSet);
         }
+        
+        $('#container').addClass('lightbox');
     }
     else {
         
+        $selected = null;
         selectedAdSet = null;
         
         var $item = $('.item');
@@ -604,10 +616,11 @@ function lightboxMode(selected) {
             setItemClass($inspected, selectedAdSet);
            
         $item.removeClass('inspected');
-        $item.find('span.counter-index').hide();        
+        $item.find('span.counter-index').hide();    
+        
+        $('#container').removeClass('lightbox');
     }
     
-    $('#container').toggleClass('lightbox');
     animateInspector($selected);
     centerZoom($selected);
 }

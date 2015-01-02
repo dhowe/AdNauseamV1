@@ -7,7 +7,7 @@ function layoutAds(json) {
 
 	var adArray = json.data, currentAd = json.currentAd;
 
-log('Menu::layoutAds: '+json.data.length + " ads");
+log('Menu::layoutAds: '+adArray.length + " ads");
     	
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;

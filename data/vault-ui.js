@@ -1,4 +1,4 @@
-var xAxis, all;
+var all;
 
 const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
     format = d3.time.format("%a %b %d %Y"),
@@ -15,17 +15,15 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
 
 function createSlider(ads) { // happens just once
 
+    //console.log('Vault-UI.createSlider');
+    
     if (!ads || !ads.length) return;
     
     all = ads.slice(); // save original set
     
-	//console.log('Vault-UI.createSlider');
-
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();
     d3.select("svg").remove();
-
-    //console.log("w: "+ d3.select("#stage").style("width") );
 
 	// setting up the position of the chart:
 	var iconW = 100, width = parseInt( d3.select("#stage").style("width") )
@@ -54,7 +52,7 @@ function createSlider(ads) { // happens just once
    //log(histogram);
 
    // setup the x axis
-   xAxis = d3.svg.axis()
+   var xAxis = d3.svg.axis()
 	      .scale(xScale)
 	      .tickFormat(customTimeFormat)
 	      .ticks(7); // [dyn]
@@ -123,8 +121,10 @@ function createSlider(ads) { // happens just once
 		var tmpAds, min = ext[0], max =ext[1];
 		if (max - min <= 1) return; // fix for gh #100
 		tmpAds = dateFilter(min, max);
-		if (!arraysEqual(ads, tmpAds))
-			doLayout(ads = tmpAds, false);
+		if (!arraysEqual(ads, tmpAds)) {
+		    
+			doLayout(createAdSets(ads = tmpAds), false);
+        }
 	}
 
 	function arraysEqual(a, b) {

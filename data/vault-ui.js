@@ -25,28 +25,32 @@ function createSlider(ads) { // happens just once
     d3.select("g.parent").selectAll("*").remove();
     d3.select("svg").remove();
 
-	// setting up the position of the chart:
-	var stage = d3.select("#stage");
-	if (!stage) throw Error("NO STAGE IN D3 (page not ready?)");
+	// setting up the position of the chart
+	var iconW = 100, width;
 	
-	var iconW = 100, width = parseInt( stage.style("width") )
-	    - (margin.left + margin.right + iconW);
-	    //barw = 3, // individual bar width [dyn] // not used now
-	    //barg = 1; // gap between individual bars [dyn] // not used now
+	try {
+	
+	   width = parseInt( d3.select("#stage").style("width") )
+	        - (margin.left + margin.right + iconW);
+    }
+    catch (e) {
+        
+        throw Error("NO STAGE IN D3 (page notready?)");
+    }
 
-  	// finding the first and last ad:
+  	// finding the first and last ad
 	var minDate = d3.min(ads, function(d) { return d.foundTs; }),
 		maxDate = d3.max(ads, function(d) { return d.foundTs; });
 
-   // mapping the scales:
+   // mapping the scales
    var xScale = d3.time.scale()
         .domain([minDate, maxDate])
         .range([0, width]);
 
-   // create an array of dates:
+   // create an array of dates
    var map = ads.map( function(d) { return parseInt(xScale(d.foundTs)) })
 
-   // setup the histogram layout:
+   // setup the histogram layout
    var histogram = d3.layout.histogram()
       .bins(120) // how many groups? [dyn] base on width
       //.bins(width/(barw-barg))     [dyn]

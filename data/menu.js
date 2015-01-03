@@ -130,7 +130,7 @@ function visitedCount(arr) {
 
 function getRecentAds(ads, num) {
     
-    ads.sort(byField('foundTs')); // sort by found-time (check this)
+    ads && ads.sort(byField('foundTs')); // sort by found-time (check this)
     
     var recent = [];
     

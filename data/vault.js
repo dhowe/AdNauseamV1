@@ -5,27 +5,21 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     states = ['pending', 'visited', 'failed' ]; 
 
 /* NEXT: 
-    -- make sure group-state is reset on lightbox-disable (#1)
-    
-    -- test new add addition
-    -- check broken image handling in menu
-    -- test storing of new page-titles
-    -- check version in menu
+    -- VAULT: wide-ads not centering properly
+    -- MENU: ads not filtering by page!
+    -- MENU: image-ads not refreshing on failure
+    -- MENU: check broken image handling
+    -- MUSHON: Version in menu
+    -- ZOOM: position-ad must consider slider
         
-    -- CURRENT-AD:
-    -- test current-ad handling (broken in shared.js)
+    -- CURRENT-AD (disabled for now)
+        test current-ad handling (broken in shared.js)
 */         
-
-var LOADED=false;
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 
-(function(){ LOADED=true; console.log("VAULT.HTML LOADED"); })();
-
 function layoutAds(json) {
-    
-    if (!LOADED) throw Error("LAYOUT-ADS CALLED BEFORE READY!");
     
     var adArray = json.data;
 
@@ -41,7 +35,7 @@ function layoutAds(json) {
 
     //tagCurrentAd(addonData.currentAd);
     
-    log('Vault.layoutAds DONE ');
+    log('Vault.layoutAds DONE');
 }
 
 
@@ -417,16 +411,15 @@ function repack(resetLayout) {
     	if (visible > 1) {
 
 log("PACKING ***");
+
     		new Packery('#container', {
     		    
     			centered : { y : 5000 }, // centered half min-height
     			itemSelector : '.item',
     			gutter : 1
     		});
-    
-            storeInitialLayout($items);
             
-    		if (resetLayout) positionAds();
+            if (resetLayout) positionAds();
     		
     		log('------------------------------------------------');
     	}
@@ -435,6 +428,8 @@ log("PACKING ***");
             top : (5000 - $items.height() / 2) + 'px',
             left : (5000 - $items.width() / 2) + 'px'
         });
+        
+        storeInitialLayout($items);
     });
 }
 
@@ -579,6 +574,8 @@ function storeInitialLayout($items) {
 
 function centerZoom($ele) {
     
+    //log('lightboxMode: '+selected);
+    
     var dm = document.querySelector('#container');
     
     if ($ele) { // save zoom-state
@@ -592,7 +589,8 @@ function centerZoom($ele) {
         var offx = parseInt($ele.attr('data-offx')), offy = parseInt($ele.attr('data-offy'));
         dm.style.marginLeft = (-5000 + offx)+'px'; // TODO: also needs offset from collage center 
         dm.style.marginTop = (-5000 + offy)+'px'; // TODO: also needs offset from collage center
-        //log("click: ",dm.style.marginLeft,dm.style.marginTop);
+        
+        log("click: ",dm.style.marginLeft,dm.style.marginTop,offx,offy);
     }       
     else { // restore zoom-state
         
@@ -622,9 +620,12 @@ function lightboxMode(selected) {
             bulletIndex($selected, selectedAdSet);
         }
         
+        animateInspector($selected);
+        centerZoom($selected);
+        
         $('#container').addClass('lightbox');
     }
-    else {
+    else if ($('#container').hasClass('lightbox')) {
         
         var $item = $('.item');
         
@@ -641,12 +642,13 @@ function lightboxMode(selected) {
         
         $selected = null;
         selectedAdSet = null;
+        animateInspector(false);
+        centerZoom(false);
         
         $('#container').removeClass('lightbox');
     }
     
-    animateInspector($selected);
-    centerZoom($selected);
+
 }
 
 function animateInspector($inspected) {
@@ -687,7 +689,8 @@ function findByAdId(id) {
         };
     }
 
-    throw Error('No ad for id: ' + id+' (Ad updated before being added to vault?)');
+    console.error('No ad for id: ' + id+' (Ad updated before being added to vault?) REFRESH');
+    self.port && self.port.emit("refresh-vault");
 }
 
 function findItemByGid(gid) {
@@ -732,7 +735,7 @@ function zoomIn() {
 
 function zoomOut() {
 
-	(zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
+    (zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
 }
 
 function setZoom(idx) {
@@ -746,6 +749,8 @@ function setZoom(idx) {
 }
 
 function positionAds() { // autozoom & center (ugly)
+
+    return; // log('positionAds');
 
 	var percentVisible = .6,
 		winW = $("#container").width(),
@@ -844,14 +849,14 @@ function addInterfaceHandlers(ads) {
 
 	$('#z-in').click(function(e) {
 
+        e.preventDefault();
 		zoomIn();
-		e.preventDefault();
 	});
 
 	$('#z-out').click(function(e) {
-
+	    
+	    e.preventDefault();
 		zoomOut();
-        e.preventDefault();
 	});
 
     $(window).resize(resizeHistorySlider);

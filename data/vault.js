@@ -4,16 +4,13 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     animatorId, animateMs = 2000, selectedAdSet, adSets,
     states = ['pending', 'visited', 'failed' ]; 
 
-/* NEXT: 
-    -- VAULT: wide-ads not centering properly
-    -- MENU: ads not filtering by page!
-    -- MENU: image-ads not refreshing on failure
-    -- MENU: check broken image handling
-    -- MUSHON: Version in menu
+/* NEXT:     
+    -- VAULT: wide-ads center with data offscreen (maybe center META-div?)
+    
     -- ZOOM: position-ad must consider slider
-        
+    
     -- CURRENT-AD (disabled for now)
-        test current-ad handling (broken in shared.js)
+        test current-ad handling (broken in shared.js)        
 */         
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
@@ -25,7 +22,7 @@ function layoutAds(json) {
 
     adSets = createAdSets(adArray); 
     
-    log('Vault.layoutAds: '+adSets.length);
+    //log('Vault.layoutAds: '+adSets.length);
 
     addInterfaceHandlers();
     
@@ -33,16 +30,14 @@ function layoutAds(json) {
 
     doLayout(adSets, true);
 
-    //tagCurrentAd(addonData.currentAd);
-    
-    log('Vault.layoutAds DONE');
+    //tagCurrentAd(addonData.currentAd);    
 }
 
 
 // CHANGED(12/19): Each ad is now visited separately
 function updateAd(json) {
 
-    log('Vault.updateAds() :: '+json.update.id);
+    //log('Vault.updateAds() :: '+json.update.id);
 //     
     // if (json.update.id !== 14) {
         // log('Vault.updateAds() :: ignoring #'+json.update.id);
@@ -107,13 +102,11 @@ function layoutAd($div, adset) {
 
 function doUpdate(updated) {
 
-    log('doUpdate: #'+updated.id);
+    //log('doUpdate: #'+updated.id);
     
     var groupInfo = findByAdId(updated.id),
         $item = findItemByGid(groupInfo.group.gid),
         adset = groupInfo.group, itemClass;
-
-    //log('doUpdate: '+groupInfo.group.gid+"/idx="+groupInfo.index);
 
     // update the adgroup
     adset.index = groupInfo.index;
@@ -128,21 +121,15 @@ function doUpdate(updated) {
         .removeClass('just-visited')
         .removeClass('just-failed');
 
-    log('doUpdate: #'+updated.id+".setItemClass(pre)");
     setItemClass($item, adset.groupState());
     
-    log('doUpdate: #'+updated.id+".bulletIndex(pre)");
     (adset.count() > 1) && bulletIndex($item, adset);    
 }
 
 function setItemClass($item, state) {
-    
-    //log('setItemClass:'+$item[0].classList+"->"+state);
 
     states.map(function(d) { $item.removeClass(d) } ); // remove-all
-    $item.addClass(state);
-    
-    //log('\t\t'+$item[0].classList);
+    $item.addClass(state);    
 }
 
 function appendMetaTo($div, adset) {
@@ -242,6 +229,11 @@ function updateMetaTarget($target, ad) {
         $titleA.attr('href', ad.resolvedTargetUrl);
 }
 
+/**
+ * Resets current bullet class to [active,ad.state]
+ * Shifts meta list to show correct item
+ * Updates index-counter for the bullter 
+ */
 function bulletIndex($div, adset) { // adset.index must be updated first!
     
     var $bullet = $div.find('.bullet[data-idx='+(adset.index)+']'),
@@ -265,16 +257,12 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
 
     if ($div.hasClass('inspected')) {
 
-        //log('\t\t TMP-SET GROUP: '+state);
-        
         // (temporarily) add the state-class to the div
         setItemClass($div, state);
         
         // tell the addon 
-        //self.port && self.port.emit("update-inspector", { "id": adset.id() } );
-    }
-    
-    //log('\t\t CLASSES: '+($bullet[0] ? $bullet[0].classList : 'NO CLASS LIST'));
+        self.port && self.port.emit("item-inspected", { "id": adset.child().id } );
+    }    
 }
 
 function appendDisplayTo($div, adset) {
@@ -300,7 +288,7 @@ function appendDisplayTo($div, adset) {
     var img = $('<img/>', {
 
         src: adset.child(0).contentData.src,
-        
+
         onerror: "this.onerror=null; this.width=200; this.height=100; " +
             "this.alt='unable to load image'; this.src='img/placeholder.svg'",
         
@@ -391,13 +379,6 @@ function appendBulletsTo($div, adset) {
     }    
 }
 
-function centerSingle($item) {
-    
-  
-    
-    //$('#svgcon').hide();
-}
-        
 function repack(resetLayout) {
 
     //log("Vault.repack() :: "+visible);
@@ -407,10 +388,9 @@ function repack(resetLayout) {
     showAlert(visible ? false : 'no ads found');
 
     $('#container').imagesLoaded(function() {
-         
-    	if (visible > 1) {
 
-log("PACKING ***");
+        log("imagesLoaded *** ");
+    	if (visible > 1) {
 
     		new Packery('#container', {
     		    
@@ -503,9 +483,9 @@ function dragEnd(e) {
 
 function formatDate(ts) {
 
-	if (!ts) return 'pending';
+	if (!ts) return 'Not Yet Visited';
 
-	if (ts < 0)  return 'Unable to Visit';
+	if (ts < 0)  return 'Unable To Visit';
 
 	var date = new Date(ts), days = ["Sunday", "Monday",
 		  "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -614,35 +594,33 @@ function lightboxMode(selected) {
 
         $selected.addClass('inspected').siblings().removeClass('inspected');
         
-        if ($selected.find('.bullet').length > 1) {
+        if (selectedAdSet.count() > 1) {
             
-            $selected.find('span.counter-index').show();
-            bulletIndex($selected, selectedAdSet);
+            $selected.find('span.counter-index').show(); // show index-counter
+            bulletIndex($selected, selectedAdSet); 
+            
+            animateInspector($selected);
         }
         
-        animateInspector($selected);
         centerZoom($selected);
         
         $('#container').addClass('lightbox');
     }
     else if ($('#container').hasClass('lightbox')) {
         
-        var $item = $('.item');
+        var $item = $('.item.inspected');
         
         // reset the class to the group class        
-        if ($item.hasClass('inspected')) {//TODO: this seems to be failing (see #1 above)
-            
-            //log('lightboxMode: SET-FINAL-STATE: '+ selectedAdSet.groupState());
-            //log('\t\t LM-CLASSES: '+($item ? $item[0].classList : 'NO CLASS LIST'));
-            setItemClass($item, selectedAdSet.groupState());
-        }
-           
+        setItemClass($item, selectedAdSet.groupState());
+        
+        // remove inspected & re-hide index-counter
         $item.removeClass('inspected');
         $item.find('span.counter-index').hide(); 
         
-        $selected = null;
         selectedAdSet = null;
-        animateInspector(false);
+        
+        // stop animation and restore view
+        animateInspector(false); 
         centerZoom(false);
         
         $('#container').removeClass('lightbox');
@@ -748,9 +726,10 @@ function setZoom(idx) {
 	//dbugOffsets && updateTestDivs();
 }
 
-function positionAds() { // autozoom & center (ugly)
+// TODO: broken (see issue #59)
+function positionAds() { // autozoom & center 
 
-    return; // log('positionAds');
+    //return; // log('positionAds');
 
 	var percentVisible = .6,
 		winW = $("#container").width(),
@@ -758,23 +737,20 @@ function positionAds() { // autozoom & center (ugly)
 		i, x, y, w, h, minX, maxX, minY, maxY, problem;
 
     //log('winW: '+winW+' winH: '+winH);
-    setZoom(zoomIdx = 0);
 
 	for (i=0; i < zooms.length; i++) {
 
-		problem = false; // no problem at start
-        
-        setZoom(zoomIdx = i);
-        scale = zooms[zoomIdx] / 100;
-        log('Trying '+zooms[i]+' scale='+scale);
+		problem = false; // no problem at start        
+        scale = zooms[i] / 100;
+        //log('Trying '+zooms[i]+' scale='+scale);
         
 		// loop over each image, checking that they (enough) onscreen
 		$('.item').each(function(i, img) {
 
             $this = $(this);
 
-            x = $this.offset().left, 
-            y = $this.offset().top,
+            x = $this.offset().left * scale,  // wrong***
+            y = $this.offset().top * scale,     // wrong***
 			w = $this.width() * scale,    // scaled width
 			h = $this.height() * scale,   // scaled height
 			
@@ -783,20 +759,29 @@ function positionAds() { // autozoom & center (ugly)
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
 
-			//log(i+")",x,y,w,h);
-			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i
-			    //+") "+Math.round($(this).offset().left)) });
+			log(i+")",x,y,w,h);
+			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i+") "+$(this).offset().left) });
 
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
-				zoomOut();
-				log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle+" BREAK!!!");
-				return (problem = true); // break jquery each() loop
+				//zoomOut();
+				//log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle+" BREAK!!!");
+				problem = true;
+				return false ; // break each() loop
 			}
 		});
 		
-		if (!problem) return;	// all ads ok, we're done
+		if (!problem) {
+		    //log("Finished.ok!");
+		    // all ads ok, we're done
+		    setZoom(zoomIdx = i);
+		    return;
+		}
 	}
+	
+    //at smallest size, done
+    //log("Finished.fail!");
+    setZoom(zoomIdx = zooms.length-1);
 }
 
 function openInNewTab(url) {

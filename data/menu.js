@@ -152,12 +152,8 @@ function getRecentAds(ads, num) {
     return recent;
 }
 
-
-// TODO: redo this ugliness  
 function createHtml(ads, all) { // { fields: ads, onpage, unique };
  
-	var html = '';
-	
 	showAlert(false);
 	
 	$('#ad-list-items').removeClass();
@@ -168,6 +164,7 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
         
         var msg = 'no ads found on this page';
         if (ads && ads.length) msg += ' (showing recent)';
+        
         showAlert(msg);
         
         $('#ad-list-items').addClass('recent-ads');
@@ -175,18 +172,17 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
         console.log('Handle case: no-ads on page *** '+ads.length+' recent ads');
     }
 
+    var html = ''; // TODO: redo this ugliness  
 	for (var i=0, j = ads.length; i<j; i++) {
-
-		//console.log(i+") "+ads[i].contentType);
 
 		if (ads[i].contentType === 'img') {
 
 			html += '<li id="ad' + ads[i].id +'" class="ad-item' + visitedClass(ads[i]);
 			html += '"><a target="new" href="' + ads[i].targetUrl;
 			html += '"><span class="thumb"><img src="' + (ads[i].contentData.src || ads[i].contentData);
-			html += '" class="ad-item-img"';// + visitedState(ads[i]);
-			html += ' onError="this.onerror=null; this.src=\'img/blank.png\';"';
-			html += '" alt="ad thumb"></span><span class="title">';
+			html += '" class="ad-item-img" onerror="';
+			html += 'this.onerror=null; this.width=50; this.height=45;';
+            html += "this.src='img/placeholder.svg'\"></span><span class=\"title\">";
 			html +=  ads[i].title ? ads[i].title  : "#" + ads[i].id;
 			html += '</span><cite>' + targetDomain(ads[i]) + '</cite></a></li>\n\n';
 		}
@@ -195,12 +191,12 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
 			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
 			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
 			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
-			 if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
+			if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
 			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
 		}
 	}
 	
-//console.log("\nHTML\n"+html+"\n\n");
+    //console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
 }
@@ -311,7 +307,7 @@ function attachMenuTests() {
 
 	$('#settings-open').click(function() {
 
-		console.log('#settings-open.click');
+		//console.log('#settings-open.click');
 
 		$('.page').toggleClass('hide');
 		$('.settings').toggleClass('hide');

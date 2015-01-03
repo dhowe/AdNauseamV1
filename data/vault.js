@@ -570,7 +570,8 @@ function centerZoom($ele) {
         dm.style.marginLeft = (-5000 + offx)+'px'; // TODO: also needs offset from collage center 
         dm.style.marginTop = (-5000 + offy)+'px'; // TODO: also needs offset from collage center
         
-        log("click: ",dm.style.marginLeft,dm.style.marginTop,offx,offy);
+        // TODO: see 
+        //log("click: ",dm.style.marginLeft,dm.style.marginTop,offx,offy);
     }       
     else { // restore zoom-state
         
@@ -759,7 +760,7 @@ function positionAds() { // autozoom & center
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
 
-			log(i+")",x,y,w,h);
+			//log(i+")",x,y,w,h);
 			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i+") "+$(this).offset().left) });
 
 			if (x < minX || x > maxX || y < minY || y > maxY) {

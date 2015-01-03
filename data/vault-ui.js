@@ -15,7 +15,7 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
 
 function createSlider(ads) { // happens just once
 
-    //console.log('Vault-UI.createSlider');
+    console.log('Vault-UI.createSlider');
     
     if (!ads || !ads.length) return;
     
@@ -26,7 +26,10 @@ function createSlider(ads) { // happens just once
     d3.select("svg").remove();
 
 	// setting up the position of the chart:
-	var iconW = 100, width = parseInt( d3.select("#stage").style("width") )
+	var stage = d3.select("#stage");
+	if (!stage) throw Error("NO STAGE IN D3 (page not ready?)");
+	
+	var iconW = 100, width = parseInt( stage.style("width") )
 	    - (margin.left + margin.right + iconW);
 	    //barw = 3, // individual bar width [dyn] // not used now
 	    //barg = 1; // gap between individual bars [dyn] // not used now

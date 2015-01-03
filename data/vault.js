@@ -5,7 +5,8 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     states = ['pending', 'visited', 'failed' ]; 
 
 /* NEXT: 
- 
+    -- make sure group-state is reset on lightbox-disable (#1)
+    
     -- test new add addition
     -- check broken image handling in menu
     -- test storing of new page-titles
@@ -15,10 +16,16 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     -- test current-ad handling (broken in shared.js)
 */         
 
+var LOADED=false;
+
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 
+(function(){ LOADED=true; console.log("VAULT.HTML LOADED"); })();
+
 function layoutAds(json) {
+    
+    if (!LOADED) throw Error("LAYOUT-ADS CALLED BEFORE READY!");
     
     var adArray = json.data;
 
@@ -32,7 +39,9 @@ function layoutAds(json) {
 
     doLayout(adSets, true);
 
-    //tagCurrentAd(addonData.currentAd);    
+    //tagCurrentAd(addonData.currentAd);
+    
+    log('Vault.layoutAds DONE ');
 }
 
 
@@ -244,7 +253,7 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
     var $bullet = $div.find('.bullet[data-idx='+(adset.index)+']'),
         state = adset.state(), $ul;
     
-    log('bulletIndex: '+adset.gid+" children["+adset.index+"]="+adset.child().id+"-> "+ adset.state());
+    //log('bulletIndex: '+adset.gid+" children["+adset.index+"]="+adset.child().id+"-> "+ adset.state());
     
     // set the state for the bullet 
     setItemClass($bullet, state);
@@ -262,7 +271,8 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
 
     if ($div.hasClass('inspected')) {
 
-        log('\t\t TMP-SET GROUP: '+state);
+        //log('\t\t TMP-SET GROUP: '+state);
+        
         // (temporarily) add the state-class to the div
         setItemClass($div, state);
         
@@ -270,7 +280,7 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
         //self.port && self.port.emit("update-inspector", { "id": adset.id() } );
     }
     
-    log('\t\t CLASSES: '+($bullet[0] ? $bullet[0].classList : 'NO CLASS LIST'));
+    //log('\t\t CLASSES: '+($bullet[0] ? $bullet[0].classList : 'NO CLASS LIST'));
 }
 
 function appendDisplayTo($div, adset) {
@@ -405,7 +415,8 @@ function repack(resetLayout) {
     $('#container').imagesLoaded(function() {
          
     	if (visible > 1) {
-    
+
+log("PACKING ***");
     		new Packery('#container', {
     		    
     			centered : { y : 5000 }, // centered half min-height
@@ -533,7 +544,7 @@ function enableLightbox() {
 
     $('.item').click(function(e) {
        
-        log('item.clicked');
+        //log('item.clicked');
         e.stopPropagation();
         lightboxMode(this);         
     });
@@ -594,7 +605,7 @@ function centerZoom($ele) {
 
 function lightboxMode(selected) {
     
-    log('lightboxMode: '+selected);
+    //log('lightboxMode: '+selected);
     
     if (selected) var $selected = $(selected);
 
@@ -617,10 +628,13 @@ function lightboxMode(selected) {
         
         var $item = $('.item');
         
-        // reset the class to the group class
-        $inspected = $item.find('.inspected');
-        if ($inspected.length) // c??
-          setItemClass($inspected, selectedAdSet.groupState());
+        // reset the class to the group class        
+        if ($item.hasClass('inspected')) {//TODO: this seems to be failing (see #1 above)
+            
+            //log('lightboxMode: SET-FINAL-STATE: '+ selectedAdSet.groupState());
+            //log('\t\t LM-CLASSES: '+($item ? $item[0].classList : 'NO CLASS LIST'));
+            setItemClass($item, selectedAdSet.groupState());
+        }
            
         $item.removeClass('inspected');
         $item.find('span.counter-index').hide(); 
@@ -637,7 +651,7 @@ function lightboxMode(selected) {
 
 function animateInspector($inspected) {
 
-    log('animateInspector: '+$inspected);
+    //log('animateInspector: '+$inspected);
     
     animatorId && clearTimeout(animatorId); // stop
     
@@ -673,7 +687,7 @@ function findByAdId(id) {
         };
     }
 
-    throw Error('No ad for id: ' + id);
+    throw Error('No ad for id: ' + id+' (Ad updated before being added to vault?)');
 }
 
 function findItemByGid(gid) {
@@ -739,17 +753,21 @@ function positionAds() { // autozoom & center (ugly)
 		i, x, y, w, h, minX, maxX, minY, maxY, problem;
 
     //log('winW: '+winW+' winH: '+winH);
+    setZoom(zoomIdx = 0);
 
 	for (i=0; i < zooms.length; i++) {
 
 		problem = false; // no problem at start
-
+        
+        setZoom(zoomIdx = i);
+        scale = zooms[zoomIdx] / 100;
+        log('Trying '+zooms[i]+' scale='+scale);
+        
 		// loop over each image, checking that they (enough) onscreen
 		$('.item').each(function(i, img) {
 
             $this = $(this);
 
-			scale = zooms[zoomIdx] / 100, 
             x = $this.offset().left, 
             y = $this.offset().top,
 			w = $this.width() * scale,    // scaled width
@@ -760,7 +778,6 @@ function positionAds() { // autozoom & center (ugly)
 			minY = (-h * (1 - percentVisible)),
 			maxY = (winH - (h * percentVisible));
 
-
 			//log(i+")",x,y,w,h);
 			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i
 			    //+") "+Math.round($(this).offset().left)) });
@@ -768,11 +785,11 @@ function positionAds() { // autozoom & center (ugly)
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
 				zoomOut();
-				log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle);
+				log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle+" BREAK!!!");
 				return (problem = true); // break jquery each() loop
 			}
 		});
-
+		
 		if (!problem) return;	// all ads ok, we're done
 	}
 }
@@ -814,9 +831,14 @@ function addInterfaceHandlers(ads) {
 	// (from: http://jsfiddle.net/robertc/kKuqH/)
 
 	var dm = document.querySelector('#container');
-	dm.addEventListener('dragstart', dragStart, false);
-	dm.addEventListener('dragover', dragOver, false);
-	dm.addEventListener('dragend', dragEnd, false);
+	if (dm) {
+    	dm.addEventListener('dragstart', dragStart, false);
+    	dm.addEventListener('dragover', dragOver, false);
+    	dm.addEventListener('dragend', dragEnd, false);
+	}
+	else {
+	    log("NO #CONTAINER!");
+	}
 
 	/////////// ZOOM-STAGE ///////////
 

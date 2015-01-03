@@ -1,0 +1,36 @@
+{
+    "http://www.nytimes.com/": [
+    {
+        "id": 8,
+        "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+        "contentType": "img",
+        "contentData": {
+            "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png"
+        },
+        "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+        "pageUrl": "http://www.nytimes.com/",
+        "foundTs": 1407052450784,
+        "visitedTs": 0,
+        "title": "Visited Ad Title",
+        "pageTitle": "Page Title",
+        "path": [],
+        "errors": []
+    },
+    {
+        "COMMENT": "DUP OF #8",
+        "id": 12,
+        "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+        "contentType": "img",
+        "contentData": {
+            "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png"
+        },
+        "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+        "pageUrl": "http://www.nytimes.com/",
+        "foundTs": 1407052450789,
+        "visitedTs": 0,
+        "title": "Visited Ad Title",
+        "pageTitle": "Page Title",
+        "path": [],
+        "errors": []
+    }]
+}

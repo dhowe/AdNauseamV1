@@ -6,6 +6,7 @@ self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 function layoutAds(json) {
 
 	adArray = json.data;
+	
 	var pageUrl = json.page// currentAd = json.currentAd;
 
     if (!adArray) return;
@@ -33,7 +34,6 @@ function layoutAds(json) {
 function updateAds(obj) {
 
     var sel, td, onpage,
-        //adArray = obj.data, 
         currentAd = obj.currentAd,
         update = obj.update, 
         pageUrl = obj.page;
@@ -43,7 +43,7 @@ function updateAds(obj) {
         return;
     }
     
-    console.log('Menu::updateAds: ', update);
+    //console.log('Menu::updateAds: ', update);
 
     // update the title
     sel = '#ad' + update.id + ' .title';
@@ -87,13 +87,12 @@ function refreshPanel(opts) {
         $('#pause-button').addClass('disabled');
     }
     
-    $('#version-disp').text('v'+opts.version);
     $('#cmn-toggle-1').prop('checked', opts.disableLogs); 
     $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
+    $('#settings-header').html('AdNauseam&nbsp;v'+opts.version+' Settings');
 
     $('#toggle-button').css('background-image', 'url('+img+')');
     $('#pause-button').text(label);
-    
 }
 
 function animateIcon(ms) {

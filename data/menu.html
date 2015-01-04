@@ -6,30 +6,27 @@
 	<link rel="icon" type="image/png" href="img/icon-32.png">
 	<link rel="stylesheet" href="font/stylesheet.css">
 	<link rel="stylesheet" href="menu.css">
+	
 	<script src="lib/jquery-1.10.2.min.js"></script>
-	<script src="lib/jquery-1.11.2-ui.js"></script>
-    <script src="shared.js"></script>
 	<script src="../lib/config.js"></script>
+	
 	<script>
+            $(function() {
 
-		// enable/disable TEST_MODE in ../lib/config.js
-
-		if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
-
-			$(function() {
-			    
-				$.getScript("menu.js")
-    				.done(function() {
-    				    
-    					attachMenuTests();
-    				})
-    				.fail(function(xhr, data, e ) {
-    				    
-    					 console.error("menu.getScript: ", e);
-    				});
-			});
-		}
-
+                // enable/disable TEST_MODE in ../lib/config.js
+                
+                if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
+                    
+                    // load addon-injected js here for testing
+                    $.when(
+                           $.getScript( "shared.js" ),
+                           $.getScript( "../lib/ff/adnutil.js"),
+                           $.getScript( "menu.js" ),
+                           $.Deferred(function( deferred ) {
+                                $( deferred.resolve );
+                        })).done(function() { attachMenuTests(); });
+                }
+            });
 	</script>
 </head>
 <body class="active">

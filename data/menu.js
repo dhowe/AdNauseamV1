@@ -5,11 +5,12 @@ self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
 function layoutAds(json) {
 
-	var adArray = json.data, pageUrl = json.page// currentAd = json.currentAd;
+	adArray = json.data;
+	var pageUrl = json.page// currentAd = json.currentAd;
 
     if (!adArray) return;
     
-log('Menu::layoutAds: '+adArray.length + " ads");
+    //log('Menu::layoutAds: '+adArray.length + " ads");
     	
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;
@@ -18,10 +19,8 @@ log('Menu::layoutAds: '+adArray.length + " ads");
         
         return (a.pageUrl === pageUrl);
     });
-
-	//console.log('Menu: ads.total=' + data.ads.length 
-	   //+ ' ads.duplicates='+(data.ads.length-data.unique));
-		//', ads.onpage=' + data.onpage.length+", page="+page);
+    
+    adsOnPage.sort(byField('-foundTs')); // sort by found-time
 
     var theHtml = createHtml(adsOnPage, adArray);
 	$('#ad-list-items').html(theHtml);
@@ -31,44 +30,42 @@ log('Menu::layoutAds: '+adArray.length + " ads");
 	setCounts(adsOnPage.length, visitedCount(adsOnPage), adArray.length);
 }
 
-// CHANGED(12/19): Each ad is now visited separately
 function updateAds(obj) {
 
     var sel, td, onpage,
-        adhash = obj.data, 
+        //adArray = obj.data, 
         currentAd = obj.currentAd,
         update = obj.update, 
-        page = obj.page;
+        pageUrl = obj.page;
 
-    //console.log('Menu::updateAds: ', currentAd);
+    if (!adArray) {
+        console.warn('Menu::updateAds: ', "no ad array!!");
+        return;
+    }
     
-    // change class, {title, (visitedTs) resolved}
-    //for (var i=0, j = updates.length; i<j; i++) 
-    {
+    console.log('Menu::updateAds: ', update);
 
-        // update the title
-        sel = '#ad' + update.id + ' .title';
-        $(sel).text(update.title);
+    // update the title
+    sel = '#ad' + update.id + ' .title';
+    $(sel).text(update.title);
 
-        if (update.contentType !== 'text') {
-            
-            // update the url    
-            sel = '#ad' + update.id + ' cite';
-            td = targetDomain(update);
-            if (td) $(sel).text(td);
-        }
-
-        // update the class
-        sel = '#ad' + update.id;
-        $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
-            .removeClass('just-visited').addClass('just-visited');
+    if (update.contentType !== 'text') {
         
-        //console.log("UPDATE-CLASSES: "+$(sel)[0].classList);
+        // update the url    
+        sel = '#ad' + update.id + ' cite';
+        td = targetDomain(update);
+        if (td) $(sel).text(td);
     }
 
-    currentAd && tagCurrentAd(currentAd);
+    // update the class
+    sel = '#ad' + update.id;
+    $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
+        .removeClass('just-visited').addClass('just-visited');
+
+    //currentAd && tagCurrentAd(currentAd);
     
-    onpage = processAdData(adhash, page).onpage; 
+    //onpage = processAdData(adArray, pageUrl).onpage;
+    onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; }) 
     
     $('#visited-count').text(visitedCount(onpage)+' ads visited');
     
@@ -162,7 +159,7 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
 	    
         ads = getRecentAds(all, 5);
         
-        var msg = 'no ads found on this page';
+        var msg = 'no ads on this page';
         if (ads && ads.length) msg += ' (showing recent)';
         
         showAlert(msg);
@@ -199,18 +196,6 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
     //console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
-}
-
-function byField(prop) {
-    var sortOrder = 1;
-    if(prop[0] === "-") {
-        sortOrder = -1;
-        prop = prop.substr(1);
-    }
-    return function (a,b) {
-        var result = (a[prop] < b[prop]) ? -1 : (a[prop] > b[prop]) ? 1 : 0;
-        return result * sortOrder;
-    }
 }
 
 function visitedClass(ad) {

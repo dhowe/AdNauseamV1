@@ -5,6 +5,9 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     states = ['pending', 'visited', 'failed' ]; 
 
 /* NEXT:     
+
+    -- NEW-PAGE HASH (use for menu-list and ad-pageTitle) 
+    
     -- VAULT: wide-ads center with data offscreen (maybe center META-div?)
     
     -- ZOOM: position-ad must consider slider
@@ -33,16 +36,9 @@ function layoutAds(json) {
     //tagCurrentAd(addonData.currentAd);    
 }
 
-
-// CHANGED(12/19): Each ad is now visited separately
 function updateAd(json) {
 
     //log('Vault.updateAds() :: '+json.update.id);
-//     
-    // if (json.update.id !== 14) {
-        // log('Vault.updateAds() :: ignoring #'+json.update.id);
-        // return;
-    // }
 
     // update class/title/visited/resolved-url
     doUpdate(json.update);
@@ -54,7 +50,7 @@ function updateAd(json) {
 
 function doLayout(adsets, resetLayout) {
 
-    log('Vault.doLayout: '+adsets.length);
+    //log('Vault.doLayout: '+adsets.length);
 
     if (!adsets) throw Error("No ads!");
     
@@ -66,9 +62,7 @@ function doLayout(adsets, resetLayout) {
 
     enableLightbox();
 
-    repack(resetLayout);
-    
-    //dbugOffsets && addTestDivs();
+    repack(resetLayout);    
 }
 
 function createDivs(adsets) {
@@ -171,10 +165,11 @@ function appendDetectedTo($detected, ad) {
     
     $('<h3/>', { text: 'detected on:' }).appendTo($detected);
     
-    $('<a/>', { class: 'inspected-title',
-     
+    $('<a/>', { 
+                class: 'inspected-title',
                 href: ad.pageUrl,
-                text: ad.pageTitle
+                text: ad.pageTitle,
+                target: 'new'
                 
     }).appendTo($detected); 
     
@@ -197,7 +192,8 @@ function appendTargetTo($target, ad) {
         id: 'target-title',
         class: 'inspected-title', 
         href: ad.targetUrl,
-        text: ad.title
+        text: ad.title,
+        target: 'new'
                 
     }).appendTo($target);
     
@@ -289,7 +285,7 @@ function appendDisplayTo($div, adset) {
 
         src: adset.child(0).contentData.src,
 
-        onerror: "this.onerror=null; this.width=200; this.height=100; " +
+        onerror: "this.onerror=null; this.width=80; this.height=40; " +
             "this.alt='unable to load image'; this.src='img/placeholder.svg'",
         
     }).appendTo($ad);
@@ -389,7 +385,6 @@ function repack(resetLayout) {
 
     $('#container').imagesLoaded(function() {
 
-        log("imagesLoaded *** ");
     	if (visible > 1) {
 
     		new Packery('#container', {
@@ -399,9 +394,7 @@ function repack(resetLayout) {
     			gutter : 1
     		});
             
-            if (resetLayout) positionAds();
-    		
-    		log('------------------------------------------------');
+            if (resetLayout) positionAds();    		
     	}
         else if (visible == 1)  $items.css({ // center single
             
@@ -472,8 +465,6 @@ function dragOver(e) {
 
     dm.style.marginLeft = (e.clientX + parseInt(offset[0], 10)) + 'px';
     dm.style.marginTop = (e.clientY + parseInt(offset[1], 10)) + 'px';
-
-	//dbugOffsets && updateTestDivs();
 }
 
 function dragEnd(e) {
@@ -723,14 +714,10 @@ function setZoom(idx) {
 		((zoomStyle = ('z-'+zooms[idx]).replace(/\./, '_')));
 
 	$('#ratio').html(zooms[idx]+'%');
-
-	//dbugOffsets && updateTestDivs();
 }
 
 // TODO: broken (see issue #59)
 function positionAds() { // autozoom & center 
-
-    //return; // log('positionAds');
 
 	var percentVisible = .6,
 		winW = $("#container").width(),

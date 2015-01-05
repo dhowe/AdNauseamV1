@@ -510,7 +510,14 @@ function enableLightbox() {
 
     $('.item').click(function(e) {
        
-        //log('item.clicked');
+        var $this = $(this);
+        /*setTimeout(function() {
+            
+            log('item.clicked: '+$this.html(),
+                $this[0].getBoundingClientRect().left,
+                $this[0].getBoundingClientRect().top
+            );
+        },3000);*/
         e.stopPropagation();
         lightboxMode(this);         
     });
@@ -549,35 +556,56 @@ function centerZoom($ele) {
     
     if ($ele) { // save zoom-state
         
+        // take into account height of meta-data as well (also 55 below)
+        var ew= $ele.width(), eh = $ele.find("img").height() + 110;
+        
         viewState.zoomIdx = zoomIdx; 
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;
-          
-        setZoom(zoomIdx = 0);
         
-        var offx = parseInt($ele.attr('data-offx')), offy = parseInt($ele.attr('data-offy'));
-        dm.style.marginLeft = (-5000 + offx)+'px'; // TODO: also needs offset from collage center 
-        dm.style.marginTop = (-5000 + offy)+'px'; // TODO: also needs offset from collage center
+        // compute target positions for transform
+        var offx = parseInt($ele.attr('data-offx'));
+        var offy = parseInt($ele.attr('data-offy')) - 55;
+        var mleft = (-5000 + offx), mtop = (-5000 + offy);
         
-        // TODO: see #
-        log("item: ",$ele.position(),$ele.offset()); 
-        //log("click: ",dm.style.marginLeft,dm.style.marginTop,offx,offy);
+        //log("click: ",mleft,wid,$(window).width());
+        
+        // make sure left/bottom corner of meta-data is onscreen (fix to #180)
+        if (ew > $(window).width()) 
+            mleft += (ew - $(window).width()) / 2;
+        if (eh > $(window).height())
+            mtop -= (eh - $(window).height()) / 2;
+        
+        // reset zoom to 100%
+        setZoom(zoomIdx = 0);       
+        
+        // translate back to center
+        dm.style.marginLeft = mleft+'px';  
+        dm.style.marginTop = mtop+'px';
+        
+
+       
     }       
     else { // restore zoom-state
         
+    
+
         setZoom(zoomIdx = viewState.zoomIdx); 
         
         dm.style.marginLeft = viewState.left;
         dm.style.marginTop = viewState.top;
     }
+    
+    // $('.item').each(function(i) {
+        // log(i+") getBoundingClientRect: ",$(this)[0].getBoundingClientRect().left,$(this)[0].getBoundingClientRect().top);
+        // log(i+") pos/off: ",$(this).position(),$(this).offset()); 
+    // });
 }
 
 function lightboxMode(selected) {
     
-    //log('lightboxMode: '+selected);
-    
     if (selected) var $selected = $(selected);
-
+    
     if ($selected && !$selected.hasClass('inspected')) {
 
         var inspectedGid = parseInt($selected.attr('data-gid'));
@@ -616,8 +644,6 @@ function lightboxMode(selected) {
         
         $('#container').removeClass('lightbox');
     }
-    
-
 }
 
 function animateInspector($inspected) {

@@ -38,6 +38,10 @@ div.tooltip {
 
 *************************************/
 
+.notransition {
+	transition: none !important;
+}
+
 #stage{
   float:left;
   width:100%;

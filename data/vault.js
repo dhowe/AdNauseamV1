@@ -6,12 +6,12 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
 
 /* NEXT:     
 
+    -- BUG: Arbitrary switch to vault (why?)
+    
     -- NEW-PAGE HASH (use for menu-list and ad-pageTitle) 
     
     -- VAULT: wide-ads center with data offscreen (maybe center META-div?)
-    
-    -- ZOOM: position-ad must consider slider
-    
+        
     -- CURRENT-AD (disabled for now)
         test current-ad handling (broken in shared.js)        
 */         

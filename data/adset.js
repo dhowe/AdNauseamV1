@@ -33,19 +33,6 @@ function createAdSets(ads) {
     return adsets;
 }
 
-function computeHashKey(ad) { // dup in shared.js
-    
-    // a backwards-compatible hash-key 
-    
-    if (ad.hashKey) return ad.hashKey; // if we have one, use it
-    
-    var res = ad.contentData.src || ad.contentData; // otherwise, use what we can
-    
-    console.warn("[WARN] Deprecated hashKey found for ad#"+ad.id+"\n\t\t"+res);
-    
-    return res;
-}
-
 function AdSet(ad) { 
 
     this.gid = Math.abs(createGid(ad));

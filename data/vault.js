@@ -545,8 +545,6 @@ function storeInitialLayout($items) {
 
 function centerZoom($ele) {
     
-    //log('lightboxMode: '+selected);
-    
     var dm = document.querySelector('#container');
     
     if ($ele) { // save zoom-state
@@ -561,7 +559,8 @@ function centerZoom($ele) {
         dm.style.marginLeft = (-5000 + offx)+'px'; // TODO: also needs offset from collage center 
         dm.style.marginTop = (-5000 + offy)+'px'; // TODO: also needs offset from collage center
         
-        // TODO: see 
+        // TODO: see #
+        log("item: ",$ele.position(),$ele.offset()); 
         //log("click: ",dm.style.marginLeft,dm.style.marginTop,offx,offy);
     }       
     else { // restore zoom-state
@@ -802,7 +801,7 @@ function addInterfaceHandlers(ads) {
 
     $(document).click(function(e) {
  
-         lightboxMode(false);
+        lightboxMode(false);
     });
 
 	/////////// DRAG-STAGE ///////////
@@ -812,7 +811,7 @@ function addInterfaceHandlers(ads) {
 	if (dm) {
     	dm.addEventListener('dragstart', dragStart, false);
     	dm.addEventListener('dragover', dragOver, false);
-    	dm.addEventListener('dragend', dragEnd, false);
+    	dm.addEventListener('dragend', dragEnd, false);    	
 	}
 	else {
 	    log("NO #CONTAINER!");

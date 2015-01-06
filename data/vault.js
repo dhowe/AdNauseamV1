@@ -554,21 +554,20 @@ function centerZoom($ele) {
     
     var dm = document.querySelector('#container');
     
-    if ($ele) { // save zoom-state
+    if ($ele) {
         
-        // take into account height of meta-data as well (also 55 below)
+        // take into account height of meta-data
         var ew= $ele.width(), eh = $ele.find("img").height() + 110;
         
+        // save the state for after
         viewState.zoomIdx = zoomIdx; 
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;
         
         // compute target positions for transform
         var offx = parseInt($ele.attr('data-offx'));
-        var offy = parseInt($ele.attr('data-offy')) - 55;
+        var offy = parseInt($ele.attr('data-offy')) - 55; // .5 * meta-data
         var mleft = (-5000 + offx), mtop = (-5000 + offy);
-        
-        //log("click: ",mleft,wid,$(window).width());
         
         // make sure left/bottom corner of meta-data is onscreen (fix to #180)
         if (ew > $(window).width()) 
@@ -579,27 +578,17 @@ function centerZoom($ele) {
         // reset zoom to 100%
         setZoom(zoomIdx = 0);       
         
-        // translate back to center
+        // translate to center
         dm.style.marginLeft = mleft+'px';  
         dm.style.marginTop = mtop+'px';
-        
-
-       
     }       
     else { // restore zoom-state
-        
-    
 
         setZoom(zoomIdx = viewState.zoomIdx); 
         
         dm.style.marginLeft = viewState.left;
         dm.style.marginTop = viewState.top;
     }
-    
-    // $('.item').each(function(i) {
-        // log(i+") getBoundingClientRect: ",$(this)[0].getBoundingClientRect().left,$(this)[0].getBoundingClientRect().top);
-        // log(i+") pos/off: ",$(this).position(),$(this).offset()); 
-    // });
 }
 
 function lightboxMode(selected) {
@@ -741,7 +730,7 @@ function setZoom(idx) {
 	$('#ratio').html(zooms[idx]+'%');
 }
 
-// TODO: broken (see issue #59)
+// TODO: broken (see issue #59) -- needs to be rewritten
 function positionAds() { // autozoom & center 
 
 	var percentVisible = .6,

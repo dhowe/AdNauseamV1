@@ -8,7 +8,8 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
 
     -- BUG: Arbitrary switch to vault (why?)
     
-    -- NEW-PAGE HASH (use for menu-list and ad-pageTitle) 
+    -- NEW-PAGE HASH (use for menu-list and ad-pageTitle), then store array (or set?) of all ads;
+       before moving from page-hash to ad-array, make sure it doesnt exist
     
     -- VAULT: wide-ads center with data offscreen (maybe center META-div?)
         
@@ -734,6 +735,7 @@ function setZoom(idx) {
 function bounds($items, scale) {
     
     var bounds = {
+        
         left: Number.POSITIVE_INFINITY,
         top: Number.POSITIVE_INFINITY,
         right: Number.NEGATIVE_INFINITY,
@@ -743,22 +745,25 @@ function bounds($items, scale) {
     };
 
     $items.each(function (i,el) {
+        
         var elQ = $(el);
         var off = elQ.offset();
+        
         off.right = off.left + $(elQ).width();
         off.bottom = off.top + $(elQ).height();
 
         if (off.left < bounds.left)
-        bounds.left = off.left;
+            bounds.left = off.left;
 
         if (off.top < bounds.top)
-        bounds.top = off.top;
+            bounds.top = off.top;
 
         if (off.right > bounds.right)
-        bounds.right = off.right;
+            bounds.right = off.right;
 
         if (off.bottom > bounds.bottom)
-        bounds.bottom = off.bottom;
+            bounds.bottom = off.bottom;
+
     });
 
     bounds.width = bounds.right - bounds.left;

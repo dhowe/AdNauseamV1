@@ -67,7 +67,8 @@ function updateAds(obj) {
     //onpage = processAdData(adArray, pageUrl).onpage;
     onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; }) 
     
-    $('#visited-count').text(visitedCount(onpage)+' ads visited');
+    // BUG: see  #184
+    $('#visited-count').text( visitedCount(onpage)+' ads visited');
     
     animateIcon(500);
 }
@@ -118,7 +119,7 @@ function visitedCount(arr) {
 
 	var visitedCount = 0;
 	for (var i=0, j = arr.length; i<j; i++) {
-		if (!arr[i].hidden && arr[i].visitedTs > 0)
+		if (arr[i].visitedTs > 0)
 			visitedCount++;
 	}
 	return visitedCount;

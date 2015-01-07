@@ -1,8 +1,9 @@
 
 var textAdSelectors = [ 
-    { adclass: 'ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
-    { adclass: 'results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
-    { adclass: 'ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
+    { adclass: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
+    { adclass: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
+    { adclass: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
+    { adclass: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
 ];
 
 $(function() { // page-is-ready
@@ -17,16 +18,35 @@ $(function() { // page-is-ready
         for (var i=0; i < textAdSelectors.length; i++) {
    
             var data = textAdSelectors[i];
-                waitSel = '.' + data.adclass + ' ' + data.waitfor;
+                waitSel = data.adclass + ' ' + data.waitfor;
 
-            if ( $(this).hasClass(data.adclass) ) {
-               
-                waitForKeyElements(waitSel, 
-                    data.handler.bind( $(this) ));
+            var chkClass = data.adclass.replace(/^\./,'');
+            if ( $(this).hasClass(chkClass) ) {
+ 
+                waitForKeyElements(waitSel, data.handler);
             }
         }
     });
 });
+
+function bingText(anchor) {
+    
+    var title = anchor.find("h2 a");
+    var text = anchor.find("div.b_caption p");
+    var site = anchor.find("div.b_attribution cite");
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('bing', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('bingText.fail: ', text, site);
+    }
+}
 
 function yahooText(anchor) {
     
@@ -36,12 +56,12 @@ function yahooText(anchor) {
     var text = anchor.find('div.abs a');
     var site = anchor.find('em a');    
     
-    /*console.log("    *** title: "+title.text());
+    /*console.log("  *** title: "+title.text());
     console.log("    *** text: "+text.text());
     console.log("    *** site: "+site.text());
     console.log("    *** targetUrl: "+title.attr('href'));*/
     
-    if (text.length && site.length) {
+    if (text.length && site.length && title.length) {
  
         var ad = createAd('yahoo', title.text(), 
             text.text(), site.text(), title.attr('href'));  
@@ -55,8 +75,8 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var text = this.find('div.ads-creative');
-    var site = this.find('div.ads-visurl cite');
+    var text = anchor.find('div.ads-creative');
+    var site = anchor.find('div.ads-visurl cite');
     
     if (text.length && site.length) {
  
@@ -72,8 +92,8 @@ function googleText(anchor) {
 
 function duckDuckText(anchor) {
                     
-    var text = this.find('div.result__snippet a');
-    var site = this.find('a.result__url');
+    var text = anchor.find('div.result__snippet a');
+    var site = anchor.find('a.result__url');
     
     if (text.length && site.length) {
         

@@ -749,6 +749,8 @@ function bounds($items, scale) {
         
         off.right = off.left + $(elQ).width();
         off.bottom = off.top + $(elQ).height();
+        
+        // C: add code for matrix transform scale
 
         if (off.left < bounds.left)
             bounds.left = off.left;
@@ -777,9 +779,12 @@ function positionAds() {
         windowW = $("#container").width(),
         windowH = $('#svgcon').offset().top;
         
-    var boundsAll = bounds($('.item'));
+    var boundsAll = bounds( $('.item'), zooms[0] );
     // check if they fits at full zoom, 
-    // if so return; if not, compute with scale
+    // if so return; 
+    // if not, then try with next scale
+        var boundsAll = bounds( $('.item'), zooms[1] );
+    
 } 
 
 // TODO: broken (see issue #59) -- needs to be rewritten
@@ -818,7 +823,7 @@ function positionAdsOld() { // autozoom & center
 
 			if (x < minX || x > maxX || y < minY || y > maxY) {
 
-				//zoomOut();
+				zoomOut();
 				//log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle+" BREAK!!!");
 				problem = true;
 				return false ; // break each() loop

@@ -1,10 +1,10 @@
 
 var textAdSelectors = [ 
-    { adclass: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
-    { adclass: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
-    { adclass: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
-    { adclass: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
-    { adclass: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
+    { selector: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
+    { selector: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
+    { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
+    { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
+    { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
 ];
 
@@ -22,9 +22,9 @@ $(function() { // page-is-ready
         for (var i=0; i < textAdSelectors.length; i++) {
    
             var data = textAdSelectors[i];
-                waitSel = data.adclass + ' ' + data.waitfor;
+                waitSel = data.selector + ' ' + data.waitfor;
 
-            if ( $(this).is(data.adclass)) {
+            if ( $(this).is(data.selector)) {
                 
                  console.log('HIT: '+waitSel);
                  

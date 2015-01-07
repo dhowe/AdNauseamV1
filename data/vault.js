@@ -751,7 +751,9 @@ function bounds($items, scale) {
         off.bottom = off.top + $(elQ).height();
         
         // C: add code for matrix transform scale
-
+        var cs = this.getComputedStyle(this, null);
+        var matrix = cs.getPropertyValue("transform");
+    
         if (off.left < bounds.left)
             bounds.left = off.left;
 

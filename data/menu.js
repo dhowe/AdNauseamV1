@@ -28,6 +28,7 @@ function layoutAds(json) {
 
     //currentAd && tagCurrentAd(currentAd);
 
+    // BUG: see  #184
 	setCounts(adsOnPage.length, visitedCount(adsOnPage), adArray.length);
 }
 
@@ -118,7 +119,7 @@ function visitedCount(arr) {
 
 	var visitedCount = 0;
 	for (var i=0, j = arr.length; i<j; i++) {
-		if (!arr[i].hidden && arr[i].visitedTs > 0)
+		if (arr[i].visitedTs > 0)
 			visitedCount++;
 	}
 	return visitedCount;

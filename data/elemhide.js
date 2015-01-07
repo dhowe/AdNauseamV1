@@ -4,6 +4,8 @@ var textAdSelectors = [
     { adclass: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
     { adclass: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
     { adclass: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
+    { adclass: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
+        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
 ];
 
 $(function() { // page-is-ready
@@ -13,6 +15,8 @@ $(function() { // page-is-ready
         return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
     });
     
+    console.log("HIDDEN: "+$hidden.length);
+
     $hidden.each(function() {
     
         for (var i=0; i < textAdSelectors.length; i++) {
@@ -20,14 +24,20 @@ $(function() { // page-is-ready
             var data = textAdSelectors[i];
                 waitSel = data.adclass + ' ' + data.waitfor;
 
-            var chkClass = data.adclass.replace(/^\./,'');
-            if ( $(this).hasClass(chkClass) ) {
- 
-                waitForKeyElements(waitSel, data.handler);
+            if ( $(this).is(data.adclass)) {
+                
+                 console.log('HIT: '+waitSel);
+                 
+                 waitForKeyElements(waitSel, data.handler);
             }
         }
     });
 });
+
+function baiduText(anchor) {
+    
+    console.log("baiduText()");
+}
 
 function bingText(anchor) {
     
@@ -43,7 +53,6 @@ function bingText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        
         
         console.warn('bingText.fail: ', text, site);
     }
@@ -156,6 +165,7 @@ function waitForKeyElements(
                         search.
                     */
 ) {
+      
     var targetNodes, btargetsFound;
 
     if (typeof iframeSelector == "undefined")

@@ -44,6 +44,7 @@ function bingText(anchor) {
     }
     else {
         
+        
         console.warn('bingText.fail: ', text, site);
     }
 }

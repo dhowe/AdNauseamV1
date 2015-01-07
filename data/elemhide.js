@@ -23,8 +23,7 @@ $(function() { // page-is-ready
             var chkClass = data.adclass.replace(/^\./,'');
             if ( $(this).hasClass(chkClass) ) {
  
-                waitForKeyElements(waitSel, 
-                    data.handler.bind( $(this) ));
+                waitForKeyElements(waitSel, data.handler);
             }
         }
     });
@@ -45,7 +44,7 @@ function bingText(anchor) {
     }
     else {
         
-        console.warn('yahooText.fail: ', text, site);
+        console.warn('bingText.fail: ', text, site);
     }
 }
 
@@ -76,8 +75,8 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var text = this.find('div.ads-creative');
-    var site = this.find('div.ads-visurl cite');
+    var text = anchor.find('div.ads-creative');
+    var site = anchor.find('div.ads-visurl cite');
     
     if (text.length && site.length) {
  
@@ -93,8 +92,8 @@ function googleText(anchor) {
 
 function duckDuckText(anchor) {
                     
-    var text = this.find('div.result__snippet a');
-    var site = this.find('a.result__url');
+    var text = anchor.find('div.result__snippet a');
+    var site = anchor.find('a.result__url');
     
     if (text.length && site.length) {
         

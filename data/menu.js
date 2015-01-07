@@ -28,7 +28,6 @@ function layoutAds(json) {
 
     //currentAd && tagCurrentAd(currentAd);
 
-    // BUG: see  #184
 	setCounts(adsOnPage.length, visitedCount(adsOnPage), adArray.length);
 }
 
@@ -68,7 +67,8 @@ function updateAds(obj) {
     //onpage = processAdData(adArray, pageUrl).onpage;
     onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; }) 
     
-    $('#visited-count').text(visitedCount(onpage)+' ads visited');
+    // BUG: see  #184
+    $('#visited-count').text( visitedCount(onpage)+' ads visited');
     
     animateIcon(500);
 }

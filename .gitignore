@@ -16,4 +16,5 @@ adnauseam.xpi
 *.sketch
 todo.txt
 data/lib/npm-debug.log
+**/.DS_Store
 data/misc

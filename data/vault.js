@@ -781,11 +781,11 @@ function positionAds() {
         windowW = $("#container").width(),
         windowH = $('#svgcon').offset().top;
         
-    var boundsAll = bounds( $('.item'), zooms[0] );
+    //var boundsAll = bounds( $('.item'), zooms[0] );
     // check if they fits at full zoom, 
     // if so return; 
     // if not, then try with next scale
-        var boundsAll = bounds( $('.item'), zooms[1] );
+    //var boundsAll = bounds( $('.item'), zooms[1] );
     
 } 
 

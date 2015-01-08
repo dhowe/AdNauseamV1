@@ -6,21 +6,21 @@
         <link rel="stylesheet" href="vault.css">
         <link rel="stylesheet" href="font/stylesheet.css">
         <link rel="icon" type="image/png" href="img/icon-32.png">
-        
+
         <script src="lib/jquery-1.10.2.min.js"></script>
         <script src="lib/packery.min.js"></script>
         <script src="lib/imagesloaded.pkgd.min.js"></script>
-        <script src="lib/d3.min.js"></script>     
-           
+        <script src="lib/d3.min.js"></script>
+
         <script src="../lib/config.js"></script>
-        
+
         <script>
             $(function() {
 
                 // enable/disable TEST_MODE in ../lib/config.js
-                
+
                 if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
-                    
+
                     // load addon-injected js here for testing
                     $.when(
                            $.getScript( "adset.js" ),
@@ -65,6 +65,9 @@
             <div id="svgcon" class="svg-container"></div>
 
         </div>
+
+        <a href="#" id ="x-close-button">&#10006;</a>
+        <div id="logo"><a href="http://dhowe.github.io/AdNauseam/" target="_blank"></a></div>
 
         <div id='ratio'>100%</div>
 

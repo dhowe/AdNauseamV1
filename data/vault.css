@@ -240,7 +240,7 @@ div.tooltip {
 	z-index: 100;
 	bottom: 0;
 	position: absolute;
-	left: -100px;
+	right: 20px;
 	margin: 8px 10px;
 }
 
@@ -261,6 +261,10 @@ div.tooltip {
 	opacity: 0.8;
 	display: block;
 	text-decoration: none;
+}
+
+#logo:hover a{
+	background-image: url(img/adn_active.png);
 }
 
 .item {
@@ -876,10 +880,11 @@ svg {
 	z-index: 100;
 	top: 0px;
 	position: absolute;
-	left: -85px;
+	right: 0;
 	margin: 8px 10px;
 }
 
 #x-close-button:hover {
 	opacity: 1;
+	color: #ccc;
 }

@@ -37,6 +37,27 @@ $(function() { // page-is-ready
 function baiduText(anchor) {
     
     console.log("baiduText()");
+    
+    var title = anchor.find("a:first-child");
+    console.log("title: " + title.text());
+    
+    var text = anchor.find("font:first-child");
+    console.log("text: " + text.text());
+
+    var site = anchor.find("font:last-child");
+    console.log("site: " + site.text());
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('bing', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('baiduText.fail: ', text, site);
+    }
 }
 
 function bingText(anchor) {

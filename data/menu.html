@@ -6,17 +6,17 @@
 	<link rel="icon" type="image/png" href="img/icon-32.png">
 	<link rel="stylesheet" href="font/stylesheet.css">
 	<link rel="stylesheet" href="menu.css">
-	
+
 	<script src="lib/jquery-1.10.2.min.js"></script>
 	<script src="../lib/config.js"></script>
-	
+
 	<script>
             $(function() {
 
                 // enable/disable TEST_MODE in ../lib/config.js
-                
+
                 if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
-                    
+
                     // load addon-injected js here for testing
                     $.when(
                            $.getScript( "shared.js" ),
@@ -44,7 +44,7 @@
 				</div>
 			</header>
 
-			<div id="ad-list">
+			<div id="ad-list" class="">
 
 				<div id="alert" class="hide">
 					<img src="img/adn_alert.png" alt="alert">
@@ -83,14 +83,23 @@
 		<div id="settings" class="page hide">
 
 			<header class="">
-			
+
 				<a href="#" id ="settings-close" class="settings close">&#10006;</a>
-				
+
 				<!-- version # added via menu.js -->
 				<h2 id="settings-header">AdNauseam Settings</h2>
 			</header>
-			
+
 			<form id="settings_form" action="index.html" method="post">
+
+				<div class="row justified">
+					<div class="btn">
+						<button class="button" id="export-ads">Export Ads</button>
+					</div>
+					<div class="btn">
+						<button class="button" id="import-ads">Import Ads</button>
+					</div>
+				</div>
 
 				<div class="row">
 					<div class="question">
@@ -101,30 +110,28 @@
 						<label for="cmn-toggle-1"></label>
 					</div>
 				</div>
-				
-                <div class="row">
-                    <div class="question">
-                        Disable outgoing referrer
-                    </div>
-                    <div class="switch">
-                        <input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-2">
-                        <label for="cmn-toggle-2"></label>
-                    </div>
-                </div>
 
+        <div class="row">
+            <div class="question">
+                Disable outgoing referrer
+            </div>
+            <div class="switch">
+                <input type="checkbox" class="cmn-toggle cmn-toggle-round-flat" id="cmn-toggle-2">
+                <label for="cmn-toggle-2"></label>
+            </div>
+        </div>
 
 				<div class="row">
 					<div class="question">
 						<div class="btn">
-							<button type="checkbox" class="button" id="clear-ads">Clear ads now</button>
+							<button class="button danger" id="clear-ads">Clear Ads Now</button>
 						</div>
 					</div>
-					<p>
 				</div>
-				
-        
+
+
 			</form>
-            
+
 		</div> <!-- END #settings -->
 	</div>
 </body>

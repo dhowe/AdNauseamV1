@@ -39,40 +39,57 @@ function updateAds(obj) {
         pageUrl = obj.page;
 
     if (!adArray) {
+        
         console.warn('Menu::updateAds: ', "no ad array!!");
+        return;
+    }
+    
+    if (!replaceUpdatedAd(update))  {
+        
+        console.warn('Menu::updateAds: ', "no update found!!");
         return;
     }
     
     //console.log('Menu::updateAds: ', update);
 
-    // update the title
+    // update the title (DOM)
     sel = '#ad' + update.id + ' .title';
     $(sel).text(update.title);
 
     if (update.contentType !== 'text') {
         
-        // update the url    
+        // update the url (DOM)
         sel = '#ad' + update.id + ' cite';
         td = targetDomain(update);
         if (td) $(sel).text(td);
     }
 
-    // update the class
+    // update the class (DOM)
     sel = '#ad' + update.id;
     $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
         .removeClass('just-visited').addClass('just-visited');
 
     //currentAd && tagCurrentAd(currentAd);
-    
-    //onpage = processAdData(adArray, pageUrl).onpage;
+
     onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; }) 
+    visited = onpage.filter(function(ad) { return ad.visitedTs > 0 })
     
     // BUG: see  #184
-    $('#visited-count').text( visitedCount(onpage)+' ads visited');
-    
+    $('#visited-count').text('clicked '+visitedCount(onpage));
+
     animateIcon(500);
 }
 
+function replaceUpdatedAd(update) {
+
+    // update the object itself
+    for (var i=0, j = adArray.length; i<j; i++) {
+        if (adArray[i].id == update.id)
+            return (adArray[i] = update);
+    }
+    return null;
+}
+   
 function refreshPanel(opts) {
 
     //console.log('refreshPanel: opts: ',opts);
@@ -119,6 +136,7 @@ function visitedCount(arr) {
 
 	var visitedCount = 0;
 	for (var i=0, j = arr.length; i<j; i++) {
+	    console.log("checking: "+arr[i].visitedTs);
 		if (arr[i].visitedTs > 0)
 			visitedCount++;
 	}
@@ -127,25 +145,29 @@ function visitedCount(arr) {
 
 function getRecentAds(ads, num) {
     
-    ads && ads.sort(byField('-foundTs')); // sort by found-time
-    
     var recent = [];
-    
-    // put pending ads first
-    for (var i=0; recent.length < num && i < ads.length; i++) {
-        
-        (ads[i].visitedTs == 0)  && recent.push(ads[i]);
-    }
-    
-    // now fill with the rest
-    for (var i=0; recent.length < num && i < ads.length; i++) {
-        
-        if (recent.indexOf(ads[i]) < 0)
-            recent.push(ads[i]);
-    }      
-    
-    // TODO: make sure currently-being-attempted ad is first
 
+    if (ads) {
+        
+        ads.sort(byField('-foundTs')); // sort by found-time
+    
+    
+        // put pending ads first
+        for (var i=0; recent.length < num && i < ads.length; i++) {
+            
+            (ads[i].visitedTs == 0)  && recent.push(ads[i]);
+        }
+        
+        // now fill with the rest
+        for (var i=0; recent.length < num && i < ads.length; i++) {
+            
+            if (recent.indexOf(ads[i]) < 0)
+                recent.push(ads[i]);
+        }      
+        
+        // TODO: make sure currently-being-attempted ad is first
+    }
+       
     return recent;
 }
 

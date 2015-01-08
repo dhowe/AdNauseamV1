@@ -1,6 +1,7 @@
 
 var textAdSelectors = [ 
     { selector: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
+    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleBottomText, name: 'adsense' },
     { selector: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
@@ -36,16 +37,16 @@ $(function() { // page-is-ready
 
 function baiduText(anchor) {
     
-    console.log("baiduText()");
+    // console.log("baiduText()");
     
     var title = anchor.find("a:first-child");
-    console.log("title: " + title.text());
+    // console.log("title: " + title.text());
     
     var text = anchor.find("font:first-child");
-    console.log("text: " + text.text());
+    // console.log("text: " + text.text());
 
     var site = anchor.find("font:last-child");
-    console.log("site: " + site.text());
+    // console.log("site: " + site.text());
 
     if (text.length && site.length && title.length) {
  
@@ -57,6 +58,29 @@ function baiduText(anchor) {
     else {
         
         console.warn('baiduText.fail: ', text, site);
+    }
+}
+
+function googleBottomText(anchor) {
+	
+	console.log('googleBottomText');
+	
+	var title = anchor.find('h3');
+	// console.log("title: " + title.text());
+	var text = anchor.find('div.ads-creative');
+	// console.log("text: " + text.text());
+    var site = anchor.find('div.ads-visurl cite');
+	// console.log("site: " + site.text());
+    
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('googleBottom', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('googleBottomText.fail: ', text, site);
     }
 }
 
@@ -109,10 +133,10 @@ function googleText(anchor) {
     var text = anchor.find('div.ads-creative');
     var site = anchor.find('div.ads-visurl cite');
     
-    if (text.length && site.length) {
+    if (text.length && site.length && title.length) {
  
-        var ad = createAd('google', anchor.text(), 
-            text.text(), site.text(), anchor.attr('href'));  
+        var ad = createAd('google', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
@@ -126,7 +150,7 @@ function duckDuckText(anchor) {
     var text = anchor.find('div.result__snippet a');
     var site = anchor.find('a.result__url');
     
-    if (text.length && site.length) {
+    if (text.length && site.length && title.length) {
         
         var ad = createAd('duckduckgo', anchor.text(), 
             text.text(), site.text(), anchor.attr('href'));  

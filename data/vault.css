@@ -573,16 +573,6 @@ div.bullets { display: none; } /* hide by default */
 .item-text.failed.inspected {
 	border-color: #B80606;
 }
-
-.ad-item-text.just-visited {
-  background: none;
-  animation: 1500ms ease-in-out just-visited;
-}
-
-.ad-item-text.just-failed {
-  background: none;
-  animation: 1500ms ease-in-out just-failed;
-}
 /* ----------------------------------------------------- */
 
 @keyframes pop {
@@ -618,22 +608,24 @@ div.bullets { display: none; } /* hide by default */
 	/*opacity: 0.8;*/
 }
 
-.item.just-visited {
-	background: none;
+.item.just-visited .ad,
+.item-text.just-visited .item-text-div {
 	animation: 1500ms ease-in-out just-visited;
 }
 
-.item.just-visited img {
-	animation: 1500ms ease-in-out just-visited-img;
+.item.just-visited img,
+.item-text.just-visited .item-text-div * {
+	animation: 1500ms ease-in-out just-visited-inside;
 }
 
-.item.just-failed {
-	background: none;
+.item.just-failed .ad,
+.item-text.just-failed .item-text-div {
 	animation: 1500ms ease-in-out just-failed;
 }
 
-.item.just-failed img {
-	animation: 1500ms ease-in-out just-visited-img;
+.item.just-failed img,
+.item-text.just-failed .item-text-div * {
+	animation: 1500ms ease-in-out just-visited-inside;
 }
 
 @keyframes just-visited {
@@ -648,7 +640,7 @@ div.bullets { display: none; } /* hide by default */
 	}
 }
 
-@keyframes just-visited-img {
+@keyframes just-visited-inside {
 	from {
 		opacity: 0;
 	}

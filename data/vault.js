@@ -558,7 +558,7 @@ function centerZoom($ele) {
         // take into account height of meta-data
         var ew= $ele.width(), eh = $ele.find("img").height() + 110;
         
-        // save the state for after
+        // save the state for after (TODO: See #191, this needs to happen in the pack)
         viewState.zoomIdx = zoomIdx; 
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;

@@ -38,15 +38,10 @@ function updateAds(obj) {
         update = obj.update, 
         pageUrl = obj.page;
 
-    if (!adArray) {
-        
-        console.warn('Menu::updateAds: ', "no ad array!!");
-        return;
-    }
-    
+    // update the object itself
     if (!replaceUpdatedAd(update))  {
         
-        console.warn('Menu::updateAds: ', "no update found!!");
+        console.warn('Menu::updateAds', "no update found!", adArray, update);
         return;
     }
     
@@ -74,19 +69,22 @@ function updateAds(obj) {
     onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; }) 
     visited = onpage.filter(function(ad) { return ad.visitedTs > 0 })
     
-    // BUG: see  #184
-    $('#visited-count').text('clicked '+visitedCount(onpage));
+    $('#visited-count').text('clicked '+visited.length);
 
     animateIcon(500);
 }
 
 function replaceUpdatedAd(update) {
-
-    // update the object itself
-    for (var i=0, j = adArray.length; i<j; i++) {
-        if (adArray[i].id == update.id)
-            return (adArray[i] = update);
+    
+    if (adArray) {
+        
+        // update the object itself
+        for (var i=0, j = adArray.length; i<j; i++) {
+            if (adArray[i].id == update.id)
+                return (adArray[i] = update);
+        }
     }
+    
     return null;
 }
    

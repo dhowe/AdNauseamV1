@@ -6,21 +6,21 @@ self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 function layoutAds(json) {
 
 	adArray = json.data;
-	
+
 	var pageUrl = json.page// currentAd = json.currentAd;
 
     if (!adArray) return;
-    
+
     //log('Menu::layoutAds: '+adArray.length + " ads");
-    	
+
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;
-	   
+
     var adsOnPage = adArray.filter(function(a) {
-        
+
         return (a.pageUrl === pageUrl);
     });
-    
+
     adsOnPage.sort(byField('-foundTs')); // sort by found-time
 
     var theHtml = createHtml(adsOnPage, adArray);
@@ -35,21 +35,21 @@ function updateAds(obj) {
 
     var sel, td, onpage,
         currentAd = obj.currentAd,
-        update = obj.update, 
+        update = obj.update,
         pageUrl = obj.page;
 
     if (!adArray) {
-        
+
         console.warn('Menu::updateAds: ', "no ad array!!");
         return;
     }
-    
+
     if (!replaceUpdatedAd(update))  {
-        
+
         console.warn('Menu::updateAds: ', "no update found!!");
         return;
     }
-    
+
     //console.log('Menu::updateAds: ', update);
 
     // update the title (DOM)
@@ -57,7 +57,7 @@ function updateAds(obj) {
     $(sel).text(update.title);
 
     if (update.contentType !== 'text') {
-        
+
         // update the url (DOM)
         sel = '#ad' + update.id + ' cite';
         td = targetDomain(update);
@@ -71,9 +71,9 @@ function updateAds(obj) {
 
     //currentAd && tagCurrentAd(currentAd);
 
-    onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; }) 
+    onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; })
     visited = onpage.filter(function(ad) { return ad.visitedTs > 0 })
-    
+
     // BUG: see  #184
     $('#visited-count').text('clicked '+visitedCount(onpage));
 
@@ -89,7 +89,7 @@ function replaceUpdatedAd(update) {
     }
     return null;
 }
-   
+
 function refreshPanel(opts) {
 
     //console.log('refreshPanel: opts: ',opts);
@@ -104,8 +104,8 @@ function refreshPanel(opts) {
         label = 'Start AdNauseam';
         $('#pause-button').addClass('disabled');
     }
-    
-    $('#cmn-toggle-1').prop('checked', opts.disableLogs); 
+
+    $('#cmn-toggle-1').prop('checked', opts.disableLogs);
     $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
     $('#settings-header').html('AdNauseam&nbsp;v'+opts.version+' Settings');
 
@@ -114,14 +114,14 @@ function refreshPanel(opts) {
 }
 
 function animateIcon(ms) {
-    
+
     var down = 'img/adn_visited.png', up = 'img/adn_active.png';
     $('#toggle-button').css('background-image', 'url('+down+')');
-    
+
     setTimeout(function() {
-        
+
         $('#toggle-button').css('background-image', 'url('+up+')');
-        
+
     }, ms);
 }
 
@@ -144,54 +144,54 @@ function visitedCount(arr) {
 }
 
 function getRecentAds(ads, num) {
-    
+
     var recent = [];
 
     if (ads) {
-        
+
         ads.sort(byField('-foundTs')); // sort by found-time
-    
-    
+
+
         // put pending ads first
         for (var i=0; recent.length < num && i < ads.length; i++) {
-            
+
             (ads[i].visitedTs == 0)  && recent.push(ads[i]);
         }
-        
+
         // now fill with the rest
         for (var i=0; recent.length < num && i < ads.length; i++) {
-            
+
             if (recent.indexOf(ads[i]) < 0)
                 recent.push(ads[i]);
-        }      
-        
+        }
+
         // TODO: make sure currently-being-attempted ad is first
     }
-       
+
     return recent;
 }
 
 function createHtml(ads, all) { // { fields: ads, onpage, unique };
- 
+
 	showAlert(false);
-	
+
 	$('#ad-list-items').removeClass();
-	
+
 	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
-	    
+
         ads = getRecentAds(all, 5);
-        
+
         var msg = 'no ads on this page';
         if (ads && ads.length) msg += ' (showing recent)';
-        
+
         showAlert(msg);
-        
+
         $('#ad-list-items').addClass('recent-ads');
-        
+
         console.log('Handle case: no-ads on page *** '+ads.length+' recent ads');
     }
 
-    var html = ''; // TODO: redo this ugliness  
+    var html = ''; // TODO: redo this ugliness
 	for (var i=0, j = ads.length; i<j; i++) {
 
 		if (ads[i].contentType === 'img') {
@@ -214,7 +214,7 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
 			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
 		}
 	}
-	
+
     //console.log("\nHTML\n"+html+"\n\n");
 
 	return html;
@@ -234,9 +234,9 @@ function param(name) {
 }
 
 function attachMenuTests() {
-    
+
     console.log('attachMenuTests()');
-    
+
     function assert(test, exp, msg) {
         msg = msg || 'expecting "' + exp + '", but got';
         console.log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
@@ -285,7 +285,7 @@ function attachMenuTests() {
 		// remove all visible ads from menu
 		$('.ad-item').remove();
 		$('.ad-item-text').remove();
-		
+
 		setCounts(0, 0, 0);
 
 		// trigger closing of settings
@@ -293,7 +293,7 @@ function attachMenuTests() {
 
 		// call addon to clear simple-storage
 		self.port && self.port.emit("clear-ads");
-		
+
 		createHtml();
 	});
 
@@ -335,7 +335,7 @@ function attachMenuTests() {
 		//console.log('#disable-logs.click: '+val);
 		self.port && self.port.emit('disable-logs', { 'value' : val });
 	});
-	
+
     $('#cmn-toggle-2').click(function() { // referer
 
         var val = $(this).prop('checked');

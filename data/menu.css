@@ -282,6 +282,11 @@ header{
    }
 }
 
+@keyframes attempting {
+  from { opacity: 0.6 }
+  to 	 { opacity: 1 }
+}
+
 /* -------------------------------------------------- */
 
 .ad-item img {
@@ -300,6 +305,11 @@ header{
 .ad-item.just-visited {
   background: none;
   animation: 1500ms ease-in-out visit;
+}
+
+.ad-item.attempting,
+.ad-item-text.attempting {
+  animation: 200ms ease-in-out attempting infinite alternate;
 }
 
 .ad-item.failed img {

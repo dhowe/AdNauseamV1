@@ -628,6 +628,13 @@ div.bullets { display: none; } /* hide by default */
 	animation: 1500ms ease-in-out just-visited-inside;
 }
 
+.item.attempting img,
+.item-text.attempting .item-text-div>h3,
+.item-text.attempting .item-text-div>cite,
+.item-text.attempting .item-text-div>div{
+	animation: 200ms ease-in-out attempting infinite alternate;
+}
+
 @keyframes just-visited {
 	from {
 		background: #BD10E0;
@@ -644,6 +651,11 @@ div.bullets { display: none; } /* hide by default */
 	from {
 		opacity: 0;
 	}
+}
+
+@keyframes attempting {
+	from { opacity: 0.6 }
+	to 	 { opacity: 1 }
 }
 
 .item span.counter{

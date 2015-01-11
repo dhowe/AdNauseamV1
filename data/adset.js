@@ -25,7 +25,7 @@ function createAdSets(ads) {
         }
         else {
 
-            // dup: update the count
+            // dup: add as child
             hash[key].add(ad);
         }
     }

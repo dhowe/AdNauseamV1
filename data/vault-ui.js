@@ -15,7 +15,7 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
 
 function createSlider(ads) { // happens just once
 
-    //console.log('Vault-UI.createSlider');
+    console.log('Vault-UI.createSlider');
     
     if (!ads || !ads.length) return;
     
@@ -35,7 +35,7 @@ function createSlider(ads) { // happens just once
     }
     catch (e) {
         
-        throw Error("NO STAGE IN D3 (page notready?)");
+        throw Error("[D3] NO STAGE (page-not-ready?)");
     }
 
   	// finding the first and last ad

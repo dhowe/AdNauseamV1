@@ -2,7 +2,7 @@
 var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
     zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ],
     animatorId, animateMs = 2000, selectedAdSet, adSets,
-    states = ['pending', 'visited', 'failed' ]; 
+    states = ['pending', 'visited', 'failed' ];
 
 /* NEXT:     
 
@@ -100,7 +100,7 @@ function doUpdate(updated) {
     var groupInfo = findByAdId(updated.id),
         $item = findItemByGid(groupInfo.group.gid),
         adset = groupInfo.group, itemClass;
-
+    
     // update the adgroup
     adset.index = groupInfo.index;
     adset.children[adset.index] = updated;
@@ -142,7 +142,8 @@ function appendMetaTo($div, adset) {
         
         var $li = $('<li/>', { 
                 
-            'style': 'margin-top: 0px', 
+            'class': 'meta-item',
+            'style': 'margin-top: 0px' 
             
         }).appendTo($ul);
         
@@ -376,7 +377,7 @@ function appendBulletsTo($div, adset) {
 
 function repack(resetLayout) {
 
-    //log("Vault.repack() :: "+visible);
+    log("Vault.repack()");
     
 	var $items =  $(".item"), visible = $items.length;
 
@@ -384,6 +385,8 @@ function repack(resetLayout) {
 
     $('#container').imagesLoaded(function() {
 
+        log('imagesLoaded');
+        
     	if (visible > 1) {
 
     		new Packery('#container', {
@@ -401,7 +404,8 @@ function repack(resetLayout) {
             left : (5000 - $items.width() / 2) + 'px'
         });
         
-        storeInitialLayout($items);
+        storeItemLayout($items);
+        storeViewState(true);
     });
 }
 
@@ -468,6 +472,7 @@ function dragOver(e) {
 
 function dragEnd(e) {
  
+    storeViewState(true);
     $('#container').removeClass('dragged');
 }
 
@@ -498,11 +503,14 @@ function formatDate(ts) {
 }
 
 // TODO: This should only reset the x-axis/scale, not recreate everything?
+// TODO: Does this reset filtering on resize
 function resizeHistorySlider() {
 
     //log('resizeHistorySlider()');
-    
+
 	createSlider(all);
+	storeItemLayout($('.item'));
+	storeViewState(true);
 }
 
 function enableLightbox() {
@@ -522,31 +530,45 @@ function enableLightbox() {
     });
 }
 
-function LOG_ADSET(pre) {
-    
-  console.log(pre+".ACTUAL-SET: "+adSets[0].ts
-    +" index: "+adSets[0].index
-    +" ad-id: "+adSets[0].child().id
-    +" groupState: "+adSets[0].groupState()
-    +" visitedTs: "+adSets[0].child().visitedTs);
-}
+function storeItemLayout($items) {
 
-function storeInitialLayout($items) {
+    if (!$items) throw Error('No items!');
     
     var cx = $(window).width()/2, cy = $(window).height()/2;
   
-    $items.each(function() {
-         
-        var $this = $(this),
-            offset = $this.offset(),
-            width = $this.width(),
-            height = $this.height(),
-            centerX = offset.left + width / 2,
-            centerY = offset.top + height / 2;
+    setTimeout(function() { // required to get consistent offset ?
+        
+        $items.each(function() {
+             
+            var $this = $(this),
+                offset = $this.offset();
 
-        $this.attr('data-offx', cx - centerX);
-        $this.attr('data-offy', cy - centerY);        
-    });
+            // offsets of item from center of window
+            $this.attr('data-offx', (cx - offset.left));
+            $this.attr('data-offy', (cy - offset.top));        
+        });    
+        
+        log('storeItemLayout()');
+        
+    }, 500); 
+}
+
+function storeViewState(store) {
+        
+    var dm = document.querySelector('#container');
+
+    if (store) {
+    
+        viewState.zoomIdx = zoomIdx; 
+        viewState.left = dm.style.marginLeft;
+        viewState.top = dm.style.marginTop;    
+    }
+    else { // restore
+        
+        setZoom(zoomIdx = viewState.zoomIdx); 
+        dm.style.marginLeft = viewState.left;
+        dm.style.marginTop = viewState.top;
+    }
 }
 
 function centerZoom($ele) {
@@ -555,25 +577,29 @@ function centerZoom($ele) {
     
     if ($ele) {
         
-        // take into account height of meta-data (mdh)
-        var metaHeight = 110, metaXOffset = 300, metaYOffset = 10, 
-            ew= $ele.width(), eh = $ele.find("img").height() + metaHeight;
-        
-        // save the state for after (TODO: See #191, this needs to happen in the pack)
-        viewState.zoomIdx = zoomIdx; 
-        viewState.left = dm.style.marginLeft;
-        viewState.top = dm.style.marginTop;
-        
+        storeViewState(true);
+
         // compute target positions for transform
-        var offx = parseInt($ele.attr('data-offx'));
-        var offy = parseInt($ele.attr('data-offy')) - metaHeight/2; // .5 * meta-data
-        var mleft = (-5000 + offx), mtop = (-5000 + offy);
-        
+        var margin = 10, metaOffset = 110, center = -5000,
+            ww = $(window).width(), wh = $(window).height(),
+            offx = parseInt($ele.attr('data-offx')),
+            offy = parseInt($ele.attr('data-offy')),
+            isText = $ele.find('.item-text-div').length,
+            iw =  (isText ? $ele.find('.item-text-div') : $ele.find('img') ).width(),
+            ih =  (isText ? $ele.find('.item-text-div') : $ele.find('img') ).height(),
+            mleft = (center + offx - iw/2), mtop = (center + offy - ih/2);
+          
         // make sure left/bottom corner of meta-data is onscreen (#180)
-        if (ew > $(window).width()) 
-            mleft += (ew - $(window).width() + metaXOffset) / 2;
-        if (eh > $(window).height())
-            mtop -= (eh - $(window).height() + metaYOffset) / 2;
+        if (iw > ww - (metaOffset*2 + margin)) {
+            
+            //log('HITX:  iw='+iw+" ww="+ww+" diff="+(iw - ww)  + "  offx="+offx); 
+            mleft += ((iw - ww) / 2) + (metaOffset + margin);
+        }
+        if (ih > wh - (metaOffset*2 + margin)) {
+            
+            //log('HITY:  ih='+ih+" wh="+wh+" diff="+(ih - wh)  + "  offy="+offy); 
+            mtop -= ((ih - wh) / 2) + (metaOffset + margin);// bottom-margin
+        }
         
         // reset zoom to 100%
         setZoom(zoomIdx = 0);       
@@ -584,10 +610,7 @@ function centerZoom($ele) {
     }       
     else { // restore zoom-state
 
-        setZoom(zoomIdx = viewState.zoomIdx); 
-        
-        dm.style.marginLeft = viewState.left;
-        dm.style.marginTop = viewState.top;
+        storeViewState(false);
     }
 }
 
@@ -688,7 +711,8 @@ function findItemByGid(gid) {
         return $item;
     }
     
-    throw Error('No $item for gid: '+gid);
+    return null; // item may be filtered
+    //throw Error('No $item for gid: '+gid);
 }
 
 function findGroupByGid(gid) {
@@ -709,7 +733,7 @@ function attachTests() {
 		console.warn("Vault.js :: Loading test-ads: "+TEST_ADS);
 	    layoutAds({ data : toAdArray(json), page : TEST_PAGE }); // currentAd?
 
-	}).fail(function(e) { console.warn( "error:", e); });
+	}).fail(function(e) { console.warn("error(bad-json?):", e); });
 }
 
 function zoomIn() {

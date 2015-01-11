@@ -555,8 +555,9 @@ function centerZoom($ele) {
     
     if ($ele) {
         
-        // take into account height of meta-data
-        var ew= $ele.width(), eh = $ele.find("img").height() + 110;
+        // take into account height of meta-data (mdh)
+        var metaHeight = 110, metaXOffset = 300, metaYOffset = 10, 
+            ew= $ele.width(), eh = $ele.find("img").height() + metaHeight;
         
         // save the state for after (TODO: See #191, this needs to happen in the pack)
         viewState.zoomIdx = zoomIdx; 
@@ -565,14 +566,14 @@ function centerZoom($ele) {
         
         // compute target positions for transform
         var offx = parseInt($ele.attr('data-offx'));
-        var offy = parseInt($ele.attr('data-offy')) - 55; // .5 * meta-data
+        var offy = parseInt($ele.attr('data-offy')) - metaHeight/2; // .5 * meta-data
         var mleft = (-5000 + offx), mtop = (-5000 + offy);
         
-        // make sure left/bottom corner of meta-data is onscreen (fix to #180)
+        // make sure left/bottom corner of meta-data is onscreen (#180)
         if (ew > $(window).width()) 
-            mleft += (ew - $(window).width()) / 2;
+            mleft += (ew - $(window).width() + metaXOffset) / 2;
         if (eh > $(window).height())
-            mtop -= (eh - $(window).height()) / 2;
+            mtop -= (eh - $(window).height() + metaYOffset) / 2;
         
         // reset zoom to 100%
         setZoom(zoomIdx = 0);       

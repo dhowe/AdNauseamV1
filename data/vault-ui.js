@@ -15,7 +15,7 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
 
 function createSlider(ads) { // happens just once
 
-    console.log('Vault-UI.createSlider');
+    //console.log('Vault-UI.createSlider');
     
     if (!ads || !ads.length) return;
     

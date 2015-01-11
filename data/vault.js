@@ -98,12 +98,14 @@ function doUpdate(updated) {
     //log('doUpdate: #'+updated.id);
     
     var groupInfo = findByAdId(updated.id),
-        $item = findItemByGid(groupInfo.group.gid),
-        adset = groupInfo.group, itemClass;
-    
+        adset = groupInfo.group, itemClass,
+        $item = findItemByGid(groupInfo.group.gid);
+        
     // update the adgroup
     adset.index = groupInfo.index;
     adset.children[adset.index] = updated;
+    
+    if (!$item) log("ITEM NOT VISIBLE");
     
     // update the ad data
     updateMetaTarget($item.find('.target[data-idx='+adset.index+']'), updated);
@@ -376,8 +378,6 @@ function appendBulletsTo($div, adset) {
 }
 
 function repack(resetLayout) {
-
-    log("Vault.repack()");
     
 	var $items =  $(".item"), visible = $items.length;
 
@@ -385,7 +385,7 @@ function repack(resetLayout) {
 
     $('#container').imagesLoaded(function() {
 
-        log('imagesLoaded');
+        //log('imagesLoaded');
         
     	if (visible > 1) {
 
@@ -396,7 +396,10 @@ function repack(resetLayout) {
     			gutter : 1
     		});
             
-            if (resetLayout) positionAds();    		
+            if (resetLayout) {
+                
+                positionAds();
+            }    		
     	}
         else if (visible == 1)  $items.css({ // center single
             
@@ -405,7 +408,6 @@ function repack(resetLayout) {
         });
         
         storeItemLayout($items);
-        storeViewState(true);
     });
 }
 
@@ -472,7 +474,6 @@ function dragOver(e) {
 
 function dragEnd(e) {
  
-    storeViewState(true);
     $('#container').removeClass('dragged');
 }
 
@@ -502,15 +503,9 @@ function formatDate(ts) {
 		+ meridian.toLowerCase();
 }
 
-// TODO: This should only reset the x-axis/scale, not recreate everything?
-// TODO: Does this reset filtering on resize
 function resizeHistorySlider() {
 
-    //log('resizeHistorySlider()');
-
 	createSlider(all);
-	storeItemLayout($('.item'));
-	storeViewState(true);
 }
 
 function enableLightbox() {
@@ -518,13 +513,6 @@ function enableLightbox() {
     $('.item').click(function(e) {
        
         var $this = $(this);
-        /*setTimeout(function() {
-            
-            log('item.clicked: '+$this.html(),
-                $this[0].getBoundingClientRect().left,
-                $this[0].getBoundingClientRect().top
-            );
-        },3000);*/
         e.stopPropagation();
         lightboxMode(this);         
     });
@@ -536,21 +524,20 @@ function storeItemLayout($items) {
     
     var cx = $(window).width()/2, cy = $(window).height()/2;
   
-    setTimeout(function() { // required to get consistent offset ?
+    setTimeout(function() { 
         
         $items.each(function() {
              
-            var $this = $(this),
-                offset = $this.offset();
+            var $this = $(this), offset = $this.offset();
 
             // offsets of item from center of window
             $this.attr('data-offx', (cx - offset.left));
             $this.attr('data-offy', (cy - offset.top));        
         });    
         
-        log('storeItemLayout()');
+        //log('storeItemLayout()');
         
-    }, 500); 
+    }, 500); // (annoyingly) required to get consistent offsets here ?
 }
 
 function storeViewState(store) {
@@ -559,6 +546,8 @@ function storeViewState(store) {
 
     if (store) {
     
+        //log('storeViewState()');
+
         viewState.zoomIdx = zoomIdx; 
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;    

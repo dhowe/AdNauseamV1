@@ -16,11 +16,7 @@ function layoutAds(json) {
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;
 
-    var adsOnPage = adArray.filter(function(a) {
-
-        return (a.pageUrl === pageUrl);
-    });
-
+    var adsOnPage = onPage(adArray, pageUrl);
     adsOnPage.sort(byField('-foundTs')); // sort by found-time
 
     var theHtml = createHtml(adsOnPage, adArray);
@@ -71,11 +67,7 @@ function updateAds(obj) {
 
     //currentAd && tagCurrentAd(currentAd);
 
-    onpage = adArray.filter(function(ad) { return ad.pageUrl === pageUrl; })
-    visited = onpage.filter(function(ad) { return ad.visitedTs > 0 })
-
-    // BUG: see  #184
-    $('#visited-count').text('clicked '+visitedCount(onpage));
+    $('#visited-count').text('clicked '+visitedCount(onPage(adArray, pageUrl)));
 
     animateIcon(500);
 }
@@ -133,15 +125,15 @@ function setCounts(found, visited, total) {
 }
 
 function visitedCount(arr) {
-
-	var visitedCount = 0;
-	for (var i=0, j = arr.length; i<j; i++) {
-	    console.log("checking: "+arr[i].visitedTs);
-		if (arr[i].visitedTs > 0)
-			visitedCount++;
-	}
-	return visitedCount;
+    
+    return arr.filter(function(ad) { return ad.visitedTs > 0 }).length;
 }
+
+function onPage(arr, pageUrl) {
+
+    return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
+}
+
 
 function getRecentAds(ads, num) {
 
@@ -271,6 +263,19 @@ function attachMenuTests() {
 
 		self.port && self.port.emit("show-log");
 	});
+	
+    $('#import-ads').click(function(e) {
+        //console.log('#log-button.click');
+
+        e.preventDefault();
+        self.port && self.port.emit("import-ads");
+    });
+    
+    $('#export-ads').click(function(e) {
+        //console.log('#log-button.click');
+        e.preventDefault();
+        self.port && self.port.emit("export-ads");
+    });
 
 	$('#vault-button').click(function() {
 		//console.log('#vault-button.click');

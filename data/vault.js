@@ -105,7 +105,11 @@ function doUpdate(updated) {
     adset.index = groupInfo.index;
     adset.children[adset.index] = updated;
     
-    if (!$item) log("ITEM NOT VISIBLE");
+    if (!$item) {
+        
+        log("ITEM NOT VISIBLE");
+        return;
+    }
     
     // update the ad data
     updateMetaTarget($item.find('.target[data-idx='+adset.index+']'), updated);
@@ -429,10 +433,8 @@ function numVisited(adsets) {
 function numFound(adsets) {
 
     var numv = 0;
-    for (var i=0, j = adsets.length; i<j; i++) {
-
+    for (var i=0, j = adsets.length; i<j; i++) 
         numv += (adsets[i].count());
-    }
     return numv;
 }
 
@@ -878,12 +880,14 @@ function asAdArray(adsets) {
 function addInterfaceHandlers(ads) {
 
     $('#x-close-button').click(function(e) {
-
+        
+        e.preventDefault();
         self.port && self.port.emit("close-vault");
     });
 
     $('#logo').click(function(e) {
 
+        e.preventDefault();
         openInNewTab('http://dhowe.github.io/AdNauseam/');
     });
 

@@ -2,7 +2,7 @@
 var textAdSelectors = [ 
     { selector: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleBottomText, name: 'adsense' },
-    { selector: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
+    { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
@@ -16,7 +16,7 @@ $(function() { // page-is-ready
         return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
     });
     
-    console.log("HIDDEN: "+$hidden.length);
+    console.log("HIDDEN: " + $hidden.length);
 
     $hidden.each(function() {
     
@@ -27,7 +27,7 @@ $(function() { // page-is-ready
 
             if ( $(this).is(data.selector)) {
                 
-                 console.log('HIT: '+waitSel);
+                 console.log('HIT: ' + waitSel);
                  
                  waitForKeyElements(waitSel, data.handler);
             }
@@ -147,12 +147,13 @@ function googleText(anchor) {
 
 function duckDuckText(anchor) {
                     
-    var text = anchor.find('div.result__snippet a');
+    var title = anchor.find('.result__a')
+    var text = anchor.find('.result__snippet a');
     var site = anchor.find('a.result__url');
     
     if (text.length && site.length && title.length) {
         
-        var ad = createAd('duckduckgo', anchor.text(), 
+        var ad = createAd('duckduckgo', title.text(), 
             text.text(), site.text(), anchor.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     } 

@@ -1,7 +1,8 @@
 
 var textAdSelectors = [ 
-    { selector: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
-    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleBottomText, name: 'adsense' },
+    { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top side AD
+    { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
+    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
     { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
@@ -61,29 +62,6 @@ function baiduText(anchor) {
     }
 }
 
-function googleBottomText(anchor) {
-	
-	console.log('googleBottomText');
-	
-	var title = anchor.find('h3');
-	// console.log("title: " + title.text());
-	var text = anchor.find('div.ads-creative');
-	// console.log("text: " + text.text());
-    var site = anchor.find('div.ads-visurl cite');
-	// console.log("site: " + site.text());
-    
-    if (text.length && site.length && title.length) {
- 
-        var ad = createAd('googleBottom', title.text(), 
-            text.text(), site.text(), title.attr('href'));  
-        self.port && self.port.emit('parsed-text-ad', ad);
-    }
-    else {
-        
-        console.warn('googleBottomText.fail: ', text, site);
-    }
-}
-
 function bingText(anchor) {
     
     var title = anchor.find("h2 a");
@@ -130,8 +108,9 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var text = anchor.find('div.ads-creative');
-    var site = anchor.find('div.ads-visurl cite');
+    var title = anchor.find('h3');
+    var text = anchor.find('.ads-creative');
+    var site = anchor.find('.ads-visurl cite');
     
     if (text.length && site.length && title.length) {
  
@@ -143,7 +122,6 @@ function googleText(anchor) {
         
         console.warn('googleText.fail: ', text, site);
     }
-}
 
 function duckDuckText(anchor) {
                     

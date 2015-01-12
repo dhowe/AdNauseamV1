@@ -1,8 +1,9 @@
 
 var textAdSelectors = [ 
-    { selector: '.ads-ad', waitfor: "a[class^='r-']", handler: googleText, name: 'adsense' },
-    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleBottomText, name: 'adsense' },
-    { selector: '.results--ads', waitfor: '.result__a', handler: duckDuckText, name: 'duckduckgo' },
+    { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top side AD
+    { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
+    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
+    { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
@@ -16,7 +17,7 @@ $(function() { // page-is-ready
         return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
     });
     
-    console.log("HIDDEN: "+$hidden.length);
+    console.log("HIDDEN: " + $hidden.length);
 
     $hidden.each(function() {
     
@@ -27,7 +28,7 @@ $(function() { // page-is-ready
 
             if ( $(this).is(data.selector)) {
                 
-                 console.log('HIT: '+waitSel);
+                 console.log('HIT: ' + waitSel);
                  
                  waitForKeyElements(waitSel, data.handler);
             }
@@ -58,29 +59,6 @@ function baiduText(anchor) {
     else {
         
         console.warn('baiduText.fail: ', text, site);
-    }
-}
-
-function googleBottomText(anchor) {
-	
-	console.log('googleBottomText');
-	
-	var title = anchor.find('h3');
-	// console.log("title: " + title.text());
-	var text = anchor.find('div.ads-creative');
-	// console.log("text: " + text.text());
-    var site = anchor.find('div.ads-visurl cite');
-	// console.log("site: " + site.text());
-    
-    if (text.length && site.length && title.length) {
- 
-        var ad = createAd('googleBottom', title.text(), 
-            text.text(), site.text(), title.attr('href'));  
-        self.port && self.port.emit('parsed-text-ad', ad);
-    }
-    else {
-        
-        console.warn('googleBottomText.fail: ', text, site);
     }
 }
 
@@ -130,8 +108,9 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var text = anchor.find('div.ads-creative');
-    var site = anchor.find('div.ads-visurl cite');
+    var title = anchor.find('h3');
+    var text = anchor.find('.ads-creative');
+    var site = anchor.find('.ads-visurl cite');
     
     if (text.length && site.length && title.length) {
  
@@ -143,16 +122,16 @@ function googleText(anchor) {
         
         console.warn('googleText.fail: ', text, site);
     }
-}
 
 function duckDuckText(anchor) {
                     
-    var text = anchor.find('div.result__snippet a');
+    var title = anchor.find('.result__a')
+    var text = anchor.find('.result__snippet a');
     var site = anchor.find('a.result__url');
     
     if (text.length && site.length && title.length) {
         
-        var ad = createAd('duckduckgo', anchor.text(), 
+        var ad = createAd('duckduckgo', title.text(), 
             text.text(), site.text(), anchor.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     } 

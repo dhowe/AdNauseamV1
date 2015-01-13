@@ -6,6 +6,7 @@ var textAdSelectors = [
     { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
+    { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
@@ -39,6 +40,31 @@ $(function() { // page-is-ready
         }
     });
 });
+
+function ebayText(anchor) {
+
+    // console.log('ebayText(): ', anchor.text());
+    var title = anchor.find('a > div:first-child');
+    // console.log('title: ', title.text());
+    var site = anchor.find('a > div:nth-child(2)');
+    // console.log('site: ', site.text());
+    var text = anchor.find('a > div:nth-child(3)')
+    // console.log('text: ', text.text());
+    var targetUrl = anchor.find('a');
+    // console.log("targetUrl.attr('href'): ", targetUrl.attr('href'));
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('ebay', title.text(), 
+            text.text(), site.text(), targetUrl.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('ebayText.fail: ', text, site);
+    }
+}
 
 function sogouText(anchor) {
 

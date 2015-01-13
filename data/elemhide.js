@@ -6,8 +6,12 @@ var textAdSelectors = [
     { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
+
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
+    { selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
+    { selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
+
 ];
 
 $(function() { // page-is-ready
@@ -35,6 +39,50 @@ $(function() { // page-is-ready
         }
     });
 });
+
+function sogouText(anchor) {
+
+    var title = anchor.find('h3 a');
+    var site = anchor.find('div:nth-child(2) a');
+    var text = anchor.find('div:last-child a');
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('sogou', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('sogouText.fail: ', text, site);
+    }
+}
+
+function sogouTopAndBottomText(anchor) {
+
+    // console.log('sogouTopAndBottomText(): ', anchor.text());
+
+    var title = anchor.find('h3 > a');
+    // console.log('title: ', title.text());
+    var site = anchor.find('h3 > cite');
+    // console.log('site: ', site.text());
+    var text = anchor.text();
+    text = text.replace(title.text(), "").replace(site.text(), "").replace("  ", "");
+    // console.log('text: ', text);
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('sogou', title.text(), 
+            text, site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('sogouTopAndBottomText.fail: ', text, site);
+    }
+}
 
 function baiduText(anchor) {
     

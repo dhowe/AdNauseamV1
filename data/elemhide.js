@@ -4,7 +4,7 @@ var textAdSelectors = [
     { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
     { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
-    { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
+    { selector: '.ads', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
@@ -38,16 +38,9 @@ $(function() { // page-is-ready
 
 function baiduText(anchor) {
     
-    // console.log("baiduText()");
-    
     var title = anchor.find("a:first-child");
-    // console.log("title: " + title.text());
-    
     var text = anchor.find("font:first-child");
-    // console.log("text: " + text.text());
-
     var site = anchor.find("font:last-child");
-    // console.log("site: " + site.text());
 
     if (text.length && site.length && title.length) {
  
@@ -85,7 +78,7 @@ function yahooText(anchor) {
     
     //console.log("HIT *** anchor: "+anchor[0].classList);
 
-    var title = anchor.find("div[class$='ad-ttl'] a");
+    var title = anchor.find('div:first-child a');
     var text = anchor.find('div.abs a');
     var site = anchor.find('em a');    
     
@@ -122,6 +115,7 @@ function googleText(anchor) {
         
         console.warn('googleText.fail: ', text, site);
     }
+}
 
 function duckDuckText(anchor) {
                     

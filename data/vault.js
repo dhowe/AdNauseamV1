@@ -5,11 +5,12 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     states = ['pending', 'visited', 'failed' ];
 
 /* NEXT:     
-
+    -- Load menu with ads for current page *** 
+    
     -- BUG: Arbitrary page switch to vault (see Vaultman)
     
     -- NEW-PAGE HASH (use for menu-list and ad-pageTitle), then store array (or set?) of all ads;
-       before moving from page-hash to ad-array, make sure it doesnt exist
+       before moving from page-hash to ad-array, make sure it doesnt exist ??
 
     -- CURRENT-AD (disabled for now)
         test current-ad handling (broken in shared.js)        
@@ -32,7 +33,7 @@ function layoutAds(json) {
 
     doLayout(adSets, true);
 
-    //tagCurrentAd(addonData.currentAd);    
+    //tagCurrentAd(addonData.current);    
 }
 
 function updateAd(json) {
@@ -42,7 +43,7 @@ function updateAd(json) {
     // update class/title/visited/resolved-url
     doUpdate(json.update);
 
-    //tagCurrentAd(addonData.currentAd);
+    //tagCurrentAd(addonData.current);
     
     computeStats(adSets);
 }

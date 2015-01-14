@@ -12,7 +12,6 @@ var textAdSelectors = [
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
     { selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
     { selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
-
 ];
 
 $(function() { // page-is-ready
@@ -22,7 +21,7 @@ $(function() { // page-is-ready
         return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
     });
     
-    console.log("HIDDEN: " + $hidden.length);
+    //console.log("HIDDEN: " + $hidden.length);
 
     $hidden.each(function() {
     
@@ -193,6 +192,11 @@ function duckDuckText(anchor) {
     var text = anchor.find('.result__snippet a');
     var site = anchor.find('a.result__url');
     
+    // console.log("  *** title: "+title.text());
+    // console.log("    *** text: "+text.text());
+    // console.log("    *** site: "+site.text());
+    // console.log("    *** targetUrl: "+anchor.attr('href'));
+      
     if (text.length && site.length && title.length) {
         
         var ad = createAd('duckduckgo', title.text(), 

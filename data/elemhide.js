@@ -7,7 +7,7 @@ var textAdSelectors = [
     { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
-        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
+        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
 ];
 
 $(function() { // page-is-ready
@@ -122,6 +122,7 @@ function googleText(anchor) {
         
         console.warn('googleText.fail: ', text, site);
     }
+}
 
 function duckDuckText(anchor) {
                     

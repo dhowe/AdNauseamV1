@@ -18,3 +18,4 @@ todo.txt
 data/lib/npm-debug.log
 **/.DS_Store
 data/misc
+node_modules

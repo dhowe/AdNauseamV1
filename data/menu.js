@@ -129,7 +129,7 @@ function onPage(arr, pageUrl) {
     return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
 }
 
-
+/*
 function getRecentAds(ads, num) {
 
     var recent = [];
@@ -155,7 +155,7 @@ function getRecentAds(ads, num) {
     }
 
     return recent;
-}
+}*/
 
 function showRecentAds(recent) { 
     
@@ -246,7 +246,8 @@ function attachMenuTests() {
 	$.getJSON(TEST_ADS, function(json) {
 
 		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds({ data : toAdArray(json), page : TEST_PAGE });
+		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
+	    layoutAds({ data : json, page : TEST_PAGE });
 
 	}).fail(function(e) { console.warn( "error:", e); });
 }

@@ -1,42 +1,9 @@
 var TEXT_MINW = 150, TEXT_MAXW = 450;
 
-function createAdSets(ads) {
-
-    var ad, hash = {}, adsets = [];
-
-    // set hidden val for each ad
-    for (var i=0, j = ads.length; i<j; i++) {
-
-        ad = ads[i];
-        
-        key = computeHashKey(ad); 
-        
-        if (!key) {
-            
-            console.log("*** adset.js::ignore->no key!!!", ad);
-            continue;
-        }
-        
-        if (!hash[key]) {
-
-            // new: add a hash entry
-            hash[key] = new AdSet(ad);
-            adsets.push(hash[key]);
-        }
-        else {
-
-            // dup: add as child
-            hash[key].add(ad);
-        }
-    }
-
-    return adsets;
-}
-
 function AdSet(ad) { 
 
     this.gid = Math.abs(createGid(ad));
-    this.ts = +new Date();
+    //this.ts = +new Date();
     //console.log('create AdSet#'+this.gid);
     this.children = [];
     this.index = 0;
@@ -61,7 +28,7 @@ AdSet.prototype.findChildById = function(id) {
 
 AdSet.prototype.child = function(i) {
     
-    return this.children[(typeof i == 'undefined') ? this.index : i];
+    return this.children[ (typeof i == 'undefined') ? this.index : i ];
 }
 
 AdSet.prototype.state = function(i) {
@@ -79,15 +46,33 @@ AdSet.prototype.type = function() {
 AdSet.prototype.failedCount = function() {
     
     return this.children.filter(function(d) {
+        
         return d.visitedTs < 0;
+        
     }).length;
 }
 
 AdSet.prototype.visitedCount = function() {
     
     return this.children.filter(function(d) {
+        
         return d.visitedTs > 0;
+        
     }).length;
+}
+
+AdSet.prototype.nextPending = function() {
+    
+    var ads = this.children.slice();
+    ads.sort(byField('-foundTs'));
+    
+    for(var i=0,j = ads.length; i<j; i++) {
+        
+      if (ads[i].visitedTs === 0) // pending
+        return ads[i];
+    }
+      
+    return null;
 }
 
 AdSet.prototype.count = function() {
@@ -96,15 +81,16 @@ AdSet.prototype.count = function() {
 }
     
 AdSet.prototype.add = function(ad) {
-    
+          
      ad && this.children.push(ad);
 }
 
 function createGid(ad) {
     
-    var hash = 0;
-    for (var i = 0; i < ad.hashKey.length; i++) {
-        var code = ad.hashKey.charCodeAt(i);
+    var hash = 0, key = computeHashKey(ad);
+    
+    for (var i = 0; i < key.length; i++) {
+        var code = key.charCodeAt(i);
         hash = ((hash<<5)-hash) + code;
         hash = hash & hash; // Convert to 32bit integer
     }

@@ -157,9 +157,9 @@ function getRecentAds(ads, num) {
     return recent;
 }
 
-function handleNoAdsShowRecent(recent) { 
+function showRecentAds(recent) { 
     
-    log('handleNoAdsShowRecent()');
+    //log('showRecentAds()');
     
     var msg = 'no ads on this page';
     if (recent && recent.length) 
@@ -174,7 +174,7 @@ function handleNoAdsShowRecent(recent) {
 
 function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
 
-    log('createHtml: '+ads.length);
+    //log('createHtml: '+ads.length);
 
 	showAlert(false);
 	
@@ -204,7 +204,7 @@ function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique 
 		}		
 	}
 
-    if (!numOnPage) handleNoAdsShowRecent(ads);
+    if (!numOnPage) showRecentAds(ads);
 
 	return html;
 }

@@ -5,32 +5,27 @@ self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
 function layoutAds(json) {
 
-	adArray = json.data;
-
-	var pageUrl = json.page// currentAd = json.currentAd;
-
-    if (!adArray) return;
-
-    //log('Menu::layoutAds: '+adArray.length + " ads");
-
+    if (!json.data) return;
+    
+    adArray = json.data;
+        
+    log('Menu::layoutAds: '+adArray.length + " ads");
+    
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;
 
-    var adsOnPage = onPage(adArray, pageUrl);
-    adsOnPage.sort(byField('-foundTs')); // sort by found-time
+	$('#ad-list-items').html(createHtml(adArray, pageUrl, json.pageCount));
 
-    var theHtml = createHtml(adsOnPage, adArray);
-	$('#ad-list-items').html(theHtml);
+    // tagCurrentAd(json.current);
 
-    //currentAd && tagCurrentAd(currentAd);
-
-	setCounts(adsOnPage.length, visitedCount(adsOnPage), adArray.length);
+	setCounts(json.pageCount, 
+	    (json.pageCount ? visitedCount(adArray) : 0), 
+	    json.totalCount);
 }
 
 function updateAds(obj) {
 
-    var sel, td, onpage,
-        currentAd = obj.currentAd,
+    var sel, td,
         update = obj.update,
         pageUrl = obj.page;
 
@@ -65,8 +60,8 @@ function updateAds(obj) {
     $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
         .removeClass('just-visited').addClass('just-visited');
 
-    //currentAd && tagCurrentAd(currentAd);
-
+    // tagCurrentAd(json.current);
+    
     $('#visited-count').text('clicked '+visitedCount(onPage(adArray, pageUrl)));
 
     animateIcon(500);
@@ -130,7 +125,7 @@ function visitedCount(arr) {
 }
 
 function onPage(arr, pageUrl) {
-
+ 
     return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
 }
 
@@ -142,7 +137,6 @@ function getRecentAds(ads, num) {
     if (ads) {
 
         ads.sort(byField('-foundTs')); // sort by found-time
-
 
         // put pending ads first
         for (var i=0; recent.length < num && i < ads.length; i++) {
@@ -163,27 +157,30 @@ function getRecentAds(ads, num) {
     return recent;
 }
 
-function createHtml(ads, all) { // { fields: ads, onpage, unique };
+function handleNoAdsShowRecent(recent) { 
+    
+    log('handleNoAdsShowRecent()');
+    
+    var msg = 'no ads on this page';
+    if (recent && recent.length) 
+        msg += ' (showing recent)';
+
+    showAlert(msg);
+
+    $('#ad-list-items').addClass('recent-ads');
+
+    console.log('Handle case: no-ads on page *** '+recent.length+' recent ads');
+}
+
+function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
+
+    log('createHtml: '+ads.length);
 
 	showAlert(false);
-
+	
 	$('#ad-list-items').removeClass();
-
-	if (!ads || !ads.length) { // no-ads on this page, show 5 recent instead
-
-        ads = getRecentAds(all, 5);
-
-        var msg = 'no ads on this page';
-        if (ads && ads.length) msg += ' (showing recent)';
-
-        showAlert(msg);
-
-        $('#ad-list-items').addClass('recent-ads');
-
-        console.log('Handle case: no-ads on page *** '+ads.length+' recent ads');
-    }
-
-    var html = ''; // TODO: redo this ugliness
+    
+    var html = '', isRecentSet = false;
 	for (var i=0, j = ads.length; i<j; i++) {
 
 		if (ads[i].contentType === 'img') {
@@ -204,10 +201,10 @@ function createHtml(ads, all) { // { fields: ads, onpage, unique };
 			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
 			if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
 			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
-		}
+		}		
 	}
 
-    //console.log("\nHTML\n"+html+"\n\n");
+    if (!numOnPage) handleNoAdsShowRecent(ads);
 
 	return html;
 }

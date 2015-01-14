@@ -129,7 +129,7 @@ function onPage(arr, pageUrl) {
     return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
 }
 
-
+/*
 function getRecentAds(ads, num) {
 
     var recent = [];
@@ -155,7 +155,7 @@ function getRecentAds(ads, num) {
     }
 
     return recent;
-}
+}*/
 
 function showRecentAds(recent) { 
     

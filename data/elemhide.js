@@ -4,10 +4,14 @@ var textAdSelectors = [
     { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
     { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
-    { selector: '.ads', waitfor: 'li.res', handler: yahooText, name: 'yahoo' },
+    { selector: '.ads', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
+    { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
+
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
-        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
+        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
+    { selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
+    { selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
 ];
 
 $(function() { // page-is-ready
@@ -36,18 +40,80 @@ $(function() { // page-is-ready
     });
 });
 
+function ebayText(anchor) {
+
+    // console.log('ebayText(): ', anchor.text());
+    var title = anchor.find('a > div:first-child');
+    // console.log('title: ', title.text());
+    var site = anchor.find('a > div:nth-child(2)');
+    // console.log('site: ', site.text());
+    var text = anchor.find('a > div:nth-child(3)')
+    // console.log('text: ', text.text());
+    var targetUrl = anchor.find('a');
+    // console.log("targetUrl.attr('href'): ", targetUrl.attr('href'));
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('ebay', title.text(), 
+            text.text(), site.text(), targetUrl.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('ebayText.fail: ', text, site);
+    }
+}
+
+function sogouText(anchor) {
+
+    var title = anchor.find('h3 a');
+    var site = anchor.find('div:nth-child(2) a');
+    var text = anchor.find('div:last-child a');
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('sogou', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('sogouText.fail: ', text, site);
+    }
+}
+
+function sogouTopAndBottomText(anchor) {
+
+    // console.log('sogouTopAndBottomText(): ', anchor.text());
+
+    var title = anchor.find('h3 > a');
+    // console.log('title: ', title.text());
+    var site = anchor.find('h3 > cite');
+    // console.log('site: ', site.text());
+    var text = anchor.text();
+    text = text.replace(title.text(), "").replace(site.text(), "").replace("  ", "");
+    // console.log('text: ', text);
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('sogou', title.text(), 
+            text, site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        
+        console.warn('sogouTopAndBottomText.fail: ', text, site);
+    }
+}
+
 function baiduText(anchor) {
     
-    // console.log("baiduText()");
-    
     var title = anchor.find("a:first-child");
-    // console.log("title: " + title.text());
-    
     var text = anchor.find("font:first-child");
-    // console.log("text: " + text.text());
-
     var site = anchor.find("font:last-child");
-    // console.log("site: " + site.text());
 
     if (text.length && site.length && title.length) {
  
@@ -85,14 +151,10 @@ function yahooText(anchor) {
     
     //console.log("HIT *** anchor: "+anchor[0].classList);
 
-    var title = anchor.find("div[class$='ad-ttl'] a");
+    var title = anchor.find('div:first-child a');
     var text = anchor.find('div.abs a');
-    var site = anchor.find('em a');    
-    
-    /*console.log("  *** title: "+title.text());
-    console.log("    *** text: "+text.text());
-    console.log("    *** site: "+site.text());
-    console.log("    *** targetUrl: "+title.attr('href'));*/
+    var site = anchor.find('em a');
+    // console.log("    *** targetUrl: "+title.attr('href'));
     
     if (text.length && site.length && title.length) {
  
@@ -108,7 +170,7 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var title = anchor.find('h3');
+    var title = anchor.find('h3 a');
     var text = anchor.find('.ads-creative');
     var site = anchor.find('.ads-visurl cite');
     
@@ -138,7 +200,7 @@ function duckDuckText(anchor) {
     if (text.length && site.length && title.length) {
         
         var ad = createAd('duckduckgo', title.text(), 
-            text.text(), site.text(), anchor.attr('href'));  
+            text.text(), site.text(), title.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     } 
     else {

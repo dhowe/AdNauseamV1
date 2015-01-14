@@ -154,12 +154,8 @@ function yahooText(anchor) {
 
     var title = anchor.find('div:first-child a');
     var text = anchor.find('div.abs a');
-    var site = anchor.find('em a');    
-    
-    /*console.log("  *** title: "+title.text());
-    console.log("    *** text: "+text.text());
-    console.log("    *** site: "+site.text());
-    console.log("    *** targetUrl: "+title.attr('href'));*/
+    var site = anchor.find('em a');
+    // console.log("    *** targetUrl: "+title.attr('href'));
     
     if (text.length && site.length && title.length) {
  
@@ -175,7 +171,7 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var title = anchor.find('h3');
+    var title = anchor.find('h3 a');
     var text = anchor.find('.ads-creative');
     var site = anchor.find('.ads-visurl cite');
     
@@ -200,7 +196,7 @@ function duckDuckText(anchor) {
     if (text.length && site.length && title.length) {
         
         var ad = createAd('duckduckgo', title.text(), 
-            text.text(), site.text(), anchor.attr('href'));  
+            text.text(), site.text(), title.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     } 
     else {

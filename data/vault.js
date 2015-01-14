@@ -5,7 +5,8 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     states = ['pending', 'visited', 'failed' ];
 
 /* NEXT:     
-    -- Load menu with ads for current page *** 
+    -- Sort ordering in menu is upgfuct
+    -- Make sure old ads get converted (import/export) - lots of ads
     
     -- BUG: Arbitrary page switch to vault (see Vaultman)
     

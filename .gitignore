@@ -19,3 +19,4 @@ data/lib/npm-debug.log
 **/.DS_Store
 data/misc
 node_modules
+npm-debug.log

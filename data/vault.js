@@ -22,7 +22,7 @@ self.port && self.port.on('update-ad', updateAd); // update some
 
 function layoutAds(json) {
     
-    allAds = json.data; // store
+    gAds = json.data; // store
 
     addInterfaceHandlers();
     
@@ -38,12 +38,12 @@ function updateAd(json) {
 
     //tagCurrentAd(addonData.current);
     
-    computeStats(adSets);
+    computeStats(gAdSets);
 }
 
 function doLayout(adsets, resetLayout) {
 
-    log('Vault.doLayout: '+adsets.length +" sets");
+    log('Vault.doLayout: '+adsets.length +" ad-sets");
     
     if (!adsets) throw Error("No ads!");
     
@@ -673,14 +673,14 @@ function findByAdId(id) {
 
     //log('findByAdId: '+id);
 
-    for (var i = 0, j = adSets.length; i < j; i++) {
+    for (var i = 0, j = gAdSets.length; i < j; i++) {
 
-        var childIdx = adSets[i].findChildById(id);
+        var childIdx = gAdSets[i].findChildById(id);
         
         if (childIdx > -1) return {
             
-            ad : adSets[i].child(childIdx),
-            group : adSets[i],
+            ad : gAdSets[i].child(childIdx),
+            group : gAdSets[i],
             index : childIdx
         };
     }
@@ -706,10 +706,10 @@ function findItemDivByGid(gid) {
 
 function findAdSetByGid(gid) {
     
-    for (var i=0, j = adSets.length; i<j; i++) {
+    for (var i=0, j = gAdSets.length; i<j; i++) {
         
-        if (adSets[i].gid === gid)
-            return adSets[i];
+        if (gAdSets[i].gid === gid)
+            return gAdSets[i];
     }
     
     throw Error('No group for gid: '+gid);

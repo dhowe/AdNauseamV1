@@ -1,12 +1,12 @@
-//inspectorData, inspectorIdx, animatorId, resizing = false, , animateMs = 2000, container, pack;
+
 var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
     zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ],
-    animatorId, animateMs = 2000, selectedAdSet, adSets,
+    animatorId, animateMs = 2000, selectedAdSet;
     states = ['pending', 'visited', 'failed' ];
 
 /* NEXT:     
-    -- Sort ordering in menu is upgfuct
     -- Make sure old ads get converted (import/export) - lots of ads
+    -- TODO: on first-run, doImport() on all ads in storage
     
     -- BUG: Arbitrary page switch to vault (see Vaultman)
     
@@ -22,19 +22,11 @@ self.port && self.port.on('update-ad', updateAd); // update some
 
 function layoutAds(json) {
     
-    var adArray = json.data;
-
-    adSets = createAdSets(adArray); 
-    
-    //log('Vault.layoutAds: '+adSets.length);
+    allAds = json.data; // store
 
     addInterfaceHandlers();
     
-    createSlider(adArray);
-
-    doLayout(adSets, true);
-
-    //tagCurrentAd(addonData.current);    
+    createSlider();      
 }
 
 function updateAd(json) {
@@ -51,8 +43,8 @@ function updateAd(json) {
 
 function doLayout(adsets, resetLayout) {
 
-    //log('Vault.doLayout: '+adsets.length);
-
+    log('Vault.doLayout: '+adsets.length +" sets");
+    
     if (!adsets) throw Error("No ads!");
     
     $('.item').remove();
@@ -78,14 +70,14 @@ function createDivs(adsets) {
         }).appendTo('#container');
 
         layoutAd($div, adsets[i]);
-    }
+    }    
 }
 
 function layoutAd($div, adset) {
-       
+
     // append the display
-    (adset.child(0).contentType === 'text' ? 
-        appendTextDisplayTo : appendDisplayTo)($div, adset);   
+    var fun = adset.child(0).contentType === 'text' ? appendTextDisplayTo : appendDisplayTo;
+    fun($div, adset);   
 
     appendBulletsTo($div, adset);
     appendMetaTo($div, adset);
@@ -101,7 +93,7 @@ function doUpdate(updated) {
     
     var groupInfo = findByAdId(updated.id),
         adset = groupInfo.group, itemClass,
-        $item = findItemByGid(groupInfo.group.gid);
+        $item = findItemDivByGid(groupInfo.group.gid);
         
     // update the adgroup
     adset.index = groupInfo.index;
@@ -143,7 +135,7 @@ function appendMetaTo($div, adset) {
         style: 'margin-top: 0px'
         
     }).appendTo($meta);
-    
+
     for (var i=0; i < adset.count(); i++) {
         
         var ad = adset.child(i);
@@ -162,7 +154,7 @@ function appendMetaTo($div, adset) {
             
         }).appendTo($li);
         
-        appendTargetTo($target, ad);
+        appendTargetTo($target, ad, adset); // tmp, remove adset
                             
         var $detected = $('<div/>', { class: 'detected-on' }).appendTo($li);
         appendDetectedTo($detected, ad);            
@@ -191,9 +183,9 @@ function appendDetectedTo($detected, ad) {
     }).appendTo($detected);  
 }
 
-function appendTargetTo($target, ad) {
+function appendTargetTo($target, ad, adset) {
 
-    $('<h3/>', { text: 'target:' }).appendTo($target);
+    $('<h3/>', { text: adset.gid }).appendTo($target);
     
     $('<a/>', { 
         
@@ -209,7 +201,7 @@ function appendTargetTo($target, ad) {
         
         id: 'target-domain',
         class: 'target-cite', 
-        text: targetDomain(ad) 
+        text: targetDomain(ad)
         
     }).appendTo($target);
     
@@ -236,7 +228,7 @@ function updateMetaTarget($target, ad) {
 /**
  * Resets current bullet class to [active,ad.state]
  * Shifts meta list to show correct item
- * Updates index-counter for the bullter 
+ * Updates index-counter for the bullet 
  */
 function bulletIndex($div, adset) { // adset.index must be updated first!
     
@@ -271,9 +263,10 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
 
 function appendDisplayTo($div, adset) {
 
+
     var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
-    var total = adset.count(), visited = adset.visitedCount();
-    
+    var total = adset.count();
+     
     var $span = $('<span/>', {
         
         class: 'counter',
@@ -301,7 +294,7 @@ function appendDisplayTo($div, adset) {
 
 function appendTextDisplayTo($pdiv, adset) {
 
-    var total = adset.count(), visited = adset.visitedCount(), ad = adset.child(0);
+    var total = adset.count(), ad = adset.child(0);
 
     $pdiv.addClass('item-text');
     
@@ -315,7 +308,7 @@ function appendTextDisplayTo($pdiv, adset) {
     var $span = $('<span/>', {
         
         class: 'counter',
-        text: adset.count()
+        text: total
         
     }).appendTo($div);
     
@@ -507,14 +500,10 @@ function formatDate(ts) {
 		+ meridian.toLowerCase();
 }
 
-function resizeHistorySlider() {
-
-	createSlider(all);
-}
-
 function enableLightbox() {
 
     $('.item').click(function(e) {
+       
        
         var $this = $(this);
         e.stopPropagation();
@@ -614,7 +603,14 @@ function lightboxMode(selected) {
     if ($selected && !$selected.hasClass('inspected')) {
 
         var inspectedGid = parseInt($selected.attr('data-gid'));
-        selectedAdSet = findGroupByGid(inspectedGid);
+
+console.log(inspectedGid+" COUNT-item: "+$selected);
+
+        selectedAdSet = findAdSetByGid(inspectedGid);
+
+console.log(inspectedGid+" COUNT5+: "+selectedAdSet.count());
+
+//console.log(findItemByGid(inspectedGid).length);
 
         $selected.addClass('inspected').siblings().removeClass('inspected');
         
@@ -693,7 +689,7 @@ function findByAdId(id) {
     self.port && self.port.emit("refresh-vault");
 }
 
-function findItemByGid(gid) {
+function findItemDivByGid(gid) {
     
     var items = $('.item');
     for (var i=0; i < items.length; i++) {
@@ -708,7 +704,7 @@ function findItemByGid(gid) {
     //throw Error('No $item for gid: '+gid);
 }
 
-function findGroupByGid(gid) {
+function findAdSetByGid(gid) {
     
     for (var i=0, j = adSets.length; i<j; i++) {
         
@@ -925,5 +921,5 @@ function addInterfaceHandlers(ads) {
 		zoomOut();
 	});
 
-    $(window).resize(resizeHistorySlider);
+    $(window).resize(createSlider);
 }

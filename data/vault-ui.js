@@ -1,7 +1,8 @@
-var all;
+var allAds, adSets, min, max; // stateful
 
 const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
-    format = d3.time.format("%a %b %d %Y"),
+    format = d3.time.format("%a %b %d %Y"), MAX_NUM_AT_START = 400,
+    // TODO: need to verify that at least one full bar is showing
     customTimeFormat = d3.time.format.multi([
         [".%L", function(d)     { return d.getMilliseconds(); }],
         [":%S", function(d)     { return d.getSeconds(); }],
@@ -13,14 +14,10 @@ const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
         ["%Y", function()       { return true; }]
 ]);
 
-function createSlider(ads) { // happens just once
+function createSlider() { // happens just once
 
     //console.log('Vault-UI.createSlider');
-    
-    if (!ads || !ads.length) return;
-    
-    all = ads.slice(); // save original set
-    
+
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();
     d3.select("svg").remove();
@@ -39,16 +36,16 @@ function createSlider(ads) { // happens just once
     }
 
   	// finding the first and last ad
-	var minDate = d3.min(ads, function(d) { return d.foundTs; }),
-		maxDate = d3.max(ads, function(d) { return d.foundTs; });
-
+	var minDate = d3.min(allAds, function(d) { return d.foundTs; }),
+		maxDate = d3.max(allAds, function(d) { return d.foundTs; });
+		
    // mapping the scales
    var xScale = d3.time.scale()
         .domain([minDate, maxDate])
         .range([0, width]);
 
    // create an array of dates
-   var map = ads.map( function(d) { return parseInt(xScale(d.foundTs)) })
+   var map = allAds.map( function(d) { return parseInt(xScale(d.foundTs)) })
 
    // setup the histogram layout
    var histogram = d3.layout.histogram()
@@ -87,12 +84,12 @@ function createSlider(ads) { // happens just once
        .append("g")
 
 	// we could go with rectangular bars
-	bars.append("rect")
+	/*bars.append("rect")
        .attr("x", function(d) { return d.x })
        .attr("y", function(d) { return d.y*-3 - 1})
        .attr("width", barw )
        .attr("height", function(d) { if (d.y > 0) { return d.y*3 - 1 } else { return 0} })
-       .attr("style", "fill: #000;stroke: #000;stroke-width: 2;")
+       .attr("style", "fill: #000;stroke: #000;stroke-width: 2;")*/
 
 	// or use lines which can also offer a stroke-dasharray
 	bars.append("line")
@@ -102,10 +99,12 @@ function createSlider(ads) { // happens just once
        .attr("y2", function(d) { return d.y*-3 - 2})
        .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
 
+    var limitedMin = computeMinDateFor(allAds, minDate);
+
 	// setup the brush
 	var brush = d3.svg.brush()
 		.x(xScale)
-		.extent([minDate, maxDate])
+		 .extent([limitedMin, maxDate])
 	    .on("brushstart", brushstart)
 	   	.on("brush", 	 brushmove)
 	    .on("brushend", brushend);
@@ -113,31 +112,46 @@ function createSlider(ads) { // happens just once
 	// add the brush
 	var gBrush = svg.append("g")
 		.attr("class", "brush")
-		.call(brush)
-		.call(brush.event); // triggers the filter
+		.call(brush);
+		//.call(brush.event); // triggers the filter ***
 
 	// set the height of the brush to that of the chart
 	gBrush.selectAll("rect")
 		.attr("height", 49)
 		.attr("y", -50);
+    
+    
+    //console.log('min: '+limitedMin+' max: '+maxDate);
 
+    gBrush.call(brush.event);
+    
 	// ---------------------------- functions ------------------------------
 
+    function computeMinDateFor(ads, min) {
+
+        ads.sort(byField('-foundTs'));
+        var subset = ads.slice(0, MAX_NUM_AT_START);
+        return subset[subset.length-1].foundTs;
+    }
+    
 	function runFilter(ext) {
 
-		var tmpAds, min = ext[0], max =ext[1];
-		if (max - min <= 1) return; // fix for gh #100
-		tmpAds = dateFilter(min, max);
-		if (!arraysEqual(ads, tmpAds)) {
-		    
-			doLayout(createAdSets(ads = tmpAds), false);
+        if (ext[0] === min && ext[1] == max) {
+            return;
         }
+            
+        min = ext[0], max = ext[1];
+
+		//console.log(min, max);
+		
+		if (max - min <= 1) return; // fix for gh #100
+		
+	    adSets = createAdSets(dateFilter(min, max)); // store
+	    
+		doLayout(adSets, false);
 	}
 
 	function arraysEqual(a, b) {
-
-		a.sort();
-		b.sort();
 
 		if (a === b)
 			return true;
@@ -148,14 +162,16 @@ function createSlider(ads) { // happens just once
 		if (a.length != b.length)
 			return false;
 
-		// If you don't care about the order of the elements inside
-		// the array, you should sort both arrays here.
+		// sort both arrays here.
+        a.sort();
+        b.sort();
 
 		for (var i = 0; i < a.length; ++i) {
 
 			if (a[i] !== b[i])
 				return false;
 		}
+		
 		return true;
 	}
 
@@ -165,11 +181,11 @@ function createSlider(ads) { // happens just once
 
 		var filtered = [];
 
-		for (var i=0, j = all.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
+		for (var i=0, j = allAds.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
 
-			if (!(all[i].foundTs < min || all[i].foundTs > max)) {
+			if (!(allAds[i].foundTs < min || allAds[i].foundTs > max)) {
 
-                filtered.push(all[i]);
+                filtered.push(allAds[i]);
 			}
 		}
 
@@ -178,15 +194,17 @@ function createSlider(ads) { // happens just once
 		return filtered;
 	}
 
-	function brushstart() {	}
+	function brushstart() {
+        console.log('brushstart()');
+    }
 
 	function brushmove() {
-
+        console.log('brushmove()');
 		runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
 	}
 
 	function brushend() {
-
+        console.log('brushend()');
 		//svg.classed("selecting", !d3.event.target.empty());
 		runFilter(d3.event.target.extent());
 	}

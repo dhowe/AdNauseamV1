@@ -1,8 +1,9 @@
-
+const LogoURL = 'http://dhowe.github.io/AdNauseam/',
+    States = ['pending', 'visited', 'failed' ],
+    Zooms = [ 100, 50, 25, 12.5, 6.25 ];
+    
 var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
-    zoomStyle, zoomIdx = 0, zooms = [ 100, 50, 25, 12.5, 6.25 ],
-    animatorId, animateMs = 2000, selectedAdSet;
-    states = ['pending', 'visited', 'failed' ];
+    zoomStyle, zoomIdx = 0, animatorId, animateMs = 2000, selectedAdSet;
 
 /* NEXT:     
     -- Make sure old ads get converted (import/export) - lots of ads
@@ -121,7 +122,7 @@ function doUpdate(updated) {
 
 function setItemClass($item, state) {
 
-    states.map(function(d) { $item.removeClass(d) } ); // remove-all
+    States.map(function(d) { $item.removeClass(d) } ); // remove-all
     $item.addClass(state);    
 }
 
@@ -469,9 +470,7 @@ function formatDate(ts) {
 function enableLightbox() {
 
     $('.item').click(function(e) {
-       
-       
-        var $this = $(this);
+              
         e.stopPropagation();
         lightboxMode(this);         
     });
@@ -487,15 +486,13 @@ function storeItemLayout($items) {
         
         $items.each(function() {
              
-            var $this = $(this), offset = $this.offset();
+            var $this = $(this), off = $this.offset();
 
-            // offsets of item from center of window
-            $this.attr('data-offx', (cx - offset.left));
-            $this.attr('data-offy', (cy - offset.top));        
+            // offsets of item-corner from window center
+            $this.attr('data-offx', (cx - off.left));
+            $this.attr('data-offy', (cy - off.top));        
         });    
-        
-        //log('storeItemLayout()');
-        
+
     }, 500); // (annoyingly) required to get consistent offsets here ?
 }
 
@@ -572,8 +569,6 @@ function lightboxMode(selected) {
 
         selectedAdSet = findAdSetByGid(inspectedGid);
 
-console.log(inspectedGid+" COUNT: "+selectedAdSet.count());
-
         $selected.addClass('inspected').siblings().removeClass('inspected');
         
         if (selectedAdSet.count() > 1) {
@@ -647,7 +642,9 @@ function findByAdId(id) {
         };
     }
 
-    console.error('No ad for id: ' + id+' (Ad updated before being added to vault?) REFRESH');
+    console.error('No ad for id: ' + id +
+        ' (Ad updated before being added to vault?) REFRESH');
+    
     self.port && self.port.emit("refresh-vault");
 }
 
@@ -656,14 +653,12 @@ function findItemDivByGid(gid) {
     var items = $('.item');
     for (var i=0; i < items.length; i++) {
         
-      // WORKING HERE ***
       $item = $(items[i]);
       if (parseInt($item.attr('data-gid')) === gid)
         return $item;
     }
     
-    return null; // item may be filtered
-    //throw Error('No $item for gid: '+gid);
+    return null; // item may not be available if filtered
 }
 
 function findAdSetByGid(gid) {
@@ -694,30 +689,29 @@ function zoomIn(immediate) {
 
 function zoomOut(immediate) {
 
-    (zoomIdx < zooms.length-1) && setZoom(++zoomIdx, immediate);
+    (zoomIdx < Zooms.length-1) && setZoom(++zoomIdx, immediate);
 }
 
 function setZoom(idx, immediate) {
     
-    if (immediate) {
-log('IMMEDIATE');    
-        $container = $('#container');
-        $container.addClass('notransition'); // Disable transitions
-    }
+    $container = $('#container');
+    
+     // Disable transitions
+    immediate && $container.addClass('notransition'); 
 
-	$('#container').removeClass(zoomStyle).addClass // swap zoom class
-		((zoomStyle = ('z-'+zooms[idx]).replace(/\./, '_')));
+	$container.removeClass(zoomStyle).addClass // swap zoom class
+		((zoomStyle = ('z-'+Zooms[idx]).replace(/\./, '_')));
 
-    $('#ratio').html(zooms[idx]+'%');
+    $('#ratio').html(Zooms[idx]+'%'); // set zoom-text
 	
-    if (immediate) {
-        
-        $container[0].offsetHeight; // Trigger a reflow, flushing the CSS changes
-        $container.removeClass('notransition'); // Re-enable transitions
-    }
+	// Trigger reflow, flush cached CSS
+	$container[0].offsetHeight; 
+	
+	// Re-enable transitions
+    immediate && $container.removeClass('notransition'); 
 }
 
-// finds bounds for a set of items
+// finds bounds for a set of items (not used)
 function bounds($items) {
     
     var bounds = {
@@ -760,45 +754,27 @@ function bounds($items) {
 
 function positionAds() { // autozoom
     
-    //log('positionAds() :: '+zooms[zoomIdx]);
+    //log('positionAds() :: '+Zooms[zoomIdx]);
     
     setZoom(zoomIdx); // Q: start with previous zoom or 100%?
     
-    var i, items = $('.item'),
-        percentVisible = .6,
+    var items = $('.item'),
+        percentVis = .6,
         winW = $(window).width(),
         winH = $('#svgcon').offset().top;
 
-    for (i=0; i < items.length; i++) {
+    for (var i=0; i < items.length; i++) {
         
-        //if (i==0) log("start "+zooms[zoomIdx]+"%"); 
+        //if (i==0) log("start "+Zooms[zoomIdx]+"%"); 
         
         var $this = $(items[i]), 
-            scale = zooms[zoomIdx] / 100,
+            scale = Zooms[zoomIdx] / 100;
             
-            off = $this.offset(), 
-            w = $this.width() * scale,    // scaled width
-            h = $this.height() * scale,   // scaled height
-        
-            minX = (-w * (1 - percentVisible)),
-            maxX = (winW - (w * percentVisible)),
-            minY = (-h * (1 - percentVisible)),
-            maxY = (winH - (h * percentVisible));
-            
-        if (off.left < minX || off.left > maxX || off.top < minY || off.top > maxY) {
-            
-            /*if (off.left < minX)
-                log(i+ ") OFF-LEFT @ "+zooms[zoomIdx]+"% ", off.left +" < "+minX);
-            if (off.left > maxX)
-                log(i+ ") OFF-RIGHT @ "+zooms[zoomIdx]+"% ", off.left +" > "+maxX);
-            if (off.top < minY)
-                log(i+ ") OFF-TOP @ "+zooms[zoomIdx]+"% ", off.top +" < "+minY);
-            if (off.top > maxY)
-                log(i+ ") OFF-BOTTOM @ "+zooms[zoomIdx]+"% ", off.top +" > "+maxY);*/
+        if (!onscreen($this, winW, winH, scale, percentVis)) {
                 
             setZoom(++zoomIdx, true);
             
-            if (zoomIdx == zooms.length-1)
+            if (zoomIdx == Zooms.length-1) 
                 return; // at smallest size, we're done
             
             i = 0; continue; // else try next smaller
@@ -808,19 +784,30 @@ function positionAds() { // autozoom
     // all OK at current size  
 }
 
-function onscreen($item, scale, percentVisible) {
+function onscreen($this, winW, winH, scale, percentVisible) {
     
     var off = $this.offset(), 
         w = $this.width() * scale,  
         h = $this.height() * scale,
-    
         minX = (-w * (1 - percentVisible)),
         maxX = (winW - (w * percentVisible)),
         minY = (-h * (1 - percentVisible)),
         maxY = (winH - (h * percentVisible));
     
-    return !(off.left < minX || off.left > maxX 
-        || off.top < minY || off.top > maxY); 
+    if (off.left < minX || off.left > maxX || off.top < minY || off.top > maxY) 
+    {
+        /*if (off.left < minX)
+            log(i+ ") OFF-LEFT @ "+Zooms[zoomIdx]+"% ", off.left +" < "+minX);
+        if (off.left > maxX)
+            log(i+ ") OFF-RIGHT @ "+Zooms[zoomIdx]+"% ", off.left +" > "+maxX);
+        if (off.top < minY)
+            log(i+ ") OFF-TOP @ "+Zooms[zoomIdx]+"% ", off.top +" < "+minY);
+        if (off.top > maxY)
+            log(i+ ") OFF-BOTTOM @ "+Zooms[zoomIdx]+"% ", off.top +" > "+maxY);*/
+        return false;
+    }
+    
+    return true;     
 }
 
 function repack() {
@@ -844,98 +831,22 @@ function repack() {
             
             positionAds();
         }
-        else if (visible == 1)  $items.css({ // center single
+        else if (visible == 1) {
             
-            top : (5000 - $items.height() / 2) + 'px',
-            left : (5000 - $items.width() / 2) + 'px'
-        });
+            $items.css({ // center single
+            
+                top : (5000 - $items.height() / 2) + 'px',
+                left : (5000 - $items.width() / 2) + 'px'
+            });
+        }
         
         storeItemLayout($items);
     });
 }
-function drawBounds() {
-
-    canvas = document.createElement('canvas'); //Create a canvas element
-    //Set canvas width/height
-    canvas.style.width='100%';
-    canvas.style.height='100%';
-    //Set canvas drawing area width/height
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    //Position canvas
-    canvas.style.position='absolute';
-    canvas.style.left=0;
-    canvas.style.top=0;
-    canvas.style.zIndex=100000;
-    canvas.style.pointerEvents='none'; //Make sure you can click 'through' the canvas
-    document.body.appendChild(canvas); //Append canvas to body element
-    var context = canvas.getContext('2d');
-    //Draw rectangle
-    //context.rect(boundsAll.left, boundsAll.top, boundsAll.width, boundsAll.height);
-    context.strokeStyle = 'yellow';
-    context.stroke();
-}
-
-// TODO: broken (see issue #59) -- needs to be rewritten
-function positionAdsOld() { // autozoom & center 
-
-	var percentVisible = .6,
-		winW = $("#container").width(),
-		winH = $('#svgcon').offset().top,
-		i, x, y, w, h, minX, maxX, minY, maxY, problem;
-
-    //log('winW: '+winW+' winH: '+winH);
-
-	for (i=0; i < zooms.length; i++) {
-
-		problem = false; // no problem at start        
-        scale = zooms[i] / 100;
-        //log('Trying '+zooms[i]+' scale='+scale);
-        
-		// loop over each image, checking that they (enough) onscreen
-		$('.item').each(function(i, img) {
-
-            $this = $(this);
-
-            x = $this.offset().left * scale,  // wrong***
-            y = $this.offset().top * scale,     // wrong***
-			w = $this.width() * scale,    // scaled width
-			h = $this.height() * scale,   // scaled height
-			
-			minX = (-w * (1 - percentVisible)),
-			maxX = (winW - (w * percentVisible)),
-			minY = (-h * (1 - percentVisible)),
-			maxY = (winH - (h * percentVisible));
-
-			//log(i+")",x,y,w,h);
-			// COMPARE-TO (console): $('.item img').each(function(i, img) { log( i+") "+$(this).offset().left) });
-
-			if (x < minX || x > maxX || y < minY || y > maxY) {
-
-				zoomOut();
-				//log('Ad('+$this.attr('data-gid')+') offscreen, zoom='+zoomStyle+" BREAK!!!");
-				problem = true;
-				return false ; // break each() loop
-			}
-		});
-		
-		if (!problem) {
-		    //log("Finished.ok!");
-		    // all ads ok, we're done
-		    setZoom(zoomIdx = i);
-		    return;
-		}
-	}
-	
-    //at smallest size, done
-    //log("Finished.fail!");
-    setZoom(zoomIdx = zooms.length-1);
-}
 
 function openInNewTab(url) {
 
-  var win = window.open(url, '_blank');
-  win.focus();
+    window.open(url, '_blank').focus();
 }
 
 function asAdArray(adsets) {
@@ -959,17 +870,12 @@ function addInterfaceHandlers(ads) {
     $('#logo').click(function(e) {
 
         e.preventDefault();
-        openInNewTab('http://dhowe.github.io/AdNauseam/');
+        openInNewTab(LogoURL);
     });
 
     $(document).click(function(e) {
 
-        // var style = window.getComputedStyle(document.querySelector(window), null);
-           // x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
-            // y = parseInt(style.getPropertyValue("margin-top"),  10) - e.clientY;
-
-        log(e.clientX,e.clientY);
-
+        //log(e.clientX,e.clientY);
         lightboxMode(false);
     });
 

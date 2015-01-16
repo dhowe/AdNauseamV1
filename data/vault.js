@@ -41,7 +41,7 @@ function updateAd(json) {
     computeStats(gAdSets);
 }
 
-function doLayout(adsets, resetLayout) {
+function doLayout(adsets) {
 
     log('Vault.doLayout: '+adsets.length +" ad-sets");
     
@@ -55,7 +55,7 @@ function doLayout(adsets, resetLayout) {
 
     enableLightbox();
 
-    repack(resetLayout);    
+    repack();    
 }
 
 function createDivs(adsets) {
@@ -376,40 +376,6 @@ function appendBulletsTo($div, adset) {
     }    
 }
 
-function repack(resetLayout) {
-    
-	var $items =  $(".item"), visible = $items.length;
-
-    showAlert(visible ? false : 'no ads found');
-
-    $('#container').imagesLoaded(function() {
-
-        //log('imagesLoaded');
-        
-    	if (visible > 1) {
-
-    		new Packery('#container', {
-    		    
-    			centered : { y : 5000 }, // centered half min-height
-    			itemSelector : '.item',
-    			gutter : 1
-    		});
-            
-            if (resetLayout) {
-                
-                positionAds();
-            }    		
-    	}
-        else if (visible == 1)  $items.css({ // center single
-            
-            top : (5000 - $items.height() / 2) + 'px',
-            left : (5000 - $items.width() / 2) + 'px'
-        });
-        
-        storeItemLayout($items);
-    });
-}
-
 function computeStats(adsets) {
 
     $('.since').text(sinceTime(adsets));
@@ -604,13 +570,9 @@ function lightboxMode(selected) {
 
         var inspectedGid = parseInt($selected.attr('data-gid'));
 
-console.log(inspectedGid+" COUNT-item: "+$selected);
-
         selectedAdSet = findAdSetByGid(inspectedGid);
 
-console.log(inspectedGid+" COUNT5+: "+selectedAdSet.count());
-
-//console.log(findItemByGid(inspectedGid).length);
+console.log(inspectedGid+" COUNT: "+selectedAdSet.count());
 
         $selected.addClass('inspected').siblings().removeClass('inspected');
         
@@ -725,26 +687,38 @@ function attachTests() {
 	}).fail(function(e) { console.warn("error(bad-json?):", e); });
 }
 
-function zoomIn() {
+function zoomIn(immediate) {
 
-	(zoomIdx > 0) && setZoom(--zoomIdx);
+	(zoomIdx > 0) && setZoom(--zoomIdx, immediate);
 }
 
-function zoomOut() {
+function zoomOut(immediate) {
 
-    (zoomIdx < zooms.length-1) && setZoom(++zoomIdx);
+    (zoomIdx < zooms.length-1) && setZoom(++zoomIdx, immediate);
 }
 
-function setZoom(idx) {
+function setZoom(idx, immediate) {
+    
+    if (immediate) {
+log('IMMEDIATE');    
+        $container = $('#container');
+        $container.addClass('notransition'); // Disable transitions
+    }
 
 	$('#container').removeClass(zoomStyle).addClass // swap zoom class
 		((zoomStyle = ('z-'+zooms[idx]).replace(/\./, '_')));
 
-	$('#ratio').html(zooms[idx]+'%');
+    $('#ratio').html(zooms[idx]+'%');
+	
+    if (immediate) {
+        
+        $container[0].offsetHeight; // Trigger a reflow, flushing the CSS changes
+        $container.removeClass('notransition'); // Re-enable transitions
+    }
 }
 
-// works for scale=1, needs to take other scales into account
-function bounds($items, scale) {
+// finds bounds for a set of items
+function bounds($items) {
     
     var bounds = {
         
@@ -764,10 +738,6 @@ function bounds($items, scale) {
         off.right = off.left + $(elQ).width();
         off.bottom = off.top + $(elQ).height();
         
-        // C: add code for matrix transform scale
-        var cs = this.getComputedStyle(this, null);
-        var matrix = cs.getPropertyValue("transform");
-    
         if (off.left < bounds.left)
             bounds.left = off.left;
 
@@ -788,20 +758,123 @@ function bounds($items, scale) {
     return bounds;
 }
 
-// Chooses the largest zoom size that fits at least 60% of each ad 
-function positionAds() { 
+function positionAds() { // autozoom
     
-    var percentVisible = .6,
-        windowW = $("#container").width(),
-        windowH = $('#svgcon').offset().top;
+    //log('positionAds() :: '+zooms[zoomIdx]);
+    
+    setZoom(zoomIdx); // Q: start with previous zoom or 100%?
+    
+    var i, items = $('.item'),
+        percentVisible = .6,
+        winW = $(window).width(),
+        winH = $('#svgcon').offset().top;
+
+    for (i=0; i < items.length; i++) {
         
-    //var boundsAll = bounds( $('.item'), zooms[0] );
-    // check if they fits at full zoom, 
-    // if so return; 
-    // if not, then try with next scale
-    //var boundsAll = bounds( $('.item'), zooms[1] );
+        //if (i==0) log("start "+zooms[zoomIdx]+"%"); 
+        
+        var $this = $(items[i]), 
+            scale = zooms[zoomIdx] / 100,
+            
+            off = $this.offset(), 
+            w = $this.width() * scale,    // scaled width
+            h = $this.height() * scale,   // scaled height
+        
+            minX = (-w * (1 - percentVisible)),
+            maxX = (winW - (w * percentVisible)),
+            minY = (-h * (1 - percentVisible)),
+            maxY = (winH - (h * percentVisible));
+            
+        if (off.left < minX || off.left > maxX || off.top < minY || off.top > maxY) {
+            
+            /*if (off.left < minX)
+                log(i+ ") OFF-LEFT @ "+zooms[zoomIdx]+"% ", off.left +" < "+minX);
+            if (off.left > maxX)
+                log(i+ ") OFF-RIGHT @ "+zooms[zoomIdx]+"% ", off.left +" > "+maxX);
+            if (off.top < minY)
+                log(i+ ") OFF-TOP @ "+zooms[zoomIdx]+"% ", off.top +" < "+minY);
+            if (off.top > maxY)
+                log(i+ ") OFF-BOTTOM @ "+zooms[zoomIdx]+"% ", off.top +" > "+maxY);*/
+                
+            setZoom(++zoomIdx, true);
+            
+            if (zoomIdx == zooms.length-1)
+                return; // at smallest size, we're done
+            
+            i = 0; continue; // else try next smaller
+        }
+    }
     
-} 
+    // all OK at current size  
+}
+
+function onscreen($item, scale, percentVisible) {
+    
+    var off = $this.offset(), 
+        w = $this.width() * scale,  
+        h = $this.height() * scale,
+    
+        minX = (-w * (1 - percentVisible)),
+        maxX = (winW - (w * percentVisible)),
+        minY = (-h * (1 - percentVisible)),
+        maxY = (winH - (h * percentVisible));
+    
+    return !(off.left < minX || off.left > maxX 
+        || off.top < minY || off.top > maxY); 
+}
+
+function repack() {
+    
+    var $items =  $(".item"), visible = $items.length;
+
+    showAlert(visible ? false : 'no ads found');
+
+    $('#container').imagesLoaded(function() {
+
+        //log('imagesLoaded');
+        
+        if (visible > 1) {
+
+            new Packery('#container', {
+                
+                centered : { y : 5000 }, // centered half min-height
+                itemSelector : '.item',
+                gutter : 1
+            });
+            
+            positionAds();
+        }
+        else if (visible == 1)  $items.css({ // center single
+            
+            top : (5000 - $items.height() / 2) + 'px',
+            left : (5000 - $items.width() / 2) + 'px'
+        });
+        
+        storeItemLayout($items);
+    });
+}
+function drawBounds() {
+
+    canvas = document.createElement('canvas'); //Create a canvas element
+    //Set canvas width/height
+    canvas.style.width='100%';
+    canvas.style.height='100%';
+    //Set canvas drawing area width/height
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    //Position canvas
+    canvas.style.position='absolute';
+    canvas.style.left=0;
+    canvas.style.top=0;
+    canvas.style.zIndex=100000;
+    canvas.style.pointerEvents='none'; //Make sure you can click 'through' the canvas
+    document.body.appendChild(canvas); //Append canvas to body element
+    var context = canvas.getContext('2d');
+    //Draw rectangle
+    //context.rect(boundsAll.left, boundsAll.top, boundsAll.width, boundsAll.height);
+    context.strokeStyle = 'yellow';
+    context.stroke();
+}
 
 // TODO: broken (see issue #59) -- needs to be rewritten
 function positionAdsOld() { // autozoom & center 
@@ -890,7 +963,13 @@ function addInterfaceHandlers(ads) {
     });
 
     $(document).click(function(e) {
- 
+
+        // var style = window.getComputedStyle(document.querySelector(window), null);
+           // x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
+            // y = parseInt(style.getPropertyValue("margin-top"),  10) - e.clientY;
+
+        log(e.clientX,e.clientY);
+
         lightboxMode(false);
     });
 

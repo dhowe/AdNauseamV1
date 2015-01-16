@@ -145,7 +145,7 @@ function createSlider() {
         	
 		var filtered = dateFilter(gMin, gMax);
 	    gAdSets = createAdSets(filtered); // store
-		doLayout(gAdSets, false);
+		doLayout(gAdSets);
 	}
 
     function createAdSets(ads) {

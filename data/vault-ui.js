@@ -128,10 +128,13 @@ function createSlider() {
 	// ---------------------------- functions ------------------------------
 
     function computeMinDateFor(ads, min) {
-
-        ads.sort(byField('-foundTs'));
-        var subset = ads.slice(0, MAX_NUM_AT_START);
-        return subset[subset.length-1].foundTs;
+        
+        if (ads && ads.length) { 
+            ads.sort(byField('-foundTs'));
+            var subset = ads.slice(0, MAX_NUM_AT_START);
+            return subset[subset.length-1].foundTs;
+        }
+        return min;
     }
     
 	function runFilter(ext) {

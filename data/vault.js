@@ -476,24 +476,22 @@ function enableLightbox() {
     });
 }
 
-function storeItemLayout($items) {
+function storeItemLayout() {
 
+    var cx = $(window).width()/2, 
+        cy = $(window).height()/2,
+        $items = $('.item');
+    
     if (!$items) throw Error('No items!');
     
-    var cx = $(window).width()/2, cy = $(window).height()/2;
-  
-    setTimeout(function() { 
-        
-        $items.each(function() {
-             
-            var $this = $(this), off = $this.offset();
+    $items.each(function() {
+         
+        var $this = $(this), off = $this.offset();
 
-            // offsets of item-corner from window center
-            $this.attr('data-offx', (cx - off.left));
-            $this.attr('data-offy', (cy - off.top));        
-        });    
-
-    }, 500); // (annoyingly) required to get consistent offsets here ?
+        // offsets of item-corner from window center
+        $this.attr('data-offx', (cx - off.left));
+        $this.attr('data-offy', (cy - off.top));        
+    });    
 }
 
 function storeViewState(store) {
@@ -840,7 +838,12 @@ function repack() {
             });
         }
         
-        storeItemLayout($items);
+         setTimeout(function() { 
+            
+            storeItemLayout($items);
+            
+        }, 500); // (annoyingly) required to get consistent offsets here ?
+        
     });
 }
 
@@ -849,7 +852,7 @@ function openInNewTab(url) {
     window.open(url, '_blank').focus();
 }
 
-function asAdArray(adsets) {
+function asAdArray(adsets) { // remove
     
     var ads = [];
     for (var i=0, j = adsets.length; i<j; i++) {

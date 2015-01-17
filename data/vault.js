@@ -438,6 +438,12 @@ function dragOver(e) {
 
 function dragEnd(e) {
  
+    // TODO: new to recompute item-layout (at 100% zoom) in new position??
+    // var tmpIdx = zoomIdx;
+    // setZoom(zoomIdx = 0, true)
+    // storeItemLayout($('.item'));
+    // setZoom(zoomIdx = tmpIdx, true);
+    
     $('#container').removeClass('dragged');
 }
 
@@ -476,18 +482,49 @@ function enableLightbox() {
     });
 }
 
-function storeItemLayout() {
-
-    var cx = $(window).width()/2, 
-        cy = $(window).height()/2,
-        $items = $('.item');
+function positionAds(items) { // autozoom
     
+    //log('positionAds() :: '+Zooms[zoomIdx]);
+    
+    setZoom(zoomIdx = 0, true); // Q: start with previous zoom or 100%?
+    
+    var i = 0, percentVis = .6,
+        winW = $(window).width(),
+        winH = $('#svgcon').offset().top;
+
+    while (i < items.length) {
+        
+        var $this = $(items[i++]), 
+            scale = Zooms[zoomIdx] / 100;
+        
+        if (!onscreen($this, winW, winH, scale, percentVis)) {
+        
+            log("TooBig @ "+Zooms[zoomIdx]+"%");        
+            setZoom(++zoomIdx, true);
+            
+            if (zoomIdx == Zooms.length-1) 
+                break; // at smallest size, done
+            
+            i = 0; continue; // else try next smaller
+        }        
+    }
+    
+    // OK at current size, done
+}
+
+function storeItemLayout($items) {
+
+    //log('storeItemLayout()');
+    
+    var cx = $(window).width()/2, 
+        cy = $(window).height()/2;
+            
     if (!$items) throw Error('No items!');
     
-    $items.each(function() {
-         
-        var $this = $(this), off = $this.offset();
+    $items.each(function(i) {
 
+        var $this = $(this), off = $this.offset();
+        
         // offsets of item-corner from window center
         $this.attr('data-offx', (cx - off.left));
         $this.attr('data-offy', (cy - off.top));        
@@ -515,15 +552,13 @@ function storeViewState(store) {
 }
 
 function centerZoom($ele) {
-    
-    var dm = document.querySelector('#container');
-    
+        
     if ($ele) {
         
         storeViewState(true);
 
         // compute target positions for transform
-        var margin = 10, metaOffset = 110, center = -5000,
+        var dm, margin = 10, metaOffset = 110, center = -5000,
             ww = $(window).width(), wh = $(window).height(),
             offx = parseInt($ele.attr('data-offx')),
             offy = parseInt($ele.attr('data-offy')),
@@ -545,9 +580,10 @@ function centerZoom($ele) {
         }
         
         // reset zoom to 100%
-        setZoom(zoomIdx = 0);       
+        setZoom(zoomIdx = 0);       // SHOULD THIS HAPPEN FIRST??
         
         // translate to center
+        dm = document.querySelector('#container');
         dm.style.marginLeft = mleft+'px';  
         dm.style.marginTop = mtop+'px';
     }       
@@ -675,7 +711,8 @@ function attachTests() {
 	$.getJSON(TEST_ADS, function(json) {
 
 		console.warn("Vault.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds({ data : toAdArray(json), page : TEST_PAGE }); // currentAd?
+		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
+	    layoutAds({ data : json, page : TEST_PAGE }); // currentAd?
 
 	}).fail(function(e) { console.warn("error(bad-json?):", e); });
 }
@@ -750,38 +787,6 @@ function bounds($items) {
     return bounds;
 }
 
-function positionAds() { // autozoom
-    
-    //log('positionAds() :: '+Zooms[zoomIdx]);
-    
-    setZoom(zoomIdx); // Q: start with previous zoom or 100%?
-    
-    var items = $('.item'),
-        percentVis = .6,
-        winW = $(window).width(),
-        winH = $('#svgcon').offset().top;
-
-    for (var i=0; i < items.length; i++) {
-        
-        //if (i==0) log("start "+Zooms[zoomIdx]+"%"); 
-        
-        var $this = $(items[i]), 
-            scale = Zooms[zoomIdx] / 100;
-            
-        if (!onscreen($this, winW, winH, scale, percentVis)) {
-                
-            setZoom(++zoomIdx, true);
-            
-            if (zoomIdx == Zooms.length-1) 
-                return; // at smallest size, we're done
-            
-            i = 0; continue; // else try next smaller
-        }
-    }
-    
-    // all OK at current size  
-}
-
 function onscreen($this, winW, winH, scale, percentVisible) {
     
     var off = $this.offset(), 
@@ -806,45 +811,6 @@ function onscreen($this, winW, winH, scale, percentVisible) {
     }
     
     return true;     
-}
-
-function repack() {
-    
-    var $items =  $(".item"), visible = $items.length;
-
-    showAlert(visible ? false : 'no ads found');
-
-    $('#container').imagesLoaded(function() {
-
-        //log('imagesLoaded');
-        
-        if (visible > 1) {
-
-            new Packery('#container', {
-                
-                centered : { y : 5000 }, // centered half min-height
-                itemSelector : '.item',
-                gutter : 1
-            });
-            
-            positionAds();
-        }
-        else if (visible == 1) {
-            
-            $items.css({ // center single
-            
-                top : (5000 - $items.height() / 2) + 'px',
-                left : (5000 - $items.width() / 2) + 'px'
-            });
-        }
-        
-         setTimeout(function() { 
-            
-            storeItemLayout($items);
-            
-        }, 500); // (annoyingly) required to get consistent offsets here ?
-        
-    });
 }
 
 function openInNewTab(url) {
@@ -910,4 +876,38 @@ function addInterfaceHandlers(ads) {
 	});
 
     $(window).resize(createSlider);
+}
+
+function repack() {
+    
+    var $container = $('#container'), 
+        $items =  $(".item"), 
+        visible = $items.length;
+
+    showAlert(visible ? false : 'no ads found');
+
+    $container.imagesLoaded(function() {
+        
+        //log('imagesLoaded');
+        
+        if (visible > 1) {
+
+            var p = new Packery('#container', {
+                centered : { y : 5000 }, // centered half min-height
+                itemSelector : '.item',
+                gutter : 1
+            });
+            
+            storeItemLayout($items);
+            positionAds($items);       
+        }
+        else if (visible == 1) {
+           
+            $items.css({ // center single
+            
+                top : (5000 - $items.height() / 2) + 'px',
+                left : (5000 - $items.width() / 2) + 'px'
+            });
+        }
+   });
 }

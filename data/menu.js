@@ -246,7 +246,8 @@ function attachMenuTests() {
 	$.getJSON(TEST_ADS, function(json) {
 
 		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
-	    layoutAds({ data : toAdArray(json), page : TEST_PAGE });
+		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
+	    layoutAds({ data : json, page : TEST_PAGE });
 
 	}).fail(function(e) { console.warn( "error:", e); });
 }

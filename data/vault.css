@@ -58,7 +58,6 @@ div.tooltip {
 	margin: -5000px 0 0 -5000px;
 	min-height: 10000px;
 	min-width: 10000px;
-	/*transform: matrix(1,0,0,1,0,0)*/
 }
 
 #container:active {

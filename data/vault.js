@@ -186,7 +186,7 @@ function appendDetectedTo($detected, ad) {
 
 function appendTargetTo($target, ad, adset) {
 
-    $('<h3/>', { text: adset.gid }).appendTo($target);
+    $('<h3/>', { text: 'target:' }).appendTo($target);
     
     $('<a/>', { 
         

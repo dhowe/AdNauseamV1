@@ -137,8 +137,10 @@ function createSlider() {
         return min;
     }
     
-	function runFilter(ext) {
-
+	function runFilter(ext) {  
+        
+        log('vault.js::runFilter');
+        
         if (ext[0] === gMin && ext[1] == gMax)
             return;
 
@@ -214,12 +216,12 @@ function createSlider() {
 	function brushstart() { }
 
 	function brushmove() {
-
-		runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
+//log('brushmove');
+		//runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
 	}
 
 	function brushend() {
-
+log('brushend');
 		//svg.classed("selecting", !d3.event.target.empty());
 		runFilter(d3.event.target.extent());
 	}

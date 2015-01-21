@@ -46,7 +46,7 @@ function updateAd(json) {
 
 function doLayout(adsets) {
 
-    log('Vault.doLayout: '+adsets.length +" ad-sets");
+    //log('Vault.doLayout: '+adsets.length +" ad-sets");
     
     if (!adsets) throw Error("No ads!");
     
@@ -480,7 +480,7 @@ function enableLightbox() {
 
 function positionAds(items) { // autozoom
     
-    log('positionAds() :: '+items.length);
+    //log('positionAds() :: '+items.length);
     
     setZoom(zoomIdx = 0, true); // Q: start with previous zoom or 100%?
     
@@ -505,7 +505,6 @@ function positionAds(items) { // autozoom
         }        
     }
     
-    log('positionAds() :: all OK!');
     // OK at current size, done
 }
 
@@ -796,7 +795,7 @@ function onscreen($this, winW, winH, scale, percentVisible) {
         minY = (-h * (1 - percentVisible)),
         maxY = (winH - (h * percentVisible));
    
-    log('onscreen() :: trying: '+Zooms[zoomIdx]+"%",$this.attr('data-gid'),off.left, minX, maxX);
+    //log('onscreen() :: trying: '+Zooms[zoomIdx]+"%",$this.attr('data-gid'),off.left, minX, maxX);
 
     if (off.left < minX || off.left > maxX || off.top < minY || off.top > maxY) 
     {
@@ -888,9 +887,7 @@ function repack() {
     showAlert(visible ? false : 'no ads found');
 
     $container.imagesLoaded(function() {
-        
-        log('imagesLoaded');
-        
+               
         if (visible > 1) {
 
             var p = new Packery('#container', {

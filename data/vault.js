@@ -22,7 +22,9 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 
 function layoutAds(json) {
-    
+
+log('vault.js::layoutAds');
+
     gAds = json.data; // store
 
     addInterfaceHandlers();
@@ -44,7 +46,7 @@ function updateAd(json) {
 
 function doLayout(adsets) {
 
-    log('Vault.doLayout: '+adsets.length +" ad-sets");
+    //log('Vault.doLayout: '+adsets.length +" ad-sets");
     
     if (!adsets) throw Error("No ads!");
     
@@ -438,12 +440,6 @@ function dragOver(e) {
 
 function dragEnd(e) {
  
-    // TODO: new to recompute item-layout (at 100% zoom) in new position??
-    // var tmpIdx = zoomIdx;
-    // setZoom(zoomIdx = 0, true)
-    // storeItemLayout($('.item'));
-    // setZoom(zoomIdx = tmpIdx, true);
-    
     $('#container').removeClass('dragged');
 }
 
@@ -484,7 +480,7 @@ function enableLightbox() {
 
 function positionAds(items) { // autozoom
     
-    //log('positionAds() :: '+Zooms[zoomIdx]);
+    //log('positionAds() :: '+items.length);
     
     setZoom(zoomIdx = 0, true); // Q: start with previous zoom or 100%?
     
@@ -499,7 +495,7 @@ function positionAds(items) { // autozoom
         
         if (!onscreen($this, winW, winH, scale, percentVis)) {
         
-            log("TooBig @ "+Zooms[zoomIdx]+"%");        
+            log("Too-large @ "+Zooms[zoomIdx]+"%");        
             setZoom(++zoomIdx, true);
             
             if (zoomIdx == Zooms.length-1) 
@@ -580,7 +576,7 @@ function centerZoom($ele) {
         }
         
         // reset zoom to 100%
-        setZoom(zoomIdx = 0);       // SHOULD THIS HAPPEN FIRST??
+        setZoom(zoomIdx = 0);
         
         // translate to center
         dm = document.querySelector('#container');
@@ -729,6 +725,8 @@ function zoomOut(immediate) {
 
 function setZoom(idx, immediate) {
     
+log('setZoom('+idx+','+(immediate===true)+')');
+
     $container = $('#container');
     
      // Disable transitions
@@ -796,7 +794,9 @@ function onscreen($this, winW, winH, scale, percentVisible) {
         maxX = (winW - (w * percentVisible)),
         minY = (-h * (1 - percentVisible)),
         maxY = (winH - (h * percentVisible));
-    
+   
+    //log('onscreen() :: trying: '+Zooms[zoomIdx]+"%",$this.attr('data-gid'),off.left, minX, maxX);
+
     if (off.left < minX || off.left > maxX || off.top < minY || off.top > maxY) 
     {
         /*if (off.left < minX)
@@ -875,7 +875,7 @@ function addInterfaceHandlers(ads) {
 		zoomOut();
 	});
 
-    $(window).resize(createSlider);
+    $(window).resize(createSlider);    
 }
 
 function repack() {
@@ -887,9 +887,7 @@ function repack() {
     showAlert(visible ? false : 'no ads found');
 
     $container.imagesLoaded(function() {
-        
-        //log('imagesLoaded');
-        
+               
         if (visible > 1) {
 
             var p = new Packery('#container', {

@@ -28,7 +28,7 @@ AdSet.prototype.findChildById = function(id) {
 
 AdSet.prototype.child = function(i) {
     
-    return this.children[(typeof i == 'undefined') ? this.index : i];
+    return this.children[ (typeof i == 'undefined') ? this.index : i ];
 }
 
 AdSet.prototype.state = function(i) {
@@ -46,15 +46,33 @@ AdSet.prototype.type = function() {
 AdSet.prototype.failedCount = function() {
     
     return this.children.filter(function(d) {
+        
         return d.visitedTs < 0;
+        
     }).length;
 }
 
 AdSet.prototype.visitedCount = function() {
     
     return this.children.filter(function(d) {
+        
         return d.visitedTs > 0;
+        
     }).length;
+}
+
+AdSet.prototype.nextPending = function() {
+    
+    var ads = this.children.slice();
+    ads.sort(byField('-foundTs'));
+    
+    for(var i=0,j = ads.length; i<j; i++) {
+        
+      if (ads[i].visitedTs === 0) // pending
+        return ads[i];
+    }
+      
+    return null;
 }
 
 AdSet.prototype.count = function() {

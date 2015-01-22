@@ -6,13 +6,9 @@ var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' },
     zoomStyle, zoomIdx = 0, animatorId, animateMs = 2000, selectedAdSet;
 
 /* NEXT:     
-    -- Make sure old ads get converted (import/export) - lots of ads
+ 
+    -- TODO: next, send VaultMan.inspected to vault (in json)
     -- TODO: on first-run, doImport() on all ads in storage
-    
-    -- BUG: Arbitrary page switch to vault (see Vaultman)
-    
-    -- NEW-PAGE HASH (use for menu-list and ad-pageTitle), then store array (or set?) of all ads;
-       before moving from page-hash to ad-array, make sure it doesnt exist ??
 
     -- CURRENT-AD (disabled for now)
         test current-ad handling (broken in shared.js)        
@@ -23,7 +19,7 @@ self.port && self.port.on('update-ad', updateAd); // update some
 
 function layoutAds(json) {
 
-log('vault.js::layoutAds');
+    //log('vault.js::layoutAds');
 
     gAds = json.data; // store
 
@@ -33,8 +29,6 @@ log('vault.js::layoutAds');
 }
 
 function updateAd(json) {
-
-    //log('Vault.updateAds() :: '+json.update.id);
 
     // update class/title/visited/resolved-url
     doUpdate(json.update);
@@ -260,7 +254,7 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
         setItemClass($div, state);
         
         // tell the addon 
-        self.port && self.port.emit("item-inspected", { "id": adset.child().id } );
+        //self.port && self.port.emit("item-inspected", { "id": adset.child().id } );
     }    
 }
 
@@ -597,7 +591,7 @@ function lightboxMode(selected) {
 
         var inspectedGid = parseInt($selected.attr('data-gid'));
 
-        selectedAdSet = findAdSetByGid(inspectedGid);
+        selectedAdSet = findAdSetByGid(inspectedGid); // throws
 
         $selected.addClass('inspected').siblings().removeClass('inspected');
         
@@ -607,6 +601,13 @@ function lightboxMode(selected) {
             bulletIndex($selected, selectedAdSet); 
             
             animateInspector($selected);
+        }
+
+        var next = selectedAdSet.nextPending(); // tell the addon 
+        if (next && self.port) {
+            
+            console.log('Vault.js::lightboxed: '+next.id);
+            self.port.emit("item-inspected", { "id": next.id } );
         }
         
         centerZoom($selected);
@@ -664,12 +665,15 @@ function findByAdId(id) {
 
         var childIdx = gAdSets[i].findChildById(id);
         
-        if (childIdx > -1) return {
+        if (childIdx > -1) { 
             
-            ad : gAdSets[i].child(childIdx),
-            group : gAdSets[i],
-            index : childIdx
-        };
+            return {
+            
+                ad : gAdSets[i].child(childIdx),
+                group : gAdSets[i],
+                index : childIdx
+            };
+        }
     }
 
     console.error('No ad for id: ' + id +
@@ -725,7 +729,7 @@ function zoomOut(immediate) {
 
 function setZoom(idx, immediate) {
     
-log('setZoom('+idx+','+(immediate===true)+')');
+    //log('setZoom('+idx+','+(immediate===true)+')');
 
     $container = $('#container');
     

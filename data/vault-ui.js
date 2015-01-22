@@ -130,7 +130,8 @@ function createSlider() {
     function computeMinDateFor(ads, min) {
         
         if (ads && ads.length) { 
-            ads.sort(byField('-foundTs'));
+            
+            ads.sort(byField('-foundTs')); // or slice?
             var subset = ads.slice(0, MAX_NUM_AT_START);
             return subset[subset.length-1].foundTs;
         }
@@ -139,7 +140,7 @@ function createSlider() {
     
 	function runFilter(ext) {  
         
-        log('vault.js::runFilter');
+        //log('vault.js::runFilter');
         
         if (ext[0] === gMin && ext[1] == gMax)
             return;
@@ -216,13 +217,12 @@ function createSlider() {
 	function brushstart() { }
 
 	function brushmove() {
-//log('brushmove');
-		//runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
+ 
+ 		//runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
 	}
 
 	function brushend() {
-log('brushend');
-		//svg.classed("selecting", !d3.event.target.empty());
+
 		runFilter(d3.event.target.extent());
 	}
 

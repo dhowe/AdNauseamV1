@@ -318,7 +318,7 @@ header{
   animation: 200ms ease-in-out attempting infinite alternate;
 }
 
-.ad-item.failed {
+.ad-item.just-visited.failed {
   animation: 1500ms ease-in-out failed;
 }
 
@@ -385,6 +385,11 @@ header{
 .ad-item-text.just-visited {
   background: none;
   animation: 1500ms ease-in-out visit;
+}
+
+.ad-item-text.just-visited.failed {
+  background: none;
+  animation: 1500ms ease-in-out failed;
 }
 
 #ad-list li cite {

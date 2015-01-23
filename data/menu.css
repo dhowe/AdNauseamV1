@@ -277,9 +277,15 @@ header{
 
 
 @keyframes visit {
-   from {
-     background: #BD10E0;
-   }
+  from {
+    background: #BD10E0;
+  }
+}
+
+@keyframes failed {
+  from {
+    background: #B80606;
+  }
 }
 
 @keyframes attempting {
@@ -312,8 +318,12 @@ header{
   animation: 200ms ease-in-out attempting infinite alternate;
 }
 
+.ad-item.failed {
+  animation: 1500ms ease-in-out failed;
+}
+
 .ad-item.failed img {
-  border-style: dashed;
+  border-color: #B80606;
 }
 
 .ad-item span.title {
@@ -368,103 +378,14 @@ header{
 }
 
 .ad-item-text.failed .thumb {
-  border: 2px dashed #F00;
-  color: #F00;
-}}
+  border: 2px dashed #B80606;
+  color: #B80606;
+}
 
 .ad-item-text.just-visited {
   background: none;
   animation: 1500ms ease-in-out visit;
 }
-
-/* -------------------------------------------------- */
-/*
-.ad-item-img {
-  max-height: 60px;
-  max-width: 80px;
-  margin: 10px;
-  vertical-align: middle;
-  font-size: 14px;
-  border: 1px solid #0076FF;
-}
-
-.ad-item-img-visited {
-  max-height: 60px;
-  max-width: 80px;
-  margin: 10px;
-  vertical-align: middle;
-  font-size: 14px;
-  border: 1px solid #BD10E0;
-}
-
-.ad-item-img-failed {
-  max-height: 60px;
-  max-width: 80px;
-  margin: 10px;
-  vertical-align: middle;
-  font-size: 14px;
-  border: 1px solid #F00;
-}
-
-.ad-item-text {
-  padding: 10px 20px 0 130px;
-  font-size: 12px;
-}
-
-.ad-item-text-visited {
-  padding: 10px 20px 0 130px;
-  font-size: 12px;
-}
-
-.ad-item-text .thumb {
-  height: 54px;
-  width: 54px;
-  border: 2px dashed #0076FF;
-  border-radius: 5px;
-  color: #0076FF;
-  font-size: 16px;
-  line-height: 1em;
-  padding: 10px;
-  font-family: bebas_neue_regularregular;
-  top: 40px;
-  left: 63px;
-}
-
-.ad-item-text-visited .thumb {
-  height: 54px;
-  width: 54px;
-  border: 2px dashed #BD10E0;
-  border-radius: 5px;
-  color: #BD10E0;
-  font-size: 16px;
-  line-height: 1em;
-  padding: 10px;
-  font-family: bebas_neue_regularregular;
-  top: 40px;
-  left: 63px;
-}
-
-
-.ad-item-text h3 a{
-  color: #ababab;
-  text-decoration: none;
-}
-
-.ad-item-text-visited h3 a {
-  color: #ababab;
-  text-decoration: none;
-}
-
-.ad-item-text .ads-creative {
-  font-size: 0.8em;
-  color: #979797;
-}
-
-.ad-item-text-visited .ads-creative {
-  font-size: 0.8em;
-  color: #979797;
-}
-*/
 
 #ad-list li cite {
   display: block;

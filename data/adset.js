@@ -3,7 +3,6 @@ var TEXT_MINW = 150, TEXT_MAXW = 450;
 function AdSet(ad) { 
 
     this.gid = Math.abs(createGid(ad));
-    //this.ts = +new Date();
     //console.log('create AdSet#'+this.gid);
     this.children = [];
     this.index = 0;
@@ -15,7 +14,7 @@ AdSet.prototype.id = function(i) {
     return this.child(i).id;
 }
 
-AdSet.prototype.findChildById = function(id) {
+AdSet.prototype.childIdxForId = function(id) {
     
     for (var i=0, j = this.children.length; i<j; i++) {
         

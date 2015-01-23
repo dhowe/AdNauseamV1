@@ -1,9 +1,12 @@
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
-self.port && self.port.on('update-ads', updateAds); // update some
+self.port && self.port.on('update-ad', updateAd);    // update one
+self.port && self.port.on('set-current', setCurrent); // ad attempt
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
 function layoutAds(json) {
+
+log('menu::layoutAds: '+(json.current?json.current.id:-1));
 
     if (!json.data) return;
     
@@ -13,21 +16,18 @@ function layoutAds(json) {
     
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;
-
+    
 	$('#ad-list-items').html(createHtml(adArray, pageUrl, json.pageCount));
 
-    // tagCurrentAd(json.current);
+    setCurrent(json);
 
 	setCounts(json.pageCount, 
-	    (json.pageCount ? visitedCount(adArray) : 0), 
-	    json.totalCount);
+	    (json.pageCount ? visitedCount(adArray) : 0), json.totalCount);
 }
 
-function updateAds(obj) {
+function updateAd(json) {
 
-    var sel, td,
-        update = obj.update,
-        pageUrl = obj.page;
+    var sel, td, update = json.update;
 
     if (!adArray) {
 
@@ -41,32 +41,40 @@ function updateAds(obj) {
         return;
     }
 
-    //console.log('Menu::updateAds: ', update);
-
-    // update the title (DOM)
+    // update the title
     sel = '#ad' + update.id + ' .title';
     $(sel).text(update.title);
 
     if (update.contentType !== 'text') {
 
-        // update the url (DOM)
+        // update the url 
         sel = '#ad' + update.id + ' cite';
         td = targetDomain(update);
         if (td) $(sel).text(td);
     }
 
-    // update the class (DOM)
+    // update the class
     sel = '#ad' + update.id;
     $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
         .removeClass('just-visited').addClass('just-visited');
-
-    // tagCurrentAd(json.current);
     
-    $('#visited-count').text('clicked '+visitedCount(onPage(adArray, pageUrl)));
+    setCurrent(json);
+    
+    $('#visited-count').text('clicked '+visitedCount(onPage(adArray, json.page)));
 
     animateIcon(500);
 }
 
+function setCurrent(json) { 
+    
+    log('menu::setCurrent: '+(json.current?json.current.id:-1));
+    
+    $('.item').removeClass('attempting');
+
+    // update the class for ad being attempted
+    json.current && $('#ad' + json.current.id).addClass('attempting');
+}
+ 
 function replaceUpdatedAd(update) {
 
     // update the object itself
@@ -129,34 +137,6 @@ function onPage(arr, pageUrl) {
     return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
 }
 
-/*
-function getRecentAds(ads, num) {
-
-    var recent = [];
-
-    if (ads) {
-
-        ads.sort(byField('-foundTs')); // sort by found-time
-
-        // put pending ads first
-        for (var i=0; recent.length < num && i < ads.length; i++) {
-
-            (ads[i].visitedTs == 0)  && recent.push(ads[i]);
-        }
-
-        // now fill with the rest
-        for (var i=0; recent.length < num && i < ads.length; i++) {
-
-            if (recent.indexOf(ads[i]) < 0)
-                recent.push(ads[i]);
-        }
-
-        // TODO: make sure currently-being-attempted ad is first
-    }
-
-    return recent;
-}*/
-
 function showRecentAds(recent) { 
     
     //log('showRecentAds()');
@@ -174,9 +154,9 @@ function showRecentAds(recent) {
 
 function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
 
-    //log('createHtml: '+ads.length);
+    //log('createHtml: '+ads.length,numOnPage);
 
-	showAlert(false);
+	showAlert(false);      // TODO: rewrite this function
 	
 	$('#ad-list-items').removeClass();
     
@@ -216,10 +196,12 @@ function visitedClass(ad) {
 }
 
 function param(name) {
+    
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
         results = regex.exec(location.search);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    return results === null ? "" : 
+        decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 function attachMenuTests() {
@@ -247,7 +229,13 @@ function attachMenuTests() {
 
 		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
 		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
-	    layoutAds({ data : json, page : TEST_PAGE });
+
+            layoutAds({ // not testing page-url correctly
+                data : json,
+                page : TEST_PAGE,
+                pageCount : json.length,
+                totalCount : json.length
+            }); 
 
 	}).fail(function(e) { console.warn( "error:", e); });
 }

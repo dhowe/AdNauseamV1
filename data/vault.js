@@ -3,19 +3,17 @@ const LogoURL = 'http://dhowe.github.io/AdNauseam/',
     Zooms = [ 100, 50, 25, 12.5, 6.25 ];
     
 var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
-    zoomStyle, zoomIdx = 0, animatorId, animateMs = 2000, selectedAdSet;
+    zoomStyle, zoomIdx = 0, animatorId, animateMs = 2000, 
+    resizeId, selectedAdSet;
 
 /* NEXT:     
  
-    -- TODO: next, send VaultMan.inspected to vault (in json)
-    -- TODO: on first-run, doImport() on all ads in storage
-
-    -- CURRENT-AD (disabled for now)
-        test current-ad handling (broken in shared.js)        
+    -- TODO: on first-run, doImport() on all ads in storage       
 */         
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
+self.port && self.port.on('set-current', setCurrent); // ad attempt
 
 function layoutAds(json) {
 
@@ -25,7 +23,9 @@ function layoutAds(json) {
 
     addInterfaceHandlers();
     
-    createSlider();      
+    createSlider();     
+    
+    setCurrent(json); 
 }
 
 function updateAd(json) {
@@ -33,9 +33,27 @@ function updateAd(json) {
     // update class/title/visited/resolved-url
     doUpdate(json.update);
 
-    //tagCurrentAd(addonData.current);
+    setCurrent(json);
     
     computeStats(gAdSets);
+}
+
+function setCurrent(json) { 
+    
+    log('vault::setCurrent: '+(json.current?json.current.id:-1));
+    
+    $('.item').removeClass('attempting');
+
+    if (json.current) {
+        
+        var groupInfo = findAdById(json.current.id),
+            $item = findItemDivByGid(groupInfo.group.gid);
+            
+        log('vault::setCurrent: updating '+$item.length);
+
+        // update the class for ad being attempted
+         $item.addClass('attempting');
+    }
 }
 
 function doLayout(adsets) {
@@ -62,7 +80,7 @@ function createDivs(adsets) {
         var $div = $('<div/>', {
             
             class: 'item dup-count-'+adsets[i].count(),
-            'data-gid': adsets[i].gid,
+            'data-gid': adsets[i].gid
             
         }).appendTo('#container');
 
@@ -73,7 +91,8 @@ function createDivs(adsets) {
 function layoutAd($div, adset) {
 
     // append the display
-    var fun = adset.child(0).contentType === 'text' ? appendTextDisplayTo : appendDisplayTo;
+    var fun = adset.child(0).contentType === 'text' 
+        ? appendTextDisplayTo : appendDisplayTo;
     fun($div, adset);   
 
     appendBulletsTo($div, adset);
@@ -88,7 +107,7 @@ function doUpdate(updated) {
 
     //log('doUpdate: #'+updated.id);
     
-    var groupInfo = findByAdId(updated.id),
+    var groupInfo = findAdById(updated.id),
         adset = groupInfo.group, itemClass,
         $item = findItemDivByGid(groupInfo.group.gid);
         
@@ -252,9 +271,6 @@ function bulletIndex($div, adset) { // adset.index must be updated first!
 
         // (temporarily) add the state-class to the div
         setItemClass($div, state);
-        
-        // tell the addon 
-        //self.port && self.port.emit("item-inspected", { "id": adset.child().id } );
     }    
 }
 
@@ -657,13 +673,13 @@ function animateInspector($inspected) {
     }
 }
 
-function findByAdId(id) {
+function findAdById(id) {
 
-    //log('findByAdId: '+id);
+    //log('findAdById: '+id);
 
     for (var i = 0, j = gAdSets.length; i < j; i++) {
 
-        var childIdx = gAdSets[i].findChildById(id);
+        var childIdx = gAdSets[i].childIdxForId(id);
         
         if (childIdx > -1) { 
             
@@ -879,7 +895,11 @@ function addInterfaceHandlers(ads) {
 		zoomOut();
 	});
 
-    $(window).resize(createSlider);    
+    $(window).resize(function() {
+        
+        clearTimeout(resizeId); // only when done
+        resizeId = setTimeout(createSlider, 100);
+    });
 }
 
 function repack() {

@@ -3,23 +3,6 @@
 
 var TEST_APPEND_IDS = true;
 
-function tagCurrentAd(currentAd) { // TODO: fix: this is broken with new layout
-        
-    //console.log('tagCurrentAd('+currentAd.id+')');
-    if (!currentAd) return;
-    
-    sel = '#ad' + currentAd.id;
-    
-    if ($(sel).length) {
-        
-        //console.log("SET CURRENT-AD: ",  $(sel)[0].classList);
-        
-        //if ($(sel).hasClass('pending')); // need to check its not already visited?
-        $(sel).addClass('current-ad').siblings().removeClass('current-ad');
-    }
-    //else console.log("FAIL ON CURRENT-AD: ",  'No match for: '+sel);
-}
-
 /*
  * Start with resolvedTargetUrl if available, else use targetUrl
  * Then extract the last domain from the (possibly complex) url

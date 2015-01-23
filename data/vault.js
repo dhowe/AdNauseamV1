@@ -40,7 +40,7 @@ function updateAd(json) {
 
 function setCurrent(json) { 
     
-    log('vault::setCurrent: '+(json.current?json.current.id:-1));
+    //log('vault::setCurrent: '+(json.current?json.current.id:-1));
     
     $('.item').removeClass('attempting');
 
@@ -49,10 +49,8 @@ function setCurrent(json) {
         var groupInfo = findAdById(json.current.id),
             $item = findItemDivByGid(groupInfo.group.gid);
             
-        log('vault::setCurrent: updating '+$item.length);
-
         // update the class for ad being attempted
-         $item.addClass('attempting');
+        $item.addClass('attempting');
     }
 }
 

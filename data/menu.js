@@ -6,13 +6,11 @@ self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 
 function layoutAds(json) {
 
-log('menu::layoutAds: '+(json.current?json.current.id:-1));
-
     if (!json.data) return;
     
     adArray = json.data;
         
-    log('Menu::layoutAds: '+adArray.length + " ads");
+    //log('Menu::layoutAds: '+adArray.length + " ads");
     
 	var pageUrl = typeof TEST_MODE != 'undefined'
 		&& TEST_MODE ? TEST_PAGE : json.page;
@@ -58,18 +56,20 @@ function updateAd(json) {
     $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
         .removeClass('just-visited').addClass('just-visited');
     
+    // update the count
+    $('#visited-count').text('clicked '
+        + visitedCount(onPage(adArray, json.page)));
+
     setCurrent(json);
     
-    $('#visited-count').text('clicked '+visitedCount(onPage(adArray, json.page)));
-
     animateIcon(500);
 }
 
 function setCurrent(json) { 
     
-    log('menu::setCurrent: '+(json.current?json.current.id:-1));
+    //log('menu::setCurrent: '+(json.current?json.current.id:-1));
     
-    $('.item').removeClass('attempting');
+    $('.ad-item').removeClass('attempting');
 
     // update the class for ad being attempted
     json.current && $('#ad' + json.current.id).addClass('attempting');

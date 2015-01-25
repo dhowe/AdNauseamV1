@@ -12,6 +12,12 @@
         <script src="lib/imagesloaded.pkgd.min.js"></script>
         <script src="lib/d3.min.js"></script>
 
+         <script src="adset.js"></script>
+                           <script src="shared.js"></script>
+                           <script src="../lib/ff/adnutil.js"></script>
+                           <script src="vault-ui.js"></script>
+                           <script src="vault.js"></script>
+                           
         <script src="../lib/config.js"></script>
 
         <script>
@@ -23,11 +29,11 @@
 
                     // load addon-injected js here for testing
                     $.when(
-                           $.getScript( "adset.js" ),
+                           /*$.getScript( "adset.js" ),
                            $.getScript( "shared.js" ),
                            $.getScript( "../lib/ff/adnutil.js"),
                            $.getScript( "vault-ui.js" ),
-                           $.getScript( "vault.js" ),
+                           $.getScript( "vault.js" ),*/
                            $.Deferred(function( deferred ) {
                                 $( deferred.resolve );
                         })).done(function() { attachTests(); });

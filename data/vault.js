@@ -244,12 +244,12 @@ function updateMetaTarget($target, ad) {
  * Shifts meta list to show correct item
  * Updates index-counter for the bullet 
  */
-function bulletIndex($div, adset) { // adset.index must be updated first!
+function bulletIndex($div, adset) { // adset.index must be updated first
     
     var $bullet = $div.find('.bullet[data-idx='+(adset.index)+']'),
         state = adset.state(), $ul;
-    
-    //log('bulletIndex: '+adset.gid+" children["+adset.index+"]="+adset.child().id+"-> "+ adset.state());
+
+    //log('bulletIndex: c["+adset.index+"]="+adset.child().id+"-> "+ adset.state());
     
     // set the state for the bullet 
     setItemClass($bullet, state);
@@ -374,17 +374,36 @@ function appendBulletsTo($div, adset) {
                 'class': 'bullet '+ adset.state(i) 
                 
             }).appendTo($ul);
-            
-            $li.click(function(e) {
+
+            $li.hover(
+                function(e) { // on
                 
-                e.stopPropagation();
+                    e.stopPropagation();
+                    
+                    adset.index = parseInt( $(this).attr('data-idx') );
+                    bulletIndex($div, adset);
+                    
+                    animateInspector(false);
+                },
                 
-                adset.index = parseInt( $(this).attr('data-idx') );
-                
-                bulletIndex($div, adset);
-            });
+                function(e) { // off
+                    
+                    animateInspector($div);
+                }  
+            );            
         }
     }    
+}
+
+function selectBullet(e, li, adset, $div) {
+                
+    e.stopPropagation();
+    
+    adset.index = parseInt( $(li).attr('data-idx') );
+    
+    log("IDX: "+adset.index);
+    
+    bulletIndex($div, adset);
 }
 
 function computeStats(adsets) {
@@ -650,17 +669,15 @@ function lightboxMode(selected) {
 }
 
 function animateInspector($inspected) {
-
-    //log('animateInspector: '+$inspected);
-    
+  
     animatorId && clearTimeout(animatorId); // stop
     
     // animate if we have a dup-ad being inspected
     if ($inspected && selectedAdSet && selectedAdSet.count() > 1) {
-
-        //log("selectedAdSet.count():" +selectedAdSet.count(), selectedAdSet.groupState());
         
         animatorId = setInterval(function() {
+            
+            //log("selectedAdSet.count():" +selectedAdSet.index, $inspected.length);
 
             if (++selectedAdSet.index === selectedAdSet.count())
                 selectedAdSet.index = 0;

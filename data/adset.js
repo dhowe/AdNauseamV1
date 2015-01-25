@@ -31,8 +31,9 @@ AdSet.prototype.child = function(i) {
 }
 
 AdSet.prototype.state = function(i) {
-    
+
     var visitedTs = this.child(i).visitedTs;
+
     return (visitedTs == 0) ? 'pending' :
         (visitedTs  < 0 ? 'failed' : 'visited' );
 }

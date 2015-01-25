@@ -23,7 +23,7 @@ function layoutAds(json) {
 
     addInterfaceHandlers();
     
-    createSlider();     
+    gAdSets = createSlider();     
     
     setCurrent(json); 
 }
@@ -50,7 +50,8 @@ function setCurrent(json) {
             $item = findItemDivByGid(groupInfo.group.gid);
             
         // update the class for ad being attempted
-        $item.addClass('attempting');
+        $item && $item.addClass('attempting');
+        
     }
 }
 
@@ -103,22 +104,20 @@ function layoutAd($div, adset) {
 
 function doUpdate(updated) {
 
-    //log('doUpdate: #'+updated.id);
-    
     var groupInfo = findAdById(updated.id),
-        adset = groupInfo.group, itemClass,
+        adset = groupInfo.group, itemClass, 
         $item = findItemDivByGid(groupInfo.group.gid);
         
     // update the adgroup
-    adset.index = groupInfo.index;
+    adset.index = groupInfo.index;    
     adset.children[adset.index] = updated;
     
     if (!$item) {
         
-        log("ITEM NOT VISIBLE");
+        log("Item (adset="+adset.gid+") not currently visible");
         return;
     }
-    
+
     // update the ad data
     updateMetaTarget($item.find('.target[data-idx='+adset.index+']'), updated);
     
@@ -201,6 +200,7 @@ function appendTargetTo($target, ad, adset) {
 
     $('<h3/>', { text: 'target:' }).appendTo($target);
     
+    //console.log("Creating target #"+ad.id+" title="+ad.title);
     $('<a/>', { 
         
         id: 'target-title',
@@ -639,7 +639,7 @@ function lightboxMode(selected) {
         var next = selectedAdSet.nextPending(); // tell the addon 
         if (next && self.port) {
             
-            console.log('Vault.js::lightboxed: '+next.id);
+            //console.log('Vault.js::lightboxed: '+next.id);
             self.port.emit("item-inspected", { "id": next.id } );
         }
         
@@ -707,8 +707,7 @@ function findAdById(id) {
         }
     }
 
-    console.error('No ad for id: ' + id +
-        ' (Ad updated before being added to vault?) REFRESH');
+    console.error('No ad for id: ' + id);
     
     self.port && self.port.emit("refresh-vault");
 }

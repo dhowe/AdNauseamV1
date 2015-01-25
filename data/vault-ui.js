@@ -77,21 +77,12 @@ function createSlider() {
 
    var barw = histogram[0].dx - 1; //relative width
 
-   //Create groups for the bars
+   // Create groups for the bars
    var bars = svg.selectAll(".bar")
        .data(histogram)
        .enter()
        .append("g")
 
-	// we could go with rectangular bars
-	/*bars.append("rect")
-       .attr("x", function(d) { return d.x })
-       .attr("y", function(d) { return d.y*-3 - 1})
-       .attr("width", barw )
-       .attr("height", function(d) { if (d.y > 0) { return d.y*3 - 1 } else { return 0} })
-       .attr("style", "fill: #000;stroke: #000;stroke-width: 2;")*/
-
-	// or use lines which can also offer a stroke-dasharray
 	bars.append("line")
        .attr("x1", function(d) { return d.x + barw/2 })
        .attr("y1", - 2 )
@@ -99,21 +90,19 @@ function createSlider() {
        .attr("y2", function(d) { return d.y*-3 - 2})
        .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
 
-    var limitedMin = computeMinDateFor(gAds, minDate);
-
 	// setup the brush
-	var brush = d3.svg.brush()
+	var bExtent = [computeMinDateFor(gAds, minDate), maxDate],
+        brush = d3.svg.brush()
 		.x(xScale)
-		 .extent([limitedMin, maxDate])
-	    .on("brushstart", brushstart)
-	   	.on("brush", 	 brushmove)
+		 .extent(bExtent)
+	    //.on("brushstart", brushstart)
+	   	//.on("brush", 	 brushmove)
 	    .on("brushend", brushend);
 
 	// add the brush
 	var gBrush = svg.append("g")
 		.attr("class", "brush")
 		.call(brush);
-		//.call(brush.event); // triggers the filter ***
 
 	// set the height of the brush to that of the chart
 	gBrush.selectAll("rect")
@@ -122,8 +111,8 @@ function createSlider() {
     
     
     //console.log('min: '+limitedMin+' max: '+maxDate);
-
-    gBrush.call(brush.event);
+    //gBrush.call(brush.event);
+    return runFilter(bExtent);
     
 	// ---------------------------- functions ------------------------------
 
@@ -140,7 +129,7 @@ function createSlider() {
     
 	function runFilter(ext) {  
         
-        //log('vault.js::runFilter');
+        //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
         
         if (ext[0] === gMin && ext[1] == gMax)
             return;
@@ -149,14 +138,39 @@ function createSlider() {
 	
 	    gMin = ext[0], gMax = ext[1];
         	
-		var filtered = dateFilter(gMin, gMax);
-	    gAdSets = createAdSets(filtered); // store
-		doLayout(gAdSets);
+		var filtered = dateFilter(gMin, gMax), fSets;
+		
+		// only create the adsets once, else filter
+		fSets = (gAdSets ? filterAdSets : createAdSets)(filtered);
+            
+		doLayout(fSets);
+		
+		return fSets;
 	}
 
-    function createAdSets(ads) {
+    function filterAdSets(ads) {
+
+        //console.log('Vault-UI.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
+        
+        var sets = [];
+        for (var i=0, j = ads.length; i<j; i++) {
     
-        console.log('Vault-UI.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
+            for (var k=0, l = gAdSets.length; k<l; k++) {
+                
+                if (gAdSets[k].childIdxForId(ads[i].id) > -1) {
+                    
+                    if (sets.indexOf(gAdSets[k]) < 0)
+                        sets.push(gAdSets[k]);
+                }
+            }
+        }
+        
+        return sets;
+    }
+    
+    function createAdSets(ads) { // once per layout
+    
+        //console.log('Vault-UI.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
     
         var ad, hash = {}, adsets = [];
     
@@ -197,7 +211,7 @@ function createSlider() {
 
 	function dateFilter(min, max) {
 
-		//log('dateFilter: '+ads.length+' all, min='+formatDate(min)+', max='+formatDate(max));
+		//log('dateFilter: min='+min+', max='+max);
 
 		var filtered = [];
 
@@ -216,10 +230,7 @@ function createSlider() {
 
 	function brushstart() { }
 
-	function brushmove() {
- 
- 		//runFilter(d3.event.target.extent()); // NOTE: may cause perf problems...
-	}
+	function brushmove() { }
 
 	function brushend() {
 

@@ -928,6 +928,8 @@ function repack() {
                 top : (5000 - $items.height() / 2) + 'px',
                 left : (5000 - $items.width() / 2) + 'px'
             });
+            
+            storeItemLayout($items);
         }
    });
 }

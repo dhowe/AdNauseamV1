@@ -8,7 +8,7 @@
     "license": "GPLv3 (http://www.gnu.org/licenses/)",
     "icon": "data/img/adn_active-48.png",
     "icon64": "data/img/adn_active-64.png",
-	"version": "1.0.94",
+	"version": "1.0.95",
 	"homepage": "http://dhowe.github.io/AdNauseam/",
 	"preferences": [
 		{

@@ -1,6 +1,6 @@
 const LogoURL = 'http://dhowe.github.io/AdNauseam/',
     States = ['pending', 'visited', 'failed' ],
-    Zooms = [ 100, 50, 25, 12.5, 6.25 ];
+    Zooms = [ 100, 50, 25, 12.5, 6.25 ], MaxPerSet = 9;
     
 var viewState = { zoomIdx: 0, left: '-5000px', top: '-5000px' }, 
     zoomStyle, zoomIdx = 0, animatorId, animateMs = 2000, 
@@ -914,6 +914,47 @@ function addInterfaceHandlers(ads) {
         clearTimeout(resizeId); // only when done
         resizeId = setTimeout(createSlider, 100);
     });
+}
+
+function createAdSets(ads) { // once per layout
+
+    //console.log('Vault-UI.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
+
+    var ad, hash = {}, adsets = [];
+
+    // set hidden val for each ad
+    for (var i=0, j = ads.length; i<j; i++) {
+
+        ad = ads[i];
+        
+        key = computeHashKey(ad); 
+        
+        if (!key) continue;
+        
+        if (!hash[key]) {
+
+            // new: add a hash entry
+            hash[key] = new AdSet(ad);
+            adsets.push(hash[key]);
+        }
+        else {
+
+            // dup: add as child
+            hash[key].add(ad);
+        }
+    }
+
+    // sort by foundTs and limit to MaxPerSet
+    if (true) {
+        
+        for (var i=0, j = adsets.length; i<j; i++) {
+            
+            adsets[i].children.sort(byField('-foundTs'));
+            adsets[i].children = adsets[i].children.splice(0, MaxPerSet);
+        }
+    }
+    
+    return adsets;
 }
 
 function repack() {

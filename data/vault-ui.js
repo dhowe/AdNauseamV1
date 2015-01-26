@@ -1,7 +1,7 @@
 var gAds, gAdSets, gMin, gMax; // stateful
 
 const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
-    format = d3.time.format("%a %b %d %Y"), MAX_NUM_AT_START = 400, MAX_PER_SET = 9,
+    format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400,
     // TODO: need to verify that at least one full bar is showing
     customTimeFormat = d3.time.format.multi([
         [".%L", function(d)     { return d.getMilliseconds(); }],
@@ -121,7 +121,7 @@ function createSlider() {
         if (ads && ads.length) { 
             
             ads.sort(byField('-foundTs')); // or slice?
-            var subset = ads.slice(0, MAX_NUM_AT_START);
+            var subset = ads.slice(0, MaxStartNum);
             return subset[subset.length-1].foundTs;
         }
         return min;
@@ -166,47 +166,6 @@ function createSlider() {
         }
         
         return sets;
-    }
-    
-    function createAdSets(ads) { // once per layout
-    
-        //console.log('Vault-UI.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
-    
-        var ad, hash = {}, adsets = [];
-    
-        // set hidden val for each ad
-        for (var i=0, j = ads.length; i<j; i++) {
-    
-            ad = ads[i];
-            
-            key = computeHashKey(ad); 
-            
-            if (!key) continue;
-            
-            if (!hash[key]) {
-    
-                // new: add a hash entry
-                hash[key] = new AdSet(ad);
-                adsets.push(hash[key]);
-            }
-            else {
-    
-                // dup: add as child
-                hash[key].add(ad);
-            }
-        }
-    
-        // sort by foundTs and limit to MAX_PER_SET
-        if (true) {
-            
-            for (var i=0, j = adsets.length; i<j; i++) {
-                
-                adsets[i].children.sort(byField('-foundTs'));
-                adsets[i].children = adsets[i].children.splice(0, MAX_PER_SET);
-            }
-        }
-        
-        return adsets;
     }
 
 	function dateFilter(min, max) {

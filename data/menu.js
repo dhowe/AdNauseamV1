@@ -19,8 +19,8 @@ function layoutAds(json) {
 
     setCurrent(json);
 
-	setCounts(json.pageCount, 
-	    (json.pageCount ? visitedCount(adArray) : 0), json.totalCount);
+	setCounts(json.pageCount, (json.pageCount ? 
+	    visitedCount(adArray) : 0), json.totalCount);
 }
 
 function updateAd(json) {
@@ -154,7 +154,7 @@ function showRecentAds(recent) {
 
 function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
 
-    //log('createHtml: '+ads.length,numOnPage);
+    log('createHtml: '+ads.length,numOnPage);
 
 	showAlert(false);      // TODO: rewrite this function
 	

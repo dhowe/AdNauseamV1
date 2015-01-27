@@ -135,6 +135,9 @@ function bingText(anchor) {
 
 function yahooText(anchor) {
 
+    if (anchor.text().length <= 50)
+       return;
+
     var title = anchor.find('div:first-child a');
     var text = anchor.find('div.abs a');
     var site = anchor.find('em a');
@@ -146,7 +149,8 @@ function yahooText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('yahooText.fail: ', text, site);
+        console.warn('yahooText.fail: ', anchor.text(), '(length: ' + 
+            anchor.text().length + ')');
     }
 }
     

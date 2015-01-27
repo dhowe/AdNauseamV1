@@ -135,8 +135,11 @@ function bingText(anchor) {
 
 function yahooText(anchor) {
 
-    if (anchor.text().length <= 50)
-       return;
+    if (anchor.text().length <= 50) {
+            
+        console.warn('Yahoo Text-Ad failing, per #188');   
+        return;
+    }
 
     var title = anchor.find('div:first-child a');
     var text = anchor.find('div.abs a');

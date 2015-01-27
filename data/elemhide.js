@@ -1,5 +1,6 @@
 
 var textAdSelectors = [ 
+
     { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top side AD
     { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
@@ -9,9 +10,9 @@ var textAdSelectors = [
     { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
-        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
-    { selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
-    { selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
+        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
+    //{ selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
+    //{ selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
 ];
 
 $(function() { // page-is-ready
@@ -33,8 +34,13 @@ $(function() { // page-is-ready
             if ( $(this).is(data.selector) ) {
                 
                 // console.log('HIT: ' + waitSel);
-                 
-                waitForKeyElements(waitSel, data.handler);
+                try {
+                    waitForKeyElements(waitSel, data.handler);
+                }
+                catch(e) {
+                    
+                    console.warn('failed processing text-ad',data);
+                }
             }
         }
     });
@@ -83,6 +89,8 @@ function sogouTopAndBottomText(anchor) {
     var title = anchor.find('h3 > a');
     var site = anchor.find('h3 > cite');
     var text = anchor.text();
+    
+    // Cyrus: replace repeated title and site in text
     text = text.replace(title.text(), "").replace(site.text(), "").replace("  ", "");
 
     if (text.length && site.length && title.length) {
@@ -135,9 +143,9 @@ function bingText(anchor) {
 
 function yahooText(anchor) {
 
-    if (anchor.text().length <= 50) {
+    if (anchor.text().length <= 50) { // temporary: pls fix correctly (see #188)
             
-        console.warn('Yahoo Text-Ad failing, per #188');   
+        console.warn('yahoo text-Ad fail: '+anchor.text());   
         return;
     }
 
@@ -167,6 +175,7 @@ function googleText(anchor) {
  
         var ad = createAd('google', title.text(), 
             text.text(), site.text(), title.attr('href'));  
+            
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {

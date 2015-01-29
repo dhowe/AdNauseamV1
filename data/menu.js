@@ -25,6 +25,8 @@ function layoutAds(json) {
 
 function updateAd(json) {
 
+    //log('Menu::updateAd: ',json.update);
+
     var sel, td, update = json.update;
 
     if (!adArray) {
@@ -60,6 +62,7 @@ function updateAd(json) {
     $('#visited-count').text('clicked '
         + visitedCount(onPage(adArray, json.page)));
 
+    log("update:setCurrent: "+json.current);
     setCurrent(json);
     
     animateIcon(500);
@@ -67,7 +70,7 @@ function updateAd(json) {
 
 function setCurrent(json) { 
     
-    //log('menu::setCurrent: '+(json.current?json.current.id:-1));
+    log('menu::setCurrent: '+(json.current?json.current.id:-1));
     
     $('.ad-item').removeClass('attempting');
 

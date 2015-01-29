@@ -40,6 +40,8 @@ function updateAd(json) {
 
 function setCurrent(json) { 
     
+    return; // Disabled pending resolution of #151
+    
     //log('vault::setCurrent: '+(json.current?json.current.id:-1));
     
     $('.item').removeClass('attempting');

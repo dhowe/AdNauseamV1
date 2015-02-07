@@ -3,6 +3,7 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd);    // update one
 self.port && self.port.on('set-current', setCurrent); // ad attempt
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
+self.port && self.port.on('close-panel', closePanel); // set-state
 
 function layoutAds(json) {
 
@@ -62,7 +63,7 @@ function updateAd(json) {
     $('#visited-count').text('clicked '
         + visitedCount(onPage(adArray, json.page)));
 
-    log("update:setCurrent: "+json.current);
+    //log("update:setCurrent: "+json.current);
     setCurrent(json);
     
     animateIcon(500);
@@ -70,7 +71,7 @@ function updateAd(json) {
 
 function setCurrent(json) { 
     
-    log('menu::setCurrent: '+(json.current?json.current.id:-1));
+    //log('menu::setCurrent: '+(json.current?json.current.id:-1));
     
     $('.ad-item').removeClass('attempting');
 
@@ -88,9 +89,16 @@ function replaceUpdatedAd(update) {
     return null;
 }
 
+function closePanel() {
+
+    // force-close settings if open
+    if (!$('#settings').hasClass('hide'))
+        $("#settings-close").trigger("click");
+}
+
 function refreshPanel(opts) {
 
-    //console.log('refreshPanel: opts: ',opts);
+    //log('refreshPanel: opts: ',opts);
 
     var img = 'img/adn_active.png', label = 'Pause AdNauseam';
 
@@ -151,13 +159,11 @@ function showRecentAds(recent) {
     showAlert(msg);
 
     $('#ad-list-items').addClass('recent-ads');
-
-    console.log('Handle case: no-ads on page *** '+recent.length+' recent ads');
+    
+    log('No-ads on page, showing '+recent.length+' recent');
 }
 
 function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
-
-    log('createHtml: '+ads.length,numOnPage);
 
 	showAlert(false);      // TODO: rewrite this function
 	
@@ -209,11 +215,11 @@ function param(name) {
 
 function attachMenuTests() {
 
-    console.log('attachMenuTests()');
+    log('attachMenuTests()');
 
     function assert(test, exp, msg) {
         msg = msg || 'expecting "' + exp + '", but got';
-        console.log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
+        log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
     }
 
 	$('#log-button').off('click').click(function() {
@@ -245,29 +251,29 @@ function attachMenuTests() {
 
 (function() {
 
-	//console.log('Ready: INIT_MENU_HANDLERS');
+	//log('Ready: INIT_MENU_HANDLERS');
 
 	$('#log-button').click(function(e) {
-		//console.log('#log-button.click');
+		//log('#log-button.click');
 
 		self.port && self.port.emit("show-log");
 	});
 	
     $('#import-ads').click(function(e) {
-        //console.log('#log-button.click');
+        //log('#log-button.click');
 
         e.preventDefault();
         self.port && self.port.emit("import-ads");
     });
     
     $('#export-ads').click(function(e) {
-        //console.log('#log-button.click');
+        //log('#log-button.click');
         e.preventDefault();
         self.port && self.port.emit("export-ads");
     });
 
 	$('#vault-button').click(function() {
-		//console.log('#vault-button.click');
+		//log('#vault-button.click');
 
 		self.port && self.port.emit("show-vault");
 	});
@@ -292,33 +298,33 @@ function attachMenuTests() {
 	});
 
 	$('#pause-button').click(function() {
-		//console.log('#pause-button.click');
+		//log('#pause-button.click');
 		self.port && self.port.emit('disable');
 	});
 
 	$('#settings-close').click(function() {
 
-		//console.log('#settings-close.click');
+		//log('#settings-close.click');
 
 		$('.page').toggleClass('hide');
 		$('.settings').toggleClass('hide');
 
-		self.port && self.port.emit('hide-settings');
+		//self.port && self.port.emit('hide-settings');
 	});
 
 	$('#settings-open').click(function() {
 
-		//console.log('#settings-open.click');
+		//log('#settings-open.click');
 
 		$('.page').toggleClass('hide');
 		$('.settings').toggleClass('hide');
 
-		self.port && self.port.emit('show-settings');
+		//self.port && self.port.emit('show-settings');
 	});
 
 	$('#about-button').click(function() {
 
-		//console.log('#about-button.click');
+		//log('#about-button.click');
 		self.port && self.port.emit('show-about');
 	});
 
@@ -326,7 +332,7 @@ function attachMenuTests() {
 
 		var val = $(this).prop('checked');
 
-		//console.log('#disable-logs.click: '+val);
+		//log('#disable-logs.click: '+val);
 		self.port && self.port.emit('disable-logs', { 'value' : val });
 	});
 
@@ -334,7 +340,7 @@ function attachMenuTests() {
 
         var val = $(this).prop('checked');
 
-        //console.log('#disable-logs.click: '+val);
+        //log('#disable-logs.click: '+val);
         self.port && self.port.emit('disable-referer', { 'value' : val });
     });
 

@@ -86,6 +86,35 @@ function createDivs(adsets) {
         }).appendTo('#container');
 
         layoutAd($div, adsets[i]);
+        
+        $div.hover(
+            
+            function(e) { // on
+            
+                var $this = $(this);
+                
+                if ($this.hasClass('inspected')) {
+    
+                    //log("item.on");
+                    
+                    var inspectedGid = parseInt($this.attr('data-gid'));
+                    selectedAdSet = findAdSetByGid(inspectedGid); // throws
+                    bulletIndex($this, selectedAdSet);
+                    animateInspector(false);
+                }
+                
+                e.stopPropagation();
+            },
+            
+            function(e) { // off
+                
+                if ($(this).hasClass('inspected')) {
+                    
+                    // log("item.off: "+selectedAdSet);
+                    animateInspector($(this));
+                }
+            }  
+        );    
     }    
 }
 
@@ -276,7 +305,6 @@ function bulletIndex($div, adset) { // adset.index must be updated first
 
 function appendDisplayTo($div, adset) {
 
-
     var $ad = $('<div/>', { class: 'ad' }).appendTo($div);
     var total = adset.count();
      
@@ -378,6 +406,7 @@ function appendBulletsTo($div, adset) {
             }).appendTo($ul);
 
             $li.hover(
+                
                 function(e) { // on
                 
                     e.stopPropagation();
@@ -395,17 +424,6 @@ function appendBulletsTo($div, adset) {
             );            
         }
     }    
-}
-
-function selectBullet(e, li, adset, $div) {
-                
-    e.stopPropagation();
-    
-    adset.index = parseInt( $(li).attr('data-idx') );
-    
-    log("IDX: "+adset.index);
-    
-    bulletIndex($div, adset);
 }
 
 function computeStats(adsets) {

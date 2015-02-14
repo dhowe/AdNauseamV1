@@ -97,6 +97,7 @@ function createDivs(adsets) {
     
                     //log("item.on");
                     
+                    // pause animation on mouse-over image
                     var inspectedGid = parseInt($this.attr('data-gid'));
                     selectedAdSet = findAdSetByGid(inspectedGid); // throws
                     bulletIndex($this, selectedAdSet);

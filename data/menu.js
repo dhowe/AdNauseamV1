@@ -165,35 +165,39 @@ function showRecentAds(recent) {
 
 function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
 
-	showAlert(false);      // TODO: rewrite this function
+    var html = '';  // TODO: rewrite this ugliness
+
+	showAlert(false); 
 	
 	$('#ad-list-items').removeClass();
     
-    var html = '', isRecentSet = false;
-	for (var i=0, j = ads.length; i<j; i++) {
-
-		if (ads[i].contentType === 'img') {
-
-			html += '<li id="ad' + ads[i].id +'" class="ad-item' + visitedClass(ads[i]);
-			html += '"><a target="new" href="' + ads[i].targetUrl;
-			html += '"><span class="thumb"><img src="' + (ads[i].contentData.src || ads[i].contentData);
-			html += '" class="ad-item-img" onerror="';
-			html += 'this.onerror=null; this.width=50; this.height=45;';
-            html += "this.src='img/placeholder.svg'\"></span><span class=\"title\">";
-			html +=  ads[i].title ? ads[i].title  : "#" + ads[i].id;
-			html += '</span><cite>' + targetDomain(ads[i]) + '</cite></a></li>\n\n';
-		}
-		else if (ads[i].contentType === 'text') {
-
-			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
-			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
-			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
-			if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
-			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
-		}		
-	}
-
-    if (!numOnPage) showRecentAds(ads);
+    if (ads) {
+    
+    	for (var i=0, j = ads.length; i<j; i++) {
+    
+    		if (ads[i].contentType === 'img') {
+    
+    			html += '<li id="ad' + ads[i].id +'" class="ad-item' + visitedClass(ads[i]);
+    			html += '"><a target="new" href="' + ads[i].targetUrl;
+    			html += '"><span class="thumb"><img src="' + (ads[i].contentData.src || ads[i].contentData);
+    			html += '" class="ad-item-img" onerror="';
+    			html += 'this.onerror=null; this.width=50; this.height=45;';
+                html += "this.src='img/placeholder.svg'\"></span><span class=\"title\">";
+    			html +=  ads[i].title ? ads[i].title  : "#" + ads[i].id;
+    			html += '</span><cite>' + targetDomain(ads[i]) + '</cite></a></li>\n\n';
+    		}
+    		else if (ads[i].contentType === 'text') {
+    
+    			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
+    			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
+    			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
+    			if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
+    			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
+    		}		
+    	}
+    
+        if (!numOnPage) showRecentAds(ads);
+    }
 
 	return html;
 }

@@ -902,6 +902,11 @@ function addInterfaceHandlers(ads) {
         //log(e.clientX,e.clientY);
         lightboxMode(false);
     });
+    
+    $(document).keyup(function(e) {
+
+      (e.keyCode == 27) && lightboxMode(false); // esc
+    });
 
 	/////////// DRAG-STAGE ///////////
 	// (from: http://jsfiddle.net/robertc/kKuqH/)

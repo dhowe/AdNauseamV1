@@ -4,7 +4,7 @@ var textAdSelectors = [
     { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top side AD
     { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
-    { selector: '.results--ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
+    { selector: '#ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads ul', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },

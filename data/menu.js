@@ -27,8 +27,8 @@ function layoutAds(json) {
 function updateAd(json) {
 
     //log('Menu::updateAd: ',json.update);
-
-    var sel, td, update = json.update;
+    
+    var sel, td, op, update = json.update;
 
     if (!adArray) {
 
@@ -38,7 +38,7 @@ function updateAd(json) {
 
     if (!replaceUpdatedAd(update))  {
 
-        console.warn('Menu::updateAds: ', "no update found!!");
+        console.warn('Menu::updateAds: no update found!!', json);
         return;
     }
 
@@ -60,8 +60,8 @@ function updateAd(json) {
         .removeClass('just-visited').addClass('just-visited');
     
     // update the count
-    $('#visited-count').text('clicked '
-        + visitedCount(onPage(adArray, json.page)));
+    op = onPage(adArray, json.page);
+    $('#visited-count').text('clicked '+ visitedCount(op));
 
     //log("update:setCurrent: "+json.current);
     setCurrent(json);

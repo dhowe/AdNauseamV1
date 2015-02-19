@@ -1,0 +1,65 @@
+[
+  {
+    "id": 41,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1,
+    "foundTs": 1424245354494,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/72/ad.397252/opt-colombia.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPBottom1&sn2=ba5a7590/f9c69a68&sn1=698deb2a/676dca61&camp=nyt2014_journeysmodule_timesjourney_evergreen&ad=timesjourneys_feb_colombia&goto=http%3A%2F%2Fwww%2Enytimes%2Ecom%2Ftimes%2Djourneys%2Ftravel%2Fcolorful%2Dspirit%2Dcolumbia%2F%3Futm%5Fsource%3Dnytimes%26utm%5Fmedium%3Dmodule%26utm%5Fcontent%3Ddestination%5Fpic%26utm%5Fcampaign%3Dbrand",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 42,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1,
+    "foundTs": 1424245354583,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/78/ad.397857/8585-Midnight-Pass-Rd-003-A4111289_3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=705ea6ed/28c4564a&camp=HPMod-MichaelSaunders_2015-1957050&ad=MichaelSaunders1-8585-Midnight-PassRoad&goto=http%3A%2F%2Fwww%2Emichaelsaunders%2Ecom%2Fproperties%2Fproperty%2Ddetail%2F8585%2Dmidnight%2Dpass%2Drd%2Dsarasota%2Dfl%2D34242%2FA4111289%2F%23%2EVNkGLywep9s%2F%3Futm%5Fcampaign%3Dnytimescom%26utm%5Fsource%3Dny%2Dtimes%26utm%5Fmedium%3Dbanner",
+    "pageTitle": "",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 44,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1,
+    "foundTs": 1424245354610,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/66/ad.396694/184x90_left.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=778d23ba/3edb5404&camp=Pernod_1972538_970x250_184x90_HPTO_INT&ad=Pernod_left_300115&goto=http%3A%2F%2Fad%2Edoubleclick%2Enet%2Fddm%2Ftrackclk%2FN7978%2E1864370INTERNATIONAL%2ENYTIM%2FB8495048%2E115197955%3Bdc%5Ftrk%5Faid%3D288179231%3Bdc%5Ftrk%5Fcid%3D61387186",
+    "pageTitle": "",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  }
+]

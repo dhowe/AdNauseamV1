@@ -48,11 +48,15 @@ function setCurrent(json) {
 
     if (json.current) {
         
-        var groupInfo = findAdById(json.current.id),
+        var groupInfo = findAdById(json.current.id), $item;
+        
+        if (groupInfo) {
+         
             $item = findItemDivByGid(groupInfo.group.gid);
             
-        // update the class for ad being attempted
-        $item && $item.addClass('attempting');
+            // update the class for ad being attempted
+            $item && $item.addClass('attempting');
+        }
         
     }
 }
@@ -122,9 +126,8 @@ function createDivs(adsets) {
 function layoutAd($div, adset) {
 
     // append the display
-    var fun = adset.child(0).contentType === 'text' 
-        ? appendTextDisplayTo : appendDisplayTo;
-    fun($div, adset);   
+    (adset.child(0).contentType === 'text' ? 
+        appendTextDisplayTo : appendDisplayTo)($div, adset);
 
     appendBulletsTo($div, adset);
     appendMetaTo($div, adset);
@@ -136,13 +139,17 @@ function layoutAd($div, adset) {
 
 function doUpdate(updated) {
 
-    var groupInfo = findAdById(updated.id),
-        adset = groupInfo.group, itemClass, 
-        $item = findItemDivByGid(groupInfo.group.gid);
+    var groupInfo = findAdById(updated.id), adset, itemClass, $item;
+    
+    if (groupInfo) {
         
-    // update the adgroup
-    adset.index = groupInfo.index;    
-    adset.children[adset.index] = updated;
+        adset = groupInfo.group; 
+        $item = findItemDivByGid(groupInfo.group.gid);
+            
+        // update the adgroup
+        adset.index = groupInfo.index;    
+        adset.children[adset.index] = updated;
+    }
     
     if (!$item) {
         
@@ -728,7 +735,7 @@ function findAdById(id) {
         }
     }
 
-    console.error('No ad for id: ' + id);
+    console.error('[ERROR] Vault: No ad for ID#' + id + " gAdSets: ",gAdSets);
     
     self.port && self.port.emit("refresh-vault");
 }

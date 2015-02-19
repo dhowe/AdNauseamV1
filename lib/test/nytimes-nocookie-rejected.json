@@ -1,0 +1,21 @@
+[
+  {
+    "id": 37,
+    "title": "Log In - The New York Times",
+    "attempts": 0,
+    "visitedTs": 1424324225969,
+    "foundTs": 1424324036031,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/71/ad.397179/CRS-4824_OpDocs_OurCurse_300x250_retina_A_BD3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Box1&sn2=5b35dc29/56a295e7&sn1=5046f8da/f5ea6573&camp=nyt2015_300x250_mod_opdocs_ourcurse_ros&ad=CRS-4824_300x250_OpDocs_OurCurse&goto=http%3A%2F%2Fnytimes%2Ecom%2Fourcurse",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "https://myaccount.nytimes.com/auth/login?URI=http%3A%2F%2Fwww.nytimes.com%2F2015%2F02%2F02%2Fopinion%2Four-curse.html%3F_r%3D5&REFUSE_COOKIE_ERROR=SHOW_ERROR"
+    ],
+    "resolvedTargetUrl": "https://myaccount.nytimes.com/auth/login?URI=http%3A%2F%2Fwww.nytimes.com%2F2015%2F02%2F02%2Fopinion%2Four-curse.html%3F_r%3D5&REFUSE_COOKIE_ERROR=SHOW_ERROR"
+  }
+]

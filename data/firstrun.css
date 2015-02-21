@@ -139,6 +139,16 @@ img#logo{
   text-align: center;
 }
 
+#version {
+  float: left; 
+  font-family: bebas_neue_regularregular;
+  color: #fff;
+  font-size: 14px;
+  padding-top: 15px;
+  padding-left: 5px;
+  margin: 0 5px;
+}
+
 button {
   border: 2px solid #fff;
   border-radius: 5px;

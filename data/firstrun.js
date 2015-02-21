@@ -1,6 +1,8 @@
  $(function() {
      
-     $('#x-close-button').click(function() {
+     $("#version").text('v'+self.options.version);
+    
+    $('#x-close-button').click(function() {
             
         self.port && self.port.emit("close-firstrun");
     });

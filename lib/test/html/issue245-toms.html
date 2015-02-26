@@ -14,7 +14,7 @@
                 var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
                 j.async = true;
                 j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-                alert(j.src);
+                console.log("load: "+j.src);
                 f.parentNode.insertBefore(j, f);
             })(window, document, 'script', 'gtmDataLayer', 'GTM-BPDQ');
         </script>

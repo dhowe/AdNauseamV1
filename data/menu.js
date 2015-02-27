@@ -32,13 +32,13 @@ function updateAd(json) {
 
     if (!adArray) {
 
-        console.warn('Menu::updateAds: ', "no ad array!!");
+        warn('Menu::updateAds: ', "no ad array!!");
         return;
     }
 
     if (!replaceUpdatedAd(update))  {
 
-        console.warn('Menu::updateAds: no update found!!', json);
+        warn('Menu::updateAds: no update found!!', json);
         return;
     }
 
@@ -240,7 +240,7 @@ function attachMenuTests() {
 
 	$.getJSON(TEST_ADS, function(json) {
 
-		console.warn("Menu.js :: Loading test-ads: "+TEST_ADS);
+		warn("Menu.js :: Loading test-ads: "+TEST_ADS);
 		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
 
             layoutAds({ // not testing page-url correctly
@@ -250,7 +250,7 @@ function attachMenuTests() {
                 totalCount : json.length
             }); 
 
-	}).fail(function(e) { console.warn( "error:", e); });
+	}).fail(function(e) { warn( "error:", e); });
 }
 
 (function() {

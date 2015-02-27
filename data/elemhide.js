@@ -39,7 +39,7 @@ $(function() { // page-is-ready
                 }
                 catch(e) {
                     
-                    console.warn('failed processing text-ad',data);
+                    warn('failed processing text-ad',data);
                 }
             }
         }
@@ -62,7 +62,7 @@ function ebayText(anchor) {
     }
     else {
         
-        console.warn('ebayText.fail: ', text, site);
+        warn('ebayText.fail: ', text, site);
     }
 }
 
@@ -80,7 +80,7 @@ function sogouText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('sogouText.fail: ', text, site);
+        warn('sogouText.fail: ', text, site);
     }
 }
 
@@ -101,7 +101,7 @@ function sogouTopAndBottomText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('sogouTopAndBottomText.fail: ', text, site);
+        warn('sogouTopAndBottomText.fail: ', text, site);
     }
 }
 
@@ -119,7 +119,7 @@ function baiduText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('baiduText.fail: ', text, site);
+        warn('baiduText.fail: ', text, site);
     }
 }
 
@@ -137,7 +137,7 @@ function bingText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('bingText.fail: ', text, site);
+        warn('bingText.fail: ', text, site);
     }
 }
 
@@ -145,7 +145,7 @@ function yahooText(anchor) {
 
     if (anchor.text().length <= 50) { // temporary: pls fix correctly (see #188)
             
-        console.warn('yahoo text-Ad fail: '+anchor.text());   
+        warn('yahoo text-Ad fail: '+anchor.text());   
         return;
     }
 
@@ -160,7 +160,7 @@ function yahooText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('yahooText.fail: ', anchor.text(), '(length: ' + 
+        warn('yahooText.fail: ', anchor.text(), '(length: ' + 
             anchor.text().length + ')');
     }
 }
@@ -179,7 +179,7 @@ function googleText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        console.warn('googleText.fail: ', text, site);
+        warn('googleText.fail: ', text, site);
     }
 }
 
@@ -196,7 +196,7 @@ function duckDuckText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     } 
     else {
-        console.warn('duckDuckText.fail: ',  text, site);
+        warn('duckDuckText.fail: ',  text, site);
     }
 }
 

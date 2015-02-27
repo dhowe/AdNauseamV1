@@ -15,7 +15,7 @@ function targetDomain(ad) {
     if (domains.length)  
        result = new URL(domains.pop()).hostname;
     else
-       console.warn("[ERROR] '" + ad.targetUrl+"' url="+url);
+       warn("[ERROR] '" + ad.targetUrl+"' url="+url);
     
     if (result && TEST_APPEND_IDS)
        result += ' (#'+ad.id+')';

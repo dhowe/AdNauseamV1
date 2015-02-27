@@ -735,7 +735,7 @@ function findAdById(id) {
         }
     }
 
-    console.error('[ERROR] Vault: No ad for ID#' + id + " gAdSets: ",gAdSets);
+    error('[ERROR] Vault: No ad for ID#' + id + " gAdSets: ",gAdSets);
     
     self.port && self.port.emit("refresh-vault");
 }
@@ -768,11 +768,11 @@ function attachTests() {
 
 	$.getJSON(TEST_ADS, function(json) {
 
-		console.warn("Vault.js :: Loading test-ads: "+TEST_ADS);
+		warn("Vault.js :: Loading test-ads: "+TEST_ADS);
 		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
 	    layoutAds({ data : json, page : TEST_PAGE }); // currentAd?
 
-	}).fail(function(e) { console.warn("error(bad-json?):", e); });
+	}).fail(function(e) { warn("error(bad-json?):", e); });
 }
 
 function zoomIn(immediate) {

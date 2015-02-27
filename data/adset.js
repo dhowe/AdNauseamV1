@@ -3,7 +3,7 @@ var TEXT_MINW = 150, TEXT_MAXW = 450;
 function AdSet(ad) { 
 
     this.gid = Math.abs(createGid(ad));
-    //console.log('create AdSet#'+this.gid);
+    //log('create AdSet#'+this.gid);
     this.children = [];
     this.index = 0;
     this.add(ad);

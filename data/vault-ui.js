@@ -1,6 +1,6 @@
 var gAds, gAdSets, gMin, gMax; // stateful
 
-const margin = margin = { top: 50, right: 40, bottom: 20, left: 20 },
+const margin = { top: 50, right: 40, bottom: 20, left: 20 },
     format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400,
     // TODO: need to verify that at least one full bar is showing
     customTimeFormat = d3.time.format.multi([

@@ -8,6 +8,7 @@ var textAdSelectors = [
     { selector: '.ads ul', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
+    { selector: 'div.RHRSLL', waitfor: '.sllLink', handler: aolText, name: 'aol' },
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
@@ -63,6 +64,24 @@ function ebayText(anchor) {
     else {
         
         warn('ebayText.fail: ', text, site);
+    }
+}
+
+function aolText(anchor) {
+
+    var title = anchor.find('a.titleLinkBgPaddingAndUnderline');
+    var site = anchor.find('a.urlLinkBgPaddingAndUnderline');
+    var text = anchor.find('.desc');
+
+    if (text.length && site.length && title.length) {
+ 
+        var ad = createAd('aol', title.text(), 
+            text.text(), site.text(), title.attr('href'));  
+            
+        self.port && self.port.emit('parsed-text-ad', ad);
+    }
+    else {
+        warn('aolText.fail: ', text, site);
     }
 }
 
@@ -184,7 +203,7 @@ function googleText(anchor) {
 }
 
 function duckDuckText(anchor) {
-                
+
     var title = anchor.find('.result__title')
     var text = anchor.find('.result__snippet a');
     var site = anchor.find('a.result__url');

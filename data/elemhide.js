@@ -184,8 +184,8 @@ function googleText(anchor) {
 }
 
 function duckDuckText(anchor) {
-                    
-    var title = anchor.find('.result__a')
+                
+    var title = anchor.find('.result__title')
     var text = anchor.find('.result__snippet a');
     var site = anchor.find('a.result__url');
       

@@ -1,3 +1,5 @@
+ /*global window:0, document:0, self:0 */
+
  $(function() {
      
      $("#version").text('v'+self.options.version);

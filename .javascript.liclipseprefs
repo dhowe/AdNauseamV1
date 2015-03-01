@@ -1,0 +1,20 @@
+          
+ # Note that this is a YAML file with jshint_opts for JSHint in JSON format.         
+ 
+ # Option determining whether JSHint should be run 
+ enable_jshint: true
+ 
+ 
+ # Json contents to be passed to JSHint (it's passed directly as specified 
+ # and may be configured based on http://www.jshint.com/docs/options/)
+ jshint_opts: |-
+     {
+         "undef": true,
+         "moz": true,
+         "node": true,
+         "expr": true,
+         "sub": true,
+         "sub": true,
+         "jquery": true,
+         "funcscope": true
+     }

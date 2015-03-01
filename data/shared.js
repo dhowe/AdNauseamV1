@@ -1,4 +1,6 @@
 
+ /*global warn:0, URL:0 */
+
 // functions shared between various ui-views
 
 var TEST_APPEND_IDS = true;
@@ -9,7 +11,7 @@ var TEST_APPEND_IDS = true;
  */
 function targetDomain(ad) {
 
-    var result, url = ad.resolvedTargetUrl || ad.targetUrl;
+    var result, url = ad.resolvedTargetUrl || ad.targetUrl,
         domains = extractDomains(url);
     
     if (domains.length)  
@@ -28,7 +30,7 @@ function extractDomains(fullUrl) { // used in targetDomain()
     var result = [], matches,
         regexp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 
-    while (matches = regexp.exec(fullUrl))
+    while ((matches = regexp.exec(fullUrl)))
         result.push(matches[0]);
 
     return result;

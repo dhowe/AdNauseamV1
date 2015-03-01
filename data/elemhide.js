@@ -1,3 +1,4 @@
+/*global warn:0, self:0, document:0 */
 
 var textAdSelectors = [ 
 
@@ -29,7 +30,7 @@ $(function() { // page-is-ready
     
         for (var i = 0; i < textAdSelectors.length; i++) {
    
-            var data = textAdSelectors[i];
+            var data = textAdSelectors[i],
                 waitSel = data.selector + ' ' + data.waitfor;
 
             if ( $(this).is(data.selector) ) {
@@ -49,10 +50,10 @@ $(function() { // page-is-ready
 
 function ebayText(anchor) {
 
-    var title = anchor.find('a > div:first-child');
-    var site = anchor.find('a > div:nth-child(2)');
-    var text = anchor.find('a > div:nth-child(3)')
-    var targetUrl = anchor.find('a');
+    var title = anchor.find('a > div:first-child'),
+    site = anchor.find('a > div:nth-child(2)'),
+    text = anchor.find('a > div:nth-child(3)'),
+    targetUrl = anchor.find('a');
 
     if (text.length && site.length && title.length) {
  
@@ -186,9 +187,9 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    var title = anchor.find('h3 a');
-    var text = anchor.find('.ads-creative');
-    var site = anchor.find('.ads-visurl cite');
+    var title = anchor.find('h3 a'),
+        text = anchor.find('.ads-creative'),
+        site = anchor.find('.ads-visurl cite');
     
     if (text.length && site.length && title.length) {
  
@@ -204,9 +205,9 @@ function googleText(anchor) {
 
 function duckDuckText(anchor) {
 
-    var title = anchor.find('.result__title')
-    var text = anchor.find('.result__snippet a');
-    var site = anchor.find('a.result__url');
+    var title = anchor.find('.result__title'),
+        text = anchor.find('.result__snippet a'),
+        site = anchor.find('a.result__url');
       
     if (text.length && site.length && title.length) {
         
@@ -306,7 +307,7 @@ function waitForKeyElements(
     if (btargetsFound  &&  bWaitOnce  &&  timeControl) {
         //--- The only condition where we need to clear the timer.
         clearInterval (timeControl);
-        delete controlObj [controlKey]
+        delete controlObj[controlKey];
     }
     else {
         //--- Set a timer, if needed.

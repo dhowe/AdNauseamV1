@@ -1,4 +1,21 @@
 
+1.2
+-------------------
+-- Numerous bug fixes and enhancements 
+
+1.1
+-------------------
+-- Support for Adblock Edge
+-- Fixes for addons.mozilla.org
+-- Numerous bug fixes and enhancements 
+
+1.0
+-------------------
+-- Beta release
+-- Support for text ads
+-- Inspector becomes lightbox
+-- Numerous bug fixes and enhancements 
+
 0.9x
 -------------------
 -- Refactored Architecture

@@ -1,9 +1,13 @@
+/*global window:0, document:0, self:0, showAlert:0, log:0, warn:0, Type:0, toAdArray:0,
+    TEST_APPEND_IDS:0, TEST_ADS:0, TEST_MODE:0, targetDomain:0,TEST_PAGE:0 */
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd);    // update one
 self.port && self.port.on('set-current', setCurrent); // ad attempt
 self.port && self.port.on('refresh-panel', refreshPanel); // set-state
 self.port && self.port.on('close-panel', closePanel); // set-state
+
+var adArray;
 
 function layoutAds(json) {
 
@@ -13,8 +17,8 @@ function layoutAds(json) {
         
     //log('Menu::layoutAds: '+adArray.length + " ads");
     
-	var pageUrl = typeof TEST_MODE != 'undefined'
-		&& TEST_MODE ? TEST_PAGE : json.page;
+	var pageUrl = typeof TEST_MODE != 'undefined' && 
+	   TEST_MODE ? TEST_PAGE : json.page;
     
 	$('#ad-list-items').html(createHtml(adArray, pageUrl, json.pageCount));
 
@@ -140,7 +144,7 @@ function setCounts(found, visited, total) {
 
 function visitedCount(arr) {
     
-    return arr.filter(function(ad) { return ad.visitedTs > 0 }).length;
+    return arr.filter(function(ad) { return ad.visitedTs > 0; }).length;
 }
 
 function onPage(arr, pageUrl) {
@@ -189,7 +193,7 @@ function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique 
     		else if (ads[i].contentType === 'text') {
     
     			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
-    			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="'
+    			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="';
     			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
     			if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
     			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
@@ -208,15 +212,6 @@ function visitedClass(ad) {
 		(ad.visitedTs < 0 ? ' failed' : '');
 }
 
-function param(name) {
-    
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search);
-    return results === null ? "" : 
-        decodeURIComponent(results[1].replace(/\+/g, " "));
-}
-
 function attachMenuTests() {
 
     log('attachMenuTests()');
@@ -227,20 +222,21 @@ function attachMenuTests() {
     }
 
 	$('#log-button').off('click').click(function() {
-		window.location.href = "log.html"
+		window.location.href = "log.html";
 	});
 
 	$('#vault-button').off('click').click(function() {
-		window.location.href = "vault.html"
+		window.location.href = "vault.html";
 	});
 
 	$('#about-button').off('click').click(function() {
-		window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help"
+		window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help";
 	});
 
 	$.getJSON(TEST_ADS, function(json) {
 
 		warn("Menu.js :: Loading test-ads: "+TEST_ADS);
+		
 		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
 
             layoutAds({ // not testing page-url correctly

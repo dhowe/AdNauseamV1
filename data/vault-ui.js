@@ -1,3 +1,5 @@
+ /*global log:0, d3:0, byField:0, doLayout:0, createAdSets:0 */
+
 var gAds, gAdSets, gMin, gMax; // stateful
 
 const margin = { top: 50, right: 40, bottom: 20, left: 20 },
@@ -27,8 +29,8 @@ function createSlider() {
 	
 	try {
 	
-	   width = parseInt( d3.select("#stage").style("width") )
-	        - (margin.left + margin.right + iconW);
+	   width = parseInt( d3.select("#stage").style("width") ) - 
+	       (margin.left + margin.right + iconW);
     }
     catch (e) {
         
@@ -45,13 +47,13 @@ function createSlider() {
         .range([0, width]);
 
    // create an array of dates
-   var map = gAds.map( function(d) { return parseInt(xScale(d.foundTs)) })
+   var map = gAds.map( function(d) { return parseInt(xScale(d.foundTs)); });
 
    // setup the histogram layout
    var histogram = d3.layout.histogram()
       .bins(120) // how many groups? [dyn] base on width
       //.bins(width/(barw-barg))     [dyn]
-      (map)
+      (map);
 
    //log(histogram);
 
@@ -81,14 +83,14 @@ function createSlider() {
    var bars = svg.selectAll(".bar")
        .data(histogram)
        .enter()
-       .append("g")
+       .append("g");
 
 	bars.append("line")
-       .attr("x1", function(d) { return d.x + barw/2 })
+       .attr("x1", function(d) { return d.x + barw/2; })
        .attr("y1", - 2 )
-       .attr("x2", function(d) { return d.x + barw/2 })
-       .attr("y2", function(d) { return d.y*-3 - 2})
-       .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc")
+       .attr("x2", function(d) { return d.x + barw/2; })
+       .attr("y2", function(d) { return d.y*-3 - 2; })
+       .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc");
 
 	// setup the brush
 	var bExtent = [computeMinDateFor(gAds, minDate), maxDate],
@@ -143,7 +145,7 @@ function createSlider() {
 		// only create the adsets once, else filter
 		fSets = (gAdSets ? filterAdSets : createAdSets)(filtered);
             
-		doLayout(fSets);
+		doLayout(fSets); 
 		
 		return fSets;
 	}

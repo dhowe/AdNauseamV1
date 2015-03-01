@@ -1,3 +1,5 @@
+/*global byField:0, self:0, computeHashKey:0 */
+
 var TEXT_MINW = 150, TEXT_MAXW = 450;
 
 function AdSet(ad) { 
@@ -12,7 +14,7 @@ function AdSet(ad) {
 AdSet.prototype.id = function(i) {
     
     return this.child(i).id;
-}
+};
 
 AdSet.prototype.childIdxForId = function(id) {
     
@@ -23,25 +25,25 @@ AdSet.prototype.childIdxForId = function(id) {
     }
 
     return -1;
-}
+};
 
 AdSet.prototype.child = function(i) {
     
     return this.children[ (typeof i == 'undefined') ? this.index : i ];
-}
+};
 
 AdSet.prototype.state = function(i) {
 
     var visitedTs = this.child(i).visitedTs;
 
-    return (visitedTs == 0) ? 'pending' :
-        (visitedTs  < 0 ? 'failed' : 'visited' );
-}
+    return (visitedTs === 0) ? 
+        'pending' : (visitedTs  < 0 ? 'failed' : 'visited' );
+};
 
 AdSet.prototype.type = function() {
     
     return this.children[0].contentType; // same-for-all
-}
+};
 
 AdSet.prototype.failedCount = function() {
     
@@ -50,7 +52,7 @@ AdSet.prototype.failedCount = function() {
         return d.visitedTs < 0;
         
     }).length;
-}
+};
 
 AdSet.prototype.visitedCount = function() {
     
@@ -59,7 +61,7 @@ AdSet.prototype.visitedCount = function() {
         return d.visitedTs > 0;
         
     }).length;
-}
+};
 
 AdSet.prototype.nextPending = function() {
     
@@ -73,17 +75,17 @@ AdSet.prototype.nextPending = function() {
     }
       
     return null;
-}
+};
 
 AdSet.prototype.count = function() {
     
     return this.children.length;
-}
+};
     
 AdSet.prototype.add = function(ad) {
           
      ad && this.children.push(ad);
-}
+};
 
 function createGid(ad) {
     
@@ -111,7 +113,7 @@ AdSet.prototype.groupState = function() {
     failed = this.failedCount();
 
     return failed ? 'failed' : 'pending';
-}
+};
 
 
 //AdSet.createAdSets = createAdSets;

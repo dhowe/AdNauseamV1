@@ -14,6 +14,40 @@ body {
 	transition: opacity 0.5s ease;
 }
 
+
+/************************************
+ Context-menu
+*************************************/
+.custom-menu {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    overflow: hidden;
+    border: 1px solid #CCC;
+    white-space: nowrap;
+    font-family: sans-serif;
+    background: #FFF;
+    color: #333;
+    border-radius: 5px;
+    padding: 0;
+}
+
+/* Each of the items in the list */
+.custom-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+    list-style-type: none;
+}
+
+.custom-menu li:hover {
+    background-color: #DEF;
+}
+
+
+/************************************
+ STAGE
+*************************************
+
 div.tooltip {
   position: absolute;
   text-align: center;
@@ -33,9 +67,7 @@ div.tooltip {
 }
 
 /************************************
-
  STAGE
-
 *************************************/
 
 .notransition {

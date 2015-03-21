@@ -1,27 +1,28 @@
+/*jslint browser: true*/
+
 /*global 
-    gAds:true, gAdSets:true, self:0, createSlider:0,log:0,warn:0, computeHashKey: 0,
-    targetDomain:0,TEXT_MINW:0,TEXT_MAXW:0,rand:0,window:0, document:0, error:0,Type:0,
-    toAdArray:0, TEST_APPEND_IDS:0, TEST_ADS:0, TEST_MODE:0, TEST_PAGE:0, AdSet:0,
-    byField:0, showAlert:0, Packery:0
+    gAds: true, gAdSets: true, self, createSlider, log, warn, targetDomain, alert,
+    rand, error, Type, AdSet, byField, showAlert, Packery, computeHashKey, toAdArray,
+    TEXT_MINW, TEXT_MAXW, TEST_APPEND_IDS, TEST_ADS, TEST_MODE, TEST_PAGE
 */
 
-
 const LogoURL = 'http://dhowe.github.io/AdNauseam/',
-States = ['pending', 'visited', 'failed'],
-Zooms = [100, 50, 25, 12.5, 6.25], MaxPerSet = 9;
+    States = ['pending', 'visited', 'failed'],
+    Zooms = [100, 50, 25, 12.5, 6.25], 
+    EnableContextMenu = 1,
+    MaxPerSet = 9;
 
-var viewState = {
-    zoomIdx: 0,
-    left: '-5000px',
-    top: '-5000px'
-},
-    zoomStyle, zoomIdx = 0,
+var zoomStyle, zoomIdx = 0,
     animatorId, animateMs = 2000,
-    resizeId, selectedAdSet;
+    resizeId, selectedAdSet,
+    viewState = {
+        zoomIdx: 0,
+        left: '-5000px',
+        top: '-5000px'
+    };
 
-/* NEXT:     
- 
-    -- TODO: on first-run, doImport() on all ads in storage       
+/* 
+    TODO: on first-run, doImport() on all ads in storage       
 */
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
@@ -53,7 +54,7 @@ function updateAd(json) {
 
 function setCurrent(json) {
 
-    if (1) return; // Disabled pending resolution of #151
+    if (1) return; // TODO: Disabled pending resolution of #151
 
     //log('vault::setCurrent: '+(json.current?json.current.id:-1));
 
@@ -845,7 +846,7 @@ function setZoom(idx, immediate) {
     $container.removeClass(zoomStyle).addClass // swap zoom class
     ((zoomStyle = ('z-' + Zooms[idx]).replace(/\./, '_')));
 
-    $('#ratio').html(Zooms[idx] + '%'); // set zoom-text
+    $('#ratio').text(Zooms[idx] + '%'); // set zoom-text
 
     // Trigger reflow, flush cached CSS
     $container[0].offsetHeight;
@@ -952,6 +953,58 @@ function addInterfaceHandlers(ads) {
             clearTimeout(resizeId); // only when done
             resizeId = setTimeout(createSlider, 100);
         });
+
+    if (EnableContextMenu) {
+            
+        $(document).bind("contextmenu", function(event) {
+    
+                console.log("context-menu");
+    
+                // Avoid the real one
+                event.preventDefault();
+    
+                // Show contextmenu
+                $(".custom-menu").finish().toggle(100).
+    
+                // In the right position (the mouse)
+                css({
+                        top: event.pageY + "px",
+                        left: event.pageX + "px"
+                    });
+            });
+    
+    
+        // If the document is clicked somewhere
+        $(document).bind("mousedown", function(e) {
+    
+                // If the clicked element is not the menu
+                if ($(e.target).parents(".custom-menu").length < 1) {
+    
+                    // Hide it
+                    $(".custom-menu").hide(100);
+                }
+            });
+    
+    
+        // If the menu element is clicked
+        $(".custom-menu li").click(function() {
+    
+                // This is the triggered action name
+                switch ( $(this).attr("data-action") ) {
+    
+                    // A case for each action. Your actions here
+                    case "delete":
+                        alert("delete");
+                        break;
+                    case "delete all":
+                        alert("delete all");
+                        break;
+                }
+    
+                // Hide it AFTER the action was triggered
+                $(".custom-menu").hide(100);
+            });
+    }
 }
 
 function createAdSets(ads) { // once per layout
@@ -974,8 +1027,7 @@ function createAdSets(ads) { // once per layout
             // new: add a hash entry
             hash[key] = new AdSet(ad);
             adsets.push(hash[key]);
-        }
-        else {
+        } else {
 
             // dup: add as child
             hash[key].add(ad);

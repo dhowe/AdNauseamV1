@@ -20,12 +20,97 @@ function layoutAds(json) {
 	var pageUrl = typeof TEST_MODE != 'undefined' && 
 	   TEST_MODE ? TEST_PAGE : json.page;
     
-	$('#ad-list-items').html(createHtml(adArray, pageUrl, json.pageCount));
+    loadDOM($('#ad-list-items'), adArray, pageUrl, json.pageCount);
 
     setCurrent(json);
 
 	setCounts(json.pageCount, (json.pageCount ? 
 	    visitedCount(adArray) : 0), json.totalCount);
+}
+
+function loadDOM($items, ads, pageUrl, numOnPage) {
+
+    showAlert(false);
+
+    $('#ad-list-items').removeClass();
+
+    if (ads) {
+        for (var i = 0, j = ads.length; i < j; i++) {
+            if (ads[i].contentType === 'img') {
+
+                var $li = $( '<li/>', {
+                    id: 'ad' + ads[i].id,
+                    class: 'ad-item' + visitedClass(ads[i])
+                });
+
+                var $a = $( '<a/>', {
+                    target: 'new',
+                    href: ads[i].targetUrl
+                });
+
+                var $span = $( '<span/>', {
+                    class: 'thumb'
+                });
+
+                var $img = $( '<img/>', {
+                    src: (ads[i].contentData.src || ads[i].contentData),
+                    class: 'ad-item-img',
+                    onerror: "this.onerror=null; this.width=50; this.height=45; this.src='img/placeholder.svg'",
+                }).appendTo( $span );
+
+                $span.appendTo( $a );
+
+                var $span2 = $( '<span/>', {
+                    class: 'title',
+                    text: ( ads[i].title ? ads[i].title  : "#" + ads[i].id )
+                }).appendTo( $a );
+
+                var $cite = $( '<cite/>', {
+                    text: targetDomain(ads[i])
+                }).appendTo( $a );
+
+                $a.appendTo( $li );
+                $li.appendTo($items);
+            }
+
+            else if (ads[i].contentType === 'text') {
+                var $li = $('<li/>', {
+                    'id': 'ad' + ads[i].id,
+                    'class': 'ad-item-text' + visitedClass(ads[i])
+                });
+
+                var $span = $('<span/>', {
+                    'class': 'thumb',
+                    'text': 'Text Ad'
+                }).appendTo($li);
+
+                var $h3 = $('<h3/>', {});
+
+                var $a = $('<a/>', {
+                    'target': 'new',
+                    'class': 'title',
+                    'href': ads[i].targetUrl + '>' + ads[i].title
+                }).appendTo($h3);
+
+                $h3.appendTo($li);
+
+                var $cite = $('<cite/>', {
+                    'text': ads[i].contentData.site
+                });
+
+                if (TEST_APPEND_IDS) $cite.text($cite.text() + ' (#' + ads[i].id + ')');
+                $cite.appendTo($li);
+
+                var $div = $('<div/>', {
+                    'class': 'ads-creative',
+                    'text': ads[i].contentData.text
+                }).appendTo($li);
+
+                $li.appendTo($items);
+            }
+        } 
+        if (!numOnPage) showRecentAds(ads);
+    }
 }
 
 function updateAd(json) {
@@ -167,45 +252,6 @@ function showRecentAds(recent) {
     log('No-ads on page, showing '+recent.length+' recent');
 }
 
-function createHtml(ads, pageUrl, numOnPage) { // { fields: ads, onpage, unique };
-
-    var html = '';  // TODO: rewrite this ugliness
-
-	showAlert(false); 
-	
-	$('#ad-list-items').removeClass();
-    
-    if (ads) {
-    
-    	for (var i=0, j = ads.length; i<j; i++) {
-    
-    		if (ads[i].contentType === 'img') {
-    
-    			html += '<li id="ad' + ads[i].id +'" class="ad-item' + visitedClass(ads[i]);
-    			html += '"><a target="new" href="' + ads[i].targetUrl;
-    			html += '"><span class="thumb"><img src="' + (ads[i].contentData.src || ads[i].contentData);
-    			html += '" class="ad-item-img" onerror="';
-    			html += 'this.onerror=null; this.width=50; this.height=45;';
-                html += "this.src='img/placeholder.svg'\"></span><span class=\"title\">";
-    			html +=  ads[i].title ? ads[i].title  : "#" + ads[i].id;
-    			html += '</span><cite>' + targetDomain(ads[i]) + '</cite></a></li>\n\n';
-    		}
-    		else if (ads[i].contentType === 'text') {
-    
-    			html += '<li id="ad' + ads[i].id +'" class="ad-item-text' + visitedClass(ads[i]);
-    			html += '""><span class="thumb">Text Ad</span><h3><a target="new" class="title" href="';
-    			html += ads[i].targetUrl + '">' + ads[i].title + '</a></h3><cite>' + ads[i].contentData.site;
-    			if (TEST_APPEND_IDS) html += ' (#'+ads[i].id+')';
-    			html += '</cite><div class="ads-creative">' + ads[i].contentData.text +'</div></li>\n\n';
-    		}		
-    	}
-    
-        if (!numOnPage) showRecentAds(ads);
-    }
-
-	return html;
-}
-
 function visitedClass(ad) {
 
 	return ad.visitedTs > 0 ? ' visited' :
@@ -294,7 +340,7 @@ function attachMenuTests() {
 		// call addon to clear simple-storage
 		self.port && self.port.emit("clear-ads");
 
-		createHtml();
+        loadDOM($('#ad-list-items'), adArray, pageUrl, json.pageCount);
 	});
 
 	$('#pause-button').click(function() {

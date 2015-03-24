@@ -38,7 +38,7 @@ function loadDOM($items, ads, pageUrl, numOnPage) {
         $items.empty();
 
         for (var i = 0, j = ads.length; i < j; i++) {
-            console.log("ads.length", ads.length);
+            
             var $li = null;
             var $a = null;
             var $span = null;

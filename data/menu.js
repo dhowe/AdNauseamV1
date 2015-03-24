@@ -38,7 +38,7 @@ function loadDOM($items, ads, pageUrl, numOnPage) {
         $items.empty();
 
         for (var i = 0, j = ads.length; i < j; i++) {
-            
+
             var $li = null;
             var $a = null;
             var $span = null;
@@ -101,7 +101,8 @@ function loadDOM($items, ads, pageUrl, numOnPage) {
                 $a = $('<a/>', {
                     'target': 'new',
                     'class': 'title',
-                    'href': ads[i].targetUrl + '>' + ads[i].title
+                    'href': ads[i].targetUrl,
+                    'text': ads[i].title
                 }).appendTo($h3);
 
                 $h3.appendTo($li);

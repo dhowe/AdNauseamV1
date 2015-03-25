@@ -42,7 +42,7 @@ $(function() { // page-is-ready
 
             if ( $(this).is(data.selector) ) {
                 
-                console.log('HIT: ' + waitSel);
+                console.log('ELEMHIDE-HIT: ' + waitSel);
                 try {
                     waitForKeyElements(waitSel, data.handler);
                 }

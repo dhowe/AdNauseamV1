@@ -17,10 +17,7 @@ function layoutAds(json) {
     
     adArray = json.data;
 
-    var pageUrl = typeof TEST_MODE != 'undefined' && 
-       TEST_MODE ? TEST_PAGE : json.page;
-    
-    loadDOM( $('#ad-list-items'), adArray, pageUrl, json.pageCount);
+    loadDOM($('#ad-list-items'), adArray, json.pageCount);
 
     setCurrent(json);
 
@@ -28,7 +25,7 @@ function layoutAds(json) {
         visitedCount(adArray) : 0), json.totalCount);
 }
 
-function loadDOM($items, ads, pageUrl, numOnPage) {
+function loadDOM($items, ads, numOnPage) {
 
     showAlert(false);
 
@@ -207,6 +204,7 @@ function replaceUpdatedAd(update) {
 function closePanel() {
 
     // force-close settings if open
+    
     if (!$('#settings').hasClass('hide'))
         $("#settings-close").trigger("click");
 }
@@ -264,9 +262,7 @@ function onPage(arr, pageUrl) {
 }
 
 function showRecentAds(recent) { 
-    
-    //log('showRecentAds()');
-    
+       
     var msg = 'No ads on this page';
     if (recent && recent.length) 
         msg += ' (showing recent)';
@@ -323,29 +319,24 @@ function attachMenuTests() {
 
 (function() {
 
-    //log('Ready: INIT_MENU_HANDLERS');
-
     $('#log-button').click(function(e) {
-        //log('#log-button.click');
 
         self.port && self.port.emit("show-log");
     });
     
     $('#import-ads').click(function(e) {
-        //log('#log-button.click');
 
         e.preventDefault();
         self.port && self.port.emit("import-ads");
     });
     
     $('#export-ads').click(function(e) {
-        //log('#log-button.click');
+
         e.preventDefault();
         self.port && self.port.emit("export-ads");
     });
 
     $('#vault-button').click(function() {
-        //log('#vault-button.click');
 
         self.port && self.port.emit("show-vault");
     });
@@ -366,17 +357,15 @@ function attachMenuTests() {
         // call addon to clear simple-storage
         self.port && self.port.emit("clear-ads");
 
-        loadDOM( $('#ad-list-items'), null, null, null);
+        loadDOM($('#ad-list-items'), null, null);
     });
 
     $('#pause-button').click(function() {
-        //log('#pause-button.click');
+
         self.port && self.port.emit('disable');
     });
 
     $('#settings-close').click(function() {
-
-        //log('#settings-close.click');
 
         $('.page').toggleClass('hide');
         $('.settings').toggleClass('hide');
@@ -386,8 +375,6 @@ function attachMenuTests() {
 
     $('#settings-open').click(function() {
 
-        //log('#settings-open.click');
-
         $('.page').toggleClass('hide');
         $('.settings').toggleClass('hide');
 
@@ -396,23 +383,18 @@ function attachMenuTests() {
 
     $('#about-button').click(function() {
 
-        //log('#about-button.click');
         self.port && self.port.emit('show-about');
     });
 
     $('#cmn-toggle-1').click(function() { // logging
 
         var val = $(this).prop('checked');
-
-        //log('#disable-logs.click: '+val);
         self.port && self.port.emit('disable-logs', { 'value' : val });
     });
 
     $('#cmn-toggle-2').click(function() { // referer
 
         var val = $(this).prop('checked');
-
-        //log('#disable-logs.click: '+val);
         self.port && self.port.emit('disable-referer', { 'value' : val });
     });
 

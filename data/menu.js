@@ -226,7 +226,7 @@ function refreshPanel(opts) {
 
     $('#cmn-toggle-1').prop('checked', opts.disableLogs);
     $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
-    $('#settings-header').html('AdNauseam&nbsp;v'+opts.version+' Settings');
+    $('#settings-version').text(opts.version);
 
     $('#toggle-button').css('background-image', 'url('+img+')');
     $('#pause-button').text(label);

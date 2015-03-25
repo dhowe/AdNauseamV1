@@ -19,6 +19,8 @@ echo "  to $RED:$XPI_DIR"
 
 #scp adnauseam.xpi$RED:$XPI_DIR/$XPI_FILE
 
+exit
+
 cat adnauseam.xpi | /usr/bin/ssh ${RED} "(cd ${XPI_DIR} && /bin/rm -f $XPI_FILE && cat - > $XPI_FILE && ln -fs $XPI_FILE adnauseam.xpi && ls -l)" 
 
 exit

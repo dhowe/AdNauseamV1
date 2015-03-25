@@ -17,15 +17,15 @@ function layoutAds(json) {
         
     //log('Menu::layoutAds: '+adArray.length + " ads");
     
-	var pageUrl = typeof TEST_MODE != 'undefined' && 
-	   TEST_MODE ? TEST_PAGE : json.page;
+    var pageUrl = typeof TEST_MODE != 'undefined' && 
+       TEST_MODE ? TEST_PAGE : json.page;
     
     loadDOM($('#ad-list-items'), adArray, pageUrl, json.pageCount);
 
     setCurrent(json);
 
-	setCounts(json.pageCount, (json.pageCount ? 
-	    visitedCount(adArray) : 0), json.totalCount);
+    setCounts(json.pageCount, (json.pageCount ? 
+        visitedCount(adArray) : 0), json.totalCount);
 }
 
 function loadDOM($items, ads, pageUrl, numOnPage) {
@@ -35,78 +35,91 @@ function loadDOM($items, ads, pageUrl, numOnPage) {
     $('#ad-list-items').removeClass();
 
     if (ads) {
+        $items.empty();
+
         for (var i = 0, j = ads.length; i < j; i++) {
+
+            var $li = null;
+            var $a = null;
+            var $span = null;
+            var $img = null;
+            var $span2 = null;
+            var $cite = null;
+            var $h3 = null;
+            var $div = null;
+
             if (ads[i].contentType === 'img') {
 
-                var $li = $( '<li/>', {
-                    id: 'ad' + ads[i].id,
-                    class: 'ad-item' + visitedClass(ads[i])
+                $li = $( '<li/>', {
+                    'id': 'ad' + ads[i].id,
+                    'class': 'ad-item' + visitedClass(ads[i])
                 });
 
-                var $a = $( '<a/>', {
-                    target: 'new',
-                    href: ads[i].targetUrl
+                $a = $( '<a/>', {
+                    'target': 'new',
+                    'href': ads[i].targetUrl
                 });
 
-                var $span = $( '<span/>', {
-                    class: 'thumb'
+                $span = $( '<span/>', {
+                    'class': 'thumb'
                 });
 
-                var $img = $( '<img/>', {
-                    src: (ads[i].contentData.src || ads[i].contentData),
-                    class: 'ad-item-img',
-                    onerror: "this.onerror=null; this.width=50; this.height=45; this.src='img/placeholder.svg'",
+                $img = $( '<img/>', {
+                    'src': (ads[i].contentData.src || ads[i].contentData),
+                    'class': 'ad-item-img',
+                    'onerror': "this.onerror=null; this.width=50; this.height=45; this.src='img/placeholder.svg'",
                 }).appendTo( $span );
 
                 $span.appendTo( $a );
 
-                var $span2 = $( '<span/>', {
-                    class: 'title',
-                    text: ( ads[i].title ? ads[i].title  : "#" + ads[i].id )
+                $span2 = $( '<span/>', {
+                    'class': 'title',
+                    'text': ( ads[i].title ? ads[i].title : "#" + ads[i].id )
                 }).appendTo( $a );
 
-                var $cite = $( '<cite/>', {
-                    text: targetDomain(ads[i])
+                $cite = $( '<cite/>', {
+                    'text': targetDomain(ads[i])
                 }).appendTo( $a );
 
                 $a.appendTo( $li );
-                $li.appendTo($items);
+                $li.appendTo( $items );
             }
 
             else if (ads[i].contentType === 'text') {
-                var $li = $('<li/>', {
+                $li = $('<li/>', {
                     'id': 'ad' + ads[i].id,
                     'class': 'ad-item-text' + visitedClass(ads[i])
                 });
 
-                var $span = $('<span/>', {
+                $span = $('<span/>', {
                     'class': 'thumb',
                     'text': 'Text Ad'
                 }).appendTo($li);
 
-                var $h3 = $('<h3/>', {});
+                $h3 = $('<h3/>', {});
 
-                var $a = $('<a/>', {
+                $a = $('<a/>', {
                     'target': 'new',
                     'class': 'title',
-                    'href': ads[i].targetUrl + '>' + ads[i].title
+                    'href': ads[i].targetUrl,
+                    'text': ads[i].title
                 }).appendTo($h3);
 
                 $h3.appendTo($li);
 
-                var $cite = $('<cite/>', {
+                $cite = $('<cite/>', {
                     'text': ads[i].contentData.site
                 });
 
                 if (TEST_APPEND_IDS) $cite.text($cite.text() + ' (#' + ads[i].id + ')');
                 $cite.appendTo($li);
 
-                var $div = $('<div/>', {
+                $div = $('<div/>', {
                     'class': 'ads-creative',
                     'text': ads[i].contentData.text
                 }).appendTo($li);
 
-                $li.appendTo($items);
+                $li.appendTo( $items );
             }
         } 
         if (!numOnPage) showRecentAds(ads);
@@ -222,9 +235,9 @@ function animateIcon(ms) {
 
 function setCounts(found, visited, total) {
 
-	$('#found-count').text(found+' ads detected');
-	$('#visited-count').text('clicked '+visited);
-	$('#vault-count').text(total);
+    $('#found-count').text(found+' ads detected');
+    $('#visited-count').text('clicked '+visited);
+    $('#vault-count').text(total);
 }
 
 function visitedCount(arr) {
@@ -254,8 +267,8 @@ function showRecentAds(recent) {
 
 function visitedClass(ad) {
 
-	return ad.visitedTs > 0 ? ' visited' :
-		(ad.visitedTs < 0 ? ' failed' : '');
+    return ad.visitedTs > 0 ? ' visited' :
+        (ad.visitedTs < 0 ? ' failed' : '');
 }
 
 function attachMenuTests() {
@@ -267,23 +280,23 @@ function attachMenuTests() {
         log((test == exp) ? 'OK' : 'FAIL: ' + msg, test);
     }
 
-	$('#log-button').off('click').click(function() {
-		window.location.href = "log.html";
-	});
+    $('#log-button').off('click').click(function() {
+        window.location.href = "log.html";
+    });
 
-	$('#vault-button').off('click').click(function() {
-		window.location.href = "vault.html";
-	});
+    $('#vault-button').off('click').click(function() {
+        window.location.href = "vault.html";
+    });
 
-	$('#about-button').off('click').click(function() {
-		window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help";
-	});
+    $('#about-button').off('click').click(function() {
+        window.location.href = "https://github.com/dhowe/AdNauseam/wiki/Help";
+    });
 
-	$.getJSON(TEST_ADS, function(json) {
+    $.getJSON(TEST_ADS, function(json) {
 
-		warn("Menu.js :: Loading test-ads: "+TEST_ADS);
-		
-		if (Type.is(json,Type.O)) json = toAdArray(json); //BC
+        warn("Menu.js :: Loading test-ads: "+TEST_ADS);
+        
+        if (Type.is(json,Type.O)) json = toAdArray(json); //BC
 
             layoutAds({ // not testing page-url correctly
                 data : json,
@@ -292,19 +305,19 @@ function attachMenuTests() {
                 totalCount : json.length
             }); 
 
-	}).fail(function(e) { warn( "error:", e); });
+    }).fail(function(e) { warn( "error:", e); });
 }
 
 (function() {
 
-	//log('Ready: INIT_MENU_HANDLERS');
+    //log('Ready: INIT_MENU_HANDLERS');
 
-	$('#log-button').click(function(e) {
-		//log('#log-button.click');
+    $('#log-button').click(function(e) {
+        //log('#log-button.click');
 
-		self.port && self.port.emit("show-log");
-	});
-	
+        self.port && self.port.emit("show-log");
+    });
+    
     $('#import-ads').click(function(e) {
         //log('#log-button.click');
 
@@ -318,69 +331,69 @@ function attachMenuTests() {
         self.port && self.port.emit("export-ads");
     });
 
-	$('#vault-button').click(function() {
-		//log('#vault-button.click');
+    $('#vault-button').click(function() {
+        //log('#vault-button.click');
 
-		self.port && self.port.emit("show-vault");
-	});
+        self.port && self.port.emit("show-vault");
+    });
 
-	$('#clear-ads').click(function(e) {
+    $('#clear-ads').click(function(e) {
 
-		e.preventDefault(); // no click
+        e.preventDefault(); // no click
 
-		// remove all visible ads from menu
-		$('.ad-item').remove();
-		$('.ad-item-text').remove();
+        // remove all visible ads from menu
+        $('.ad-item').remove();
+        $('.ad-item-text').remove();
 
-		setCounts(0, 0, 0);
+        setCounts(0, 0, 0);
 
-		// trigger closing of settings
-		$("#settings-close").trigger("click");
+        // trigger closing of settings
+        $("#settings-close").trigger("click");
 
-		// call addon to clear simple-storage
-		self.port && self.port.emit("clear-ads");
+        // call addon to clear simple-storage
+        self.port && self.port.emit("clear-ads");
 
         loadDOM($('#ad-list-items'), adArray, pageUrl, json.pageCount);
-	});
+    });
 
-	$('#pause-button').click(function() {
-		//log('#pause-button.click');
-		self.port && self.port.emit('disable');
-	});
+    $('#pause-button').click(function() {
+        //log('#pause-button.click');
+        self.port && self.port.emit('disable');
+    });
 
-	$('#settings-close').click(function() {
+    $('#settings-close').click(function() {
 
-		//log('#settings-close.click');
+        //log('#settings-close.click');
 
-		$('.page').toggleClass('hide');
-		$('.settings').toggleClass('hide');
+        $('.page').toggleClass('hide');
+        $('.settings').toggleClass('hide');
 
-		//self.port && self.port.emit('hide-settings');
-	});
+        //self.port && self.port.emit('hide-settings');
+    });
 
-	$('#settings-open').click(function() {
+    $('#settings-open').click(function() {
 
-		//log('#settings-open.click');
+        //log('#settings-open.click');
 
-		$('.page').toggleClass('hide');
-		$('.settings').toggleClass('hide');
+        $('.page').toggleClass('hide');
+        $('.settings').toggleClass('hide');
 
-		//self.port && self.port.emit('show-settings');
-	});
+        //self.port && self.port.emit('show-settings');
+    });
 
-	$('#about-button').click(function() {
+    $('#about-button').click(function() {
 
-		//log('#about-button.click');
-		self.port && self.port.emit('show-about');
-	});
+        //log('#about-button.click');
+        self.port && self.port.emit('show-about');
+    });
 
-	$('#cmn-toggle-1').click(function() { // logging
+    $('#cmn-toggle-1').click(function() { // logging
 
-		var val = $(this).prop('checked');
+        var val = $(this).prop('checked');
 
-		//log('#disable-logs.click: '+val);
-		self.port && self.port.emit('disable-logs', { 'value' : val });
-	});
+        //log('#disable-logs.click: '+val);
+        self.port && self.port.emit('disable-logs', { 'value' : val });
+    });
 
     $('#cmn-toggle-2').click(function() { // referer
 

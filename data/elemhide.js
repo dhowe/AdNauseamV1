@@ -5,11 +5,12 @@ var textAdSelectors = [
     { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top side AD
     { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
-    { selector: '#ads', waitfor: '.sponsored', handler: duckDuckText, name: 'duckduckgo' },
+    { selector: '#ads', waitfor: 'div.result', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '.ads ul', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
-    { selector: 'div.RHRSLL', waitfor: '.sllLink', handler: aolText, name: 'aol' },
+    { selector: '.SLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // middle ads
+    { selector: '.RHRSLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // RHS ads
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
@@ -63,7 +64,6 @@ function ebayText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        
         warn('ebayText.fail: ', text, site);
     }
 }
@@ -82,7 +82,7 @@ function aolText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('aolText.fail: ', text, site);
+        warn('aolText.fail: ', text.text(), site.text());
     }
 }
 
@@ -205,8 +205,8 @@ function googleText(anchor) {
 
 function duckDuckText(anchor) {
 
-    var title = anchor.find('.result__title'),
-        text = anchor.find('.result__snippet a'),
+    var title = anchor.find('h2.result__title'),
+        text = anchor.find('div.result__snippet a'),
         site = anchor.find('a.result__url');
       
     if (text.length && site.length && title.length) {

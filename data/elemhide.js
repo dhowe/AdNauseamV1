@@ -1,19 +1,25 @@
-/*global warn:0, self:0, document:0 */
+/*jslint browser: true*/
+
+/*global self */
 
 var textAdSelectors = [ 
 
-    { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top side AD
-    { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right side AD
-    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom side AD
-    { selector: '#ads', waitfor: 'div.result', handler: duckDuckText, name: 'duckduckgo' },
+    { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top
+    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom
+    { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right
+    
     { selector: '.ads ul', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
+    { selector: '#ads', waitfor: 'div.result', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
-    { selector: '.SLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // middle ads
-    { selector: '.RHRSLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // RHS ads
+    
+    //{ selector: '.SLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // middle ads
+    //{ selector: '.RHRSLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }
+    { selector: '[class$=SLL]', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // RHS ads
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
+        
     //{ selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
     //{ selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
 ];
@@ -36,13 +42,13 @@ $(function() { // page-is-ready
 
             if ( $(this).is(data.selector) ) {
                 
-                // console.log('HIT: ' + waitSel);
+                console.log('HIT: ' + waitSel);
                 try {
                     waitForKeyElements(waitSel, data.handler);
                 }
                 catch(e) {
                     
-                    warn('failed processing text-ad',data);
+                    console.warn('failed processing text-ad',data);
                 }
             }
         }
@@ -52,9 +58,9 @@ $(function() { // page-is-ready
 function ebayText(anchor) {
 
     var title = anchor.find('a > div:first-child'),
-    site = anchor.find('a > div:nth-child(2)'),
-    text = anchor.find('a > div:nth-child(3)'),
-    targetUrl = anchor.find('a');
+        site = anchor.find('a > div:nth-child(2)'),
+        text = anchor.find('a > div:nth-child(3)'),
+        targetUrl = anchor.find('a');
 
     if (text.length && site.length && title.length) {
  
@@ -64,7 +70,7 @@ function ebayText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('ebayText.fail: ', text, site);
+        console.warn('ebayText.fail: ', text, site);
     }
 }
 
@@ -82,7 +88,7 @@ function aolText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('aolText.fail: ', text.text(), site.text());
+        console.warn('aolText.fail: ', text.text(), site.text());
     }
 }
 
@@ -100,7 +106,7 @@ function sogouText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('sogouText.fail: ', text, site);
+        console.warn('sogouText.fail: ', text, site);
     }
 }
 
@@ -121,7 +127,7 @@ function sogouTopAndBottomText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('sogouTopAndBottomText.fail: ', text, site);
+        console.warn('sogouTopAndBottomText.fail: ', text, site);
     }
 }
 
@@ -139,7 +145,7 @@ function baiduText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('baiduText.fail: ', text, site);
+        console.warn('baiduText.fail: ', text, site);
     }
 }
 
@@ -157,15 +163,15 @@ function bingText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('bingText.fail: ', text, site);
+        console.warn('bingText.fail: ', text, site);
     }
 }
 
 function yahooText(anchor) {
 
-    if (anchor.text().length <= 50) { // temporary: pls fix correctly (see #188)
+    if (anchor.text().length <= 50) { // TODO: temporary; pls fix correctly (see #188)
             
-        warn('yahoo text-Ad fail: '+anchor.text());   
+        console.warn('yahoo text-Ad fail: '+anchor.text());   
         return;
     }
 
@@ -180,7 +186,7 @@ function yahooText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('yahooText.fail: ', anchor.text(), '(length: ' + 
+        console.warn('yahooText.fail: ', anchor.text(), '(length: ' + 
             anchor.text().length + ')');
     }
 }
@@ -199,7 +205,7 @@ function googleText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
-        warn('googleText.fail: ', text, site);
+        console.warn('googleText.fail: ', text, site);
     }
 }
 
@@ -216,7 +222,7 @@ function duckDuckText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     } 
     else {
-        warn('duckDuckText.fail: ',  text, site);
+        console.warn('duckDuckText.fail: ',  text, site);
     }
 }
 

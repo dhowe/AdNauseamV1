@@ -1,11 +1,13 @@
-/*global window:0, document:0, self:0, showAlert:0, log:0, warn:0, Type:0, toAdArray:0,
-    TEST_APPEND_IDS:0, TEST_ADS:0, TEST_MODE:0, targetDomain:0,TEST_PAGE:0 */
+/*jslint browser: true*/
 
-self.port && self.port.on('layout-ads', layoutAds); // refresh all
-self.port && self.port.on('update-ad', updateAd);    // update one
-self.port && self.port.on('set-current', setCurrent); // ad attempt
-self.port && self.port.on('refresh-panel', refreshPanel); // set-state
-self.port && self.port.on('close-panel', closePanel); // set-state
+/*global self, showAlert, log, warn, toAdArray, targetDomain, 
+    Type, TEST_APPEND_IDS, TEST_ADS, TEST_MODE, TEST_PAGE */
+
+self.port && self.port.on('layout-ads', layoutAds);         // refresh all
+self.port && self.port.on('update-ad', updateAd);           // update one
+self.port && self.port.on('set-current', setCurrent);       // ad attempt
+self.port && self.port.on('refresh-panel', refreshPanel);   // set-state
+self.port && self.port.on('close-panel', closePanel);       // set-state
 
 var adArray;
 
@@ -14,13 +16,11 @@ function layoutAds(json) {
     if (!json.data) return;
     
     adArray = json.data;
-        
-    //log('Menu::layoutAds: '+adArray.length + " ads");
-    
+
     var pageUrl = typeof TEST_MODE != 'undefined' && 
        TEST_MODE ? TEST_PAGE : json.page;
     
-    loadDOM($('#ad-list-items'), adArray, pageUrl, json.pageCount);
+    loadDOM( $('#ad-list-items'), adArray, pageUrl, json.pageCount);
 
     setCurrent(json);
 
@@ -32,98 +32,111 @@ function loadDOM($items, ads, pageUrl, numOnPage) {
 
     showAlert(false);
 
-    $('#ad-list-items').removeClass();
+    $items.removeClass();
+    
+    $items.empty();
+    
+    if (!ads) return;
+    
+    for (var i = 0, j = ads.length; i < j; i++) {
 
-    if (ads) {
-        $items.empty();
+        if (ads[i].contentType === 'img') {
 
-        for (var i = 0, j = ads.length; i < j; i++) {
+            appendImageAd(ads[i], $items);
+        }
+        else if (ads[i].contentType === 'text') {
+        
+            appendTextAd(ads[i], $items);
+        }
+    } 
+        
+    if (!numOnPage) showRecentAds(ads);
+}
 
-            var $li = null;
-            var $a = null;
-            var $span = null;
-            var $img = null;
-            var $span2 = null;
-            var $cite = null;
-            var $h3 = null;
-            var $div = null;
+function appendImageAd(ad, $items) {
 
-            if (ads[i].contentType === 'img') {
+    var $a, $span, $li = $( '<li/>', {
+    
+        'id': 'ad' + ad.id,
+        'class': 'ad-item' + visitedClass(ad)
+    });
 
-                $li = $( '<li/>', {
-                    'id': 'ad' + ads[i].id,
-                    'class': 'ad-item' + visitedClass(ads[i])
-                });
+    $a = $( '<a/>', {
+    
+        'target': 'new',
+        'href': ad.targetUrl
+    });
 
-                $a = $( '<a/>', {
-                    'target': 'new',
-                    'href': ads[i].targetUrl
-                });
+    $span = $( '<span/>', { 'class': 'thumb' });
 
-                $span = $( '<span/>', {
-                    'class': 'thumb'
-                });
+    $( '<img/>', {
+        
+        'src': (ad.contentData.src || ad.contentData),
+        'class': 'ad-item-img',
+        'onerror': "this.onerror=null; this.width=50; this.height=45; this.src='img/placeholder.svg'",
+        
+    }).appendTo( $span );
 
-                $img = $( '<img/>', {
-                    'src': (ads[i].contentData.src || ads[i].contentData),
-                    'class': 'ad-item-img',
-                    'onerror': "this.onerror=null; this.width=50; this.height=45; this.src='img/placeholder.svg'",
-                }).appendTo( $span );
+    $span.appendTo( $a );
 
-                $span.appendTo( $a );
+    $( '<span/>', {
+    
+        'class': 'title',
+        'text': ( ad.title ? ad.title : "#" + ad.id )
+        
+    }).appendTo( $a );
 
-                $span2 = $( '<span/>', {
-                    'class': 'title',
-                    'text': ( ads[i].title ? ads[i].title : "#" + ads[i].id )
-                }).appendTo( $a );
+    $( '<cite/>', { 'text': targetDomain(ad) }).appendTo( $a );
 
-                $cite = $( '<cite/>', {
-                    'text': targetDomain(ads[i])
-                }).appendTo( $a );
+    $a.appendTo( $li );
+    $li.appendTo( $items );
+}
 
-                $a.appendTo( $li );
-                $li.appendTo( $items );
-            }
+function appendTextAd(ad, $items) {
 
-            else if (ads[i].contentType === 'text') {
-                $li = $('<li/>', {
-                    'id': 'ad' + ads[i].id,
-                    'class': 'ad-item-text' + visitedClass(ads[i])
-                });
+    var $cite, $h3, $li = $('<li/>', {
+    
+        'id': 'ad' + ad.id,
+        'class': 'ad-item-text' + visitedClass(ad)
+    });
 
-                $span = $('<span/>', {
-                    'class': 'thumb',
-                    'text': 'Text Ad'
-                }).appendTo($li);
+    $('<span/>', {
+    
+        'class': 'thumb',
+        'text': 'Text Ad'
+        
+    }).appendTo($li);
 
-                $h3 = $('<h3/>', {});
+    $h3 = $('<h3/>');
 
-                $a = $('<a/>', {
-                    'target': 'new',
-                    'class': 'title',
-                    'href': ads[i].targetUrl,
-                    'text': ads[i].title
-                }).appendTo($h3);
+    $('<a/>', {
+    
+        'target': 'new',
+        'class': 'title',
+        'href': ad.targetUrl,
+        'text': ad.title
+        
+    }).appendTo($h3);
 
-                $h3.appendTo($li);
+    $h3.appendTo($li);
 
-                $cite = $('<cite/>', {
-                    'text': ads[i].contentData.site
-                });
+    $cite = $('<cite/>', { 'text': ad.contentData.site });
 
-                if (TEST_APPEND_IDS) $cite.text($cite.text() + ' (#' + ads[i].id + ')');
-                $cite.appendTo($li);
-
-                $div = $('<div/>', {
-                    'class': 'ads-creative',
-                    'text': ads[i].contentData.text
-                }).appendTo($li);
-
-                $li.appendTo( $items );
-            }
-        } 
-        if (!numOnPage) showRecentAds(ads);
+    if (TEST_APPEND_IDS) {
+    
+        $cite.text($cite.text() + ' (#' + ad.id + ')');
     }
+        
+    $cite.appendTo($li);
+
+    $('<div/>', {
+    
+        'class': 'ads-creative',
+        'text': ad.contentData.text
+        
+    }).appendTo($li);
+
+    $li.appendTo( $items );
 }
 
 function updateAd(json) {
@@ -254,7 +267,7 @@ function showRecentAds(recent) {
     
     //log('showRecentAds()');
     
-    var msg = 'no ads on this page';
+    var msg = 'No ads on this page';
     if (recent && recent.length) 
         msg += ' (showing recent)';
 
@@ -353,7 +366,7 @@ function attachMenuTests() {
         // call addon to clear simple-storage
         self.port && self.port.emit("clear-ads");
 
-        loadDOM($('#ad-list-items'), adArray, pageUrl, json.pageCount);
+        loadDOM( $('#ad-list-items'), null, null, null);
     });
 
     $('#pause-button').click(function() {

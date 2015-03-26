@@ -12,10 +12,8 @@ var textAdSelectors = [
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
     { selector: '#ads', waitfor: 'div.result', handler: duckDuckText, name: 'duckduckgo' },
     { selector: '#rtm_html_441', waitfor: 'tr:nth-child(even)', handler: ebayText, name: 'ebay' },
-    
-    //{ selector: '.SLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // middle ads
-    //{ selector: '.RHRSLL', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }
-    { selector: '[class$=SLL]', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' }, // RHS ads
+
+    { selector: '[class$=SLL]', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' },
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
         waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
@@ -162,9 +160,12 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
+    //console.log('googleText('+anchor+')');
+    
     var title = anchor.find('h3 a'),
         text = anchor.find('.ads-creative'),
         site = anchor.find('.ads-visurl cite');
+    
     
     if (text.length && site.length && title.length) {
  
@@ -174,6 +175,7 @@ function googleText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     }
     else {
+    
         console.warn('googleText.fail: ', text, site);
     }
 }
@@ -213,7 +215,7 @@ function createAd(network,title,text,site,target) {
 
     Usage example:
 
-        waitForKeyElements(
+        waitForKeyElements($,
             "div.comments", 
             commentCallbackFunction
         );
@@ -222,11 +224,9 @@ function createAd(network,title,text,site,target) {
         function commentCallbackFunction(jNode) {
             jNode.text("This comment changed by waitForKeyElements().");
         }
-
-    IMPORTANT: This function requires your script to have loaded jQuery.
 */
 // from: https://gist.github.com/BrockA/2625891
-function waitForKeyElements(
+function waitForKeyElements($,
     
     selectorTxt,    /* Required: The jQuery selector string that
                         specifies the desired element(s).
@@ -244,6 +244,8 @@ function waitForKeyElements(
                     */
 ) {
       
+    //console.log(typeof $);
+    
     var targetNodes, btargetsFound;
 
     if (typeof iframeSelector == "undefined")
@@ -288,7 +290,8 @@ function waitForKeyElements(
         //--- Set a timer, if needed.
         if ( ! timeControl) {
             timeControl = setInterval ( function () {
-                    waitForKeyElements (    selectorTxt,
+                    waitForKeyElements ($,
+                                            selectorTxt,
                                             actionFunction,
                                             bWaitOnce,
                                             iframeSelector
@@ -302,7 +305,59 @@ function waitForKeyElements(
     waitForKeyElements.controlObj = controlObj;
 }
 
-if (typeof module == 'undefined' && !module.exports) {
+function runFilters() {
+
+    //console.log(typeof $, typeof element);
+    
+    for (var i = 0; i < textAdSelectors.length; i++) {
+    
+        var data = textAdSelectors[i],
+            waitSel = data.selector + ' ' + data.waitfor;
+    
+        //console.log('Trying: ' + data.name);
+        
+        if ( $(this).is(data.selector) ) {
+            
+            console.log('ELEMHIDE-HIT: ' + waitSel);
+            
+            try {
+                waitForKeyElements($, waitSel, data.handler);
+            }
+            catch(e) {
+                
+                console.warn('failed processing text-ad',data);
+            }
+        }
+    }
+}
+
+function nodeRunFilters($) {
+
+    for (var i = 0; i < textAdSelectors.length; i++) {
+    
+        var data = textAdSelectors[i],
+            waitSel = data.selector + ' ' + data.waitfor;
+    
+        console.log('Trying: ' + data.name+ " :: "+data.selector + " :: " +$(data.selector).length + ' found');
+        
+        if ( $(data.selector).length ) {
+            
+            console.log('ELEMHIDE-HIT: ' + waitSel);
+            
+            try {
+            
+                waitForKeyElements($, waitSel, data.handler);
+            }
+            catch(e) {
+                
+                console.warn('failed processing text-ad',data);
+                throw e;
+            }
+        }
+    }
+}
+
+if (typeof module == 'undefined' || !module.exports) {
 
     $(function() { // page-is-ready
         
@@ -311,32 +366,15 @@ if (typeof module == 'undefined' && !module.exports) {
             return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
         });
         
-        // console.log("HIDDEN: " + $hidden.length);
+        console.log("HIDDEN: " + $hidden.length);
     
-        $hidden.each(function() {
-        
-            for (var i = 0; i < textAdSelectors.length; i++) {
-       
-                var data = textAdSelectors[i],
-                    waitSel = data.selector + ' ' + data.waitfor;
-    
-                if ( $(this).is(data.selector) ) {
-                    
-                    console.log('ELEMHIDE-HIT: ' + waitSel);
-                    try {
-                        waitForKeyElements(waitSel, data.handler);
-                    }
-                    catch(e) {
-                        
-                        console.warn('failed processing text-ad',data);
-                    }
-                }
-            }
-        });
+        $hidden.each(runFilters);
     });
 }
 else { // in Node
 
-    module.exports['selectors'] = textAdSelectors;
+    module.exports['waitForKeyElements'] = waitForKeyElements;
+    module.exports['runFilters'] = nodeRunFilters;
+    module.exports['googleText'] = googleText;
 }
 

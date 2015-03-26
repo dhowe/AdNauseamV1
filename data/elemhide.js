@@ -160,7 +160,7 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    console.log('googleText('+anchor+')');
+    //console.log('googleText('+anchor+')');
     
     var title = anchor.find('h3 a'),
         text = anchor.find('.ads-creative'),

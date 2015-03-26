@@ -1,47 +1,42 @@
 var jsdom = require("jsdom"),
-    runFilters = require("../data/elemhide").runFilters,
-    waitForKeyElements = require("../data/elemhide").waitForKeyElements,
+    elemHide = require("../data/elemhide"),
+    nodeRunFilters = elemHide.nodeRunFilters,
+    waitForKeyElements = elemHide.waitForKeyElements,
     jquery = require("fs").readFileSync("../data/lib/jquery-1.11.2.min.js", "UTF-8");
 
 var testUrls = [
-    "https://www.google.com.hk/search?q=jewelry", // google 
-    // "https://search.yahoo.com/search;_ylt=Aoaam0.r9kr.KLlaCt0.ueubvZx4?p=jewelery"  
+    "https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg", // google 
+    "https://search.yahoo.com/yhs/search;_ylt=AwrTccUv_hNV_X0AgfknnIlQ?ei=UTF-8&hsimp=yhs-001&hspart=mozilla&p=jewelry&SpellState=&fr2=sp-qrw-corr-top"  
 ];
 
 
+if (1) {  // testing the script (work here)
 
-
-
-if (1) {  // testing the script
-
+    // loaded out google page
     jsdom.env({ url: testUrls[0], src: jquery, done: function(err, window) {
     
+        console.log("* LOAD: "+this.url);
+        
+        // ok, we've loaded the page, save jquery obj
         var $ = window.$;
         
-        console.log( $('#resultStats').text() );  
+        // now print out the number of results
+        console.log("* FOUND: "+ $('#resultStats').text() );  // this works **
         
-        waitForKeyElements($, '#tads', function(anchor) {
+        setTimeout(function() {  // waiting 5 sec for everything to load
         
-            console.log( 'ok' );
+            $('#tads').length && console.log("* FOUND: $('#tads')"); // this also works **
+            
+            !$('#tads.c').length && console.log("* FAILED: $('#tads.c')"); // but this fails ** (why?)
+            
+            //nodeRunFilters($); // if the above worked, then we could simply call this function (defined in elemhide.js) 
+                        
+            console.log('Done');
              
-        }, true);    
+        }, 5000);
     }});
 }
-else {  // running the script (later)
-    
-    function whenDone(err, window) {
-
-        if (err) { // check for errors
-        
-            for (var i=0,len=err.length; i<len; i++)
-                console.error(err[i]); 
-                
-            return;
-        } 
-        
-        // now check selectors from elemhide 
-        runFilters(window.$);
-    }
+else {  // running the script (ignore for now)
     
     for (var i=0, len = testUrls.length; i<len; i++) {
 
@@ -49,3 +44,16 @@ else {  // running the script (later)
     }
 }
 
+function whenDone(err, window) {
+
+    if (err) { // check for errors
+    
+        for (var i=0,len=err.length; i<len; i++)
+            console.error(err[i]); 
+            
+        return;
+    } 
+    
+    // now check selectors from elemhide 
+    nodeRunFilters(window.$);
+}

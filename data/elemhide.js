@@ -160,7 +160,7 @@ function yahooText(anchor) {
     
 function googleText(anchor) {
     
-    //console.log('googleText('+anchor+')');
+    console.log('googleText('+anchor+')');
     
     var title = anchor.find('h3 a'),
         text = anchor.find('.ads-creative'),
@@ -249,48 +249,54 @@ function waitForKeyElements($,
     var targetNodes, btargetsFound;
 
     if (typeof iframeSelector == "undefined")
-        targetNodes     = $(selectorTxt);
+        targetNodes = $(selectorTxt);
     else
-        targetNodes     = $(iframeSelector).contents ()
-                                           .find (selectorTxt);
+        targetNodes = $(iframeSelector).contents().find (selectorTxt);
 
     if (targetNodes  &&  targetNodes.length > 0) {
+        
         btargetsFound   = true;
+        
         /*  Found target node(s). Go through each and act if they are new. */
-        targetNodes.each ( function () {
+        targetNodes.each (function () {
+        
             var jThis        = $(this);
             var alreadyFound = jThis.data ('alreadyFound')  ||  false;
 
             if (!alreadyFound) {
+            
                 //--- Call the payload function.
-                var cancelFound     = actionFunction (jThis);
+                var cancelFound = actionFunction(jThis);
                 if (cancelFound)
-                    btargetsFound   = false;
+                    btargetsFound = false;
                 else
                     jThis.data ('alreadyFound', true);
             }
         } );
     }
     else {
-        btargetsFound   = false;
+    
+        btargetsFound = false;
     }
 
     //--- Get the timer-control variable for this selector.
-    var controlObj      = waitForKeyElements.controlObj  ||  {};
-    var controlKey      = selectorTxt.replace (/[^\w]/g, "_");
-    var timeControl     = controlObj [controlKey];
+    var controlObj = waitForKeyElements.controlObj  ||  {};
+    var controlKey = selectorTxt.replace (/[^\w]/g, "_");
+    var timeControl = controlObj [controlKey];
 
     //--- Now set or clear the timer as appropriate.
-    if (btargetsFound  &&  bWaitOnce  &&  timeControl) {
+    if (btargetsFound && bWaitOnce && timeControl) {
+    
         //--- The only condition where we need to clear the timer.
         clearInterval (timeControl);
         delete controlObj[controlKey];
     }
     else {
+    
         //--- Set a timer, if needed.
         if ( ! timeControl) {
-            timeControl = setInterval ( function () {
-                    waitForKeyElements ($,
+            timeControl = setInterval( function () {
+                    waitForKeyElements($,
                                             selectorTxt,
                                             actionFunction,
                                             bWaitOnce,
@@ -299,9 +305,10 @@ function waitForKeyElements($,
                 },
                 300
             );
-            controlObj [controlKey] = timeControl;
+            controlObj[controlKey] = timeControl;
         }
     }
+    
     waitForKeyElements.controlObj = controlObj;
 }
 
@@ -313,12 +320,10 @@ function runFilters() {
     
         var data = textAdSelectors[i],
             waitSel = data.selector + ' ' + data.waitfor;
-    
-        //console.log('Trying: ' + data.name);
-        
+
         if ( $(this).is(data.selector) ) {
             
-            console.log('ELEMHIDE-HIT: ' + waitSel);
+            //console.log('ELEMHIDE-HIT: ' + waitSel);
             
             try {
                 waitForKeyElements($, waitSel, data.handler);
@@ -342,10 +347,10 @@ function nodeRunFilters($) {
         
         if ( $(data.selector).length ) {
             
-            console.log('ELEMHIDE-HIT: ' + waitSel);
+            console.log('\n* ElemHide-Hit: ' + data.selector);
             
             try {
-            
+                console.log('* Waiting-For: ' + waitSel+'\n');
                 waitForKeyElements($, waitSel, data.handler);
             }
             catch(e) {
@@ -365,16 +370,14 @@ if (typeof module == 'undefined' || !module.exports) {
     
             return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
         });
-        
-        console.log("HIDDEN: " + $hidden.length);
-    
+            
         $hidden.each(runFilters);
     });
 }
 else { // in Node
 
     module.exports['waitForKeyElements'] = waitForKeyElements;
-    module.exports['runFilters'] = nodeRunFilters;
+    module.exports['nodeRunFilters'] = nodeRunFilters;
     module.exports['googleText'] = googleText;
 }
 

@@ -24,37 +24,6 @@ var textAdSelectors = [
     //{ selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
 ];
 
-$(function() { // page-is-ready
-    
-    var $hidden = $("*").filter(function() {
-
-        return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
-    });
-    
-    // console.log("HIDDEN: " + $hidden.length);
-
-    $hidden.each(function() {
-    
-        for (var i = 0; i < textAdSelectors.length; i++) {
-   
-            var data = textAdSelectors[i],
-                waitSel = data.selector + ' ' + data.waitfor;
-
-            if ( $(this).is(data.selector) ) {
-                
-                console.log('ELEMHIDE-HIT: ' + waitSel);
-                try {
-                    waitForKeyElements(waitSel, data.handler);
-                }
-                catch(e) {
-                    
-                    console.warn('failed processing text-ad',data);
-                }
-            }
-        }
-    });
-});
-
 function ebayText(anchor) {
 
     var title = anchor.find('a > div:first-child'),
@@ -332,3 +301,42 @@ function waitForKeyElements(
     }
     waitForKeyElements.controlObj = controlObj;
 }
+
+if (typeof module == 'undefined' && !module.exports) {
+
+    $(function() { // page-is-ready
+        
+        var $hidden = $("*").filter(function() {
+    
+            return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
+        });
+        
+        // console.log("HIDDEN: " + $hidden.length);
+    
+        $hidden.each(function() {
+        
+            for (var i = 0; i < textAdSelectors.length; i++) {
+       
+                var data = textAdSelectors[i],
+                    waitSel = data.selector + ' ' + data.waitfor;
+    
+                if ( $(this).is(data.selector) ) {
+                    
+                    console.log('ELEMHIDE-HIT: ' + waitSel);
+                    try {
+                        waitForKeyElements(waitSel, data.handler);
+                    }
+                    catch(e) {
+                        
+                        console.warn('failed processing text-ad',data);
+                    }
+                }
+            }
+        });
+    });
+}
+else { // in Node
+
+    module.exports['selectors'] = textAdSelectors;
+}
+

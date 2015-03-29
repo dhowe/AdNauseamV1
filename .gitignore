@@ -22,4 +22,5 @@ node_modules
 npm-debug.log
 lib/test/html/global2011.js
 lib/test/html/gtm.js
+scripts/*.png
 data/lib/lib-sources.zip

@@ -18,7 +18,7 @@ const margin = { top: 50, right: 40, bottom: 20, left: 20 },
 
 function createSlider() {
 
-    log('Vault-UI.createSlider -------------');
+    //log('vault-slider.createSlider -------------');
 
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();
@@ -152,7 +152,7 @@ function createSlider() {
 
     function filterAdSets(ads) {
 
-        //log('Vault-UI.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
+        //log('vault-slider.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
         
         var sets = [];
         for (var i=0, j = ads.length; i<j; i++) {

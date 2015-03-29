@@ -31,7 +31,7 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 
 function layoutAds(json) {
 
-    //log('vault.js::layoutAds');
+    log('vault.js::layoutAds');
 
     gAds = json.data; // store
 
@@ -95,13 +95,12 @@ function doLayout(adsets) {
 
 function createDivs(adsets) {
 
-    function hoverOn(e) { // on
+    function hoverOnDiv(e) { // on
 
         var $this = $(this);
 
         if ($this.hasClass('inspected')) {
 
-            //log("item.on");
 
             // pause animation on mouse-over image
             var inspectedGid = parseInt($this.attr('data-gid'));
@@ -113,11 +112,10 @@ function createDivs(adsets) {
         e.stopPropagation();
     }
 
-    function hoverOff(e) { // off
+    function hoverOffDiv(e) { // off
 
         if ($(this).hasClass('inspected')) {
 
-            // log("item.off: "+selectedAdSet);
             animateInspector($(this));
         }
     }
@@ -126,13 +124,14 @@ function createDivs(adsets) {
 
         var $div = $('<div/>', {
 
-                class: 'item dup-count-' + adsets[i].count(),
+                'class': 'item dup-count-' + adsets[i].count(),
                 'data-gid': adsets[i].gid
 
             }).appendTo('#container');
 
         layoutAd($div, adsets[i]);
-        $div.hover(hoverOn, hoverOff);
+        
+        $div.hover(hoverOnDiv, hoverOffDiv);
     }
 }
 
@@ -309,7 +308,6 @@ function updateMetaTarget($target, ad) {
  * Shifts meta list to show correct item
  * Updates index-counter for the bullet 
  */
-
 function bulletIndex($div, adset) { // adset.index must be updated first
 
     var $bullet = $div.find('.bullet[data-idx=' + (adset.index) + ']'),
@@ -428,8 +426,7 @@ function indexCounterText(adset) {
 
 function appendBulletsTo($div, adset) {
 
-
-    function hoverOn(e) { // on
+    function hoverOnLi(e) { // on
 
         e.stopPropagation();
 
@@ -439,7 +436,7 @@ function appendBulletsTo($div, adset) {
         animateInspector(false);
     }
 
-    function hoverOff(e) { // off
+    function hoverOffLi(e) { // off
 
         animateInspector($div);
     }
@@ -463,7 +460,7 @@ function appendBulletsTo($div, adset) {
 
                 }).appendTo($ul);
 
-            $li.hover(hoverOn, hoverOff);
+            $li.hover(hoverOnLi, hoverOffLi);
         }
     }
 }
@@ -569,6 +566,29 @@ function enableLightbox() {
             e.stopPropagation();
             lightboxMode(this);
         });
+        
+    if (EnableContextMenu) {
+            
+        $('.item').bind("contextmenu", function(e) {
+    
+                e.stopPropagation();
+                
+                var inspectedGid = parseInt( $(this).attr('data-gid') );
+                selectedAdSet = findAdSetByGid(inspectedGid); // throws
+    
+                // Avoid the real one
+                e.preventDefault();
+    
+                // Show contextmenu
+                $(".custom-menu").finish().toggle(100).
+    
+                // In the right position (the mouse)
+                css({
+                        top: (e.pageY-25) + "px",
+                        left: e.pageX + "px"
+                    });
+            });
+    }
 }
 
 function positionAds(items) { // autozoom
@@ -694,7 +714,6 @@ function lightboxMode(selected) {
     if ($selected && !$selected.hasClass('inspected')) {
 
         var inspectedGid = parseInt($selected.attr('data-gid'));
-
         selectedAdSet = findAdSetByGid(inspectedGid); // throws
 
         $selected.addClass('inspected').siblings().removeClass('inspected');
@@ -710,16 +729,14 @@ function lightboxMode(selected) {
         var next = selectedAdSet.nextPending(); // tell the addon 
         if (next && self.port) {
 
-            //log('Vault.js::lightboxed: '+next.id);
-            self.port.emit("item-inspected", {
-                    "id": next.id
-                });
+            self.port.emit("item-inspected", { "id": next.id });
         }
 
         centerZoom($selected);
 
         $('#container').addClass('lightbox');
-    } else if ($('#container').hasClass('lightbox')) {
+    } 
+    else if ($('#container').hasClass('lightbox')) {
 
         var $item = $('.item.inspected');
 
@@ -927,10 +944,13 @@ function addInterfaceHandlers(ads) {
 
     var dm = document.querySelector('#container');
     if (dm) {
+    
         dm.addEventListener('dragstart', dragStart, false);
         dm.addEventListener('dragover', dragOver, false);
         dm.addEventListener('dragend', dragEnd, false);
-    } else {
+    } 
+    else {
+    
         log("NO #CONTAINER!");
     }
 
@@ -955,29 +975,11 @@ function addInterfaceHandlers(ads) {
         });
 
     if (EnableContextMenu) {
-            
-        $(document).bind("contextmenu", function(event) {
     
-                console.log("context-menu");
-    
-                // Avoid the real one
-                event.preventDefault();
-    
-                // Show contextmenu
-                $(".custom-menu").finish().toggle(100).
-    
-                // In the right position (the mouse)
-                css({
-                        top: event.pageY + "px",
-                        left: event.pageX + "px"
-                    });
-            });
-    
-    
-        // If the document is clicked somewhere
+        // if the document is clicked somewhere
         $(document).bind("mousedown", function(e) {
     
-                // If the clicked element is not the menu
+                // if the clicked element is not the menu
                 if ($(e.target).parents(".custom-menu").length < 1) {
     
                     // Hide it
@@ -986,20 +988,35 @@ function addInterfaceHandlers(ads) {
             });
     
     
-        // If the menu element is clicked
+        // if a context-menu element is right-clicked
         $(".custom-menu li").click(function() {
     
-                // This is the triggered action name
+                log("right-click menu clicked: "+$(this).attr("data-action"));
+
+                if (!selectedAdSet) {
+                    error("No ");
+                    return;
+                }
+                
                 switch ( $(this).attr("data-action") ) {
     
-                    // A case for each action. Your actions here
                     case "delete":
-                        alert("delete");
+                        
+                        log("delete: ",selectedAdSet.childIds());
+                        
+                        var $item = findItemDivByGid(selectedAdSet.gid);
+                        $item.remove();
+
+                        self.port && self.port.emit("delete-adset", { ids: selectedAdSet.childIds() });
                         break;
-                    case "delete all":
-                        alert("delete all");
+                        
+                    case "delete-all":
+                        alert("delete-all");
+                        self.port && self.port.emit("delete-all-similar", {});
                         break;
                 }
+                
+                selectedAdSet = null;
     
                 // Hide it AFTER the action was triggered
                 $(".custom-menu").hide(100);
@@ -1009,7 +1026,7 @@ function addInterfaceHandlers(ads) {
 
 function createAdSets(ads) { // once per layout
 
-    //log('Vault-UI.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
+    //log('vault-slider.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
 
     var key, ad, hash = {}, adsets = [];
 
@@ -1027,7 +1044,8 @@ function createAdSets(ads) { // once per layout
             // new: add a hash entry
             hash[key] = new AdSet(ad);
             adsets.push(hash[key]);
-        } else {
+        } 
+        else {
 
             // dup: add as child
             hash[key].add(ad);
@@ -1067,7 +1085,8 @@ function repack() {
 
                 storeItemLayout($items);
                 positionAds($items);
-            } else if (visible == 1) {
+            } 
+            else if (visible == 1) {
 
                 $items.css({ // center single
 

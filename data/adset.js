@@ -16,6 +16,18 @@ AdSet.prototype.id = function(i) {
     return this.child(i).id;
 };
 
+AdSet.prototype.childIds = function() {
+    
+    var ids = [];
+    
+    for (var i=0, j = this.children.length; i<j; i++) {
+        
+        this.children[i] && ids.push(this.children[i].id);
+    }
+
+    return ids;
+};
+
 AdSet.prototype.childIdxForId = function(id) {
     
     for (var i=0, j = this.children.length; i<j; i++) {

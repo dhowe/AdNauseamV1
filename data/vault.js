@@ -1002,7 +1002,10 @@ function addInterfaceHandlers(ads) {
     
                     case "delete":
                         
+                        
                         log("delete: ",selectedAdSet.childIds());
+                        
+                        // TODO: need to remove ad from all stateful vars (gAds, etc)
                         
                         var $item = findItemDivByGid(selectedAdSet.gid);
                         $item.remove();

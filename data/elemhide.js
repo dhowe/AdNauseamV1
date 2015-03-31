@@ -2,11 +2,11 @@
 
 /*global self */
 
-var textAdSelectors = [ 
+var textAdMatchers = [ 
 
-    { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // top
-    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },   // bottom
-    { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense' },  // right
+    { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense-1' },  // top
+    { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense-2' },   // bottom
+    { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense-3' },  // right
     
     { selector: '.ads ul', waitfor: 'li', handler: yahooText, name: 'yahoo' },
     { selector: '.b_ad', waitfor: '.sb_adTA', handler: bingText, name: 'bing' },
@@ -316,9 +316,9 @@ function runFilters() {
 
     //console.log(typeof $, typeof element);
     
-    for (var i = 0; i < textAdSelectors.length; i++) {
+    for (var i = 0; i < textAdMatchers.length; i++) {
     
-        var data = textAdSelectors[i],
+        var data = textAdMatchers[i],
             waitSel = data.selector + ' ' + data.waitfor;
 
         if ( $(this).is(data.selector) ) {
@@ -338,9 +338,9 @@ function runFilters() {
 
 function nodeRunFilters($) {
 
-    for (var i = 0; i < textAdSelectors.length; i++) {
+    for (var i = 0; i < textAdMatchers.length; i++) {
     
-        var data = textAdSelectors[i],
+        var data = textAdMatchers[i],
             waitSel = data.selector + ' ' + data.waitfor;
     
         console.log('Trying: ' + data.name+ " :: "+data.selector + " :: " +$(data.selector).length + ' found');
@@ -362,6 +362,14 @@ function nodeRunFilters($) {
     }
 }
 
+function findSelectorByName(name) {
+
+    for (var i = 0; i < textAdMatchers.length; i++) {
+        if (textAdMatchers[i].name === name)
+            return textAdMatchers[i];
+    }
+}
+
 if (typeof module == 'undefined' || !module.exports) {
 
     $(function() { // page-is-ready
@@ -376,6 +384,8 @@ if (typeof module == 'undefined' || !module.exports) {
 }
 else { // in Node
 
+    module.exports['matchers'] = textAdMatchers;
+    module.exports['getMatcher'] = findSelectorByName;
     module.exports['waitForKeyElements'] = waitForKeyElements;
     module.exports['nodeRunFilters'] = nodeRunFilters;
     module.exports['googleText'] = googleText;

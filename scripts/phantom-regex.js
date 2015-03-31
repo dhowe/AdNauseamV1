@@ -2,48 +2,52 @@
 
 /*global phantom */
 
-var url = [
-  "https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg",
-  "https://search.yahoo.com/yhs/search?p=prada&ei=UTF-8&hspart=mozilla&hsimp=yhs-001",
-  "http://www.bing.com/search?q=shopping&pc=MOZI&form=MOZSBR",
-  "https://duckduckgo.com/?q=shopping&t=ffsb&ia=about",
-  "http://www.ebay.com/sch/i.html?_odkw=shopping&mfe=search&clk_rvr_id=805883700840&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR0.TRC0.H0.Xasdfsdf.TRS0&_nkw=asdfsdf&_sacat=0",
-  "http://search.aol.com/aol/search?enabled_terms=&s_it=comsearch&q=fund&s_chn=prt_aol20",
-
-
+var tests = [
+  { name: 'adsense-1',  url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg' },
+  { name: 'adsense-2',  url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg' },
+  { name: 'adsense-3',  url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg' },
+  { name: 'yahoo',      url: 'https://search.yahoo.com/yhs/search?p=prada&ei=UTF-8&hspart=mozilla&hsimp=yhs-001'},
+  { name: 'bing',       url: 'http://www.bing.com/search?q=shopping&pc=MOZI&form=MOZSBR'},
+  { name: 'duckduckgo', url: 'https://duckduckgo.com/?q=shopping&t=ffsb&ia=about'},
+  { name: 'ebay',       url: 'http://www.ebay.com/sch/i.html?_odkw=shopping&mfe=search&clk_rvr_id=805883700840&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR0.TRC0.H0.Xasdfsdf.TRS0&_nkw=asdfsdf&_sacat=0'},
+  { name: 'aol',        url: 'http://search.aol.com/aol/search?enabled_terms=&s_it=comsearch&q=fund&s_chn=prt_aol20'}
 ];
 
-var page = require('webpage').create();
+var page = require('webpage').create(), elemhide = require('../data/elemhide'), getMatcher = elemhide.getMatcher;
 
 // Firefox 36 for Mac user-agent
 page.settings.userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0';
-console.log('User-agent: ' + page.settings.userAgent);
+//console.log('user-agent: ' + page.settings.userAgent);
 
 
-page.open(url[0], function() {
+// NEXT: call each test in a loop (you may need to use CasperJS for this)
 
-  page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function() {
 
-    page.render('google.png');
+function openPage(test) {
 
-    var data = page.evaluate(function() {
+    var matcher = getMatcher(test.name);
 
-      return {
-        'tadsc': $("#tads.c").length,
-        'ads': $("#bottomads").length,
-        'ads2': $("#rhs_block > #mbEnd").length
-      };
+    page.open(test.url, function() {
+    
+        page.includeJs("http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js", function(re) {
+
+            var data = page.evaluate(function(selector) {
+        
+                return $(selector);
+                
+            }, matcher.selector);
+            
+            console.log(test.name + ' [' + matcher.selector + '] matched: ' + (data.length > 0));
+            
+            phantom.exit();       
+        });
     });
-    console.log("#tads.c: ", data.tadsc);
-    console.log("#bottomads: ", data.ads);
-    console.log("#rhs_block > #mbEnd: ", data.ads2);
+}
 
-    // remove "Unsafe JavaScript attempt" error
-    setTimeout(function(){
-      phantom.exit();
-    }, 0);
-  });
-});
+openPage(tests[0]);
+
+
+
 
 /*
 page.open(url[1], function() {

@@ -242,7 +242,7 @@ function appendDetectedTo($detected, ad) {
             class: 'inspected-title',
             href: ad.pageUrl,
             text: ad.pageTitle,
-            target: 'new'
+            target: '_blank'
 
         }).appendTo($detected);
 
@@ -271,7 +271,7 @@ function appendTargetTo($target, ad, adset) {
             class: 'inspected-title',
             href: ad.targetUrl,
             text: ad.title,
-            target: 'new'
+            target: '_blank'
 
         }).appendTo($target);
 
@@ -403,7 +403,7 @@ function appendTextDisplayTo($pdiv, adset) {
 
             class: 'title',
             text: ad.title,
-            target: 'new'
+            target: '_blank'
 
         }).appendTo($h3);
 

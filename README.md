@@ -15,7 +15,6 @@ We conceptualize AdNauseam within a broader class of software systems that serve
 
 * Authors:          [Daniel C. Howe](http://rednoise.org/~dhowe), [Helen Nissenbaum](https://www.nyu.edu/projects/nissenbaum/) & [Mushon Zer-Aviv](http://mushon.com)
 * License:          GPL (see included LICENSE file for full license)
-* Maintainers:      See included AUTHORS file for contributor list
 * Web Site:         http://ADNAUSEAM.io
 * Github Repo:      https://github.com/dhowe/adnauseam/
 * Bug Tracker:      https://github.com/dhowe/adnauseam/issues
@@ -41,7 +40,7 @@ If you're looking for a place to start, definitely look into the [issues labeled
 3. Create a new Firefox profile by opening the Firefox profile-manager. Note the path for the profile when you create and save it.
 
     ```bash
-    $ /Applications/Firefox.app/Contents/MacOS/firefox-bin -P (on OSX)
+    $ /Applications/Firefox.app/Contents/MacOS/firefox-bin -P      (on OSX)
     ```
     
 4. Cd into the AdNauseam folder you downloaded via git, and start Firefox with your new profile via cfx
@@ -56,7 +55,7 @@ If you're looking for a place to start, definitely look into the [issues labeled
 6. Quit the browser after the install, and then re-start Firefox with your profile:
     
     ```bash    
-    $ cfx run -p path/to/your/new-firefox-profile  (on OSX)
+    $ cfx run -p path/to/your/new-firefox-profile
     ```
 
-7. You can now browse the web, collecting ads in the AdNauseam menu and advault... Once you've made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)! 
+7. You can now browse the web, collecting ads in the AdNauseam menu and advault... Once you have made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)! 

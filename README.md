@@ -33,17 +33,30 @@ If you're looking for a place to start, definitely look into the [issues labeled
 1. Checkout the code with your favorite git tool or via the command-line: 
 
     ```bash
-    git checkout https://github.com/dhowe/AdNauseam.git``
+    $ git checkout https://github.com/dhowe/AdNauseam.git
     ```
 
-2. Install the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
+2. With an up-to-date version of Firefox, install the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
 
-3. Create a new Firefox profile by opening the Firefox profile-manager (on OSX: ``/Applications/Firefox.app/Contents/MacOS/firefox-bin -P``). Note the path for the profile when you create and save it.
+3. Create a new Firefox profile by opening the Firefox profile-manager. Note the path for the profile when you create and save it.
 
-4. Cd into the AdNauseam folder you downloaded via git and run your new profile with cfx: ``cfx run -p path/to/your/new-firefox-profile``
+    ```bash
+    $ /Applications/Firefox.app/Contents/MacOS/firefox-bin -P (on OSX)
+    ```
+    
+4. Cd into the AdNauseam folder you downloaded via git, and start Firefox with your new profile via cfx
+
+    ```bash
+    $ cd /path/to/adnauseam
+    $ cfx run -p path/to/your/new-firefox-profile
+    ```
 
 5. You should now be informed that you need an ad blocker to run AdNauseam, so install [AdBlock Plus](https://addons.mozilla.org/en-US/firefox/addon/adblock-plus/) or [AdBlock Edge](https://addons.mozilla.org/en-Us/firefox/addon/adblock-edge/).
 
-6. Quit the browser after the install and then re-run: ``cfx run -p path/to/your/new-firefox-profile``
+6. Quit the browser after the install, and then re-start Firefox with your profile:
+    
+    ```bash    
+    $ cfx run -p path/to/your/new-firefox-profile  (on OSX)
+    ```
 
-7. You can now browse the web, collecting ads in the AdNauseam menu and advault. Once you've made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)! 
+7. You can now browse the web, collecting ads in the AdNauseam menu and advault... Once you've made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)! 

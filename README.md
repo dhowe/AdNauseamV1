@@ -6,7 +6,7 @@
 
 [AdNauseam](http://adnauseam.io) is a lightweight browser extension that blends software tool and 'artware' intervention to protect users from tracking by advertising networks. AdNauseam works together with an 'Ad Blocker' simulating clicks on each blocked ad (in a background thread), confusing trackers as to one's real interests. Simultaneously, AdNauseam serves as a means of amplifying users' discontent with advertising networks that disregard privacy and facilitate bulk surveillance agendas.
 
-We conceptualize AdNauseam within a broader class of software systems that serve ethical, political, and expressive ends. In light of the industry's failure to achieve consensus on a Do Not Track standard<sup>1</sup>*, or to otherwise address the excesses of network tracking,  AdNauseam allows individual users to take matters into their own hands, offering cover against certain forms of surveillance, profiling, and practices of discrimination. Taken in this light, the software represents a similar approach to that of <a href="http://cs.nyu.edu/trackmenot" target="_blank">TrackMeNot</a>, which attempts to relocate power in the hands of individual users, rather than vast commercial search corporations. For further information on this approach, please see <a href="http://cs.nyu.edu/trackmenot/TMN-Howe-Niss08-ch23.pdf" target="_blank">this paper</a>.
+We conceptualize AdNauseam within a broader class of software systems that serve ethical, political, and expressive ends. In light of the industry's failure to achieve consensus on a Do Not Track standard<sup>1</sup>*, or to otherwise address the excesses of network tracking,  AdNauseam allows individual users to take matters into their own hands, offering cover against certain forms of surveillance, profiling, and practices of discrimination. Taken in this light, the software represents a similar approach to that of <a href="http://cs.nyu.edu/trackmenot" target="_blank">TrackMeNot</a>, which attempts to relocate power in the hands of individual users, rather than vast commercial entities. For further information on this approach, please see <a href="http://cs.nyu.edu/trackmenot/TMN-Howe-Niss08-ch23.pdf" target="_blank">this paper</a>.
 
 #### <a href="http://ADNAUSEAM.io">ADNAUSEAM.io</a>
 
@@ -23,19 +23,19 @@ We conceptualize AdNauseam within a broader class of software systems that serve
 #### Can I contribute?
 --------
 Absolutely! We are looking for more coders and designers to help... Just press *Fork* at the top of this github page and get started...
-If you're looking for a place to start, definitely look into the [issues labeled "HELP US CODE"](https://github.com/dhowe/AdNauseam/labels/HELP-US-CODE). Thanks!
+If you're looking for a place to start, definitely look into the issues labeled [HELP US CODE](https://github.com/dhowe/AdNauseam/labels/HELP-US-CODE). Thanks!
 
 #### How to install the development environment
 
 ##### Developing on Firefox
 
-1. Checkout the code with your favorite git tool or via the command-line: 
+1. Checkout the code with your favorite git tool, or via the command-line: 
 
     ```bash
     $ git checkout https://github.com/dhowe/AdNauseam.git
     ```
 
-2. With an up-to-date version of Firefox, install the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
+2. With an up-to-date version of Firefox, install and activate the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
 
 3. Create a new Firefox profile by opening the Firefox profile-manager. Note the path for the profile when you create and save it.
 

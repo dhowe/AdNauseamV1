@@ -30,11 +30,13 @@ If you're looking for a place to start, definitely look into the [issues labeled
 
 ##### Developing on Firefox
 
-1. Checkout this repository: ``git checkout https://github.com/dhowe/AdNauseam.git``
+1. Checkout the code with your favorite git tool or via the command-line: 
+
+``git checkout https://github.com/dhowe/AdNauseam.git``
 
 2. Install the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
 
-3. To create a new Firefox profile to work with, open the Firefox profile-manager (on OSX: ``/Applications/Firefox.app/Contents/MacOS/firefox-bin -P``). Then create and save a new profile (take note of the path)
+3. Create a new Firefox profile by opening the Firefox profile-manager (on OSX: ``/Applications/Firefox.app/Contents/MacOS/firefox-bin -P``). Note the path for the profile when you create and save it.
 
 4. Cd into the AdNauseam folder you downloaded via git and run your new profile with cfx: ``cfx run -p path/to/your/new-firefox-profile``
 
@@ -42,6 +44,4 @@ If you're looking for a place to start, definitely look into the [issues labeled
 
 6. Quit the browser after the install and then re-run: ``cfx run -p path/to/your/new-firefox-profile``
 
-7. You can now browse the web, collecting ads in the AdNauseam menu and advault.
-
-8. After you've made some changes, send us your pull-request! 
+7. You can now browse the web, collecting ads in the AdNauseam menu and advault. Once you've made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)! 

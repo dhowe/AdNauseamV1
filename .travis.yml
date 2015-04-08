@@ -1,7 +1,6 @@
 language: node_js
 
 before_script:
- - npm install phantomjs
  - npm install casperjs
 
 script:

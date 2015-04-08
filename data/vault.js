@@ -1002,42 +1002,38 @@ function addInterfaceHandlers(ads) {
 
                     case "delete":
 
-                        var ids = selectedAdSet.childIds();
-                        log("delete: ", ids);
-
-                        // TODO: need to remove ad from all stateful vars (gAds, etc)
-
-                        var $item = findItemDivByGid(selectedAdSet.gid);
+                        var ids = selectedAdSet.childIds(),
+                            $item = findItemDivByGid(selectedAdSet.gid);
+                        
+                        // remove the adset item from the DOM    
                         $item.remove();
 
-            
-                        for (var i=0, len = ids.length; i<len; i++) {
-                            
-                            for (var j=0, len2 = gAds.length; j<len2; j++) {
-                             
-                                if (gAds[j] && gAds[j].id === ids[i]) {
-                                
-                                    console.log('hit'); 
-                                    gAds.splice(j, 1);
-                                }
+                        // remove each ad from the full-adset
+                        gAds = gAds.filter( function(ad) {
+                            for (var i=0, len = ids.length; i<len; i++) {
+                                if (ad.id === ids[i])
+                                    return false;
                             }
-                        }
+                            return true;
+                        });
 
+                        // tell the addon
                         self.port && self.port.emit("delete-adset", { ids: selectedAdSet.childIds() });
                         
+                        // recreate the slider
                         createSlider();
+                        
                         break;
 
                     case "delete-all": // not enabled
-                        alert("delete-all");
+
                         self.port && self.port.emit("delete-all-similar", {});
                         break;
                 }
 
                 selectedAdSet = null;
 
-                // Hide it AFTER the action was triggered
-                $(".custom-menu").hide(100);
+                $(".custom-menu").hide(100); // close context-menu
             });
     }
 }

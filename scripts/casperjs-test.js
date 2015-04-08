@@ -1,3 +1,5 @@
+// usage:  $ casperjs test casperjs-test.js
+
 /*global casper */
 
 var elemhide = require('../data/elemhide'),

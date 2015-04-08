@@ -3,6 +3,7 @@
 /*global casper */
 
 var elemhide = require('../data/elemhide'),
+    userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0',
     testData = [{
             name: 'adsense-1',
             url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
@@ -32,14 +33,14 @@ var elemhide = require('../data/elemhide'),
 
 testData.forEach(function(td) {
 
-        casper.test.begin(td.name + ' test:', 1, function suite(test) {
+        casper.test.begin(td.name, 1, function(test) {
 
-                casper.userAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0');
+                casper.userAgent(userAgent);
 
                 casper.start(td.url).then(function() {
 
                         var selector = elemhide.getMatcher(td.name).selector;
-                        test.assertExists(selector, "Selector: " + selector + " found.");
+                        test.assertExists(selector, 'selector: ' + selector + ' ok');
 
                     }).run(function() {
 

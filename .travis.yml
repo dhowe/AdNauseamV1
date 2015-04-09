@@ -2,9 +2,9 @@ language: node_js
 node_js:
   - "0.8"
 before_install:
+  - cd ./scripts
   - npm install -g phantomjs
   - npm install -g casperjs
-  - cd ./scripts
 before_script:
   - phantomjs --version
   - casperjs --version

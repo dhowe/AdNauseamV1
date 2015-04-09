@@ -1,4 +1,4 @@
-// to be run via phantomjs
+// to be run via phantomjs: $ phantomjs phantom-regex.js
 
 /*global phantom */
 

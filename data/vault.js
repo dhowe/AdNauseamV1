@@ -1,6 +1,6 @@
 /*jslint browser: true*/
 
-/*global 
+/*global
     gAds: true, gAdSets: true, self, createSlider, log, warn, targetDomain, alert,
     rand, error, Type, AdSet, byField, showAlert, Packery, computeHashKey, toAdArray,
     TEXT_MINW, TEXT_MAXW, TEST_APPEND_IDS, TEST_ADS, TEST_MODE, TEST_PAGE
@@ -8,7 +8,7 @@
 
 const LogoURL = 'http://dhowe.github.io/AdNauseam/',
     States = ['pending', 'visited', 'failed'],
-    Zooms = [100, 50, 25, 12.5, 6.25], 
+    Zooms = [100, 50, 25, 12.5, 6.25],
     EnableContextMenu = 1,
     MaxPerSet = 9;
 
@@ -21,8 +21,8 @@ var zoomStyle, zoomIdx = 0,
         top: '-5000px'
     };
 
-/* 
-    TODO: on first-run, doImport() on all ads in storage       
+/*
+    TODO: on first-run, doImport() on all ads in storage
 */
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
@@ -130,7 +130,7 @@ function createDivs(adsets) {
             }).appendTo('#container');
 
         layoutAd($div, adsets[i]);
-        
+
         $div.hover(hoverOnDiv, hoverOffDiv);
     }
 }
@@ -306,7 +306,7 @@ function updateMetaTarget($target, ad) {
 /**
  * Resets current bullet class to [active,ad.state]
  * Shifts meta list to show correct item
- * Updates index-counter for the bullet 
+ * Updates index-counter for the bullet
  */
 function bulletIndex($div, adset) { // adset.index must be updated first
 
@@ -316,7 +316,7 @@ function bulletIndex($div, adset) { // adset.index must be updated first
 
     //log('bulletIndex: c["+adset.index+"]="+adset.child().id+"-> "+ adset.state());
 
-    // set the state for the bullet 
+    // set the state for the bullet
     setItemClass($bullet, state);
 
     // set the active class for bullet
@@ -566,22 +566,22 @@ function enableLightbox() {
             e.stopPropagation();
             lightboxMode(this);
         });
-        
+
     if (EnableContextMenu) {
-            
+
         $('.item').bind("contextmenu", function(e) {
-    
+
                 e.stopPropagation();
-                
+
                 var inspectedGid = parseInt( $(this).attr('data-gid') );
                 selectedAdSet = findAdSetByGid(inspectedGid); // throws
-    
+
                 // Avoid the real one
                 e.preventDefault();
-    
+
                 // Show contextmenu
                 $(".custom-menu").finish().toggle(100).
-    
+
                 // In the right position (the mouse)
                 css({
                         top: (e.pageY-25) + "px",
@@ -685,12 +685,12 @@ function centerZoom($ele) {
         // make sure left/bottom corner of meta-data is onscreen (#180)
         if (iw > ww - (metaOffset * 2 + margin)) {
 
-            //log('HITX:  iw='+iw+" ww="+ww+" diff="+(iw - ww)  + "  offx="+offx); 
+            //log('HITX:  iw='+iw+" ww="+ww+" diff="+(iw - ww)  + "  offx="+offx);
             mleft += ((iw - ww) / 2) + (metaOffset + margin);
         }
         if (ih > wh - (metaOffset * 2 + margin)) {
 
-            //log('HITY:  ih='+ih+" wh="+wh+" diff="+(ih - wh)  + "  offy="+offy); 
+            //log('HITY:  ih='+ih+" wh="+wh+" diff="+(ih - wh)  + "  offy="+offy);
             mtop -= ((ih - wh) / 2) + (metaOffset + margin); // bottom-margin
         }
 
@@ -726,7 +726,7 @@ function lightboxMode(selected) {
             animateInspector($selected);
         }
 
-        var next = selectedAdSet.nextPending(); // tell the addon 
+        var next = selectedAdSet.nextPending(); // tell the addon
         if (next && self.port) {
 
             self.port.emit("item-inspected", { "id": next.id });
@@ -735,12 +735,12 @@ function lightboxMode(selected) {
         centerZoom($selected);
 
         $('#container').addClass('lightbox');
-    } 
+    }
     else if ($('#container').hasClass('lightbox')) {
 
         var $item = $('.item.inspected');
 
-        // reset the class to the group class        
+        // reset the class to the group class
         setItemClass($item, selectedAdSet.groupState());
 
         // remove inspected & re-hide index-counter
@@ -944,13 +944,13 @@ function addInterfaceHandlers(ads) {
 
     var dm = document.querySelector('#container');
     if (dm) {
-    
+
         dm.addEventListener('dragstart', dragStart, false);
         dm.addEventListener('dragover', dragOver, false);
         dm.addEventListener('dragend', dragEnd, false);
-    } 
+    }
     else {
-    
+
         log("NO #CONTAINER!");
     }
 
@@ -975,54 +975,65 @@ function addInterfaceHandlers(ads) {
         });
 
     if (EnableContextMenu) {
-    
+
         // if the document is clicked somewhere
         $(document).bind("mousedown", function(e) {
-    
+
                 // if the clicked element is not the menu
                 if ($(e.target).parents(".custom-menu").length < 1) {
-    
+
                     // Hide it
                     $(".custom-menu").hide(100);
                 }
             });
-    
-    
+
+
         // if a context-menu element is right-clicked
         $(".custom-menu li").click(function() {
-    
+
                 log("right-click menu clicked: "+$(this).attr("data-action"));
 
                 if (!selectedAdSet) {
                     error("No ");
                     return;
                 }
-                
+
                 switch ( $(this).attr("data-action") ) {
-    
+
                     case "delete":
+
+                        var ids = selectedAdSet.childIds(),
+                            $item = findItemDivByGid(selectedAdSet.gid);
                         
-                        
-                        log("delete: ",selectedAdSet.childIds());
-                        
-                        // TODO: need to remove ad from all stateful vars (gAds, etc)
-                        
-                        var $item = findItemDivByGid(selectedAdSet.gid);
+                        // remove the adset item from the DOM    
                         $item.remove();
 
+                        // remove each ad from the full-adset
+                        gAds = gAds.filter( function(ad) {
+                            for (var i=0, len = ids.length; i<len; i++) {
+                                if (ad.id === ids[i])
+                                    return false;
+                            }
+                            return true;
+                        });
+
+                        // tell the addon
                         self.port && self.port.emit("delete-adset", { ids: selectedAdSet.childIds() });
-                        break;
                         
-                    case "delete-all":
-                        alert("delete-all");
+                        // recreate the slider
+                        createSlider();
+                        
+                        break;
+
+                    case "delete-all": // not enabled
+
                         self.port && self.port.emit("delete-all-similar", {});
                         break;
                 }
-                
+
                 selectedAdSet = null;
-    
-                // Hide it AFTER the action was triggered
-                $(".custom-menu").hide(100);
+
+                $(".custom-menu").hide(100); // close context-menu
             });
     }
 }
@@ -1047,7 +1058,7 @@ function createAdSets(ads) { // once per layout
             // new: add a hash entry
             hash[key] = new AdSet(ad);
             adsets.push(hash[key]);
-        } 
+        }
         else {
 
             // dup: add as child
@@ -1088,7 +1099,7 @@ function repack() {
 
                 storeItemLayout($items);
                 positionAds($items);
-            } 
+            }
             else if (visible == 1) {
 
                 $items.css({ // center single

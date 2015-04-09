@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/CyrusSUEN/AdNauseam.svg)](https://travis-ci.org/CyrusSUEN/AdNauseam)
+[![Build Status](https://travis-ci.org/dhowe/AdNauseam.svg)](https://travis-ci.org/dhowe/AdNauseam)
 <div align="center">
   <a href="http://ADNAUSEAM.io">
     <img src="https://rednoise.org/adnauseam/logo.png"/>

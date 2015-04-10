@@ -1,0 +1,7 @@
+language: node_js
+
+before_install:
+  - cd scripts
+  - npm install -g casperjs
+script:
+  - casperjs test casperjs-test.js

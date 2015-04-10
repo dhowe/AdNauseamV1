@@ -6,16 +6,16 @@ var elemhide = require('../data/elemhide'),
     userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0',
     testData = [{
             name: 'adsense-1',
-            url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
+            url: 'https://www.google.com/search?q=apple&ie=utf-8&oe=utf-8'
         }, {
             name: 'adsense-2',
-            url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
+            url: 'http://www.google.com/search?q=facial&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
         }, {
             name: 'adsense-3',
-            url: 'https://www.google.com/search?q=jewelry&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
+            url: 'http://www.google.com/search?q=facial&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
         }, {
             name: 'yahoo',
-            url: 'https://search.yahoo.com/yhs/search?p=prada&ei=UTF-8&hspart=mozilla&hsimp=yhs-001'
+            url: 'https://search.yahoo.com/yhs/search;_ylt=AwrTcePFkiZVRqYALkgnnIlQ;_ylc=X1MDMTM1MTE5NTY4NwRfcgMyBGZyAwRncHJpZANUdmxKNnZkQlFZZTVxZUVOclk4RFhBBG5fcnNsdAMwBG5fc3VnZwMxMARvcmlnaW4Dc2VhcmNoLnlhaG9vLmNvbQRwb3MDMARwcXN0cgMEcHFzdHJsAwRxc3RybAM0BHF1ZXJ5A2RydWcEdF9zdG1wAzE0Mjg1OTEzMDg-?p=drug&fr2=sb-top-search&hspart=mozilla&hsimp=yhs-001'
         }, {
             name: 'bing',
             url: 'http://www.bing.com/search?q=shopping&pc=MOZI&form=MOZSBR'
@@ -27,7 +27,7 @@ var elemhide = require('../data/elemhide'),
             url: 'http://www.ebay.com/sch/i.html?_odkw=shopping&mfe=search&clk_rvr_id=805883700840&_osacat=0&_from=R40&_trksid=p2045573.m570.l1313.TR0.TRC0.H0.Xasdfsdf.TRS0&_nkw=asdfsdf&_sacat=0'
         }, {
             name: 'aol',
-            url: 'http://search.aol.com/aol/search?enabled_terms=&s_it=comsearch&q=fund&s_chn=prt_aol20'
+            url: 'http://search.aol.com/aol/search?s_it=topsearchbox.search&s_chn=prt_aol20&v_t=comsearch&q=money'
         }
     ];
 
@@ -39,8 +39,9 @@ testData.forEach(function(td) {
 
                 casper.start(td.url).then(function() {
 
+                        // this.capture('./images/' + td.name + '.png');
                         var selector = elemhide.getMatcher(td.name).selector;
-                        test.assertExists(selector, 'selector: ' + selector + ' ok');
+                        test.assertExists(selector, 'selector: ' + selector);
 
                     }).run(function() {
 

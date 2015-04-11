@@ -226,10 +226,12 @@ function refreshPanel(opts) {
 
     $('#cmn-toggle-1').prop('checked', opts.disableLogs);
     $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
-    $('#settings-version').text(opts.version);
-
+    $('#cmn-toggle-3').prop('checked', opts.clearAdsWithHistory);
+    
     $('#toggle-button').css('background-image', 'url('+img+')');
     $('#pause-button').text(label);
+    
+    $('#settings-version').text(opts.version);
 }
 
 function animateIcon(ms) {
@@ -396,6 +398,12 @@ function attachMenuTests() {
 
         var val = $(this).prop('checked');
         self.port && self.port.emit('disable-referer', { 'value' : val });
+    });
+    
+    $('#cmn-toggle-3').click(function() { // clear
+
+        var val = $(this).prop('checked');
+        self.port && self.port.emit('clear-ads-with-history', { 'value' : val });
     });
 
 })();

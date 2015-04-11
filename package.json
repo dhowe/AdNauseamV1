@@ -1,49 +1,56 @@
 {
-    "name": "adnauseam",
-    "fullName": "AdNauseam",
-    "id": "adnauseam@rednoise.org",
-    "description": "A software tool and 'artware' intervention to defend against surveillance and tracking by advertising networks",
-    "author": "Daniel C. Howe",
-    "license": "GPLv3 (http://www.gnu.org/licenses/)",
-    "icon": "data/img/adn_active-48.png",
-    "icon64": "data/img/adn_active-64.png",
-	"version": "1.173",
-	"homepage": "http://dhowe.github.io/AdNauseam/",
-	"preferences": [
-		{
-			"title": "Enabled",
-		    "name":  "enabled",
-		    "type":  "bool",
-		    "value":  true,
-			"hidden": true
-		},
-		{
-			"title": "Disable Referrer header (for AdNauseam clicks)",
-		    "name":  "disableOutgoingReferer",
-		    "type":  "bool",
-		    "value":  true,
-			"hidden": true
-		},		
-		{
-			"title": "Disallow outgoing cookies (for AdNauseam clicks)",
-		    "name":  "disableOutgoingCookies",
-		    "type":  "bool",
-		    "value":  true,
-			"hidden": true
-		},		
-		{
-			"title": "Disallow incoming cookies (for AdNauseam clicks)",
-		    "name":  "disableIncomingCookies",
-		    "type":  "bool",
-		    "value":  true,
-			"hidden": true
-		},
-		{
-			"title": "Logging Disabled  (no logs will be created)",
-		    "name": "disableLogs",
-		    "type": "bool",
-		    "value": false,
-			"hidden": true
-		}
-	]
+        "name": "adnauseam",
+        "fullName": "AdNauseam",
+        "id": "adnauseam@rednoise.org",
+        "description": "A software tool and 'artware' intervention to defend against surveillance and tracking by advertising networks",
+        "author": "Daniel C. Howe",
+        "license": "GPLv3 (http://www.gnu.org/licenses/)",
+        "icon": "data/img/adn_active-48.png",
+        "icon64": "data/img/adn_active-64.png",
+        "version": "1.173",
+        "homepage": "http://dhowe.github.io/AdNauseam/",
+        "preferences": [
+        {
+            "title": "Enabled",
+            "name":  "enabled",
+            "type":  "bool",
+            "value":  true,
+            "hidden": true
+        },
+        {
+            "title": "Disable Referrer header (for AdNauseam clicks)",
+            "name":  "disableOutgoingReferer",
+            "type":  "bool",
+            "value":  true,
+            "hidden": true
+        },		
+        {
+            "title": "Disallow outgoing cookies (for AdNauseam clicks)",
+            "name":  "disableOutgoingCookies",
+            "type":  "bool",
+            "value":  true,
+            "hidden": true
+        },		
+        {
+            "title": "Disallow incoming cookies (for AdNauseam clicks)",
+            "name":  "disableIncomingCookies",
+            "type":  "bool",
+            "value":  true,
+            "hidden": true
+        },
+        {
+            "title": "Logging Disabled  (no logs will be created)",
+            "name": "disableLogs",
+            "type": "bool",
+            "value": false,
+            "hidden": true
+        },
+        {
+            "title": "Clear Ads with browser history",
+            "name": "clearAdsWithHistory",
+            "type": "bool",
+            "value": false,
+            "hidden": true
+        }
+    ]
 }

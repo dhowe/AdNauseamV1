@@ -39,7 +39,7 @@ testData.forEach(function(td) {
 
                 casper.start(td.url).then(function() {
 
-                        // this.capture('./images/' + td.name + '.png');
+                        this.capture('./images/' + td.name + '.png');
                         var selector = elemhide.getMatcher(td.name).selector;
                         test.assertExists(selector, 'selector: ' + selector);
 

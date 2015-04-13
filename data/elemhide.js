@@ -2,8 +2,12 @@
 
 /*global self */
 
-var textAdMatchers = [ 
+/* this code handles ABP's hidden elements (text or img) */
 
+var admatchers = [ 
+
+    // text-ads ------------------------------------------------------------------------------------------------ 
+    
     { selector: '#tads.c', waitfor: ".ads-ad", handler: googleText, name: 'adsense-1' },  // top
     { selector: '#bottomads', waitfor: ".ads-ad", handler: googleText, name: 'adsense-2' },   // bottom
     { selector: '#rhs_block > #mbEnd', waitfor: ".ads-ad", handler: googleText, name: 'adsense-3' },  // right
@@ -16,11 +20,27 @@ var textAdMatchers = [
     { selector: '[class$=SLL]', waitfor: 'div.sllLink.sllAllC', handler: aolText, name: 'aol' },
 
     { selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)', 
-        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' }
-        
-    //{ selector: '#right > .atTrunk:last-child', waitfor: '.b_rb', handler: sogouText, name: 'sogou' },
-    //{ selector: '.sponsored', waitfor: 'li', handler: sogouTopAndBottomText, name: 'sogou' },
+        waitfor: "div[id^='bdfs']", handler: baiduText, name: 'baidu' },
+
+    // img-ads ------------------------------------------------------------------------------------------------
+    
+    { selector: '#row-top', waitfor: 'div#mini-features > a', handler: zamImg, name: 'zam' }
 ];
+
+function zamImg(anchor) {
+
+    var targetUrl = anchor.attr('href'),
+        img = anchor.css('background-image').replace('url("','').replace('")','');
+
+    if (targetUrl.length && img.length) {
+ 
+        var ad = createImgAd('zam', img, targetUrl);  
+        self.port && self.port.emit('parsed-img-ad', ad);
+    }
+    else {
+        console.warn('zamImg.fail: ', img, targetUrl);
+    }
+}
 
 function ebayText(anchor) {
 
@@ -31,7 +51,7 @@ function ebayText(anchor) {
 
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('ebay', title.text(), 
+        var ad = createTextAd('ebay', title.text(), 
             text.text(), site.text(), targetUrl.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -49,7 +69,7 @@ function aolText(anchor) {
 
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('aol', title.text(), 
+        var ad = createTextAd('aol', title.text(), 
             text.text(), site.text(), title.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -67,7 +87,7 @@ function sogouText(anchor) {
 
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('sogou', title.text(), 
+        var ad = createTextAd('sogou', title.text(), 
             text.text(), site.text(), title.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -88,7 +108,7 @@ function sogouTopAndBottomText(anchor) {
 
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('sogou', title.text(), 
+        var ad = createTextAd('sogou', title.text(), 
             text, site.text(), title.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -106,7 +126,7 @@ function baiduText(anchor) {
 
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('bing', title.text(), 
+        var ad = createTextAd('bing', title.text(), 
             text.text(), site.text(), title.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -124,7 +144,7 @@ function bingText(anchor) {
 
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('bing', title.text(), 
+        var ad = createTextAd('bing', title.text(), 
             text.text(), site.text(), title.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -148,7 +168,7 @@ function yahooText(anchor) {
     
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('yahoo', title.text(), 
+        var ad = createTextAd('yahoo', title.text(), 
             text.text(), site.text(), title.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     }
@@ -169,7 +189,7 @@ function googleText(anchor) {
     
     if (text.length && site.length && title.length) {
  
-        var ad = createAd('google', title.text(), 
+        var ad = createTextAd('google', title.text(), 
             text.text(), site.text(), title.attr('href'));  
             
         self.port && self.port.emit('parsed-text-ad', ad);
@@ -188,7 +208,7 @@ function duckDuckText(anchor) {
       
     if (text.length && site.length && title.length) {
         
-        var ad = createAd('duckduckgo', title.text(), 
+        var ad = createTextAd('duckduckgo', title.text(), 
             text.text(), site.text(), title.attr('href'));  
         self.port && self.port.emit('parsed-text-ad', ad);
     } 
@@ -196,8 +216,19 @@ function duckDuckText(anchor) {
         console.warn('duckDuckText.fail: ',  text, site);
     }
 }
+       
+function createImgAd(network, img, target) {
+    
+    return  {
+        network : network,            
+        pageUrl : document.URL,
+        pageTitle : document.title,
+        targetUrl : target,
+        imgUrl : img
+    };
+}
 
-function createAd(network,title,text,site,target) {
+function createTextAd(network,title,text,site,target) {
     
     return  {
         network : network,            
@@ -316,9 +347,9 @@ function runFilters() {
 
     //console.log(typeof $, typeof element);
     
-    for (var i = 0; i < textAdMatchers.length; i++) {
+    for (var i = 0; i < admatchers.length; i++) {
     
-        var data = textAdMatchers[i],
+        var data = admatchers[i],
             waitSel = data.selector + ' ' + data.waitfor;
 
         if ( $(this).is(data.selector) ) {
@@ -338,9 +369,9 @@ function runFilters() {
 
 function nodeRunFilters($) {
 
-    for (var i = 0; i < textAdMatchers.length; i++) {
+    for (var i = 0; i < admatchers.length; i++) {
     
-        var data = textAdMatchers[i],
+        var data = admatchers[i],
             waitSel = data.selector + ' ' + data.waitfor;
     
         console.log('Trying: ' + data.name+ " :: "+data.selector + " :: " +$(data.selector).length + ' found');
@@ -364,9 +395,9 @@ function nodeRunFilters($) {
 
 function findSelectorByName(name) {
 
-    for (var i = 0; i < textAdMatchers.length; i++) {
-        if (textAdMatchers[i].name === name)
-            return textAdMatchers[i];
+    for (var i = 0; i < admatchers.length; i++) {
+        if (admatchers[i].name === name)
+            return admatchers[i];
     }
 }
 
@@ -384,7 +415,7 @@ if (typeof module == 'undefined' || !module.exports) {
 }
 else { // in Node
 
-    module.exports['matchers'] = textAdMatchers;
+    module.exports['matchers'] = admatchers;
     module.exports['getMatcher'] = findSelectorByName;
     module.exports['waitForKeyElements'] = waitForKeyElements;
     module.exports['nodeRunFilters'] = nodeRunFilters;

@@ -4,6 +4,7 @@
 
 var elemhide = require('../data/elemhide'),
     userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0',
+    timeoutMs = 10000,
     testData = [{
             name: 'adsense-1',
             url: 'https://www.google.com/search?q=apple&ie=utf-8&oe=utf-8'
@@ -42,13 +43,19 @@ testData.forEach(function(td) {
 
                 var selector = elemhide.getMatcher(td.name).selector;
 
-                casper.start(td.url).waitForSelector(selector).then(function() {
+                casper.start(td.url)
+                    .waitForSelector(selector, function() {
 
                         //this.capture('./images/' + td.name + '.png');
-                       // var selector = elemhide.getMatcher(td.name).selector;
                         test.assertExists(selector, 'selector: ' + selector);
 
-                    }).run(function() {
+                    }, function timeout() {
+
+                        test.fail(selector + ' timed out after ' + timeoutMs + ' ms');
+
+                    }, timeoutMs)
+
+                    .run(function() {
 
                         test.done();
                     });

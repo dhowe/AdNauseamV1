@@ -28,6 +28,9 @@ var elemhide = require('../data/elemhide'),
         }, {
             name: 'aol',
             url: 'http://search.aol.com/aol/search?s_it=topsearchbox.search&s_chn=prt_aol20&v_t=comsearch&q=money'
+        }, {
+            name: 'zam',
+            url: 'http://www.zam.com/'
         }
     ];
 
@@ -39,7 +42,7 @@ testData.forEach(function(td) {
 
                 casper.start(td.url).then(function() {
 
-                        this.capture('./images/' + td.name + '.png');
+                        //this.capture('./images/' + td.name + '.png');
                         var selector = elemhide.getMatcher(td.name).selector;
                         test.assertExists(selector, 'selector: ' + selector);
 

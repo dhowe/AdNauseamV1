@@ -40,10 +40,12 @@ testData.forEach(function(td) {
 
                 casper.userAgent(userAgent);
 
-                casper.start(td.url).then(function() {
+                var selector = elemhide.getMatcher(td.name).selector;
+
+                casper.start(td.url).waitForSelector(selector).then(function() {
 
                         //this.capture('./images/' + td.name + '.png');
-                        var selector = elemhide.getMatcher(td.name).selector;
+                       // var selector = elemhide.getMatcher(td.name).selector;
                         test.assertExists(selector, 'selector: ' + selector);
 
                     }).run(function() {

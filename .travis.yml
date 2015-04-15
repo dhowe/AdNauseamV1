@@ -2,8 +2,9 @@ language: node_js
 
 node_js:
   - "0.12"
+  - "0.10"
 before_install:
   - cd scripts
-  - npm install -g casperjs
+  - npm install phantomjs casperjs -g
 script:
-  - casperjs test casperjs-testone.js
+  - casperjs test casperjs-test.js

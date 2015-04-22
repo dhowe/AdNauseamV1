@@ -30,6 +30,31 @@ var admatchers = [
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
+/*
+Try qq nested iframes with:
+    
+    function getElem(selector, $root, $collection) {
+        if (!$root) $root = $(document);
+        if (!$collection) $collection = $();
+        // Select all elements matching the selector under the root
+        $collection = $collection.add($root.find(selector));
+        // Loop through all frames
+        $root.find('iframe,frame').each(function() {
+            // Recursively call the function, setting "$root" to the frame's document
+            getElem(selector, $(this).contents(), $collection);
+        });
+        return $collection;
+    }
+    // Example:
+    var $allImageElements = getElem('img');
+    
+    AND (in package.json):
+    
+           "permissions": {
+            "cross-domain-content": ["http://wa.gtimg.com/"]
+        },
+*/
+
 function qqImg(anchor) {
 
     var targetUrl = anchor.attr('href'),
@@ -41,9 +66,6 @@ function qqImg(anchor) {
         
             var ad = createImgAd('qq', img, targetUrl);  
             self.port && self.port.emit('parsed-img-ad', ad);
-        }
-        else {
-            
         }
     }
     else {

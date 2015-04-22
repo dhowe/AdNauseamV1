@@ -24,8 +24,32 @@ var admatchers = [
 
     // img-ads ------------------------------------------------------------------------------------------------
     
-    { selector: '#row-top', waitfor: 'div#mini-features > a', handler: zamImg, name: 'zam' }
+    { selector: '#row-top', waitfor: 'div#mini-features > a', handler: zamImg, name: 'zam' },
+    
+    { selector: "div[class^=ad]", waitfor: "div.l_qq_com > a", handler: qqImg, name: 'qq' },
+    //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
+
+function qqImg(anchor) {
+
+    var targetUrl = anchor.attr('href'),
+        img = anchor.css('background-image').replace('url("','').replace('")','');
+
+    if (targetUrl.length && img.length) {
+        
+        if (img !== 'none') {
+        
+            var ad = createImgAd('qq', img, targetUrl);  
+            self.port && self.port.emit('parsed-img-ad', ad);
+        }
+        else {
+            
+        }
+    }
+    else {
+        console.warn('qqImg.fail: ', img, targetUrl);
+    }
+}
 
 function zamImg(anchor) {
 
@@ -354,7 +378,7 @@ function runFilters() {
 
         if ( $(this).is(data.selector) ) {
             
-            //console.log('ELEMHIDE-HIT: ' + waitSel);
+            console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel);
             
             try {
                 waitForKeyElements($, waitSel, data.handler);
@@ -387,6 +411,7 @@ function nodeRunFilters($) {
             catch(e) {
                 
                 console.warn('failed processing text-ad',data);
+                
                 throw e;
             }
         }
@@ -415,10 +440,6 @@ if (typeof module == 'undefined' || !module.exports) {
 }
 else { // in Node
 
-    module.exports['matchers'] = admatchers;
     module.exports['getMatcher'] = findSelectorByName;
-    module.exports['waitForKeyElements'] = waitForKeyElements;
-    module.exports['nodeRunFilters'] = nodeRunFilters;
-    module.exports['googleText'] = googleText;
 }
 

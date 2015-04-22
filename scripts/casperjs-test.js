@@ -6,6 +6,9 @@ var elemhide = require('../data/elemhide'),
     userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0',
     timeoutMs = 10000,
     testData = [{
+            name: 'amazon',
+            url: 'https://www.amazon.com'
+        }/*, {
             name: 'adsense-1',
             url: 'https://www.google.com/search?q=apple&ie=utf-8&oe=utf-8'
         }, {
@@ -32,7 +35,7 @@ var elemhide = require('../data/elemhide'),
         }, {
             name: 'zam',
             url: 'http://www.zam.com/'
-        }
+        }*/
     ];
 
 testData.forEach(function(td) {
@@ -55,7 +58,7 @@ testData.forEach(function(td) {
 
                     }, timeoutMs)
 
-                    .run(function() {
+                .run(function() {
 
                         test.done();
                     });

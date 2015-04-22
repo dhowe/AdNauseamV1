@@ -26,37 +26,64 @@ var admatchers = [
     
     { selector: '#row-top', waitfor: 'div#mini-features > a', handler: zamImg, name: 'zam' },
     
-    { selector: "div[class^=ad]", waitfor: "div.l_qq_com > a", handler: qqImg, name: 'qq' },
+    { selector: "div[class^=ad][class$=t]", waitfor: "div.l_qq_com > a", handler: qqImg, name: 'qq' },
+    { selector: "div[id^=ad_]", waitfor: "a", handler: sohuImg, name: 'sohu' }
+    
+    //{ selector: ".ad, .widead", waitfor: "iframe > a", handler: msnImg, name: 'msn' },
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
-/*
-Try qq nested iframes with:
-    
-    function getElem(selector, $root, $collection) {
-        if (!$root) $root = $(document);
-        if (!$collection) $collection = $();
-        // Select all elements matching the selector under the root
-        $collection = $collection.add($root.find(selector));
-        // Loop through all frames
-        $root.find('iframe,frame').each(function() {
-            // Recursively call the function, setting "$root" to the frame's document
-            getElem(selector, $(this).contents(), $collection);
-        });
-        return $collection;
-    }
-    // Example:
-    var $allImageElements = getElem('img');
-    
-    AND (in package.json):
-    
-           "permissions": {
-            "cross-domain-content": ["http://wa.gtimg.com/"]
-        },
-*/
+// TODO: restrict these to specific domain ?
 
+function msnImg(anchor) { // not used now (all in iframes) 
+
+    console.log('msnImg: ', anchor.length);
+    
+    var targetUrl = anchor.attr('href'),
+        imgTag = anchor.find('img');
+
+    console.log('anchor: ', anchor.html);
+    console.log('targetUrl: ', targetUrl);
+    console.log('imgTag: ', imgTag.length);
+
+    if (!imgTag.length) return;
+    
+    var img = imgTag.attr('src');
+
+    if (targetUrl.length && img.length) {
+
+        var ad = createImgAd('qq', img, targetUrl);  
+        self.port && self.port.emit('parsed-img-ad', ad);
+    }
+    else {
+        console.warn('sohuImg.fail: ', img, targetUrl);
+    }
+}
+
+function sohuImg(anchor) {
+
+    //console.log('sohuImg: ', anchor.length);
+
+    var targetUrl = anchor.attr('href'),
+        imgTag = anchor.find('img');
+
+    if (!imgTag.length) return;
+    
+    var img = imgTag.attr('src');
+
+    if (targetUrl.length && img.length) {
+
+        var ad = createImgAd('qq', img, targetUrl);  
+        self.port && self.port.emit('parsed-img-ad', ad);
+    }
+    else {
+        console.warn('sohuImg.fail: ', img, targetUrl);
+    }
+}
 function qqImg(anchor) {
 
+    if (!anchor.length) return;
+    
     var targetUrl = anchor.attr('href'),
         img = anchor.css('background-image').replace('url("','').replace('")','');
 
@@ -464,4 +491,35 @@ else { // in Node
 
     module.exports['getMatcher'] = findSelectorByName;
 }
+
+
+/*
+Try qq nested iframes with:
+
+function getElem(selector, $root, $collection) {  // not used
+    if (!$root) $root = $(document);
+    if (!$collection) $collection = $();
+    
+    // Select all elements matching the selector under the root
+    $collection = $collection.add( $root.find(selector) );
+    
+    // Loop through all frames
+    $root.find('iframe,frame').each(function() {
+        // Recursively call the function, setting "$root" to the frame's document
+        getElem(selector, $(this).contents(), $collection);
+    });
+    
+    return $collection;
+}
+    
+// Example:
+var $allImageElements = getElem('img');
+
+AND (in package.json):
+
+    "permissions": {
+        "cross-domain-content": ["http://wa.gtimg.com/"]
+    },
+    
+*/
 

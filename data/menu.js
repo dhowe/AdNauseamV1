@@ -173,7 +173,7 @@ function updateAd(json) {
     
     // update the count
     op = onPage(adArray, json.page);
-    $('#visited-count').text('clicked '+ visitedCount(op));
+    $('#visited-count').text(visitedCount(op));
 
     //log("update:setCurrent: "+json.current);
     setCurrent(json);
@@ -211,7 +211,7 @@ function closePanel() {
 
 function refreshPanel(opts) {
 
-    log('refreshPanel: opts: ', opts);
+    // log('refreshPanel: opts: ', opts);
 
     var img = 'img/adn_active.png', 
         label = opts.pauseLabel;
@@ -247,10 +247,10 @@ function animateIcon(ms) {
     }, ms);
 }
 
-function setCounts(found, visited, total) {
+function setCounts(found, visited, total, opts) {
 
-    $('#found-count').text(found+' ads detected');
-    $('#visited-count').text('clicked '+visited);
+    $('#found-count').text(found);
+    $('#visited-count').text(visited);
     $('#vault-count').text(total);
 }
 

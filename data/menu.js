@@ -211,16 +211,17 @@ function closePanel() {
 
 function refreshPanel(opts) {
 
-    //log('refreshPanel: opts: ',opts);
+    log('refreshPanel: opts: ', opts);
 
-    var img = 'img/adn_active.png', label = 'Pause AdNauseam';
+    var img = 'img/adn_active.png', 
+        label = opts.pauseLabel;
 
     $('#pause-button').removeClass('disabled');
 
     if (!opts.enabled) {
 
+        label = opts.startLabel;
         img = 'img/adn_disabled.png';
-        label = 'Start AdNauseam';
         $('#pause-button').addClass('disabled');
     }
 

@@ -9,6 +9,9 @@
         "icon64": "data/img/adn_active-64.png",
         "version": "1.20",
         "homepage": "http://dhowe.github.io/AdNauseam/",
+        "permissions": {
+            "cross-domain-content": ["http://wa.gtimg.com/"]
+        },
         "preferences": [
         {
             "title": "Enabled",

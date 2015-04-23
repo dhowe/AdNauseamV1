@@ -432,6 +432,7 @@ header{
 
 #settings form {
   height: 400px;
+  overflow: -moz-scrollbars-none;
 }
 
 #settings header a.close {

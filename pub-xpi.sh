@@ -18,9 +18,10 @@ XPI_FILE="adnauseam-$1.xpi"
 
 echo Publishing $XPI_FILE
 echo "  to $RED:$XPI_DIR"
-echo "  not linked"
+echo "  (not linking)"
 
 #cat adnauseam.xpi | /usr/bin/ssh ${RED} "(cd ${XPI_DIR} && /bin/rm -f $XPI_FILE && cat - > $XPI_FILE && ln -fs $XPI_FILE adnauseam.xpi && ls -l)" 
+
 cat adnauseam.xpi | /usr/bin/ssh ${RED} "(cd ${XPI_DIR} && /bin/rm -f $XPI_FILE && cat - > $XPI_FILE)" 
 
 

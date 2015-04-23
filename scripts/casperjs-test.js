@@ -31,10 +31,10 @@ var elemhide = require('../data/elemhide'),
         }, {
             name: 'sohu',
             url: 'http://www.sohu.com/'
-        }, {
+        } /*,{
             name: 'qq',
             url: 'http://www.qq.com/'
-        }
+        }*/
     ];
 
 testData.forEach(function(td) {

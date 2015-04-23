@@ -67,32 +67,6 @@ var admatchers = [
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
-// TODO: restrict these to specific domain ?
-
-function msnImg(anchor) { // not used now (all in iframes) 
-
-    console.log('msnImg: ', anchor.length);
-
-    var targetUrl = anchor.attr('href'),
-        imgTag = anchor.find('img');
-
-    console.log('anchor: ', anchor.html);
-    console.log('targetUrl: ', targetUrl);
-    console.log('imgTag: ', imgTag.length);
-
-    if (!imgTag.length) return;
-
-    var img = imgTag.attr('src');
-
-    if (targetUrl.length && img.length) {
-
-        var ad = createImgAd('qq', img, targetUrl);
-        self.port && self.port.emit('parsed-img-ad', ad);
-    } else {
-        console.warn('sohuImg.fail: ', img, targetUrl);
-    }
-}
-
 function sohuImg(anchor) {
 
     //console.log('sohuImg: ', anchor.length);

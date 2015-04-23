@@ -7,7 +7,7 @@ self.port && self.port.on('layout-ads', layoutAds);         // refresh all
 self.port && self.port.on('update-ad', updateAd);           // update one
 self.port && self.port.on('set-current', setCurrent);       // ad attempt
 self.port && self.port.on('refresh-panel', refreshPanel);   // set-state
-self.port && self.port.on('close-panel', closePanel);       // set-state
+self.port && self.port.on('close-panel', closePanel);       // close-settings
 
 var adArray;
 
@@ -17,7 +17,7 @@ function layoutAds(json) {
     
     adArray = json.data;
 
-    loadDOM($('#ad-list-items'), adArray, json.pageCount);
+    loadDOM($('#ad-list-items'), json);
 
     setCurrent(json);
 
@@ -25,7 +25,9 @@ function layoutAds(json) {
         visitedCount(adArray) : 0), json.totalCount);
 }
 
-function loadDOM($items, ads, numOnPage) {
+function loadDOM($items, json) {
+
+    var ads = json.data; 
 
     showAlert(false);
 
@@ -47,7 +49,7 @@ function loadDOM($items, ads, numOnPage) {
         }
     } 
         
-    if (!numOnPage) showRecentAds(ads);
+    if (!json.pageCount) showRecentAds(ads, json.emptyMessage);
 }
 
 function appendImageAd(ad, $items) {
@@ -247,8 +249,10 @@ function animateIcon(ms) {
     }, ms);
 }
 
-function setCounts(found, visited, total, opts) {
+function setCounts(found, visited, total) {
 
+    //console.log('setCounts:',found, visited, total);
+    
     $('#found-count').text(found);
     $('#visited-count').text(visited);
     $('#vault-count').text(total);
@@ -264,11 +268,7 @@ function onPage(arr, pageUrl) {
     return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
 }
 
-function showRecentAds(recent) { 
-       
-    var msg = 'No ads on this page';
-    if (recent && recent.length) 
-        msg += ' (showing recent)';
+function showRecentAds(recent, msg) { 
 
     showAlert(msg);
 
@@ -360,7 +360,7 @@ function attachMenuTests() {
         // call addon to clear simple-storage
         self.port && self.port.emit("clear-ads");
 
-        loadDOM($('#ad-list-items'), null, null);
+        loadDOM($('#ad-list-items'), null);
     });
 
     $('#pause-button').click(function() {

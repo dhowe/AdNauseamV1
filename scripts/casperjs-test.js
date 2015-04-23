@@ -6,18 +6,11 @@ var elemhide = require('../data/elemhide'),
     userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0',
     timeoutMs = 10000,
     testData = [{
-            name: 'amazon',
-            url: 'https://www.amazon.com'
-        }/*, {
-            name: 'adsense-1',
+            name: 'adsense',
             url: 'https://www.google.com/search?q=apple&ie=utf-8&oe=utf-8'
-        }, {
-            name: 'adsense-2',
-            url: 'http://www.google.com/search?q=facial&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
-        }, {
-            name: 'adsense-3',
-            url: 'http://www.google.com/search?q=facial&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
-        }, {
+        },
+        //    url: 'http://www.google.com/search?q=facial&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
+        {
             name: 'yahoo',
             url: 'https://search.yahoo.com/yhs/search;_ylt=AwrTcePFkiZVRqYALkgnnIlQ;_ylc=X1MDMTM1MTE5NTY4NwRfcgMyBGZyAwRncHJpZANUdmxKNnZkQlFZZTVxZUVOclk4RFhBBG5fcnNsdAMwBG5fc3VnZwMxMARvcmlnaW4Dc2VhcmNoLnlhaG9vLmNvbQRwb3MDMARwcXN0cgMEcHFzdHJsAwRxc3RybAM0BHF1ZXJ5A2RydWcEdF9zdG1wAzE0Mjg1OTEzMDg-?p=drug&fr2=sb-top-search&hspart=mozilla&hsimp=yhs-001'
         }, {
@@ -35,7 +28,13 @@ var elemhide = require('../data/elemhide'),
         }, {
             name: 'zam',
             url: 'http://www.zam.com/'
-        }*/
+        }, {
+            name: 'sohu',
+            url: 'http://www.sohu.com/'
+        }, {
+            name: 'qq',
+            url: 'http://www.qq.com/'
+        }
     ];
 
 testData.forEach(function(td) {
@@ -45,7 +44,7 @@ testData.forEach(function(td) {
                 casper.userAgent(userAgent);
 
                 var selector = elemhide.getMatcher(td.name).selector;
-
+                 
                 casper.start(td.url)
                     .waitForSelector(selector, function() {
 
@@ -61,6 +60,6 @@ testData.forEach(function(td) {
                 .run(function() {
 
                         test.done();
-                    });
+                    });                               
             });
     });

@@ -435,6 +435,10 @@ header{
   overflow: -moz-scrollbars-none;
 }
 
+#settings form::-webkit-scrollbar {
+  display: none;
+}
+
 #settings header a.close {
   display: inline-block;
   color: #777;

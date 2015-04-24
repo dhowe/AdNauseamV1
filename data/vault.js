@@ -537,6 +537,7 @@ function formatDate(ts) {
 
     if (!ts) return 'Not Yet Visited';
 
+    // Note: failed ads will have a negative time-stamp
     var date = new Date(Math.abs(ts)),
         days = ["Sunday", "Monday",
             "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"

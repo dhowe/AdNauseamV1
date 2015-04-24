@@ -21,6 +21,9 @@ var zoomStyle, zoomIdx = 0,
         top: '-5000px'
     };
 
+var locale = self.options.locale;
+console.log(locale);
+
 /*
     TODO: on first-run, doImport() on all ads in storage
 */

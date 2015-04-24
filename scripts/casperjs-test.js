@@ -5,10 +5,10 @@
 var elemhide = require('../data/elemhide'),
     userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:36.0) Gecko/20100101 Firefox/36.0',
     timeoutMs = 10000,
-    testData = [{
-            name: 'adsense',
+    testData = [/*{
+            name: 'adsense-1',
             url: 'https://www.google.com/search?q=apple&ie=utf-8&oe=utf-8'
-        },
+        },*/
         //    url: 'http://www.google.com/search?q=facial&ie=utf-8&oe=utf-8&rls=org.mozilla:en-US:official&client=firefox-a&channel=sb&gws_rd=cr&ei=qdCBVOvaGYLYmAXO2oKgDg'
         {
             name: 'yahoo',

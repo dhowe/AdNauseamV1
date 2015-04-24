@@ -8,11 +8,24 @@ var admatchers = [
 
     // text-ads ---------------------------------------------------------------
     {
-        selector: '#tads.c, #bottomads, #rhs_block > #mbEnd',
-        waitfor: ".ads-ad", // should be tested separately
+        selector: '#tads.c',
+        waitfor: ".ads-ad",
         handler: googleText,
-        name: 'adsense'
-    }, {
+        name: 'adsense-1'
+    }, // top
+    {
+        selector: '#bottomads',
+        waitfor: ".ads-ad",
+        handler: googleText,
+        name: 'adsense-2'
+    }, // bottom
+    {
+        selector: '#rhs_block > #mbEnd',
+        waitfor: ".ads-ad",
+        handler: googleText,
+        name: 'adsense-3'
+    }, // right
+    {
         selector: '.ads ul',
         waitfor: 'li',
         handler: yahooText,

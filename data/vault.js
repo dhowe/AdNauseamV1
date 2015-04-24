@@ -536,9 +536,7 @@ function formatDate(ts) {
 
     if (!ts) return locale.notYetVisited;
 
-    if (ts < 0) return locale.unableToVisit;
-	// Note: failed ads will have a negative time-stamp
-    var date = new Date(ts),
+    var date = new Date(Math.abs(ts)),
         days = [locale.sun, locale.mon,
             locale.tue, locale.wed, locale.thu, locale.fri, locale.sat
         ],

@@ -537,9 +537,7 @@ function formatDate(ts) {
 
     if (!ts) return 'Not Yet Visited';
 
-    if (ts < 0) return 'Unable To Visit';
-
-    var date = new Date(ts),
+    var date = new Date(Math.abs(ts)),
         days = ["Sunday", "Monday",
             "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
         ],

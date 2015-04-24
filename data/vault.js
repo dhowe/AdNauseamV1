@@ -20,8 +20,10 @@ var zoomStyle, zoomIdx = 0,
         left: '-5000px',
         top: '-5000px'
     };
-	
-var locale; // for storing json data for translation
+
+var locale = self.options.locale;
+console.log(locale);
+
 /*
     TODO: on first-run, doImport() on all ads in storage
 */

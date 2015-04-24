@@ -21,8 +21,7 @@ var zoomStyle, zoomIdx = 0,
         top: '-5000px'
     };
 
-var locale = self.options.locale;
-console.log(locale);
+var locale = self.options.locale; //for localization
 
 /*
     TODO: on first-run, doImport() on all ads in storage
@@ -37,9 +36,6 @@ function layoutAds(json) {
     log('vault.js::layoutAds');
 
     gAds = json.data; // store
-	
-	locale = json; // for storing json data for translation
-	// log("locale: ", locale.mon);
 
     addInterfaceHandlers();
 
@@ -241,7 +237,7 @@ function appendMetaTo($div, adset) {
 function appendDetectedTo($detected, ad) {
 
     $('<h3/>', {
-            text: locale.detectedOn
+            text: locale.foundOn + ":"
         }).appendTo($detected);
 
     $('<a/>', {
@@ -267,7 +263,7 @@ function appendDetectedTo($detected, ad) {
 function appendTargetTo($target, ad, adset) {
 
     $('<h3/>', {
-            text: locale.target
+            text: locale.target + ":"
         }).appendTo($target);
 
     //log("Creating target #"+ad.id+" title="+ad.title);
@@ -786,7 +782,6 @@ function animateInspector($inspected) {
 function findAdById(id) {
 
     //log('findAdById: '+id);
-	log("gAdSets.length", gAdSets.length);
 
     for (var i = 0, j = gAdSets.length; i < j; i++) {
 

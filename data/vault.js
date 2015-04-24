@@ -21,8 +21,7 @@ var zoomStyle, zoomIdx = 0,
         top: '-5000px'
     };
 
-var locale = self.options.locale;
-console.log(locale);
+var locale = self.options.locale; //for localization
 
 /*
     TODO: on first-run, doImport() on all ads in storage
@@ -238,7 +237,7 @@ function appendMetaTo($div, adset) {
 function appendDetectedTo($detected, ad) {
 
     $('<h3/>', {
-            text: 'detected on:'
+            text: locale.foundOn + ":"
         }).appendTo($detected);
 
     $('<a/>', {
@@ -264,7 +263,7 @@ function appendDetectedTo($detected, ad) {
 function appendTargetTo($target, ad, adset) {
 
     $('<h3/>', {
-            text: 'target:'
+            text: locale.target + ":"
         }).appendTo($target);
 
     //log("Creating target #"+ad.id+" title="+ad.title);
@@ -471,8 +470,8 @@ function appendBulletsTo($div, adset) {
 function computeStats(adsets) {
 
     $('.since').text(sinceTime(adsets));
-    $('.clicked').text(numVisited(adsets) + ' ads clicked');
-    $('.detected').text(numFound(adsets) + ' detected');
+    $('#clicked').text(numVisited(adsets));
+    $('#detected').text(numFound(adsets));
 }
 
 function numVisited(adsets) {
@@ -535,16 +534,17 @@ function dragEnd(e) {
 
 function formatDate(ts) {
 
-    if (!ts) return 'Not Yet Visited';
+    if (!ts) return locale.notYetVisited;
 
-    // Note: failed ads will have a negative time-stamp
-    var date = new Date(Math.abs(ts)),
-        days = ["Sunday", "Monday",
-            "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+    if (ts < 0) return locale.unableToVisit;
+	// Note: failed ads will have a negative time-stamp
+    var date = new Date(ts),
+        days = [locale.sun, locale.mon,
+            locale.tue, locale.wed, locale.thu, locale.fri, locale.sat
         ],
-        months = ["January", "February", "March", "April", "May",
-            "June", "July", "August", "September", "October",
-            "November", "December"
+        months = [locale.jan, locale.feb, locale.mar, locale.apr, locale.may,
+            locale.jun, locale.jul, locale.aug, locale.sep, locale.oct,
+            locale.nov, locale.dec
         ];
 
     var pad = function(str) {
@@ -553,7 +553,7 @@ function formatDate(ts) {
         return (s.length < 2) ? "0" + s : s;
     };
 
-    var meridian = (parseInt(date.getHours() / 12) == 1) ? 'PM' : 'AM';
+    var meridian = (parseInt(date.getHours() / 12) == 1) ? locale.pm : locale.am;
     var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
 
     return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() +

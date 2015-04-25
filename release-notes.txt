@@ -1,7 +1,15 @@
 
 1.2
 -------------------
--- Numerous bug fixes and enhancements 
+-- Added badge for ads-found count (firefox >= 36)
+-- Localization/Internationalization integrated 
+-- Right-click to delete specific ad in vault
+-- Improvements to ad import/export
+-- Better handling of Firefox private-browsing mode
+-- Travis-CI integration for element-hiding patterns
+-- UI actions now entered in log by default
+-- Support for additional varieties of text-ad 
+-- Numerous minor bug fixes and enhancements
 
 1.1
 -------------------

@@ -111,9 +111,6 @@ function createSlider() {
 		.attr("height", 49)
 		.attr("y", -50);
     
-    
-    //log('min: '+limitedMin+' max: '+maxDate);
-    //gBrush.call(brush.event);
     return runFilter(bExtent);
     
 	// ---------------------------- functions ------------------------------
@@ -183,8 +180,6 @@ function createSlider() {
                 filtered.push(gAds[i]);
 			}
 		}
-
-		//log('date-filter: '+filtered.length +' / '+ gAds.length);
 
 		return filtered;
 	}

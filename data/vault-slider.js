@@ -18,7 +18,7 @@ const margin = { top: 50, right: 40, bottom: 20, left: 20 },
 
 function createSlider() {
 
-    log('vault-slider.createSlider: '+gAds.length);
+    //log('vault-slider.createSlider: '+gAds.length);
 
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();

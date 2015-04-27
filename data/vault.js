@@ -21,7 +21,7 @@ var zoomStyle, zoomIdx = 0,
         top: '-5000px'
     };
 
-var locale = self.options.locale; //for localization
+var locale = self.options && self.options.locale; // for localization
 
 /*
     TODO: on first-run, doImport() on all ads in storage
@@ -33,7 +33,7 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 
 function layoutAds(json) {
 
-    log('vault.js::layoutAds');
+    //log('vault.js::layoutAds');
 
     gAds = json.data; // store
 
@@ -102,7 +102,6 @@ function createDivs(adsets) {
         var $this = $(this);
 
         if ($this.hasClass('inspected')) {
-
 
             // pause animation on mouse-over image
             var inspectedGid = parseInt($this.attr('data-gid'));
@@ -572,21 +571,24 @@ function enableLightbox() {
         $('.item').bind("contextmenu", function(e) {
 
                 e.stopPropagation();
-
-                var inspectedGid = parseInt( $(this).attr('data-gid') );
-                selectedAdSet = findAdSetByGid(inspectedGid); // throws
-
-                // Avoid the real one
                 e.preventDefault();
+                
+                var $this = $(this);
 
-                // Show contextmenu
-                $(".custom-menu").finish().toggle(100).
-
-                // In the right position (the mouse)
-                css({
-                        top: (e.pageY-25) + "px",
-                        left: e.pageX + "px"
-                    });
+                if (!$this.hasClass('inspected')) {
+                    
+                    var inspectedGid = parseInt( $this.attr('data-gid') );
+                    selectedAdSet = findAdSetByGid(inspectedGid); // throws
+    
+                        // Show contextmenu
+                    $(".custom-menu").finish().toggle(100).
+    
+                    // In the right position (the mouse)
+                    css({
+                            top: (e.pageY-25) + "px",
+                            left: e.pageX + "px"
+                        });
+                }
             });
     }
 }
@@ -991,10 +993,11 @@ function addInterfaceHandlers(ads) {
         // if a context-menu element is right-clicked
         $(".custom-menu li").click(function() {
 
-                log("right-click menu clicked: "+$(this).attr("data-action"));
+                //log("Vault::right-click: "+$(this).attr("data-action"));
 
                 if (!selectedAdSet) {
-                    error("No ");
+                
+                    error("No selectedAdSet!");
                     return;
                 }
 

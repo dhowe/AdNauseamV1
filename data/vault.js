@@ -23,10 +23,6 @@ var zoomStyle, zoomIdx = 0,
 
 var locale = self.options && self.options.locale; // for localization
 
-/*
-    TODO: on first-run, doImport() on all ads in storage
-*/
-
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 self.port && self.port.on('set-current', setCurrent); // ad attempt
@@ -41,7 +37,7 @@ function layoutAds(json) {
 
     gAdSets = createSlider();
 
-    setCurrent(json);
+    setCurrent(json); // not active
 }
 
 function updateAd(json) {
@@ -80,7 +76,7 @@ function setCurrent(json) {
 
 function doLayout(adsets) {
 
-    //log('Vault.doLayout: '+adsets.length +" ad-sets");
+    log('Vault.doLayout: '+adsets.length +" ad-sets, total="+numFound(adsets));
 
     if (!adsets) throw Error("No ads!");
 
@@ -1027,7 +1023,7 @@ function addInterfaceHandlers(ads) {
                         self.port && self.port.emit("delete-adset", { ids: selectedAdSet.childIds() });
                         
                         // recreate the slider
-                        createSlider();
+                        createSlider(true);
                         
                         break;
 
@@ -1046,7 +1042,7 @@ function addInterfaceHandlers(ads) {
 
 function createAdSets(ads) { // once per layout
 
-    //log('vault-slider.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
+    //log('Vault-Slider.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
 
     var key, ad, hash = {}, adsets = [];
 
@@ -1076,6 +1072,12 @@ function createAdSets(ads) { // once per layout
 
     for (i = 0, j = adsets.length; i < j; i++) {
 
+        // NOTE: ads ignored here if over MaxPerSet in any AdSet
+        
+        /*if (adsets[i].children.length > MaxPerSet)
+            console.log("AdSet#"+adsets[i].id()+" ignoring "+(adsets[i]
+                .children.length-MaxPerSet)+" ads (over limit of "+MaxPerSet+")");*/
+            
         adsets[i].children.sort(byField('-foundTs'));
         adsets[i].children = adsets[i].children.splice(0, MaxPerSet);
     }

@@ -12,11 +12,11 @@
         <script src="lib/imagesloaded.pkgd.min.js"></script>
         <script src="lib/d3.min.js"></script>
 
-         <script src="adset.js"></script>
-                           <script src="shared.js"></script>
-                           <script src="../lib/ff/adnutil.js"></script>
-                           <script src="vault-slider.js"></script>
-                           <script src="vault.js"></script>
+         <!--script src="adset.js"></script>
+           <script src="shared.js"></script>
+           <script src="../lib/ff/adnutil.js"></script>
+           <script src="vault-slider.js"></script>
+           <script src="vault.js"></script-->
                            
         <script src="../lib/config.js"></script>
 
@@ -29,11 +29,11 @@
 
                     // load addon-injected js here for testing
                     $.when(
-                           /*$.getScript( "adset.js" ),
+                           $.getScript( "adset.js" ),
                            $.getScript( "shared.js" ),
                            $.getScript( "../lib/ff/adnutil.js"),
                            $.getScript( "vault-slider.js" ),
-                           $.getScript( "vault.js" ),*/
+                           $.getScript( "vault.js" ),
                            $.Deferred(function( deferred ) {
                                 $( deferred.resolve );
                         })).done(function() { attachTests(); });
@@ -52,9 +52,9 @@
 
             <div id="stats" class="session-sum">
                 <span data-l10n-id="adn.vault.since">Since</span>
-                <span class="since" data-l10n-id="adn.vault.defaultDate">Wednesday July 9 2014 0:08am</span>,
-                <span id="clicked" class="clicked">-</span> <span class="clicked" data-l10n-id="adn.vault.adsClicked">ads clicked</span> <span data-l10n-id="adn.vault.ofThe">of the</span>
-                <span id="detected" class="detected">-</span> <span class="detected" data-l10n-id="adn.vault.detected">found</span>
+                <span class="since" data-l10n-id="adn.vault.defaultDate">Jan 1 1970 0:00am</span>,
+                <span id="clicked" class="clicked">0</span> <span class="clicked" data-l10n-id="adn.vault.adsClicked">ads clicked</span> <span data-l10n-id="adn.vault.ofThe">of the</span>
+                <span id="detected" class="detected">0</span> <span class="detected" data-l10n-id="adn.vault.detected">found</span>
             </div>
 
             <div id="alert" class="hide">

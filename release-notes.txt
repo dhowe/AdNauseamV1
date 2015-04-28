@@ -2,7 +2,7 @@
 1.2
 -------------------
 -- Added badge for ads-found count (firefox >= 36)
--- Localization/Internationalization integrated 
+-- Localization/internationalization integrated 
 -- Right-click to delete specific ad in vault
 -- Improvements to ad import/export
 -- Better handling of Firefox private-browsing mode

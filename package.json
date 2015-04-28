@@ -9,7 +9,7 @@
         "icon": "data/img/adn_active-48.png",
         "icon64": "data/img/adn_active-64.png",
         "version": "1.20",
-        "homepage": "http://dhowe.github.io/AdNauseam/",
+        "homepage": "http://adnauseam.io",
         "preferences": [
         {
             "title": "Enabled",

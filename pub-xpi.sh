@@ -7,7 +7,7 @@ set -e
 if [ $# != 1 ]
 then
   echo
-  echo "usage: pub-xpi.sh [tag]"
+  echo "usage: pub-xpi.sh [tag] (-l) "
   exit
 fi
 
@@ -23,6 +23,7 @@ echo "  (not linking)"
 #cat adnauseam.xpi | /usr/bin/ssh ${RED} "(cd ${XPI_DIR} && /bin/rm -f $XPI_FILE && cat - > $XPI_FILE && ln -fs $XPI_FILE adnauseam.xpi && ls -l)" 
 
 cat adnauseam.xpi | /usr/bin/ssh ${RED} "(cd ${XPI_DIR} && /bin/rm -f $XPI_FILE && cat - > $XPI_FILE)" 
+
 mv adnauseam.xpi adnauseam-$1.xpi
 
 

@@ -929,12 +929,15 @@ function addInterfaceHandlers(ads) {
             e.preventDefault();
             openInNewTab(LogoURL);
         });
-
-    $(document).click(function(e) {
-
-            //log(e.clientX,e.clientY);
-            lightboxMode(false);
-        });
+		
+	$(document).mousedown(function(event) {
+		
+		if (event.which == 1) {
+			
+			//log(e.clientX,e.clientY);
+			lightboxMode(false);
+		}
+	});
 
     $(document).keyup(function(e) {
 

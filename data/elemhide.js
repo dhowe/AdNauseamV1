@@ -55,7 +55,12 @@ var admatchers = [
         waitfor: "div[id^='bdfs']",
         handler: baiduText,
         name: 'baidu'
-    },
+    }, {
+		selector: '.tgad-box + div',
+		waitfor: ".bizr_rb",
+		handler: sogouText,
+		name: 'sogou'
+	},
 
     // img-ads ----------------------------------------------------------------
 
@@ -170,9 +175,9 @@ function aolText(anchor) {
 
 function sogouText(anchor) {
 
-    var title = anchor.find('h3 > a');
-    var site = anchor.find('div:nth-child(2) a');
-    var text = anchor.find('div:last-child a');
+    var title = anchor.find('.bizr_title');
+    var site = anchor.find('.bizr_fb');
+    var text = anchor.find('.bizr_ft');
 
     if (text.length && site.length && title.length) {
 
@@ -182,26 +187,6 @@ function sogouText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     } else {
         console.warn('sogouText.fail: ', text, site);
-    }
-}
-
-function sogouTopAndBottomText(anchor) {
-
-    var title = anchor.find('h3 > a');
-    var site = anchor.find('h3 > cite');
-    var text = anchor.text();
-
-    // Cyrus: replace repeated title and site in text
-    text = text.replace(title.text(), "").replace(site.text(), "").replace("  ", "");
-
-    if (text.length && site.length && title.length) {
-
-        var ad = createTextAd('sogou', title.text(),
-            text, site.text(), title.attr('href'));
-
-        self.port && self.port.emit('parsed-text-ad', ad);
-    } else {
-        console.warn('sogouTopAndBottomText.fail: ', text, site);
     }
 }
 

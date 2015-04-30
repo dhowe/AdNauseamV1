@@ -207,7 +207,7 @@ function sogouTopAndBottomText(anchor) {
 
 function baiduText(anchor) {
 
-    var title = anchor.find("a:first-child");
+    var title = anchor.find("a[id^='dfs']:first-child");
     var text = anchor.find("font:first-child");
     var site = anchor.find("font:last-child");
 

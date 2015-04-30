@@ -79,11 +79,37 @@ var admatchers = [
         waitfor: "a",
         handler: sohuImg,
         name: 'sohu'
+    }, {
+        selector: "#ecom",
+        waitfor: "a",
+        handler: hao123Img,
+        name: 'hao123'
     }
 
     //{ selector: ".ad, .widead", waitfor: "iframe > a", handler: msnImg, name: 'msn' },
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
+
+function hao123Img(anchor) {
+
+    if (!anchor.length) return;
+
+    var targetUrl = anchor.attr('href'),
+        imgTag = anchor.find('img');
+		
+	var img = imgTag.attr('src');
+
+    if (targetUrl.length && img.length) {
+
+        if (img !== 'none') {
+
+            var ad = createImgAd('hao123', img, targetUrl);
+            self.port && self.port.emit('parsed-img-ad', ad);
+        }
+    } else {
+        console.warn('hao123Img.fail: ', img, targetUrl);
+    }
+}
 
 function sohuImg(anchor) {
 

@@ -27,6 +27,9 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 self.port && self.port.on('set-current', setCurrent); // ad attempt
 
+/*
+createSlider -> runFilter -> doLayout
+*/
 function layoutAds(json) {
 
     //log('vault.js::layoutAds');
@@ -35,9 +38,9 @@ function layoutAds(json) {
 
     addInterfaceHandlers();
 
-    gAdSets = createSlider();
+    createSlider(true);
 
-    setCurrent(json); // not active
+    setCurrent(json);
 }
 
 function updateAd(json) {
@@ -50,7 +53,7 @@ function updateAd(json) {
     computeStats(gAdSets);
 }
 
-function setCurrent(json) {
+function setCurrent(json) { // not active
 
     if (1) return; // TODO: Disabled pending resolution of #151
 
@@ -76,7 +79,7 @@ function setCurrent(json) {
 
 function doLayout(adsets) {
 
-    log('Vault.doLayout: '+adsets.length +" ad-sets, total="+numFound(adsets));
+    //log('Vault.doLayout: '+adsets.length +" ad-sets, total="+numFound(adsets));
 
     if (!adsets) throw Error("No ads!");
 
@@ -472,24 +475,28 @@ function computeStats(adsets) {
 function numVisited(adsets) {
 
     var numv = 0;
-    for (var i = 0, j = adsets.length; i < j; i++)
+    
+    for (var i = 0, j = adsets && adsets.length; i < j; i++)
         numv += (adsets[i].visitedCount());
+        
     return numv;
 }
 
 function numFound(adsets) {
 
     var numv = 0;
-    for (var i = 0, j = adsets.length; i < j; i++)
+    
+    for (var i = 0, j = adsets && adsets.length; i < j; i++)
         numv += (adsets[i].count());
+    
     return numv;
 }
 
 function sinceTime(adsets) {
 
-    var oldest = +new Date(),
-        idx = 0;
-    for (var i = 0, j = adsets.length; i < j; i++) {
+    var idx = 0, oldest = +new Date();
+        
+    for (var i = 0, j = adsets && adsets.length; i < j; i++) {
 
         var foundTs = adsets[i].child(0).foundTs;
         if (foundTs < oldest) {
@@ -576,7 +583,7 @@ function enableLightbox() {
                     var inspectedGid = parseInt( $this.attr('data-gid') );
                     selectedAdSet = findAdSetByGid(inspectedGid); // throws
     
-                        // Show contextmenu
+                    // Show contextmenu
                     $(".custom-menu").finish().toggle(100).
     
                     // In the right position (the mouse)
@@ -607,7 +614,7 @@ function positionAds(items) { // autozoom
 
         if (!onscreen($this, winW, winH, scale, percentVis)) {
 
-            log("Too-large @ " + Zooms[zoomIdx] + "%");
+            //log("Too-large @ " + Zooms[zoomIdx] + "%");
             setZoom(++zoomIdx, true);
 
             if (zoomIdx == Zooms.length - 1)
@@ -751,7 +758,7 @@ function lightboxMode(selected) {
         animateInspector(false);
         centerZoom(false);
 
-        $('#container').removeClass('lightbox');
+        $('#container').removeClass('lightbox');      
     }
 }
 
@@ -926,14 +933,13 @@ function addInterfaceHandlers(ads) {
             openInNewTab(LogoURL);
         });
 		
-	$(document).mousedown(function(event) {
+	/*$(document).mousedown(function(event) {
 		
-		if (event.which == 1) {
+		if (event.which == 1) { // Left-button only
 			
-			//log(e.clientX,e.clientY);
 			lightboxMode(false);
 		}
-	});
+	});*/
 
     $(document).keyup(function(e) {
 
@@ -972,27 +978,26 @@ function addInterfaceHandlers(ads) {
     $(window).resize(function() {
 
             clearTimeout(resizeId); // only when done
-            resizeId = setTimeout(createSlider, 100);
+            resizeId = setTimeout(function() { createSlider(true); }, 100); 
         });
 
     if (EnableContextMenu) {
 
         // if the document is clicked somewhere
         $(document).bind("mousedown", function(e) {
-
-                // if the clicked element is not the menu
+            
+                // if the clicked element is not the delete-menu
                 if ($(e.target).parents(".custom-menu").length < 1) {
 
-                    // Hide it
-                    $(".custom-menu").hide(100);
-                }
+                    $(".custom-menu").hide(50);
+                }               
             });
 
 
         // if a context-menu element is right-clicked
         $(".custom-menu li").click(function() {
 
-                //log("Vault::right-click: "+$(this).attr("data-action"));
+                log("Vault::right-click: "+$(this).attr("data-action"));
 
                 if (!selectedAdSet) {
                 
@@ -1022,8 +1027,8 @@ function addInterfaceHandlers(ads) {
                         // tell the addon
                         self.port && self.port.emit("delete-adset", { ids: selectedAdSet.childIds() });
                         
-                        // recreate the slider
-                        createSlider(true);
+                        // recreate the slider, but don't redo layout
+                        createSlider(false);
                         
                         break;
 
@@ -1068,18 +1073,18 @@ function createAdSets(ads) { // once per layout
         }
     }
 
-    // sort by foundTs and limit to MaxPerSet
+    // sort adset children by foundTs
 
     for (i = 0, j = adsets.length; i < j; i++) {
 
-        // NOTE: ads ignored here if over MaxPerSet in any AdSet
-        
-        /*if (adsets[i].children.length > MaxPerSet)
-            console.log("AdSet#"+adsets[i].id()+" ignoring "+(adsets[i]
-                .children.length-MaxPerSet)+" ads (over limit of "+MaxPerSet+")");*/
-            
+
         adsets[i].children.sort(byField('-foundTs'));
-        adsets[i].children = adsets[i].children.splice(0, MaxPerSet);
+        
+        /* NOTE: ads ignored here if over MaxPerSet in any AdSet
+        if (adsets[i].children.length > MaxPerSet)
+            log("AdSet#"+adsets[i].id()+" ignoring "+(adsets[i]
+                .children.length-MaxPerSet)+" ads (over limit of "+MaxPerSet+")");
+        adsets[i].children = adsets[i].children.splice(0, MaxPerSet);*/
     }
 
     return adsets;

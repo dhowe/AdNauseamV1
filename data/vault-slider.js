@@ -1,11 +1,12 @@
- /*global log:0, d3:0, byField:0, doLayout:0, createAdSets:0 */
+ /*global log, d3, byField, doLayout, createAdSets, computeStats */
 
 var gAds, gAdSets, gMin, gMax; // stateful
 
 const margin = { top: 50, right: 40, bottom: 20, left: 20 },
-    format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400,
-    // TODO: need to verify that at least one full bar is showing
-    customTimeFormat = d3.time.format.multi([
+    format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400;
+
+// TODO: need to verify that at least one full bar is showing
+const customTimeFormat = d3.time.format.multi([
         [".%L", function(d)     { return d.getMilliseconds(); }],
         [":%S", function(d)     { return d.getSeconds(); }],
         ["%I:%M", function(d)   { return d.getMinutes(); }],
@@ -16,9 +17,11 @@ const margin = { top: 50, right: 40, bottom: 20, left: 20 },
         ["%Y", function()       { return true; }]
 ]);
 
-function createSlider() {
+function createSlider(relayout) {
 
-    //log('vault-slider.createSlider: '+gAds.length);
+    log('Vault-Slider.createSlider: '+gAds.length);
+    
+    if (!gAds) return;
 
     // clear all the old svg
     d3.select("g.parent").selectAll("*").remove();
@@ -93,12 +96,10 @@ function createSlider() {
        .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc");
 
 	// setup the brush
-	var bExtent = [computeMinDateFor(gAds, minDate), maxDate],
+	var bExtent = [ computeMinDateFor(gAds, minDate), maxDate ],
         brush = d3.svg.brush()
 		.x(xScale)
-		 .extent(bExtent)
-	    //.on("brushstart", brushstart)
-	   	//.on("brush", 	 brushmove)
+		.extent(bExtent)
 	    .on("brushend", brushend);
 
 	// add the brush
@@ -111,40 +112,35 @@ function createSlider() {
 		.attr("height", 49)
 		.attr("y", -50);
     
-    return runFilter(bExtent);
+    // cases: 1) no-gAdSets=first time, 2) filter+layout, 3) only-slider
+    var fSets = runFilter(bExtent);
+    if (relayout) 
+        doLayout(fSets);
+    else
+        computeStats(fSets);      
+
     
 	// ---------------------------- functions ------------------------------
-
-    function computeMinDateFor(ads, min) {
-        
-        if (ads && ads.length) { 
-            
-            ads.sort(byField('-foundTs')); // or slice?
-            var subset = ads.slice(0, MaxStartNum);
-            return subset[subset.length-1].foundTs;
-        }
-        return min;
-    }
+	
     
-	function runFilter(ext) {  
+    // this is called on a brushend and on createSlider
+	function runFilter(ext) {
         
         //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
         
-        if (ext[0] === gMin && ext[1] == gMax)
-            return;
+        //if (ext[0] !== gMin || ext[1] !== gMax) { // dont rebuild
 
-		if (gMax - gMin <= 1) return; // fix for gh #100
-	
 	    gMin = ext[0], gMax = ext[1];
+	    
+        if (gMax - gMin <= 1) return; // fix for gh #100
         	
-		var filtered = dateFilter(gMin, gMax), fSets;
+		var filtered = dateFilter(gMin, gMax);
 		
 		// only create the adsets once, else filter
-		fSets = (gAdSets ? filterAdSets : createAdSets)(filtered);
-            
-		doLayout(fSets); 
-		
-		return fSets;
+		if (!gAdSets) 
+            return (gAdSets = createAdSets(filtered));
+		else 
+            return filterAdSets(filtered);            
 	}
 
     function filterAdSets(ads) {
@@ -167,6 +163,17 @@ function createSlider() {
         return sets;
     }
 
+    function computeMinDateFor(ads, min) {
+        
+        if (ads && ads.length) { 
+            
+            ads.sort(byField('-foundTs')); // or slice?
+            var subset = ads.slice(0, MaxStartNum);
+            return subset[subset.length-1].foundTs;
+        }
+        return min;
+    }
+    
 	function dateFilter(min, max) {
 
 		//log('dateFilter: min='+min+', max='+max);
@@ -190,11 +197,6 @@ function createSlider() {
 
 	function brushend() {
 
-		runFilter(d3.event.target.extent());
-	}
-
-	function randomDate(start, end) {
-
-	    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+        doLayout(runFilter(d3.event.target.extent()));
 	}
 }

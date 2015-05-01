@@ -55,7 +55,12 @@ var admatchers = [
         waitfor: "div[id^='bdfs']",
         handler: baiduText,
         name: 'baidu'
-    },
+    }, {
+		selector: '.tgad-box + div',
+		waitfor: ".bizr_rb",
+		handler: sogouText,
+		name: 'sogou'
+	},
 
     // img-ads ----------------------------------------------------------------
 
@@ -74,11 +79,37 @@ var admatchers = [
         waitfor: "a",
         handler: sohuImg,
         name: 'sohu'
+    }, {
+        selector: "#ecom",
+        waitfor: "a",
+        handler: hao123Img,
+        name: 'hao123'
     }
 
     //{ selector: ".ad, .widead", waitfor: "iframe > a", handler: msnImg, name: 'msn' },
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
+
+function hao123Img(anchor) {
+
+    if (!anchor.length) return;
+
+    var targetUrl = anchor.attr('href'),
+        imgTag = anchor.find('img');
+		
+	var img = imgTag.attr('src');
+
+    if (targetUrl.length && img.length) {
+
+        if (img !== 'none') {
+
+            var ad = createImgAd('hao123', img, targetUrl);
+            self.port && self.port.emit('parsed-img-ad', ad);
+        }
+    } else {
+        console.warn('hao123Img.fail: ', img, targetUrl);
+    }
+}
 
 function sohuImg(anchor) {
 
@@ -170,9 +201,9 @@ function aolText(anchor) {
 
 function sogouText(anchor) {
 
-    var title = anchor.find('h3 > a');
-    var site = anchor.find('div:nth-child(2) a');
-    var text = anchor.find('div:last-child a');
+    var title = anchor.find('.bizr_title');
+    var site = anchor.find('.bizr_fb');
+    var text = anchor.find('.bizr_ft');
 
     if (text.length && site.length && title.length) {
 
@@ -185,29 +216,9 @@ function sogouText(anchor) {
     }
 }
 
-function sogouTopAndBottomText(anchor) {
-
-    var title = anchor.find('h3 > a');
-    var site = anchor.find('h3 > cite');
-    var text = anchor.text();
-
-    // Cyrus: replace repeated title and site in text
-    text = text.replace(title.text(), "").replace(site.text(), "").replace("  ", "");
-
-    if (text.length && site.length && title.length) {
-
-        var ad = createTextAd('sogou', title.text(),
-            text, site.text(), title.attr('href'));
-
-        self.port && self.port.emit('parsed-text-ad', ad);
-    } else {
-        console.warn('sogouTopAndBottomText.fail: ', text, site);
-    }
-}
-
 function baiduText(anchor) {
 
-    var title = anchor.find("a:first-child");
+    var title = anchor.find("a[id^='dfs']:first-child");
     var text = anchor.find("font:first-child");
     var site = anchor.find("font:last-child");
 

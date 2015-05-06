@@ -4,6 +4,8 @@
 
 /* this code handles ABP's hidden elements (text or img) */
 
+var googleRegex =  /^(www\.)*google\.((com\.|co\.|it\.)?([a-z]{2})|com)$/i;
+
 var admatchers = [
 
     // text-ads ---------------------------------------------------------------
@@ -11,19 +13,25 @@ var admatchers = [
         selector: '#tads.c',
         waitfor: ".ads-ad",
         handler: googleText,
-        name: 'adsense-1'
+        name: 'adsense-1',
+        domain: googleRegex
+        
     }, // top
     {
         selector: '#bottomads',
         waitfor: ".ads-ad",
         handler: googleText,
-        name: 'adsense-2'
+        name: 'adsense-2',
+        domain: googleRegex
+
     }, // bottom
     {
         selector: '#rhs_block > #mbEnd',
         waitfor: ".ads-ad",
         handler: googleText,
-        name: 'adsense-3'
+        name: 'adsense-3',
+        domain: googleRegex
+
     }, // right
     {
         selector: '.ads ul',
@@ -44,12 +52,13 @@ var admatchers = [
         selector: '#rtm_html_441',
         waitfor: 'tr:nth-child(even)',
         handler: ebayText,
-        name: 'ebay'
+        name: 'ebay',
+        domain: 'www.ebay.com' // Q; are there other ebay domains??
     }, {
         selector: '[class$=SLL]',
         waitfor: 'div.sllLink.sllAllC',
         handler: aolText,
-        name: 'aol'
+        name: 'aol',
     }, {
         selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)',
         waitfor: "div[id^='bdfs']",
@@ -68,37 +77,41 @@ var admatchers = [
         selector: "div[class^=ad][class$=t]",
         waitfor: "div.l_qq_com > a",
         handler: qqImg,
-        name: 'qq'
+        name: 'qq',
+        domain: 'qq.com'
     }, {
         selector: '#row-top',
         waitfor: 'div#mini-features > a',
         handler: zamImg,
-        name: 'zam'
+        name: 'zam',
+        domain: 'www.zam.com'
     }, {
         selector: "div[id^=ad_]",
         waitfor: "a",
         handler: sohuImg,
-        name: 'sohu'
+        name: 'sohu',
+        domain: 'www.sohu.com'
     }, {
         selector: "#ecom",
         waitfor: "a",
         handler: hao123Img,
-        name: 'hao123'
-    },
-    {
+        name: 'hao123',
+        domain: 'www.hao123.com'
+    }, {
         selector: '#ad-container',
         waitfor: "a",
         handler: rednoiseTest,
-        name: 'rednoise-test'
+        name: 'rednoise-test',
+        domain: 'rednoise.org'
     }
 
     //{ selector: ".ad, .widead", waitfor: "iframe > a", handler: msnImg, name: 'msn' },
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
-function rednoiseTest(anchor) {
+// TODO: refactor out common code in these
 
-    console.log('rednoiseTest.HIT***: ');
+function rednoiseTest(anchor) {
     
     if (!anchor.length) return;
 
@@ -107,8 +120,6 @@ function rednoiseTest(anchor) {
         
     var img = imgTag.attr('src');
     
-    console.log("image-src: "+img);
-
     if (targetUrl.length && img.length) {
 
         if (img !== 'none') {
@@ -155,7 +166,7 @@ function sohuImg(anchor) {
 
     if (targetUrl.length && img.length) {
 
-        var ad = createImgAd('qq', img, targetUrl);
+        var ad = createImgAd('sohu', img, targetUrl);
         self.port && self.port.emit('parsed-img-ad', ad);
     } else {
         console.warn('sohuImg.fail: ', img, targetUrl);
@@ -164,6 +175,7 @@ function sohuImg(anchor) {
 
 function qqImg(anchor) {
 
+console.log("qqImg handler");
     if (!anchor.length) return;
 
     var targetUrl = anchor.attr('href'),
@@ -468,29 +480,6 @@ function waitForKeyElements($,
     waitForKeyElements.controlObj = controlObj;
 }
 
-function runFilters() {
-
-    //console.log(typeof $, typeof element);
-
-    for (var i = 0; i < admatchers.length; i++) {
-
-        var data = admatchers[i],
-            waitSel = data.selector + ' ' + data.waitfor;
-
-        if ($(this).is(data.selector)) {
-
-            console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel);
-
-            try {
-                waitForKeyElements($, waitSel, data.handler);
-            } catch (e) {
-
-                console.warn('failed processing text-ad', data);
-            }
-        }
-    }
-}
-
 function findSelectorByName(name) {
 
     for (var i = 0; i < admatchers.length; i++) {
@@ -545,3 +534,41 @@ AND (in package.json):
     },
     
 */
+
+function checkDomain(elemDom, pageDom, name) {
+
+    var result = true;
+    
+    if (elemDom) {
+        
+        result = (typeof elemDom === 'string') ? 
+            (elemDom === pageDom) : elemDom.test(pageDom);
+    }
+    
+    // if (!result) console.log("DOMAIN-CHECK-FAIL: "+name + " -> "+ pageDom);
+        
+    return result;
+}
+
+function runFilters() {
+
+    //console.log(typeof $, typeof element);
+
+    for (var i = 0; i < admatchers.length; i++) {
+
+        var data = admatchers[i], 
+            waitSel = data.selector + ' ' + data.waitfor;
+
+        if (checkDomain(data.domain, document.domain, data.name) && $(this).is(data.selector)) {
+
+            console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (domain: '+document.domain+')');
+
+            try {
+                waitForKeyElements($, waitSel, data.handler);
+            } catch (e) {
+
+                console.warn('failed processing text-ad', data);
+            }
+        }
+    }
+}

@@ -84,11 +84,42 @@ var admatchers = [
         waitfor: "a",
         handler: hao123Img,
         name: 'hao123'
+    },
+    {
+        selector: '#ad-container',
+        waitfor: "a",
+        handler: rednoiseTest,
+        name: 'rednoise-test'
     }
 
     //{ selector: ".ad, .widead", waitfor: "iframe > a", handler: msnImg, name: 'msn' },
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
+
+function rednoiseTest(anchor) {
+
+    console.log('rednoiseTest.HIT***: ');
+    
+    if (!anchor.length) return;
+
+    var targetUrl = anchor.attr('href'),
+        imgTag = anchor.find('img');
+        
+    var img = imgTag.attr('src');
+    
+    console.log("image-src: "+img);
+
+    if (targetUrl.length && img.length) {
+
+        if (img !== 'none') {
+
+            var ad = createImgAd('rednoiseTest', img, targetUrl);
+            self.port && self.port.emit('parsed-img-ad', ad);
+        }
+    } else {
+        console.warn('rednoiseTest.fail: ', img, targetUrl);
+    }
+}
 
 function hao123Img(anchor) {
 

@@ -525,29 +525,25 @@ function checkElemHideABP() {
 
     //console.log("Checking: "+$(this).prop("tagName")+ " :: "+$(this).css("-moz-binding"));
 
-    return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
+    return ($(this).css("-moz-binding").indexOf("url(\"about:abp-elemhidehit?") === 0);
 }
     
 if (typeof module == 'undefined' || !module.exports) {
 
     $(function() { // page-is-ready
 
-            //$("*").filter(checkElemHideABP).each(runFilters);
-            var eles = $("*").filter(checkElemHideABP);
-            for(var i=0,len=eles.length; i<len; i++)
-                runFilters.call(eles[i]);
             
-            // NEXT: 
-            // test if waitfor() works in static iframe (red)
-            // try http://kevinchisholm.github.io/jquery-waitfor/
-            // try to add onload functions to each iframe            
-             
-            // check each iframe
+            // check top frame elements
+            $("*").filter(checkElemHideABP).each(function(e) {
+                runFilters(this);
+            });
+
+            // check iframe elements
             $("iframe").each(function() {
             
                 var eles = $(this).contents().find("*").filter(checkElemHideABP);
-                for(var i=0,len=eles.length; i<len; i++)
-                    runFilters.call(eles[i], this);
+                for(var i=0, len=eles.length; i<len; i++)
+                    runFilters(eles[i], this); // pass the iframe
             });
         });
     
@@ -571,7 +567,7 @@ function checkDomain(elemDom, pageDom, name) {
     return result;
 }
 
-function runFilters(parentFrame) {
+function runFilters(element, parentFrame) {
 
     //console.log('runFilters: '+$(this).attr('id'), parentFrame);
 
@@ -580,18 +576,19 @@ function runFilters(parentFrame) {
         var data = admatchers[i], 
             waitSel = data.selector + ' ' + data.waitfor;
 
-        if (checkDomain(data.domain, document.domain, data.name) && $(this).is(data.selector)) {
+        if (checkDomain(data.domain, document.domain, data.name) && $(element).is(data.selector)) {
 
             console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
-                 (typeof parentFrame != 'undefined')+', domain: '+document.domain+') '+$(parentFrame).prop("tagName"));
+                 (typeof parentFrame != 'undefined')+', domain: '+document.domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
 
-            try {
+            //try {
                 waitForKeyElements($, waitSel, data.handler, true, parentFrame);
-            } 
+            /*} 
             catch (e) {
 
-                console.warn('failed processing text-ad', data);
-            }
+                //console.warn('failed processing text-ad', data);
+                throw e;
+            }*/
         }
     }
 }

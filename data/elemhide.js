@@ -37,38 +37,44 @@ var admatchers = [
         selector: '.ads ul',
         waitfor: 'li',
         handler: yahooText,
-        name: 'yahoo'
+        name: 'yahoo',
+        domain: 'search.yahoo.com'
     }, {
         selector: '.b_ad',
         waitfor: '.sb_adTA',
         handler: bingText,
-        name: 'bing'
+        name: 'bing',
+        domain: 'www.bing.com'
     }, {
         selector: '#ads',
         waitfor: 'div.result',
         handler: duckDuckText,
-        name: 'duckduckgo'
+        name: 'duckduckgo',
+        domain: 'duckduckgo.com'
     }, {
         selector: '#rtm_html_441',
         waitfor: 'tr:nth-child(even)',
         handler: ebayText,
         name: 'ebay',
-        domain: 'www.ebay.com' // Q; are there other ebay domains??
+        domain: 'www.ebay.com' 
     }, {
         selector: '[class$=SLL]',
         waitfor: 'div.sllLink.sllAllC',
         handler: aolText,
         name: 'aol',
+        domain: 'search.aol.com'
     }, {
         selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)',
         waitfor: "div[id^='bdfs']",
         handler: baiduText,
-        name: 'baidu'
+        name: 'baidu',
+        domain: 'www.baidu.com'
     }, {
 		selector: '.tgad-box + div',
 		waitfor: ".bizr_rb",
 		handler: sogouText,
-		name: 'sogou'
+		name: 'sogou',
+        domain: 'www.sogou.com'
 	},
 
     // img-ads ----------------------------------------------------------------

@@ -376,6 +376,35 @@ function createTextAd(network, title, text, site, target) {
     };
 }
 
+/*
+Try qq nested iframes with:
+
+function getElem(selector, $root, $collection) {  // not used
+    if (!$root) $root = $(document);
+    if (!$collection) $collection = $();
+    
+    // Select all elements matching the selector under the root
+    $collection = $collection.add( $root.find(selector) );
+    
+    // Loop through all frames
+    $root.find('iframe,frame').each(function() {
+        // Recursively call the function, setting "$root" to the frame's document
+        getElem(selector, $(this).contents(), $collection);
+    });
+    
+    return $collection;
+}
+    
+// Example:
+var $allImageElements = getElem('img');
+
+AND (in package.json):
+
+    "permissions": {
+        "cross-domain-content": ["http://wa.gtimg.com/"]
+    },
+    
+*/
 
 /*  A utility function, for Greasemonkey scripts,
     that detects and handles AJAXed content.
@@ -416,14 +445,18 @@ function waitForKeyElements($,
                     */
 ) {
 
-    //console.log(typeof $);
+    //console.log('waitForKeyElements('+iframeSelector+')');
 
     var targetNodes, btargetsFound;
 
-    if (typeof iframeSelector == "undefined")
+    if (typeof iframeSelector == "undefined") {
+
         targetNodes = $(selectorTxt);
-    else
+    }
+    else {
+    
         targetNodes = $(iframeSelector).contents().find(selectorTxt);
+    }
 
     if (targetNodes && targetNodes.length > 0) {
 
@@ -488,52 +521,40 @@ function findSelectorByName(name) {
     }
 }
 
+function checkElemHideABP() {
+
+    //console.log("Checking: "+$(this).prop("tagName")+ " :: "+$(this).css("-moz-binding"));
+
+    return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
+}
+    
 if (typeof module == 'undefined' || !module.exports) {
 
     $(function() { // page-is-ready
 
-            var $hidden = $("*").filter(function() {
-
-                    return /^url\("about:abp-elemhidehit?/.test($(this).css("-moz-binding"));
-                });
-
-            $hidden.each(runFilters);
+            //$("*").filter(checkElemHideABP).each(runFilters);
+            var eles = $("*").filter(checkElemHideABP);
+            for(var i=0,len=eles.length; i<len; i++)
+                runFilters.call(eles[i]);
+            
+            // NEXT: 
+            // test if waitfor() works in static iframe (red)
+            // try http://kevinchisholm.github.io/jquery-waitfor/
+            // try to add onload functions to each iframe            
+             
+            // check each iframe
+            $("iframe").each(function() {
+            
+                var eles = $(this).contents().find("*").filter(checkElemHideABP);
+                for(var i=0,len=eles.length; i<len; i++)
+                    runFilters.call(eles[i], this);
+            });
         });
+    
 } else { // in Node
 
     module.exports['getMatcher'] = findSelectorByName;
 }
-
-
-/*
-Try qq nested iframes with:
-
-function getElem(selector, $root, $collection) {  // not used
-    if (!$root) $root = $(document);
-    if (!$collection) $collection = $();
-    
-    // Select all elements matching the selector under the root
-    $collection = $collection.add( $root.find(selector) );
-    
-    // Loop through all frames
-    $root.find('iframe,frame').each(function() {
-        // Recursively call the function, setting "$root" to the frame's document
-        getElem(selector, $(this).contents(), $collection);
-    });
-    
-    return $collection;
-}
-    
-// Example:
-var $allImageElements = getElem('img');
-
-AND (in package.json):
-
-    "permissions": {
-        "cross-domain-content": ["http://wa.gtimg.com/"]
-    },
-    
-*/
 
 function checkDomain(elemDom, pageDom, name) {
 
@@ -550,9 +571,9 @@ function checkDomain(elemDom, pageDom, name) {
     return result;
 }
 
-function runFilters() {
+function runFilters(parentFrame) {
 
-    //console.log(typeof $, typeof element);
+    //console.log('runFilters: '+$(this).attr('id'), parentFrame);
 
     for (var i = 0; i < admatchers.length; i++) {
 
@@ -561,11 +582,13 @@ function runFilters() {
 
         if (checkDomain(data.domain, document.domain, data.name) && $(this).is(data.selector)) {
 
-            console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (domain: '+document.domain+')');
+            console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
+                 (typeof parentFrame != 'undefined')+', domain: '+document.domain+') '+$(parentFrame).prop("tagName"));
 
             try {
-                waitForKeyElements($, waitSel, data.handler);
-            } catch (e) {
+                waitForKeyElements($, waitSel, data.handler, true, parentFrame);
+            } 
+            catch (e) {
 
                 console.warn('failed processing text-ad', data);
             }

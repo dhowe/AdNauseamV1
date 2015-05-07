@@ -230,6 +230,7 @@ function refreshPanel(opts) {
     $('#cmn-toggle-1').prop('checked', opts.disableLogs);
     $('#cmn-toggle-2').prop('checked', opts.disableOutgoingReferer);
     $('#cmn-toggle-3').prop('checked', opts.clearAdsWithHistory);
+    $('#cmn-toggle-4').prop('checked', opts.hideBadge);
     
     $('#toggle-button').css('background-image', 'url('+img+')');
     $('#pause-button').text(label);
@@ -401,10 +402,15 @@ function attachMenuTests() {
         self.port && self.port.emit('disable-referer', { 'value' : val });
     });
     
-    $('#cmn-toggle-3').click(function() { // clear
+    $('#cmn-toggle-3').click(function() { // clear-w-history
 
         var val = $(this).prop('checked');
         self.port && self.port.emit('clear-ads-with-history', { 'value' : val });
     });
 
+    $('#cmn-toggle-4').click(function() { // hide-badge
+
+        var val = $(this).prop('checked');
+        self.port && self.port.emit('hide-badge', { 'value' : val });
+    });
 })();

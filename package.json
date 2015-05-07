@@ -52,6 +52,13 @@
             "type": "bool",
             "value": false,
             "hidden": true
+        },
+        {
+            "title": "Hide Ad count on icon",
+            "name": "hideBadge",
+            "type": "bool",
+            "value": false,
+            "hidden": true
         }
     ]
 }

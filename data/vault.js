@@ -939,7 +939,7 @@ function addInterfaceHandlers(ads) {
 
     $(document).click(function(e) {
 
-            //if (e.which == 1) { // Left-button only                
+        if (e.which == 1)  // Left-button only                
             lightboxMode(false);
         });
 

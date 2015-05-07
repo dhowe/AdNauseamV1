@@ -7,10 +7,10 @@
 */
 
 const LogoURL = 'http://dhowe.github.io/AdNauseam/',
-    States = ['pending', 'visited', 'failed'],
-    Zooms = [100, 50, 25, 12.5, 6.25],
-    EnableContextMenu = 1,
-    MaxPerSet = 9;
+States = ['pending', 'visited', 'failed'],
+Zooms = [100, 50, 25, 12.5, 6.25],
+EnableContextMenu = 1,
+MaxPerSet = 9;
 
 var zoomStyle, zoomIdx = 0,
     animatorId, animateMs = 2000,
@@ -30,6 +30,7 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 /*
 createSlider -> runFilter -> doLayout
 */
+
 function layoutAds(json) {
 
     //log('vault.js::layoutAds');
@@ -308,6 +309,7 @@ function updateMetaTarget($target, ad) {
  * Shifts meta list to show correct item
  * Updates index-counter for the bullet
  */
+
 function bulletIndex($div, adset) { // adset.index must be updated first
 
     var $bullet = $div.find('.bullet[data-idx=' + (adset.index) + ']'),
@@ -475,27 +477,28 @@ function computeStats(adsets) {
 function numVisited(adsets) {
 
     var numv = 0;
-    
+
     for (var i = 0, j = adsets && adsets.length; i < j; i++)
         numv += (adsets[i].visitedCount());
-        
+
     return numv;
 }
 
 function numFound(adsets) {
 
     var numv = 0;
-    
+
     for (var i = 0, j = adsets && adsets.length; i < j; i++)
         numv += (adsets[i].count());
-    
+
     return numv;
 }
 
 function sinceTime(adsets) {
 
-    var idx = 0, oldest = +new Date();
-        
+    var idx = 0,
+        oldest = +new Date();
+
     for (var i = 0, j = adsets && adsets.length; i < j; i++) {
 
         var foundTs = adsets[i].child(0).foundTs;
@@ -575,20 +578,20 @@ function enableLightbox() {
 
                 e.stopPropagation();
                 e.preventDefault();
-                
+
                 var $this = $(this);
 
                 if (!$this.hasClass('inspected')) {
-                    
-                    var inspectedGid = parseInt( $this.attr('data-gid') );
+
+                    var inspectedGid = parseInt($this.attr('data-gid'));
                     selectedAdSet = findAdSetByGid(inspectedGid); // throws
-    
+
                     // Show contextmenu
                     $(".custom-menu").finish().toggle(100).
-    
+
                     // In the right position (the mouse)
                     css({
-                            top: (e.pageY-25) + "px",
+                            top: (e.pageY - 25) + "px",
                             left: e.pageX + "px"
                         });
                 }
@@ -734,14 +737,15 @@ function lightboxMode(selected) {
         var next = selectedAdSet.nextPending(); // tell the addon
         if (next && self.port) {
 
-            self.port.emit("item-inspected", { "id": next.id });
+            self.port.emit("item-inspected", {
+                    "id": next.id
+                });
         }
 
         centerZoom($selected);
 
         $('#container').addClass('lightbox');
-    }
-    else if ($('#container').hasClass('lightbox')) {
+    } else if ($('#container').hasClass('lightbox')) {
 
         var $item = $('.item.inspected');
 
@@ -758,7 +762,7 @@ function lightboxMode(selected) {
         animateInspector(false);
         centerZoom(false);
 
-        $('#container').removeClass('lightbox');      
+        $('#container').removeClass('lightbox');
     }
 }
 
@@ -932,14 +936,12 @@ function addInterfaceHandlers(ads) {
             e.preventDefault();
             openInNewTab(LogoURL);
         });
-		
-	/*$(document).mousedown(function(event) {
-		
-		if (event.which == 1) { // Left-button only
-			
-			lightboxMode(false);
-		}
-	});*/
+
+    $(document).click(function(e) {
+
+            //if (e.which == 1) { // Left-button only                
+            lightboxMode(false);
+        });
 
     $(document).keyup(function(e) {
 
@@ -955,8 +957,7 @@ function addInterfaceHandlers(ads) {
         dm.addEventListener('dragstart', dragStart, false);
         dm.addEventListener('dragover', dragOver, false);
         dm.addEventListener('dragend', dragEnd, false);
-    }
-    else {
+    } else {
 
         log("NO #CONTAINER!");
     }
@@ -978,58 +979,62 @@ function addInterfaceHandlers(ads) {
     $(window).resize(function() {
 
             clearTimeout(resizeId); // only when done
-            resizeId = setTimeout(function() { createSlider(true); }, 100); 
+            resizeId = setTimeout(function() {
+                    createSlider(true);
+                }, 100);
         });
 
     if (EnableContextMenu) {
 
         // if the document is clicked somewhere
         $(document).bind("mousedown", function(e) {
-            
+
                 // if the clicked element is not the delete-menu
                 if ($(e.target).parents(".custom-menu").length < 1) {
 
                     $(".custom-menu").hide(50);
-                }               
+                }
             });
 
 
         // if a context-menu element is right-clicked
         $(".custom-menu li").click(function() {
 
-                log("Vault::right-click: "+$(this).attr("data-action"));
+                log("Vault::right-click: " + $(this).attr("data-action"));
 
                 if (!selectedAdSet) {
-                
+
                     error("No selectedAdSet!");
                     return;
                 }
 
-                switch ( $(this).attr("data-action") ) {
+                switch ($(this).attr("data-action")) {
 
                     case "delete":
 
                         var ids = selectedAdSet.childIds(),
                             $item = findItemDivByGid(selectedAdSet.gid);
-                        
+
                         // remove the adset item from the DOM    
                         $item.remove();
 
                         // remove each ad from the full-adset
-                        gAds = gAds.filter( function(ad) {
-                            for (var i=0, len = ids.length; i<len; i++) {
-                                if (ad.id === ids[i])
-                                    return false;
-                            }
-                            return true;
-                        });
+                        gAds = gAds.filter(function(ad) {
+                                for (var i = 0, len = ids.length; i < len; i++) {
+                                    if (ad.id === ids[i])
+                                        return false;
+                                }
+                                return true;
+                            });
 
                         // tell the addon
-                        self.port && self.port.emit("delete-adset", { ids: selectedAdSet.childIds() });
-                        
+                        self.port && self.port.emit("delete-adset", {
+                                ids: selectedAdSet.childIds()
+                            });
+
                         // recreate the slider, but don't redo layout
                         createSlider(false);
-                        
+
                         break;
 
                     case "delete-all": // not enabled
@@ -1065,8 +1070,7 @@ function createAdSets(ads) { // once per layout
             // new: add a hash entry
             hash[key] = new AdSet(ad);
             adsets.push(hash[key]);
-        }
-        else {
+        } else {
 
             // dup: add as child
             hash[key].add(ad);
@@ -1079,7 +1083,7 @@ function createAdSets(ads) { // once per layout
 
 
         adsets[i].children.sort(byField('-foundTs'));
-        
+
         /* NOTE: ads ignored here if over MaxPerSet in any AdSet
         if (adsets[i].children.length > MaxPerSet)
             log("AdSet#"+adsets[i].id()+" ignoring "+(adsets[i]
@@ -1112,8 +1116,7 @@ function repack() {
 
                 storeItemLayout($items);
                 positionAds($items);
-            }
-            else if (visible == 1) {
+            } else if (visible == 1) {
 
                 $items.css({ // center single
 

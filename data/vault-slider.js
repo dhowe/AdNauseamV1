@@ -19,7 +19,7 @@ const customTimeFormat = d3.time.format.multi([
 
 function createSlider(relayout) {
 
-    log('Vault-Slider.createSlider: '+gAds.length);
+    //log('Vault-Slider.createSlider: '+gAds.length);
     
     if (!gAds) return;
 
@@ -58,8 +58,6 @@ function createSlider(relayout) {
       //.bins(width/(barw-barg))     [dyn]
       (map);
 
-   //log(histogram);
-
    // setup the x axis
    var xAxis = d3.svg.axis()
 	      .scale(xScale)
@@ -77,7 +75,6 @@ function createSlider(relayout) {
    // append the x axis
    svg.append("g")                  // [ONCE]
        .attr("class", "x axis")
-	     //.attr("transform", "translate(0," + height + ")")
        .call(xAxis);
 
    var barw = histogram[0].dx - 1; //relative width

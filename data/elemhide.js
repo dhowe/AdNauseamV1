@@ -547,7 +547,15 @@ if (typeof module == 'undefined' || !module.exports) {
             // check iframe elements
             $("iframe").each(function() {
             
-                var eles = $(this).contents().find("*").filter(checkElemHideABP);
+                var eles;
+                try {
+                    eles = $(this).contents().find("*").filter(checkElemHideABP);
+                } 
+                catch (e) {
+    
+                    console.warn('IGNORE: cross-domain iframe(src='+$(this).attr('src')+"'");
+                }
+            
                 for(var i=0, len=eles.length; i<len; i++)
                     runFilters(eles[i], this); // pass the iframe
             });

@@ -562,7 +562,7 @@ function checkDomain(elemDom, pageDom, name) {
 
     var result = true;
     
-    if (elemDom) {
+    if (elemDom && pageDom) {
         
         result = (typeof elemDom === 'string') ? 
             (elemDom === pageDom) : elemDom.test(pageDom);
@@ -576,25 +576,27 @@ function checkDomain(elemDom, pageDom, name) {
 function runFilters(element, parentFrame) {
 
     //console.log('runFilters: '+$(this).attr('id'), parentFrame);
-
+    
+    var doc = document, domain = doc ? doc.domain : null;
+     
     for (var i = 0; i < admatchers.length; i++) {
 
         var data = admatchers[i], 
             waitSel = data.selector + ' ' + data.waitfor;
 
-        if (checkDomain(data.domain, document.domain, data.name) && $(element).is(data.selector)) {
+        if (checkDomain(data.domain, domain, data.name) && $(element).is(data.selector)) {
 
             console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
-                 (typeof parentFrame != 'undefined')+', domain: '+document.domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
+                 (typeof parentFrame != 'undefined')+', domain: '+domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
 
-            //try {
+            try {
                 waitForKeyElements($, waitSel, data.handler, true, parentFrame);
-            /*} 
+            } 
             catch (e) {
 
                 //console.warn('failed processing text-ad', data);
                 throw e;
-            }*/
+            }
         }
     }
 }

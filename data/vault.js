@@ -31,6 +31,15 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 createSlider -> runFilter -> doLayout
 */
 
+$("body").mousewheel(function(e, delta) {
+    
+    if (delta > 0) // scrolling mousewheel outward
+        zoomIn();
+    else
+        zoomOut(); // scrolling inward
+    
+});
+
 function layoutAds(json) {
 
     //log('vault.js::layoutAds');

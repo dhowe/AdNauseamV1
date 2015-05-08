@@ -82,32 +82,32 @@ var admatchers = [
     {
         selector: "div[class^=ad][class$=t]",
         waitfor: "div.l_qq_com > a",
-        handler: qqImg,
+        handler: imageInAnchor.bind(null, 'qq'),
         name: 'qq',
         domain: 'qq.com'
     }, {
         selector: '#row-top',
         waitfor: 'div#mini-features > a',
-        handler: zamImg,
+        handler: imageInAnchor.bind(null, 'zam'),
         name: 'zam',
         domain: 'www.zam.com'
     }, {
         selector: "div[id^=ad_]",
         waitfor: "a",
-        handler: sohuImg,
+        handler: imageInAnchor.bind(null, 'sohu'),
         name: 'sohu',
         domain: 'www.sohu.com'
     }, {
         selector: "#ecom",
         waitfor: "a",
-        handler: hao123Img,
+        handler: imageInAnchor.bind(null, 'hao123'),
         name: 'hao123',
         domain: 'www.hao123.com'
     }, {
         selector: '#ad-container',
         waitfor: "a",
-        handler: rednoiseTest,
         name: 'rednoise-test',
+        handler: imageInAnchor.bind(null, 'rednoise-test'),
         domain: 'rednoise.org'
     }
 
@@ -115,101 +115,28 @@ var admatchers = [
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
-// TODO: refactor out common code in these
-
-function rednoiseTest(anchor) {
-    
+function imageInAnchor(name, anchor) {
+       
     if (!anchor.length) return;
 
     var targetUrl = anchor.attr('href'),
-        imgTag = anchor.find('img');
+        imgTag = anchor.find('img'),
+        img = imgTag.attr('src');
         
-    var img = imgTag.attr('src');
+    if (!img) 
+        img = anchor.css('background-image').replace('url("', '').replace('")', '');
     
     if (targetUrl.length && img.length) {
 
         if (img !== 'none') {
 
-            var ad = createImgAd('rednoiseTest', img, targetUrl);
+            var ad = createImgAd(name, img, targetUrl);
             self.port && self.port.emit('parsed-img-ad', ad);
         }
+        
     } else {
-        console.warn('rednoiseTest.fail: ', img, targetUrl);
-    }
-}
-
-function hao123Img(anchor) {
-
-    if (!anchor.length) return;
-
-    var targetUrl = anchor.attr('href'),
-        imgTag = anchor.find('img');
-		
-	var img = imgTag.attr('src');
-
-    if (targetUrl.length && img.length) {
-
-        if (img !== 'none') {
-
-            var ad = createImgAd('hao123', img, targetUrl);
-            self.port && self.port.emit('parsed-img-ad', ad);
-        }
-    } else {
-        console.warn('hao123Img.fail: ', img, targetUrl);
-    }
-}
-
-function sohuImg(anchor) {
-
-    //console.log('sohuImg: ', anchor.length);
-
-    var targetUrl = anchor.attr('href'),
-        imgTag = anchor.find('img');
-
-    if (!imgTag.length) return;
-
-    var img = imgTag.attr('src');
-
-    if (targetUrl.length && img.length) {
-
-        var ad = createImgAd('sohu', img, targetUrl);
-        self.port && self.port.emit('parsed-img-ad', ad);
-    } else {
-        console.warn('sohuImg.fail: ', img, targetUrl);
-    }
-}
-
-function qqImg(anchor) {
-
-console.log("qqImg handler");
-    if (!anchor.length) return;
-
-    var targetUrl = anchor.attr('href'),
-        img = anchor.css('background-image').replace('url("', '').replace('")', '');
-
-    if (targetUrl.length && img.length) {
-
-        if (img !== 'none') {
-
-            var ad = createImgAd('qq', img, targetUrl);
-            self.port && self.port.emit('parsed-img-ad', ad);
-        }
-    } else {
-        console.warn('qqImg.fail: ', img, targetUrl);
-    }
-}
-
-function zamImg(anchor) {
-
-    var targetUrl = anchor.attr('href'),
-        img = anchor.css('background-image').replace('url("', '').replace('")', '');
-
-    if (targetUrl.length && img.length) {
-
-        var ad = createImgAd('zam', img, targetUrl);
-        self.port && self.port.emit('parsed-img-ad', ad);
-    } else {
-        console.warn('zamImg.fail: ', img, targetUrl);
+    
+        console.warn('imageInAnchor.fail: ', img, targetUrl);
     }
 }
 
@@ -554,6 +481,7 @@ if (typeof module == 'undefined' || !module.exports) {
                 catch (e) {
     
                     console.warn('IGNORE: cross-domain iframe(src='+$(this).attr('src')+"'");
+                    return;
                 }
             
                 for(var i=0, len=eles.length; i<len; i++)

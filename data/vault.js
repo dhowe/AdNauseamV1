@@ -32,13 +32,17 @@ createSlider -> runFilter -> doLayout
 */
 
 $("body").mousewheel(function(e, delta) {
-    
-    if (delta > 0) // scrolling mousewheel outward
-        zoomIn();
-    else
-        zoomOut(); // scrolling inward
-    
-});
+
+        if ($('#container').hasClass('lightbox')) {
+            lightboxMode(false);
+            return;
+        }
+
+        if (delta > 0) // scrolling mousewheel outward
+            zoomIn();
+        else
+            zoomOut(); // scrolling inward
+    });
 
 function layoutAds(json) {
 
@@ -754,6 +758,7 @@ function lightboxMode(selected) {
         centerZoom($selected);
 
         $('#container').addClass('lightbox');
+
     } else if ($('#container').hasClass('lightbox')) {
 
         var $item = $('.item.inspected');
@@ -948,8 +953,8 @@ function addInterfaceHandlers(ads) {
 
     $(document).click(function(e) {
 
-        if (e.which == 1)  // Left-button only                
-            lightboxMode(false);
+            if (e.which == 1) // Left-button only                
+                lightboxMode(false);
         });
 
     $(document).keyup(function(e) {

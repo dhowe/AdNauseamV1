@@ -8,8 +8,30 @@
         "license": "GPLv3 (http://www.gnu.org/licenses/)",
         "icon": "data/img/adn_active-48.png",
         "icon64": "data/img/adn_active-64.png",
-        "version": "1.20",
+        "version": "1.21",
         "homepage": "http://adnauseam.io",
+        "permissions": { 
+            "cross-domain-content": [ 
+                "http://tpc.googlesyndication.com", 
+                "https://tpc.googlesyndication.com",
+                "http://googleads.g.doubleclick.net", 
+                "http://secure-us.imrworldwide.com",
+                "http://static.ak.facebook.com",
+                "https://s-static.ak.facebook.com",
+                "http://ads-static.saymedia.com",
+                "https://platform.twitter.com",
+                "http://adserver.adtechus.com",
+                "http://creative.wwwpromoter.com",
+                "https://apis.google.com",
+                "http://s7.addthis.com",
+                "http://www.facebook.com",
+                "https://www.youtube.com",
+                "http://cdn.cxense.com",
+                "http://us-u.openx.net",
+                "http://livestream.com",
+                "https://s.yimg.com"
+            ]
+        },
         "preferences": [
         {
             "title": "Enabled",

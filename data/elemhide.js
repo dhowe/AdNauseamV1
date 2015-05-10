@@ -464,7 +464,6 @@ function checkElemHideABP() {
 if (typeof module == 'undefined' || !module.exports) {
 
     $(function() { // page-is-ready
-
             
             // check top frame elements
             $("*").filter(checkElemHideABP).each(function(e) {
@@ -476,11 +475,12 @@ if (typeof module == 'undefined' || !module.exports) {
             
                 var eles;
                 try {
+                    console.log('[Parse-iFrame] id='+$(this).attr('id')+" src="+$(this).attr('src'));
                     eles = $(this).contents().find("*").filter(checkElemHideABP);
                 } 
                 catch (e) {
-    
-                    console.warn('IGNORE: cross-domain iframe(src='+$(this).attr('src')+"'");
+                    console.warn('*** [Cross-Domain IFRAME?] '+$(this).attr('src') +" (elem-hides ignored ***)");
+                    //alert('*** [Cross-Domain IFRAME] '+$(this).attr('src') +" (elem-hides ignored ***)");
                     return;
                 }
             

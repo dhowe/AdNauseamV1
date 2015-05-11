@@ -524,7 +524,7 @@ function runFilters(element, parentFrame) {
 
         if (checkDomain(data.domain, domain, data.name)) {
         
-            console.log('ELEMHIDE-FIRE: ' + data.name);
+            //console.log('ELEMHIDE-FIRE: ' + data.name);
             
             if ($(element).is(data.selector)) {
 

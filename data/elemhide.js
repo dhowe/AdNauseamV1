@@ -16,7 +16,7 @@ var admatchers = [
         name: 'adsense-1',
         domain: googleRegex
         
-    }, // top
+    }, // adsense-top
     {
         selector: '#bottomads',
         waitfor: ".ads-ad",
@@ -24,7 +24,7 @@ var admatchers = [
         name: 'adsense-2',
         domain: googleRegex
 
-    }, // bottom
+    }, // adsense-bottom
     {
         selector: '#rhs_block > #mbEnd',
         waitfor: ".ads-ad",
@@ -32,13 +32,13 @@ var admatchers = [
         name: 'adsense-3',
         domain: googleRegex
 
-    }, // right
+    }, // adsense-right
     {
         selector: '.ads ul',
         waitfor: 'li',
         handler: yahooText,
         name: 'yahoo',
-        domain: 'search.yahoo.com'
+        domain: /.*\.yahoo\.com$/i
     }, {
         selector: '.b_ad',
         waitfor: '.sb_adTA',
@@ -56,13 +56,13 @@ var admatchers = [
         waitfor: 'tr:nth-child(even)',
         handler: ebayText,
         name: 'ebay',
-        domain: 'www.ebay.com' 
+        domain: /.*\.ebay\.com(\.([a-z]{2}))?$/i 
     }, {
         selector: '[class$=SLL]',
         waitfor: 'div.sllLink.sllAllC',
         handler: aolText,
         name: 'aol',
-        domain: 'search.aol.com'
+        domain: /.*\.aol\.com(\.([a-z]{2}))?$/i
     }, {
         selector: '#content_right > table > tbody > tr > td > div:not(#con-ar)',
         waitfor: "div[id^='bdfs']",
@@ -115,7 +115,9 @@ var admatchers = [
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
-function imageInAnchor(name, anchor) {
+function imageInAnchor(name, anchor) { 
+
+    // generic handler for image ads with structure <a href="..."><img/></a>  
        
     if (!anchor.length) return;
 
@@ -520,18 +522,23 @@ function runFilters(element, parentFrame) {
         var data = admatchers[i], 
             waitSel = data.selector + ' ' + data.waitfor;
 
-        if (checkDomain(data.domain, domain, data.name) && $(element).is(data.selector)) {
+        if (checkDomain(data.domain, domain, data.name)) {
+        
+            console.log('ELEMHIDE-FIRE: ' + data.name);
+            
+            if ($(element).is(data.selector)) {
 
-            console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
-                 (typeof parentFrame != 'undefined')+', domain: '+domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
-
-            try {
-                waitForKeyElements($, waitSel, data.handler, true, parentFrame);
-            } 
-            catch (e) {
-
-                //console.warn('failed processing text-ad', data);
-                throw e;
+                console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
+                     (typeof parentFrame != 'undefined')+', domain: '+domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
+    
+                try {
+                    waitForKeyElements($, waitSel, data.handler, true, parentFrame);
+                } 
+                catch (e) {
+    
+                    //console.warn('failed processing text-ad', data);
+                    throw e;
+                }
             }
         }
     }

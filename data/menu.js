@@ -7,33 +7,25 @@ self.port && self.port.on('layout-ads', layoutAds);         // refresh all
 self.port && self.port.on('update-ad', updateAd);           // update one
 self.port && self.port.on('set-current', setCurrent);       // ad attempt
 self.port && self.port.on('refresh-panel', refreshPanel);   // set-state
-self.port && self.port.on('close-panel', closePanel);       // close-settings
+self.port && self.port.on('close-panel', closeSettings);    // close-settings
 
 var adArray;
 
 function layoutAds(json) {
 
-    if (!json.data) return;
+    if (json && json.data) adArray = json.data;
     
-    adArray = json.data;
-
     loadDOM($('#ad-list-items'), json);
-
     setCurrent(json);
-
-    setCounts(json.pageCount, (json.pageCount ? 
-        visitedCount(adArray) : 0), json.totalCount);
+    setCounts(json);
 }
 
 function loadDOM($items, json) {
 
-    var ads = json.data; 
+    var ads = json ? json.data : null; 
 
     showAlert(false);
-
-    $items.removeClass();
-    
-    $items.empty();
+    $items.removeClass().empty();
     
     if (!ads) return;
     
@@ -49,7 +41,8 @@ function loadDOM($items, json) {
         }
     } 
         
-    if (!json.pageCount) showRecentAds(ads, json.emptyMessage);
+    if (!json.pageCount) 
+        showRecentAds(ads, json.emptyMessage);
 }
 
 function appendImageAd(ad, $items) {
@@ -146,13 +139,15 @@ function updateAd(json) {
 
     if (!adArray) {
 
+        // this should never happen
         warn('Menu::updateAds: ', "no ad array!!");
         return;
     }
 
     if (!replaceUpdatedAd(update))  {
 
-        warn('Menu::updateAds: no update found!!', json);
+        // this may happen on a tab-switch?
+        warn('Menu::updateAds: no update found', json);
         return;
     }
 
@@ -178,6 +173,7 @@ function updateAd(json) {
     $('#visited-count').text(visitedCount(op));
 
     //log("update:setCurrent: "+json.current);
+    
     setCurrent(json);
     
     animateIcon(500);
@@ -190,7 +186,7 @@ function setCurrent(json) {
     $('.ad-item').removeClass('attempting');
 
     // update the class for ad being attempted
-    json.current && $('#ad' + json.current.id).addClass('attempting');
+    json && json.current && $('#ad' + json.current.id).addClass('attempting');
 }
  
 function replaceUpdatedAd(update) {
@@ -203,7 +199,7 @@ function replaceUpdatedAd(update) {
     return null;
 }
 
-function closePanel() {
+function closeSettings() {
 
     // force-close settings if open
     
@@ -225,6 +221,7 @@ function refreshPanel(opts) {
         label = opts.startLabel;
         img = 'img/adn_disabled.png';
         $('#pause-button').addClass('disabled');
+        layoutAds(null); // reset to 0s
     }
 
     $('#cmn-toggle-1').prop('checked', opts.disableLogs);
@@ -250,22 +247,28 @@ function animateIcon(ms) {
     }, ms);
 }
 
-function setCounts(found, visited, total) {
+function setCounts(json) {
 
-    //console.log('setCounts:',found, visited, total);
+    var found = (json && json.pageCount) || 0,
+        total = (json && json.totalCount) || 0,
+        visited = (json && found && visitedCount(json.data)) || 0;
     
+    //console.log('setCounts: '+visited+"/"+found+' of '+total+' total');
+    
+    $('#visited-count').text(visited);        
     $('#found-count').text(found);
-    $('#visited-count').text(visited);
     $('#vault-count').text(total);
 }
 
 function visitedCount(arr) {
     
+    if (!(arr && arr.length)) return 0;
     return arr.filter(function(ad) { return ad.visitedTs > 0; }).length;
 }
 
 function onPage(arr, pageUrl) {
  
+    if (!(arr && arr.length)) return [];
     return arr.filter(function(ad) { return ad.pageUrl === pageUrl; });
 }
 
@@ -353,20 +356,18 @@ function attachMenuTests() {
         $('.ad-item').remove();
         $('.ad-item-text').remove();
 
-        setCounts(0, 0, 0);
-
         // trigger closing of settings
         $("#settings-close").trigger("click");
 
         // call addon to clear simple-storage
         self.port && self.port.emit("clear-ads");
 
-        loadDOM($('#ad-list-items'), null);
+        layoutAds(null);
     });
 
     $('#pause-button').click(function() {
 
-        self.port && self.port.emit('disable');
+        self.port && self.port.emit('toggle-enabled');
     });
 
     $('#settings-close').click(function() {

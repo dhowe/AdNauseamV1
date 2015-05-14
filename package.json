@@ -8,7 +8,7 @@
         "license": "GPLv3 (http://www.gnu.org/licenses/)",
         "icon": "data/img/adn_active-48.png",
         "icon64": "data/img/adn_active-64.png",
-        "version": "1.21",
+        "version": "1.22",
         "homepage": "http://adnauseam.io",
         "permissions": { 
             "cross-domain-content": [ 
@@ -29,7 +29,9 @@
                 "http://cdn.cxense.com",
                 "http://us-u.openx.net",
                 "http://livestream.com",
-                "https://s.yimg.com"
+                "http://wa.gtimg.com",
+                "https://s.yimg.com",
+                "http://x.jd.com/"
             ]
         },
         "preferences": [

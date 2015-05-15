@@ -274,7 +274,7 @@ function googleText(anchor) {
 
 function duckDuckText(anchor) {
 
-    var title = anchor.find('h2.result__title'),
+    var title = anchor.find('a.result__a'),
         text = anchor.find('div.result__snippet a'),
         site = anchor.find('a.result__url');
 

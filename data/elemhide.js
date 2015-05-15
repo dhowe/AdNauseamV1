@@ -179,7 +179,7 @@ function aolText(anchor) {
 
 function sogouText(anchor) {
 
-    var title = anchor.find('.bizr_title');
+    var title = anchor.find('.bizr_title a');
     var site = anchor.find('.bizr_fb');
     var text = anchor.find('.bizr_ft');
 

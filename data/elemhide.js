@@ -75,6 +75,12 @@ var admatchers = [
 		handler: sogouText,
 		name: 'sogou',
         domain: 'www.sogou.com'
+	}, {
+		selector: '.ad-top',      // for #200
+		waitfor: "div.adUnit_js",
+		handler: askText,
+		name: 'ask',
+        domain: 'www.ask.com'
 	},
 
     // img-ads ----------------------------------------------------------------
@@ -157,6 +163,24 @@ function ebayText(anchor) {
         self.port && self.port.emit('parsed-text-ad', ad);
     } else {
         console.warn('ebayText.fail: ', text, site);
+    }
+}
+
+function askText(anchor) {      // for #200
+
+    console.log("askText()");
+    var title = anchor.find('a.titleLink');
+    var site = anchor.find('a.domainLink');
+    var text = anchor.find('a.textLink');
+
+    if (text.length && site.length && title.length) {
+
+        var ad = createTextAd('ask', title.text(),
+            text.text(), site.text(), title.attr('href'));
+
+        self.port && self.port.emit('parsed-text-ad', ad);
+    } else {
+        console.warn('askText.fail: ', text.text(), site.text());
     }
 }
 

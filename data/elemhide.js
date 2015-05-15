@@ -75,6 +75,12 @@ var admatchers = [
 		handler: sogouText,
 		name: 'sogou',
         domain: 'www.sogou.com'
+	}, {
+		selector: '.ad-top',      // for #200
+		waitfor: "div.adUnit_js",
+		handler: askText,
+		name: 'ask',
+        domain: 'www.ask.com'
 	},
 
     // img-ads ----------------------------------------------------------------
@@ -160,6 +166,24 @@ function ebayText(anchor) {
     }
 }
 
+function askText(anchor) {      // for #200
+
+    console.log("askText()");
+    var title = anchor.find('a.titleLink');
+    var site = anchor.find('a.domainLink');
+    var text = anchor.find('a.textLink');
+
+    if (text.length && site.length && title.length) {
+
+        var ad = createTextAd('ask', title.text(),
+            text.text(), site.text(), title.attr('href'));
+
+        self.port && self.port.emit('parsed-text-ad', ad);
+    } else {
+        console.warn('askText.fail: ', text.text(), site.text());
+    }
+}
+
 function aolText(anchor) {
 
     var title = anchor.find('a.titleLinkBgPaddingAndUnderline');
@@ -179,7 +203,7 @@ function aolText(anchor) {
 
 function sogouText(anchor) {
 
-    var title = anchor.find('.bizr_title');
+    var title = anchor.find('.bizr_title a');
     var site = anchor.find('.bizr_fb');
     var text = anchor.find('.bizr_ft');
 

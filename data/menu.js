@@ -13,6 +13,8 @@ var adArray;
 
 function layoutAds(json) {
 
+    //console.log('layoutAds: '+json ? json.data : "null");
+    
     if (json && json.data) adArray = json.data;
     
     loadDOM($('#ad-list-items'), json);

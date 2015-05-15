@@ -477,7 +477,7 @@ if (typeof module == 'undefined' || !module.exports) {
             
                 var eles;
                 try {
-                    console.log('[Parse-iFrame] id='+$(this).attr('id')+" src="+$(this).attr('src'));
+                    //console.log('[Parse-iFrame] id='+$(this).attr('id')+" src="+$(this).attr('src'));
                     eles = $(this).contents().find("*").filter(checkElemHideABP);
                 } 
                 catch (e) {

@@ -252,7 +252,7 @@ function animateIcon(ms) {
 function setCounts(json) {
 
     var found = (json && json.pageCount) || 0,
-        total = (json && json.totalCount) || 0,
+        total = (json && json.totalCount) || '-',
         visited = (json && found && visitedCount(json.data)) || 0;
     
     //console.log('setCounts: '+visited+"/"+found+' of '+total+' total');

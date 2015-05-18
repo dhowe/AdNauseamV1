@@ -313,8 +313,8 @@ header{
   animation: 1500ms ease-in-out visit;
 }
 
-.ad-item.attempting,
-.ad-item-text.attempting {
+.ad-item.attempting img,
+.ad-item-text.attempting .thumb {
   animation: 200ms ease-in-out attempting infinite alternate;
 }
 

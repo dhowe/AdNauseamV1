@@ -1,0 +1,70 @@
+<html>
+    <head>
+    <title>Safe Frame Sample Doubleclick </title>
+
+    <style type="text/css">
+    
+    body{
+        border: 0;
+        margin: 0;
+        padding: 0;
+        font: Arial;
+    }
+    .title{
+        margin-top: 10px;
+        font-size: 1.3em;
+        
+    }
+    
+    </style>
+    
+
+    <script type="text/javascript" src="http://cdn.iab.net/extra/lib/js/safeframes/src/js/lib/base.js"></script>
+    <script type="text/javascript" src="http://cdn.iab.net/extra/lib/js/safeframes/src/js/host/host.js"></script>
+    <script type="text/javascript" src="http://cdn.iab.net/extra/lib/js/safeframes/src/js/lib/boot.js"></script>
+    
+    </head>
+    <body>
+<div id="top_leaderboard" style="height:90px;"></div>
+
+        <div class="title">Safe Frames Doubleclick Ad</div>
+
+
+
+
+<!-- type="text/x-safe-frame" -->
+<!-- 
+TAG based safe frames follow strict parsing rules imposed by window.JSON.parse.
+Keys MUST be inside double quote marks.  Javascript allows a much looser syntax for JSON objects
+-->
+<script type='text/x-safeframe' class='sf_data' id="sf_tag_1" >
+{
+    "id" : "ad1Leader",
+    "src" : "http://ad.doubleclick.net/N3790/adj/iab.net;sz=728x90",
+    "conf" : 
+        {
+        "size" : "728x90",
+        "dest": "top_leaderboard"
+        }
+} 
+</script> 
+
+    
+        <script type="text/javascript">
+        /**
+        * Initialize a new SafeFrames publisher configuration
+        */
+            (function() {
+                var conf    = new $sf.host.Config({
+                    renderFile:     "http://cdn.iab.net/extra/lib/js/safeframes/src/html/r.html",
+                    positions: {}
+                });
+
+            })();
+        
+        
+        </script>
+        
+
+    </body>
+</html>

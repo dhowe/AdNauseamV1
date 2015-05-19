@@ -186,6 +186,7 @@ function setCurrent(json) {
     //log('menu::setCurrent: '+(json.current?json.current.id:-1));
     
     $('.ad-item').removeClass('attempting');
+    $('.ad-item-text').removeClass('attempting');
 
     // update the class for ad being attempted
     json && json.current && $('#ad' + json.current.id).addClass('attempting');

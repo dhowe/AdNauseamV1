@@ -278,12 +278,14 @@ header{
 
 @keyframes visit {
   from {
+    opacity: 0.6;
     background: #BD10E0;
   }
 }
 
 @keyframes failed {
   from {
+    opacity: 0.6;
     background: #B80606;
   }
 }
@@ -308,8 +310,7 @@ header{
   border: 1px solid #BD10E0;
 }
 
-.ad-item.just-visited {
-  background: none;
+.ad-item.just-visited img {
   animation: 1500ms ease-in-out visit;
 }
 
@@ -318,7 +319,7 @@ header{
   animation: 200ms ease-in-out attempting infinite alternate;
 }
 
-.ad-item.just-visited.failed {
+.ad-item.just-visited.failed img {
   animation: 1500ms ease-in-out failed;
 }
 

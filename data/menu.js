@@ -170,6 +170,10 @@ function updateAd(json) {
     $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
         .removeClass('just-visited').addClass('just-visited');
     
+    sel = '#ad' + update.id + '.img';
+    $(sel).addClass(update.visitedTs > 0 ? 'visited' : 'failed')
+        .removeClass('just-visited').addClass('just-visited');
+        
     // update the count
     op = onPage(adArray, json.page);
     $('#visited-count').text(visitedCount(op));

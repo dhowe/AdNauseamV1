@@ -308,18 +308,28 @@ header{
   border: 1px solid #BD10E0;
 }
 
-.ad-item.just-visited {
+.ad-item.just-visited img {
   background: none;
   animation: 1500ms ease-in-out visit;
+}
+
+.ad-item.just-visited.failed img {
+  animation: 1500ms ease-in-out failed;
+}
+
+.ad-item-text.just-visited .thumb {
+  background: none;
+  animation: 1500ms ease-in-out visit;
+}
+
+.ad-item-text.just-visited.failed .thumb {
+  background: none;
+  animation: 1500ms ease-in-out failed;
 }
 
 .ad-item.attempting img,
 .ad-item-text.attempting .thumb {
   animation: 200ms ease-in-out attempting infinite alternate;
-}
-
-.ad-item.just-visited.failed {
-  animation: 1500ms ease-in-out failed;
 }
 
 .ad-item.failed img {
@@ -380,16 +390,6 @@ header{
 .ad-item-text.failed .thumb {
   border: 2px dashed #B80606;
   color: #B80606;
-}
-
-.ad-item-text.just-visited {
-  background: none;
-  animation: 1500ms ease-in-out visit;
-}
-
-.ad-item-text.just-visited.failed {
-  background: none;
-  animation: 1500ms ease-in-out failed;
 }
 
 #ad-list li cite {

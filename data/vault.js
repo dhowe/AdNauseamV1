@@ -203,6 +203,7 @@ function setItemClass($item, state) {
     States.map(function(d) {
             $item.removeClass(d);
         }); // remove-all
+        
     $item.addClass(state);
 }
 

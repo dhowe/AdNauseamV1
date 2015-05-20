@@ -383,12 +383,12 @@ header{
   color: #B80606;
 }
 
-.ad-item-text.just-visited {
+.ad-item-text.just-visited .thumb {
   background: none;
   animation: 1500ms ease-in-out visit;
 }
 
-.ad-item-text.just-visited.failed {
+.ad-item-text.just-visited.failed .thumb {
   background: none;
   animation: 1500ms ease-in-out failed;
 }

@@ -81,7 +81,13 @@ var admatchers = [
 		handler: askText,
 		name: 'ask',
         domain: 'www.ask.com'
-	},
+	}, {
+		selector: 'div[id^="div-gpt-ad-"]',
+		waitfor: ".rh",
+		handler: dailymotionText,
+		name: 'dailymotion',
+        domain: 'www.dailymotion.com'
+	}, 
 
     // img-ads ----------------------------------------------------------------
 
@@ -145,6 +151,26 @@ function imageInAnchor(name, anchor) {
     } else {
     
         console.warn('imageInAnchor.fail: ', img, targetUrl);
+    }
+}
+
+function dailymotionText(anchor) {
+    
+    log("dailymotionText()!!!!!!!!!!!!!!!!!!!!!");
+
+    var title = anchor.find('.rh10c span'),
+        site = anchor.find('.rh1110c span'),
+        text = anchor.find('.rh11000c span'),
+        targetUrl = anchor.find('a');
+
+    if (text.length && site.length && title.length) {
+
+        var ad = createTextAd('dailymotion', title.text(),
+            text.text(), site.text(), targetUrl.attr('href'));
+
+        self.port && self.port.emit('parsed-text-ad', ad);
+    } else {
+        console.warn('dailymotionText.fail: ', text, site);
     }
 }
 

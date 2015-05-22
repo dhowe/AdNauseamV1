@@ -275,27 +275,28 @@ header{
   text-align: center;
 }
 
-
+/*
 @keyframes visit {
   from {
     opacity: 0.6;
     background: #BD10E0;
   }
 }
+*/
 
-@keyframes failed {
-  from {
-    opacity: 0.6;
-    background: #B80606;
-  }
+@keyframes visit-marker {
+  0%   { width: 0 }
+  50%  { width: 400px; left: 0 }
+  100% { width: 0; left: 400px }
 }
-@keyframes border-ani {
-  from { border-left-width: 0 }
-  to 	 { border-left-width: 5px }
+@keyframes failed-marker {
+  0%   { width: 0 }
+  50%  { width: 400px}
+  100% { width: 0 }
 }
-@keyframes attempting {
-  from { opacity: 0.6 }
-  to 	 { opacity: 1 }
+@keyframes attempting-marker {
+  from { width: 0 }
+  to 	 { width: 5px }
 }
 /* -------------------------------------------------- */
  .ad-item img {
@@ -309,13 +310,9 @@ header{
 .ad-item.visited img {
     border: 1px solid #BD10E0;
 }
-.ad-item.just-visited {
-    background: none;
-    animation: 1500ms ease-in-out visit;
-}
-.ad-item.attempting::before,
-.ad-item-text.attempting::before {
-  border-left: 0px solid #0076FF;
+.ad-item::before,
+.ad-item-text::before {
+  background: #0076FF;
   content: "";
   display:block;
   height: 80px;
@@ -324,8 +321,22 @@ header{
   position: absolute;
   top: 0;
   left: 0;
-  animation: 200ms ease-in-out border-ani infinite alternate;
 }
+.ad-item.just-visited::before,
+.ad-item-text.just-visited::before {
+  background: #BD10E0;
+  animation: 700ms ease-in-out visit-marker;
+}
+.ad-item.attempting::before,
+.ad-item-text.attempting::before {
+  animation: 200ms ease-in-out attempting-marker infinite alternate;
+}
+.ad-item.just-visited.failed::before,
+.ad-item-text.just-visited.failed::before {
+  background: #B80606;
+  animation: 1000ms ease-in-out failed-marker;
+}
+
 
 /*
 .ad-item.attempting::before,
@@ -348,11 +359,11 @@ header{
 .ad-item-text.attempting .thumb {
   animation: 200ms ease-in-out attempting infinite alternate;
 }
-*/
 
 .ad-item.just-visited.failed img {
   animation: 1500ms ease-in-out failed;
 }
+*/
 
 .ad-item.failed img {
   border-color: #B80606;

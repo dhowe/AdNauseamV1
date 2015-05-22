@@ -314,10 +314,27 @@ header{
   animation: 1500ms ease-in-out visit;
 }
 
+
+.ad-item.attempting::before,
+.ad-item-text.attempting::before {
+  content: "";
+  display:block;
+  height: 80px;
+  width: 400px;
+  background: transparent url("img/attempting.png") repeat scroll 0% 0%;
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.5;
+}
+
+/*
 .ad-item.attempting img,
 .ad-item-text.attempting .thumb {
   animation: 200ms ease-in-out attempting infinite alternate;
 }
+*/
 
 .ad-item.just-visited.failed img {
   animation: 1500ms ease-in-out failed;

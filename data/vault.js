@@ -1,7 +1,7 @@
 /*jslint browser: true*/
 
 /*global
-    gAds: true, gAdSets: true, self, createSlider, log, warn, targetDomain, alert,
+    gAds: true, gAdSets: true, self, imagesLoaded, createSlider, log, warn, targetDomain, alert,
     rand, error, Type, AdSet, byField, showAlert, Packery, computeHashKey, toAdArray,
     TEXT_MINW, TEXT_MAXW, TEST_APPEND_IDS, TEST_ADS, TEST_MODE, TEST_PAGE
 */
@@ -1111,13 +1111,17 @@ function createAdSets(ads) { // once per layout
 
 function repack() {
 
-    var $container = $('#container'),
-        $items = $(".item"),
-        visible = $items.length;
+    
+    var $items = $(".item"),
+        visible = $items.length,
+        $container = $('#container');
 
+    $('#loading-img').show();
     showAlert(visible ? false : 'no ads found');
 
-    $container.imagesLoaded(function() {
+    console.log('creating loader');
+
+    var loader = imagesLoaded($container, function() {
 
             if (visible > 1) {
 
@@ -1131,7 +1135,8 @@ function repack() {
 
                 storeItemLayout($items);
                 positionAds($items);
-            } else if (visible == 1) {
+            } 
+            else if (visible == 1) {
 
                 $items.css({ // center single
 
@@ -1141,5 +1146,20 @@ function repack() {
 
                 storeItemLayout($items);
             }
+            
+            console.log("LOADED!");
+            $('#loading-img').hide();
+            
         });
+        
+    /*var countImages = $('#container.item img').size();
+    
+    loader.on( 'progress', function(inst, image) {
+    
+        var result = image.isLoaded ? 'loaded' : 'broken';
+        var countLoadedImages = $('##container.item img.loaded').size();
+        var per = 100 * (countLoadedImages / countImages) + '%';
+        console.log(per+"%");
+    });*/
+
 }

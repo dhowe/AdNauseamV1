@@ -1111,15 +1111,12 @@ function createAdSets(ads) { // once per layout
 
 function repack() {
 
-    
     var $items = $(".item"),
         visible = $items.length,
         $container = $('#container');
 
     $('#loading-img').show();
     showAlert(visible ? false : 'no ads found');
-
-    console.log('creating loader');
 
     var loader = imagesLoaded($container, function() {
 
@@ -1147,9 +1144,7 @@ function repack() {
                 storeItemLayout($items);
             }
             
-            console.log("LOADED!");
-            $('#loading-img').hide();
-            
+            $('#loading-img').hide();            
         });
         
     /*var countImages = $('#container.item img').size();

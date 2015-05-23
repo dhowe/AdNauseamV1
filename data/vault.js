@@ -69,7 +69,7 @@ function updateAd(json) {
 
 function setCurrent(json) { // not active
 
-    if (1) return; // TODO: Disabled pending resolution of #151
+    if (0) return; // TODO: Disabled pending resolution of #151
 
     //log('vault::setCurrent: '+(json.current?json.current.id:-1));
 

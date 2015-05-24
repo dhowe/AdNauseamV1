@@ -44,7 +44,7 @@ function layoutAds(json) {
 
 function updateAd(json) {
 
-    log('vault.js::updateAd');
+    //log('vault.js::updateAd');
 
     // update class/title/visited/resolved-url
     doUpdate(json.update);
@@ -58,7 +58,7 @@ function setAttempting(current) {
 
     if (!current) return;
     
-    log('vault.js::setAttempting');
+    //log('vault.js::setAttempting');
 
     var groupInfo = findAdById(current.id),
         $item;
@@ -74,7 +74,7 @@ function setAttempting(current) {
 
 function setCurrent(json) {
 
-    log('vault::setCurrent: '+(json.current?json.current.id:-1));
+    //log('vault::setCurrent: '+(json.current?json.current.id:-1));
 
     $('.item').removeClass('attempting just-visited just-failed');
 
@@ -450,11 +450,11 @@ function appendBulletsTo($div, adset) {
 
     if (count > 1) {
 
-        var $bullets = $('<div/>', {
-                class: 'bullets'
-            }).appendTo($div),
-            $ul = $('<ul/>', {}).appendTo($bullets);
-
+        var $bullets = $('<div/>', { class: 'bullets' }).appendTo($div);
+        
+        // TODO: add height of image to <ul> height:    
+        var $ul = $('<ul/>', { height: $div.height() }).appendTo($bullets);
+        
         // add items based on count/state
         for (var i = 0; i < adset.count(); i++) {
 

@@ -387,17 +387,26 @@ div.bullets { display: none; } /* hide by default */
 
 .item.inspected div.bullets{
 	display: block;
-	width: 15px;
 	height: auto;
 	position: absolute;
+	/*
+	width: 15px;
 	left: -18px;
-	bottom: 105px;
+	*/
+	width: 36px;
+	left: -39px;
+	direction: rtl;
+	bottom: 110px;
 }
 
 .bullets ul {
 	padding: 0;
 	margin: 0;
 	list-style: none;
+	-moz-column-width: 21px;
+	-moz-column-gap: 0px;
+	display: inline-block;
+	height: inherit;
 }
 
 .bullets ul li {
@@ -408,8 +417,12 @@ div.bullets { display: none; } /* hide by default */
 	border-radius: 6px;
 }
 
+.bullets ul li:first-child{
+	margin-top: 0;
+}
+
 .bullets ul li.active{
-	margin: 9px 0;
+	margin: -3px 0;
 	height: 6px;
 	width: 6px;
 }

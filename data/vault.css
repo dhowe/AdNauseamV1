@@ -390,7 +390,7 @@ div.bullets { display: none; } /* hide by default */
 	height: auto;
 	position: absolute;
 	width: 36px;
-	left: -39px;
+	left: -45px;
 	direction: rtl;
 	bottom: 110px;
 }
@@ -406,20 +406,26 @@ div.bullets { display: none; } /* hide by default */
 }
 
 .bullets ul li {
-	margin: 12px 3px;
+	margin: 0px 3px;
 	height: 6px;
 	width: 6px;
 	border-radius: 6px;
-}
-
-.bullets ul li:first-child {
-	margin-top: 0;
+	display: inline-block;
 }
 
 .bullets ul li.active{
 	margin: -3px 0;
-	border: 3px solid transparent;
-	background: none !important;
+	height:12px;
+	width: 12px;
+}
+.bullets ul li.active::before{
+	content: "";
+	background: black;
+	width: 6px;
+	height: 6px;
+	margin: 3px;
+	border-radius: 6px;
+	display: block;
 }
 
 /* META LIST */
@@ -492,20 +498,14 @@ div.bullets { display: none; } /* hide by default */
 	background-color: #B80606;
 }
 
-.inspected .bullets .pending.active,
 .inspected.pending .target .inspected-title {
 	color: #0076FF;
-	border-color: #0076FF;
 }
-.inspected .bullets .visited.active,
 .inspected.visited .target .inspected-title  {
 	color: #A020F0;
-	border-color: #A020F0;
 }
-.inspected .bullets .failed.active,
 .inspected.failed .target .inspected-title  {
 	color: #B80606;
-	border-color: #B80606;
 }
 
 .inspected .target cite{

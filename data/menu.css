@@ -291,7 +291,7 @@ header{
 }
 @keyframes failed-marker {
   0%   { width: 0 }
-  50%  { width: 400px}
+  40%  { width: 400px}
   100% { width: 0 }
 }
 @keyframes attempting-marker {
@@ -325,16 +325,17 @@ header{
 .ad-item.just-visited::before,
 .ad-item-text.just-visited::before {
   background: #BD10E0;
-  animation: 700ms ease-in-out visit-marker;
-}
-.ad-item.attempting::before,
-.ad-item-text.attempting::before {
-  animation: 200ms ease-in-out attempting-marker infinite alternate;
+  animation: 1000ms ease-in-out visit-marker;
 }
 .ad-item.just-visited.failed::before,
 .ad-item-text.just-visited.failed::before {
   background: #B80606;
-  animation: 1000ms ease-in-out failed-marker;
+  animation: 1200ms ease-in-out failed-marker;
+}
+.ad-item.attempting::before,
+.ad-item-text.attempting::before {
+  background: #0076FF;
+  animation: 200ms ease-in-out attempting-marker infinite alternate;
 }
 
 

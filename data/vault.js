@@ -7,10 +7,10 @@
 */
 
 const LogoURL = 'http://dhowe.github.io/AdNauseam/',
-States = ['pending', 'visited', 'failed'],
-Zooms = [100, 50, 25, 12.5, 6.25],
-EnableContextMenu = 1,
-MaxPerSet = 9;
+    States = ['pending', 'visited', 'failed'],
+    Zooms = [100, 50, 25, 12.5, 6.25],
+    EnableContextMenu = 1,
+    MaxPerSet = 9;
 
 var zoomStyle, zoomIdx = 0,
     animatorId, animateMs = 2000,
@@ -27,22 +27,7 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 self.port && self.port.on('set-current', setCurrent); // ad attempt
 
-/*
-createSlider -> runFilter -> doLayout
-*/
-
-$("body").mousewheel(function(e, delta) {
-
-        if ($('#container').hasClass('lightbox')) {
-            lightboxMode(false);
-            return;
-        }
-
-        if (delta > 0) // scrolling mousewheel outward
-            zoomIn();
-        else
-            zoomOut(); // scrolling inward
-    });
+/* createSlider -> runFilter -> doLayout */
 
 function layoutAds(json) {
 
@@ -59,36 +44,41 @@ function layoutAds(json) {
 
 function updateAd(json) {
 
+    log('vault.js::updateAd');
+
     // update class/title/visited/resolved-url
     doUpdate(json.update);
 
-    setCurrent(json);
-
+    setAttempting(json.current);
+            
     computeStats(gAdSets);
 }
 
-function setCurrent(json) { // not active
+function setAttempting(current) {
 
-    if (0) return; // TODO: Disabled pending resolution of #151
+    if (!current) return;
+    
+    log('vault.js::setAttempting');
 
-    //log('vault::setCurrent: '+(json.current?json.current.id:-1));
+    var groupInfo = findAdById(current.id),
+        $item;
 
-    $('.item').removeClass('attempting');
+    if (groupInfo) {
 
-    if (json.current) {
+        $item = findItemDivByGid(groupInfo.group.gid);
 
-        var groupInfo = findAdById(json.current.id),
-            $item;
-
-        if (groupInfo) {
-
-            $item = findItemDivByGid(groupInfo.group.gid);
-
-            // update the class for ad being attempted
-            $item && $item.addClass('attempting');
-        }
-
+        // update the class for ad being attempted
+        $item && $item.addClass('attempting');
     }
+}
+
+function setCurrent(json) {
+
+    log('vault::setCurrent: '+(json.current?json.current.id:-1));
+
+    $('.item').removeClass('attempting just-visited just-failed');
+
+    setAttempting(json.current);
 }
 
 function doLayout(adsets) {
@@ -184,15 +174,14 @@ function doUpdate(updated) {
         return;
     }
 
+    $('.item').removeClass('attempting just-visited just-failed');
+
     // update the ad data
     updateMetaTarget($item.find('.target[data-idx=' + adset.index + ']'), updated);
 
-    // update the class (just-visited)
-    itemClass = updated.visitedTs > 0 ? 'just-visited' : 'just-failed';
-    $item.addClass(itemClass).siblings()
-        .removeClass('just-visited')
-        .removeClass('just-failed');
-
+    // update the class
+    $item.addClass(updated.visitedTs > 0 ? 'just-visited' : 'just-failed');
+    
     setItemClass($item, adset.groupState());
 
     (adset.count() > 1) && bulletIndex($item, adset);
@@ -577,6 +566,7 @@ function formatDate(ts) {
         ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) +
         meridian.toLowerCase();
 }
+
 
 function enableLightbox() {
 
@@ -963,8 +953,7 @@ function addInterfaceHandlers(ads) {
             (e.keyCode == 27) && lightboxMode(false); // esc
         });
 
-    /////////// DRAG-STAGE ///////////
-    // (from: http://jsfiddle.net/robertc/kKuqH/)
+    /////////// DRAG-STAGE ///////// from: http://jsfiddle.net/robertc/kKuqH/
 
     var dm = document.querySelector('#container');
     if (dm) {
@@ -972,6 +961,7 @@ function addInterfaceHandlers(ads) {
         dm.addEventListener('dragstart', dragStart, false);
         dm.addEventListener('dragover', dragOver, false);
         dm.addEventListener('dragend', dragEnd, false);
+        
     } else {
 
         log("NO #CONTAINER!");
@@ -1063,6 +1053,20 @@ function addInterfaceHandlers(ads) {
                 $(".custom-menu").hide(100); // close context-menu
             });
     }
+    
+    $("body").mousewheel(function(e, delta) {
+    
+            if ($('#container').hasClass('lightbox')) {
+            
+                lightboxMode(false);
+                return;
+            }
+    
+            if (delta > 0) // scrolling mousewheel outward
+                zoomIn();
+            else
+                zoomOut(); // scrolling inward
+        });
 }
 
 function createAdSets(ads) { // once per layout

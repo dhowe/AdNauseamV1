@@ -389,12 +389,8 @@ div.bullets { display: none; } /* hide by default */
 	display: block;
 	height: auto;
 	position: absolute;
-	/*
-	width: 15px;
-	left: -18px;
-	*/
 	width: 36px;
-	left: -39px;
+	left: -45px;
 	direction: rtl;
 	bottom: 110px;
 }
@@ -410,21 +406,26 @@ div.bullets { display: none; } /* hide by default */
 }
 
 .bullets ul li {
-	margin: 15px 3px;
-	height: 0px;
-	width: 0px;
-	border: 3px solid white;
+	margin: 0px 3px;
+	height: 6px;
+	width: 6px;
 	border-radius: 6px;
-}
-
-.bullets ul li:first-child{
-	margin-top: 0;
+	display: inline-block;
 }
 
 .bullets ul li.active{
 	margin: -3px 0;
-	height: 6px;
+	height:12px;
+	width: 12px;
+}
+.bullets ul li.active::before{
+	content: "";
+	background: black;
 	width: 6px;
+	height: 6px;
+	margin: 3px;
+	border-radius: 6px;
+	display: block;
 }
 
 /* META LIST */
@@ -487,20 +488,24 @@ div.bullets { display: none; } /* hide by default */
 	color: #aaa;
 }
 
-.inspected .bullets .pending,
+.inspected .bullets .pending {
+	background-color: #0076FF;
+}
+.inspected .bullets .visited {
+	background-color: #A020F0;
+}
+.inspected .bullets .failed {
+	background-color: #B80606;
+}
+
 .inspected.pending .target .inspected-title {
 	color: #0076FF;
-	border-color: #0076FF;
 }
-.inspected .bullets .visited,
 .inspected.visited .target .inspected-title  {
 	color: #A020F0;
-	border-color: #A020F0;
 }
-.inspected .bullets .failed,
 .inspected.failed .target .inspected-title  {
 	color: #B80606;
-	border-color: #B80606;
 }
 
 .inspected .target cite{

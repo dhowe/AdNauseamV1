@@ -31,9 +31,9 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 
 function layoutAds(json) {
 
-    //log('vault.js::layoutAds');
-
     gAds = json.data; // store
+    
+    //log('vault.js::layoutAds -> '+gAds.length);
 
     addInterfaceHandlers();
 
@@ -347,16 +347,15 @@ function appendDisplayTo($div, adset) {
     var $ad = $('<div/>', {
             class: 'ad'
         }).appendTo($div);
-    var total = adset.count();
-
-    var $span = $('<span/>', {
+        
+    $('<span/>', {
 
             class: 'counter',
-            text: total
+            text: adset.count()
 
         }).appendTo($ad);
 
-    var $cv = $('<span/>', {
+    $('<span/>', {
 
             id: 'index-counter',
             class: 'counter counter-index',
@@ -364,11 +363,12 @@ function appendDisplayTo($div, adset) {
 
         }).appendTo($ad).hide();
 
-    var img = $('<img/>', {
+    $('<img/>', {
 
             src: adset.child(0).contentData.src,
 
-            onerror: "this.onerror=null; this.width=80; this.height=40; " + "this.alt='unable to load image'; this.src='img/placeholder.svg'",
+            onerror: "this.onerror=null; this.width=80; this.height=40; " + 
+                "this.alt='unable to load image'; this.src='img/placeholder.svg'",
 
         }).appendTo($ad);
 }
@@ -387,14 +387,14 @@ function appendTextDisplayTo($pdiv, adset) {
 
         }).appendTo($pdiv);
 
-    var $span = $('<span/>', {
+    $('<span/>', {
 
             class: 'counter',
             text: total
 
         }).appendTo($div);
 
-    var $cv = $('<span/>', {
+    $('<span/>', {
 
             id: 'index-counter',
             class: 'counter counter-index',
@@ -452,8 +452,15 @@ function appendBulletsTo($div, adset) {
 
         var $bullets = $('<div/>', { class: 'bullets' }).appendTo($div);
         
-        // TODO: add height of image to <ul> height:    
-        var $ul = $('<ul/>', { height: $div.height() }).appendTo($bullets);
+        var adHeight = adset.child(0).contentType === 'text' ? 
+            $div.height() : $div.find('img').height();
+        
+        // TODO: add height of image to <ul> height:
+        // DO WE NEED TO SCALE HERE?    
+        var $ul = $('<ul/>', { height: adHeight }).appendTo($bullets);
+        
+        //var scaledHeight = Zooms[zoomIdx] / 100;
+        //log('img-height: '+adHeight+ " div.height: "+$div.height()+ " scaled: "+scaledHeight));
         
         // add items based on count/state
         for (var i = 0; i < adset.count(); i++) {
@@ -666,6 +673,7 @@ function storeViewState(store) {
         viewState.zoomIdx = zoomIdx;
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;
+        
     } else { // restore
 
         setZoom(zoomIdx = viewState.zoomIdx);
@@ -1071,7 +1079,7 @@ function addInterfaceHandlers(ads) {
 
 function createAdSets(ads) { // once per layout
 
-    //log('Vault-Slider.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
+    log('Vault-Slider.createAdSets: '+ads.length+'/'+ gAds.length+' ads');
 
     var key, ad, hash = {}, adsets = [];
 
@@ -1100,14 +1108,7 @@ function createAdSets(ads) { // once per layout
 
     for (i = 0, j = adsets.length; i < j; i++) {
 
-
         adsets[i].children.sort(byField('-foundTs'));
-
-        /* NOTE: ads ignored here if over MaxPerSet in any AdSet
-        if (adsets[i].children.length > MaxPerSet)
-            log("AdSet#"+adsets[i].id()+" ignoring "+(adsets[i]
-                .children.length-MaxPerSet)+" ads (over limit of "+MaxPerSet+")");
-        adsets[i].children = adsets[i].children.splice(0, MaxPerSet);*/
     }
 
     return adsets;
@@ -1115,11 +1116,13 @@ function createAdSets(ads) { // once per layout
 
 function repack() {
 
-    var $items = $(".item"),
+    var done = false,
+        $items = $(".item"),
         visible = $items.length,
         $container = $('#container');
 
-    $('#loading-img').show();
+    setTimeout(function() { if (!done) $('#loading-img').show(); }, 2000);
+    
     showAlert(visible ? false : 'no ads found');
 
     var loader = imagesLoaded($container, function() {
@@ -1148,7 +1151,8 @@ function repack() {
                 storeItemLayout($items);
             }
             
-            $('#loading-img').hide();            
+            done = true;
+            $('#loading-img').hide();       
         });
         
     /*var countImages = $('#container.item img').size();

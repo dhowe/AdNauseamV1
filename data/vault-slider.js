@@ -129,12 +129,16 @@ function createSlider(relayout) {
 
 	    gMin = ext[0], gMax = ext[1];
 	    
-        if (gMax - gMin <= 1) return; // fix for gh #100
+        if (gAds.length !== 1 && gMax - gMin <= 1) {
+        
+            //log('vault.js::ignore-micro: '+ext[0]+","+ext[1]);
+            return; // fix for gh #100
+        }
         	
 		var filtered = dateFilter(gMin, gMax);
 		
 		// only create the adsets once, else filter
-		if (!gAdSets) 
+		if (!gAdSets)
             return (gAdSets = createAdSets(filtered));
 		else 
             return filterAdSets(filtered);            

@@ -121,6 +121,12 @@ var admatchers = [
         name: 'rednoise-test',
         handler: imageInAnchor.bind(null, 'rednoise-test'),
         domain: 'rednoise.org'
+    }, {
+        selector: '.bomAd',     // #315
+        waitfor: "div[id^='ebDiv']",
+        name: 'tomshardware',
+        handler: imageInAnchor.bind(null, 'tomshardware'),
+        domain: 'www.tomshardware.com'
     }
 
     //{ selector: ".ad, .widead", waitfor: "iframe > a", handler: msnImg, name: 'msn' },

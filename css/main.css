@@ -223,6 +223,103 @@ section p a:visited {
 }
 
 /* ==========================================================================
+   Press Page
+   ========================================================================== */
+.gd-section{
+  margin:0 -10px;
+   width: 100%;
+   float: left; 
+}
+.press{
+  margin:5rem 0;
+}
+.languagelist{
+  text-align:center;
+  list-style-type: none;
+  width:330px;
+  margin:-2rem auto;
+  padding:0;
+}
+.languagelist li{
+  float:left;
+  text-decoration: none;
+  padding:0.5rem;
+  font-size: 1rem;
+  color:white;
+  font-family: 'BebasNeue';
+  font-weight: 200;
+  color:#ccc;
+}
+.languagelist li:hover{
+  color:#B3D4FC;
+}
+.languagelist:hover >li{
+  color:white;
+}
+.language{
+  font-size:1.8rem;
+  font-family: 'BebasNeue';
+  font-weight: 300;
+  text-align: center;
+}
+.col{
+  width:290px;
+  float:left;
+  margin:10px;
+}
+.col2{
+  width:620px;
+  float:left;
+  margin:10px;
+}
+.pressdiv{
+   width:278px;
+  border:solid;
+  border-color:#ccc;
+  border-width: 1px;
+  padding:10px;
+  margin:10px 0;
+}
+.superwidth{
+  width:510px;
+}
+.pressdiv p{
+  color:#ccc;
+  line-height: 1.2rem;
+  margin:0.3rem;
+  text-decoration: none;
+}
+.press a{
+  text-decoration: none;
+}
+.center p{
+  text-align: center;
+}
+.pressdiv:hover{
+  border-color:#B144F2;
+}
+.whitebg{
+  background-color: white;
+  width:276px !important;
+  border-width: 2px;
+  border-color:white;
+}
+.whitebg p{
+  color:black;
+}
+
+header h2{
+  font-size: 2.2rem;
+  font-family: 'BebasNeue';
+  color:#B144F2;
+
+}
+
+
+
+
+
+/* ==========================================================================
    Media Queries
    ========================================================================== */
 
@@ -231,6 +328,21 @@ section p a:visited {
     width: 94%;
     padding: 0 3%;
     margin-top: 3%;
+  }
+  .press {
+  width:500px;
+  margin:auto;
+  }
+  .col{
+    float:none;
+    margin:auto;
+  }
+  .col2{
+    width:290px;
+  }
+  .superwidth{
+    width:278px;
+    height:100px;
   }
   section>p{
     margin: 1em auto;
@@ -323,14 +435,32 @@ section p a:visited {
                transform: translateY(0);
      }
   }
-}
 
+
+   /* ===============
+      Press Page
+     =============== */
+
+   .press{
+    margin-top: 475px;
+   }
+   header h2{
+     position: absolute;
+    left: 550px; top: 367px;
+   }
+    .languagelist{
+      position:absolute;
+  top:400px;
+  left:330px;
+  margin:1rem auto;
+  }
+}
+  
 @media only screen and (min-width: 1140px) {
 
 /* ===============
     Maximal Width
    =============== */
-
     .wrapper {
         width: 1026px; /* 1140px - 10% for margins */
     }

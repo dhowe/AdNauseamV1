@@ -11,6 +11,7 @@
     "version": "1.23",
     "homepage": "http://adnauseam.io",
     "permissions": { 
+        "private-browsing": true,
         "cross-domain-content": [ 
             "http://tpc.googlesyndication.com", 
             "https://tpc.googlesyndication.com",

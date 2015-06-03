@@ -21,7 +21,43 @@ var zoomStyle, zoomIdx = 0,
         top: '-5000px'
     };
 
-var locale = self.options && self.options.locale; // for localization
+var locale;
+
+if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
+    console.log("TEST_MODE enabled!");
+    locale = {
+        mon: "Monday",
+        tue: "tuesday",
+        wed: "Wednesday",
+        thu: "Thursday",
+        fri: "Friday",
+
+        sat: "Saturday",
+        sun: "Sunday",
+
+        jan: "January",
+        feb: "February",
+        mar: "March",
+        apr: "April",
+        may: "May",
+        jun: "June",
+        jul: "Junly",
+        aug: "August",
+        sep: "September",
+        oct: "October",
+        nov: "November",
+        dec: "December",
+
+        am: "am",
+        pm: "pm",
+        
+        target: "TARGET",
+        foundOn: "FOUND ON",
+        notYetVisited: "Not Yet Visited"
+    };
+}
+else
+    locale = self.options && self.options.locale; // for localization
 
 self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some

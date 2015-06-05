@@ -23,8 +23,12 @@ We conceptualize AdNauseam within a broader class of software systems that serve
 
 #### Can I contribute?
 --------
-Absolutely! We are looking for more coders and designers to help... Just press *Fork* at the top of this github page and get started...
+Absolutely! You can help translating AdNauseam on [Crowdin](https://crowdin.com/project/adnauseam).
+
+We are also looking for more coders and designers to help... Just press *Fork* at the top of this github page and get started...
 If you're not sure where to start, look at the issues labeled [HELP US CODE](https://github.com/dhowe/AdNauseam/labels/HELP-US-CODE). Thanks!
+
+
 
 
 

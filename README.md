@@ -25,9 +25,7 @@ We conceptualize AdNauseam within a broader class of software systems that serve
 --------
 Absolutely! We are looking for coders, designers, and translators to help on the project.
 
-If you'd like to contribute a translation, visit [this page](https://crowdin.com/project/adnauseam).
-
-If you are a coder or designer, just press *Fork* at the top of this github page and get started...
+If you are a coder or designer, just press *Fork* at the top of this github page and get started... Or, if you'd like to contribute a translation, please visit [this page](https://crowdin.com/project/adnauseam).
 
 If you're not sure where to start, look at the issues labeled [HELP US CODE](https://github.com/dhowe/AdNauseam/labels/HELP-US-CODE). Thanks!
 

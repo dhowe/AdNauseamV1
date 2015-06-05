@@ -40,7 +40,7 @@ If you're not sure where to start, look at the issues labeled [HELP US CODE](htt
 1. Checkout the code with your favorite git tool, or via the command-line: 
 
     ```bash
-    $ git checkout https://github.com/dhowe/AdNauseam.git
+    $ git clone https://github.com/dhowe/AdNauseam.git
     ```
 
 2. With an up-to-date version of Firefox, install and activate the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)

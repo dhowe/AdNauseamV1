@@ -230,6 +230,7 @@ section p a:visited {
    width: 100%;
    float: left; 
 }
+
 .press{
   margin:5rem 0;
 }
@@ -404,6 +405,7 @@ header h2{
   }
 
   #logo     {left: 376px; top: 281px;}
+  .subpage {top:255px !important;}
   #tagline  {left: 429px; top: 473px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p1       {left: 429px; top: 570px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p2       {left: 165px; top: 955px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
@@ -467,30 +469,42 @@ header h2{
    /* ===============
       Press Page
      =============== */
-
+  
    .press{
     margin-top: 475px;
+    margin-left: -11px;
    }
    header h2{
-     position: absolute;
-    left: 550px; top: 367px;
+    position: absolute;
+    
+    top: 343px;
+   }
+   #PressHeader{
+    left: 357px; 
    }
     .languagelist{
-      position:absolute;
-  top:400px;
-  left:330px;
+  position:absolute;
+  top:415px;
+  left:295px;
   margin:1rem auto;
+  }
+  .language{
+    padding-right:16px;
   }
 
    /* ===============
       Privacy Page
      =============== */
+  #PrivacyHeader{
+    left: 365px; 
+   }
   .policy{
-    margin-top: 475px;
+    margin-top: 455px;
     padding-right:30px;
    } 
    .gd-center {
     width: 720px;
+
   }
 }
   
@@ -506,7 +520,10 @@ header h2{
     padding-right:110px;
    }
    .language{
-     padding-right:110px;
+     padding-right:102px;
+   }
+   .center{
+    padding-right: 16px;
    }
 
 }

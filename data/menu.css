@@ -205,8 +205,9 @@ header{
 
 #stats {
   text-align: center;
-  padding: 26px 10px 0;
+  padding: 15px 10px 0;
   height: 100px;
+  position: relative;
 }
 
 #stats .visited{
@@ -218,8 +219,10 @@ header{
 }
 
 #vault-btn {
-  margin-top: 10px;
-  position: relative;
+  margin: 9px;
+  position: absolute;
+  bottom: 5px;
+  right: 20px;
 }
 
 #vault-btn button {

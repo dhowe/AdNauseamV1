@@ -315,8 +315,35 @@ header h2{
 
 }
 
+/* ==========================================================================
+   Privacy Policy Page
+   ========================================================================== */
+.gd-center {
+    width: 100%;
+    margin: 0 auto;
+}
 
 
+.p_special {
+  text-transform: uppercase;
+  color:white !important;
+  font-size:1.8rem;
+  font-family: 'BebasNeue';
+  font-weight:300;
+}
+.policy h3{
+  text-decoration: none;
+  font-size: 1.5rem;
+  color:white;
+  font-family: 'BebasNeue';
+  font-weight: 200;
+  color:#BD10E0;
+}
+
+.policy p{
+  font-weight:300;
+  color:#BAD2ED;
+}
 
 
 /* ==========================================================================
@@ -454,6 +481,17 @@ header h2{
   left:330px;
   margin:1rem auto;
   }
+
+   /* ===============
+      Privacy Page
+     =============== */
+  .policy{
+    margin-top: 475px;
+    padding-right:30px;
+   } 
+   .gd-center {
+    width: 720px;
+  }
 }
   
 @media only screen and (min-width: 1140px) {
@@ -464,6 +502,13 @@ header h2{
     .wrapper {
         width: 1026px; /* 1140px - 10% for margins */
     }
+     .policy{
+    padding-right:110px;
+   }
+   .language{
+     padding-right:110px;
+   }
+
 }
 
 /* ==========================================================================

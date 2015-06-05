@@ -37,7 +37,7 @@ If you're not sure where to start, look at the issues labeled [HELP US CODE](htt
 
 ##### Developing on Firefox
 
-1. Checkout the code with your favorite git tool, or via the command-line: 
+1. [Fork and clone](https://help.github.com/articles/fork-a-repo) this repository: 
 
     ```bash
     $ git clone https://github.com/dhowe/AdNauseam.git

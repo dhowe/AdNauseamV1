@@ -423,6 +423,8 @@ header h2{
   #chrome   {left: 615px; top: 915px; -webkit-animation-delay: 3000ms; animation-delay: 3000ms}
   #twitter  {left: 428px; top: 910px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
   #facebook {left: 779px; top: 1250px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
+  #pressblock {left: 779px; top: 1320px; -webkit-animation-delay: 2800ms; animation-delay: 2800ms}
+  #privacyblock {left: 779px; top: 1570px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
   #scrn1    {left: 516px; top: 957px; -webkit-animation-delay: 2800ms; animation-delay: 2800ms}
   #scrn2    {left: 0px;   top: 1230px;-webkit-animation-delay: 3000ms; animation-delay: 3000ms}
 

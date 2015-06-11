@@ -2,7 +2,8 @@
 
 var gAds, gAdSets, gMin, gMax; // stateful
 
-const margin = { top: 50, right: 40, bottom: 20, left: 20 },
+const height = 60;
+const margin = { top: 5, right: 40, bottom: 8, left: 20 },
     format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400;
 
 // TODO: need to verify that at least one full bar is showing
@@ -17,15 +18,15 @@ const customTimeFormat = d3.time.format.multi([
         ["%Y", function()       { return true; }]
 ]);
 
-function createSlider(relayout) {
+function createSlider(relayout, container) {
 
     //log('Vault-Slider.createSlider: '+gAds.length);
     
     if (!gAds) return;
 
     // clear all the old svg
-    d3.select("g.parent").selectAll("*").remove();
-    d3.select("svg").remove();
+    d3.select(container).select("g.parent").selectAll("*").remove();
+    d3.select(container).select("svg").remove();
 
 	// setting up the position of the chart
 	var iconW = 100, width;
@@ -65,12 +66,12 @@ function createSlider(relayout) {
 	      .ticks(7); // [dyn]
 
    // position the SVG
-   var svg = d3.select("#svgcon")
+   var svg = d3.select(container)
         .append("svg")
 	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", /*height +*/ margin.top + margin.bottom)
+	    .attr("height", height + margin.top + margin.bottom)
 	    .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	    .attr("transform", "translate(" + margin.left + "," +(height - margin.bottom) + ")");
 
    // append the x axis
    svg.append("g")                  // [ONCE]
@@ -83,7 +84,8 @@ function createSlider(relayout) {
    var bars = svg.selectAll(".bar")
        .data(histogram)
        .enter()
-       .append("g");
+       .append("g")
+       .attr('class', 'bar');
 
 	bars.append("line")
        .attr("x1", function(d) { return d.x + barw/2; })
@@ -96,8 +98,9 @@ function createSlider(relayout) {
 	var bExtent = [ computeMinDateFor(gAds, minDate), maxDate ],
         brush = d3.svg.brush()
 		.x(xScale)
-		.extent(bExtent)
-	    .on("brushend", brushend);
+		//.extent(bExtent)
+      .on("brush", brushmove);
+	    //.on("brushend", brushend);
 
 	// add the brush
 	var gBrush = svg.append("g")
@@ -108,6 +111,12 @@ function createSlider(relayout) {
 	gBrush.selectAll("rect")
 		.attr("height", 49)
 		.attr("y", -50);
+
+  gBrush.selectAll("rect").attr("height", 50);
+  gBrush.selectAll(".resize").append("path")
+        .attr("d", resizePath)
+        .attr('stroke', '#444')
+        .attr('fill','#666');
     
     // cases: 1) no-gAdSets=first time, 2) filter+layout, 3) only-slider
     var fSets = runFilter(bExtent);
@@ -120,7 +129,6 @@ function createSlider(relayout) {
 	// ---------------------------- functions ------------------------------
 	
     
-    // this is called on a brushend and on createSlider
 	function runFilter(ext) {
         
         //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
@@ -194,10 +202,28 @@ function createSlider(relayout) {
 
 	function brushstart() { }
 
-	function brushmove() { }
+	function brushmove() { 
+    doLayout(runFilter(d3.event.target.extent()));
+  }
 
 	function brushend() {
-
-        doLayout(runFilter(d3.event.target.extent()));
+    doLayout(runFilter(d3.event.target.extent()));
 	}
+
+  //handle for brush
+  function resizePath(d) {
+                var e = +(d == "e"),
+                    x = e ? 1 : -1,
+                    y = -15;
+                return "M" + (.5 * x) + "," + y
+                    + "A6,6 0 0 " + e + " " + (6.5 * x) + "," + (y + 6)
+                    + "V" + (2 * y - 6)
+                    + "A6,6 0 0 " + e + " " + (.5 * x) + "," + (2 * y)
+                    + "Z"
+                    + "M" + (2.5 * x) + "," + (y + 8)
+                    + "V" + (2 * y - 8)
+                    + "M" + (4.5 * x) + "," + (y + 8)
+                    + "V" + (2 * y - 8);
+              }
+
 }

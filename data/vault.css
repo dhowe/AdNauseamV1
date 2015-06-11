@@ -950,7 +950,9 @@ svg {
 .brush .extent {
   fill-opacity: .5;
   shape-rendering: crispEdges;
-	cursor: move;
+  cursor: move;
+  border: 1px dotted #444;
+  fill: #333;
 }
 
 .axis text {

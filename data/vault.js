@@ -73,7 +73,7 @@ function layoutAds(json) {
 
     addInterfaceHandlers();
 
-    createSlider(true);
+    createSlider(true, '#svgcon');
 
     setCurrent(json);
 }
@@ -1029,7 +1029,7 @@ function addInterfaceHandlers(ads) {
 
             clearTimeout(resizeId); // only when done
             resizeId = setTimeout(function() {
-                    createSlider(true);
+                    createSlider(true, '#svgcon');
                 }, 100);
         });
 
@@ -1082,7 +1082,7 @@ function addInterfaceHandlers(ads) {
                             });
 
                         // recreate the slider, but don't redo layout
-                        createSlider(false);
+                        createSlider(false, '#svgcon');
 
                         break;
 

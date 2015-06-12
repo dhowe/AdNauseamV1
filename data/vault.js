@@ -73,7 +73,8 @@ function layoutAds(json) {
 
     addInterfaceHandlers();
 
-    createSlider(true, '#svgcon');
+    createSlider(true, '#svgcon', 'timestamp');
+    createSlider(true, '#svgcon2', 'domain');
 
     setCurrent(json);
 }
@@ -1029,7 +1030,7 @@ function addInterfaceHandlers(ads) {
 
             clearTimeout(resizeId); // only when done
             resizeId = setTimeout(function() {
-                    createSlider(true, '#svgcon');
+                    createSlider(true, '#svgcon', 'timestamp');
                 }, 100);
         });
 
@@ -1082,7 +1083,7 @@ function addInterfaceHandlers(ads) {
                             });
 
                         // recreate the slider, but don't redo layout
-                        createSlider(false, '#svgcon');
+                        createSlider(false, '#svgcon', 'timestamp');
 
                         break;
 

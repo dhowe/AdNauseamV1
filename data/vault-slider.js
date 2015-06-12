@@ -18,9 +18,9 @@ const customTimeFormat = d3.time.format.multi([
         ["%Y", function()       { return true; }]
 ]);
 
-function createSlider(relayout, container) {
+function createSlider(relayout, container, type) {
 
-    //log('Vault-Slider.createSlider: '+gAds.length);
+    console.log(container, type);
     
     if (!gAds) return;
 
@@ -41,29 +41,68 @@ function createSlider(relayout, container) {
         throw Error("[D3] NO STAGE (page-not-ready?)");
     }
 
-  	// finding the first and last ad
-	var minDate = d3.min(gAds, function(d) { return d.foundTs; }),
+  var xScale, map;
+
+  if(type==='timestamp') {
+
+  // finding the first and last ad
+	 var minDate = d3.min(gAds, function(d) { return d.foundTs; }),
 		maxDate = d3.max(gAds, function(d) { return d.foundTs; });
 		
    // mapping the scales
-   var xScale = d3.time.scale()
+   xScale = d3.time.scale()
         .domain([minDate, maxDate])
         .range([0, width]);
 
    // create an array of dates
-   var map = gAds.map( function(d) { return parseInt(xScale(d.foundTs)); });
+   map = gAds.map( function(d) {
+    //console.log(d.foundTs, xScale(d.foundTs));
+    var date = new Date(d.foundTs);
+    //return date;
+    
+    return parseInt(xScale(d.foundTs)); 
+  });
+
+  }
+  else if(type==='domain') {
+
+   // create an array of dates
+   var values = gAds.map( function(d) { 
+      var matches = d.pageUrl.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+      var domain = matches && matches[1]; 
+      return domain; 
+
+  });
+
+   console.log('values', values);
+
+
+   // mapping the scales
+   xScale = d3.scale.ordinal()
+        .domain(values)
+        .range([0, width]);
+
+    map = values.map(xScale);
+
+
+  }
 
    // setup the histogram layout
    var histogram = d3.layout.histogram()
-      .bins(120) // how many groups? [dyn] base on width
-      //.bins(width/(barw-barg))     [dyn]
+      //.bins(120) // how many groups? [dyn] base on width
       (map);
+
+  console.log('map',map,'histogrm', histogram);
 
    // setup the x axis
    var xAxis = d3.svg.axis()
 	      .scale(xScale)
-	      .tickFormat(customTimeFormat)
-	      .ticks(7); // [dyn]
+        .ticks(7); // [dyn]
+
+  if(type==='timestamp') {
+       xAxis.tickFormat(customTimeFormat)
+
+  }    
 
    // position the SVG
    var svg = d3.select(container)
@@ -189,13 +228,35 @@ function createSlider(relayout, container) {
 
 		var filtered = [];
 
-		for (var i=0, j = gAds.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
+    if(type==='timestamp') {
 
-			if (!(gAds[i].foundTs < min || gAds[i].foundTs > max)) {
+  		for (var i=0, j = gAds.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
 
-                filtered.push(gAds[i]);
-			}
-		}
+  			if (!(gAds[i].foundTs < min || gAds[i].foundTs > max)) {
+
+                  filtered.push(gAds[i]);
+  			}
+  		}
+    }
+    else if(type==='domain') {
+      var ordinalSelection =  xScale.domain().filter(function(d){return (brush.extent()[0] <= xScale(d)) && (xScale(d) <= brush.extent()[1])}); 
+      if(ordinalSelection.length===0) {
+        return;
+      }
+      extent = [ordinalSelection[0], ordinalSelection[ordinalSelection.length-1]];
+
+      console.log(extent)
+      //use filter function to filter when ordinal
+      filtered = gAds.filter(function(d) {
+        console.log(d.pageUrl)
+        var matches = d.pageUrl.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i);
+        var domain = matches && matches[1]; 
+  
+
+        return ordinalSelection.indexOf(domain) > -1;
+      });
+    }
+
 
 		return filtered;
 	}

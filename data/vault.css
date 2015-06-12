@@ -238,7 +238,6 @@ div.tooltip {
 .svg-container {
 
 	position: absolute;
-	bottom: 0px;
 	left: 6px;
 	z-index: 100;
 	font-size: 12px;
@@ -247,6 +246,15 @@ div.tooltip {
 							-1px  1px 2px #000,
 							-1px -1px 2px #000,
 							 1px -1px 2px #000;
+}
+
+#svgcon {
+		bottom: 0px;
+
+}
+
+#svgcon2 {
+	bottom: 100px;
 }
 
 .session-sum {

@@ -254,7 +254,11 @@ div.tooltip {
 }
 
 #svgcon2 {
-	bottom: 100px;
+	bottom: 120px;
+}
+
+#svgcon3 {
+	bottom: 240px;
 }
 
 .session-sum {

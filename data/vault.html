@@ -12,6 +12,7 @@
         <script src="lib/packery.min.js"></script>
         <script src="lib/imagesloaded.pkgd.min.js"></script>
         <script src="lib/d3.min.js"></script>
+        <script src="lib/crossfilter.js"></script>
                            
         <script src="../lib/config.js"></script>
         <script>
@@ -26,7 +27,9 @@
                            $.getScript( "adset.js" ),
                            $.getScript( "shared.js" ),
                            $.getScript( "../lib/ff/adnutil.js"),
-                           $.getScript( "vault-slider.js" ),
+                           //$.getScript( "vault-slider.js" ),
+                           $.getScript( "vault-crossfilter.js"),
+                           
                            $.getScript( "vault.js" ),
                            $.Deferred(function( deferred ) {
                                 $( deferred.resolve );
@@ -67,6 +70,7 @@
 
             <div id="svgcon" class="svg-container"></div>
             <div id="svgcon2" class="svg-container"></div>
+            <div id="svgcon3" class="svg-container"></div>
 
         </div>
 

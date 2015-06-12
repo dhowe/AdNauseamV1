@@ -121,6 +121,8 @@ function setCurrent(json) {
 function doLayout(adsets) {
 
     //log('Vault.doLayout: '+adsets.length +" ad-sets, total="+numFound(adsets));
+    
+    console.log('ADSET', adsets);
 
     if (!adsets) throw Error("No ads!");
 

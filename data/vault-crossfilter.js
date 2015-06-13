@@ -197,7 +197,7 @@ function barChart() {
           g.append("clipPath")
               .attr("id", "clip-" + id)
             .append("rect")
-              .attr("width", width)
+              .attr("width", '100%')
               .attr("height", height);
           g.selectAll(".bar")
               .data(["background", "foreground"])
@@ -210,6 +210,8 @@ function barChart() {
               .attr("class", "axis")
               .attr("transform", "translate(0," + height + ")")
               .call(axis);
+
+          console.log('groupAll', group.all());
 
           //.selectAll(".tick text").attr('width', 20)
           
@@ -319,6 +321,7 @@ function barChart() {
           .call(brush.extent(extent = extent.map(round)))
         .selectAll(".resize")
           .style("display", null);
+
       // if x scale has rangePints function (x is ordinal) find selection for ordinal scale
       if(typeof x.rangePoints === "function") {
       	
@@ -331,9 +334,10 @@ function barChart() {
           return;
         }
         extent = [ordinalSelection[0], ordinalSelection[ordinalSelection.length-1]];
-        console.log('calc ',extent);
+        console.log('calc ', ordinalSelection, extent);
         //use filter function to filter when ordinal
         dimension.filterFunction(function(d) {
+        	console.log('d', d, ordinalSelection.indexOf(d));
           return ordinalSelection.indexOf(d) > -1;
         });
         //TODO clip is slightly off not higlighting when partially selected, but it passes the partially selected value
@@ -344,7 +348,7 @@ function barChart() {
       //console.log(dimension);
       g.select("#clip-" + id + " rect")
           .attr("x", x(extent[0]))
-          .attr("width", x(extent[1]) - x(extent[0]));
+          .attr("width", x(extent[1]) - x(extent[0]) + 9 );
       
       //self.selectedRanges[id] = extent;
       var filtered = dimension.top(Infinity);

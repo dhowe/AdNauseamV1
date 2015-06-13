@@ -237,16 +237,23 @@ div.tooltip {
 
 .svg-container {
 
-	position: absolute;
-	left: 6px;
+	
+	
 	z-index: 100;
 	font-size: 12px;
 	color: #999;
+	background-color: rgba(0, 0, 0, 0.7);
+	padding: 3px;
+	margin-top: 0px;
+	border-top: 2px dotted #222;
+	/*
 	text-shadow: 1px  1px 2px #000,
 							-1px  1px 2px #000,
 							-1px -1px 2px #000,
 							 1px -1px 2px #000;
+	*/
 }
+/*
 
 #svgcon {
 		bottom: 0px;
@@ -260,14 +267,29 @@ div.tooltip {
 #svgcon3 {
 	bottom: 240px;
 }
+*/
+
+.filters {
+	bottom: 0px;
+	left: 5px;
+	position: absolute;
+}
+
+.pattern1 {
+	fill: #888;
+}
+
+.pattern2 {
+	fill: #333;
+}
 
 
 .background.bar {
-  fill: #333;
+  
 }
 
 .foreground.bar {
-  fill: steelblue;
+  
 }
 
 .axis path, .axis line {
@@ -278,7 +300,12 @@ div.tooltip {
 
 .axis text {
   font: 10px sans-serif;
-  fill: #888;
+  fill: #777;
+}
+
+.axis line, .axis path {
+  
+  stroke: #333;
 }
 
 .brush rect.extent {
@@ -302,8 +329,8 @@ div.tooltip {
 
 .session-sum {
 	position: absolute;
-	bottom: 82px;
-	left: 24px;
+	bottom: 360px;
+	left: 10px;
 	z-index: 100;
 	font-size: 16px;
 	font-family: bebas_neue_regularregular;

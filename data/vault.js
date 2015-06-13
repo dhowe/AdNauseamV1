@@ -74,7 +74,7 @@ function layoutAds(json) {
     addInterfaceHandlers();
 
     createSlider(true, '#svgcon', 'timestamp');
-    createSlider(true, '#svgcon2', 'domain');
+    //createSlider(true, '#svgcon2', 'domain');
 
     setCurrent(json);
 }
@@ -122,7 +122,7 @@ function doLayout(adsets) {
 
     //log('Vault.doLayout: '+adsets.length +" ad-sets, total="+numFound(adsets));
     
-    console.log('ADSET', adsets);
+    //console.log('ADSET', adsets);
 
     if (!adsets) throw Error("No ads!");
 

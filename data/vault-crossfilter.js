@@ -1,6 +1,7 @@
 console.log('!!! CROSS-FILTER');
 
-var CHART_WIDTH = 800;
+var CHART_WIDTH = 900,
+		CHART_HEIGHT = 30
 
 
 function createSlider() {
@@ -12,6 +13,18 @@ function createSlider() {
 }
 
 function vaultCrossfilter() {
+
+	var customTimeFormat = d3.time.format.multi([
+        [".%L", function(d)     { return d.getMilliseconds(); }],
+        [":%S", function(d)     { return d.getSeconds(); }],
+        ["%I:%M", function(d)   { return d.getMinutes(); }],
+        ["%I %p", function(d)   { return d.getHours(); }],
+        ["%a %d", function(d)   { return d.getDay() && d.getDate() != 1; }],
+        ["%b %d", function(d)   { return d.getDate() != 1; }],
+        ["%B", function(d)      { return d.getMonth(); }],
+        ["%Y", function()       { return true; }]
+]);
+
 
 
 
@@ -133,11 +146,25 @@ function renderAll() {
 }
 function barChart() {
     if (!barChart.id) barChart.id = 0;
-    var margin = {top: 10, right: 10, bottom: 20, left: 10},
+    var lrMargin = Math.max(CHART_WIDTH* 0.05, 15);
+    var margin = {top: 10, right: lrMargin, bottom: 20, left: lrMargin},
         x,
-        y = d3.scale.linear().range([100, 0]),
+        y = d3.scale.linear().range([CHART_HEIGHT, 0]),
         id = barChart.id++,
-        axis = d3.svg.axis().orient("bottom"),
+        axis = d3.svg.axis().orient("bottom").tickFormat(function(d) {
+              	console.log(d);
+              	var l = 10;
+              	if(d.length && d.length>l) {
+              		var nowww = d.replace('www.','');
+              		return nowww.substring(0,l);
+              	}
+              	else if(d instanceof Date) {
+              		return customTimeFormat(d);
+              	}
+              	else {
+              		return d;
+              	}
+              }),
         brush = d3.svg.brush(),
         brushDirty,
         dimension,
@@ -183,6 +210,53 @@ function barChart() {
               .attr("class", "axis")
               .attr("transform", "translate(0," + height + ")")
               .call(axis);
+
+          //.selectAll(".tick text").attr('width', 20)
+          
+            var defs = div.select('svg').append('defs')
+						  defs.append('pattern')
+						    .attr('id', 'hatch1')
+						    .attr('patternUnits', 'userSpaceOnUse')
+						    // rotate if you're using horizontal lines
+						    // .attr('patternTransform', 'rotate(45 2 2)')
+						    .attr('width', 6)
+						    .attr('height', 6)
+						  .append('rect')
+						  	.attr('class', 'pattern1')
+						  	.attr('width', 6)
+						  	.attr('height', 4)
+						  	.attr('x', 0)
+						  	.attr('y', 1);
+						  /*
+						  .append('path')
+						    .attr('d', '"M0,0 l5,5')
+						    .attr('fill','transparent')
+						    .attr('stroke', '#BBB')
+						    .attr('stroke-width', 3);
+						    */
+
+						  defs.append('pattern')
+						    .attr('id', 'hatch2')
+						    .attr('patternUnits', 'userSpaceOnUse')
+						    // rotate if you're using horizontal lines
+						    // .attr('patternTransform', 'rotate(45 2 2)')
+						    .attr('width', 6)
+						    .attr('height', 6)
+						  .append('rect')
+						  	.attr('class', 'pattern2')
+						  	.attr('width', 6)
+						  	.attr('height', 4)
+						  	.attr('x', 0)
+						  	.attr('y', 1);
+						    /*
+						  .append('path')
+						    .attr('d', 'M0,0 l5,5')
+						    .attr('fill','transparent')
+						    .attr('stroke', '#666')
+						    .attr('stroke-width', 3);
+						    */
+          
+      
           // Initialize the brush component with pretty resize handles.
           var gBrush = g.append("g").attr("class", "brush").call(brush);
           gBrush.selectAll("rect").attr("height", height);
@@ -204,7 +278,11 @@ function barChart() {
                 .attr("width", x(extent[1]) - x(extent[0]));
           }
         }
-        g.selectAll(".bar").attr("d", barPath);
+        g.selectAll(".bar").attr("d", barPath)
+
+        g.selectAll('.foreground').attr("fill", "url(#hatch1)");
+        g.selectAll('.background').attr("fill", "url(#hatch2)");
+
       });
       function barPath(groups) {
         var path = [],
@@ -243,11 +321,17 @@ function barChart() {
           .style("display", null);
       // if x scale has rangePints function (x is ordinal) find selection for ordinal scale
       if(typeof x.rangePoints === "function") {
-        var ordinalSelection =  x.domain().filter(function(d){return (brush.extent()[0] <= x(d)) && (x(d) <= brush.extent()[1])}); 
+      	
+      	console.log('extent ',brush.extent());
+        var ordinalSelection = x.domain().filter(function(d){
+        	console.log('xd', x(d), brush.extent()[0] <= x(d), brush.extent()[1] >= x(d)); 
+        	return (brush.extent()[0] <= x(d)) && (brush.extent()[1] >= x(d))
+        }); 
         if(ordinalSelection.length===0) {
           return;
         }
         extent = [ordinalSelection[0], ordinalSelection[ordinalSelection.length-1]];
+        console.log('calc ',extent);
         //use filter function to filter when ordinal
         dimension.filterFunction(function(d) {
           return ordinalSelection.indexOf(d) > -1;
@@ -257,6 +341,7 @@ function barChart() {
       else {
         dimension.filterRange(extent);
       }
+      //console.log(dimension);
       g.select("#clip-" + id + " rect")
           .attr("x", x(extent[0]))
           .attr("width", x(extent[1]) - x(extent[0]));
@@ -333,10 +418,12 @@ function barChart() {
   }
 
 
+
+
    function filterAdSets(ads) {
 
         //log('vault-slider.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
-        console.log(ads);
+        //console.log(ads);
         
         var sets = [];
         for (var i=0, j = ads.length; i<j; i++) {

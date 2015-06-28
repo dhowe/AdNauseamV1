@@ -348,6 +348,10 @@ header h2{
   color:#BAD2ED;
 }
 
+.policy a{
+  font-weight:300;
+  color:#AAC2CD;
+}
 
 /* ==========================================================================
    Media Queries

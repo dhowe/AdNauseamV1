@@ -349,7 +349,7 @@ header h2{
 }
 
 .policy a{
-  text-decoration: none
+  text-decoration: none !important;
   font-weight:300;
   color:#eee;
 }

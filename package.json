@@ -1,6 +1,6 @@
 {
     "name": "adnauseam",
-	"main": "lib/main.js",
+	  "main": "lib/main.js",
     "fullName": "AdNauseam",
     "id": "adnauseam@rednoise.org",
     "description": "A software tool and 'artware' intervention to defend against surveillance and tracking by advertising networks",

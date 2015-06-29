@@ -50,7 +50,7 @@ if (typeof TEST_MODE != 'undefined' && TEST_MODE) {
 
         am: "am",
         pm: "pm",
-        
+
         target: "TARGET",
         foundOn: "FOUND ON",
         notYetVisited: "Not Yet Visited"
@@ -68,7 +68,7 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 function layoutAds(json) {
 
     gAds = json.data; // store
-    
+
     //log('vault.js::layoutAds -> '+gAds.length);
 
     addInterfaceHandlers();
@@ -86,14 +86,14 @@ function updateAd(json) {
     doUpdate(json.update);
 
     setAttempting(json.current);
-            
+
     computeStats(gAdSets);
 }
 
 function setAttempting(current) {
 
     if (!current) return;
-    
+
     //log('vault.js::setAttempting');
 
     var groupInfo = findAdById(current.id),
@@ -143,7 +143,7 @@ function createDivs(adsets) {
         if ($this.hasClass('inspected')) {
 
             // pause animation on mouse-over image
-            var inspectedGid = parseInt($this.attr('data-gid'));
+              var inspectedGid = parseInt($this.attr('data-gid'));
             selectedAdSet = findAdSetByGid(inspectedGid); // throws
             bulletIndex($this, selectedAdSet);
             animateInspector(false);
@@ -182,7 +182,7 @@ function layoutAd($div, adset) {
         appendTextDisplayTo : appendDisplayTo)($div, adset);
 
     appendBulletsTo($div, adset);
-    appendMetaTo($div, adset);
+    //appendMetaTo($div, adset);
 
     var state = adset.groupState();
     //log('setGroupState: '+$div.length,state);
@@ -217,7 +217,7 @@ function doUpdate(updated) {
 
     // update the class
     $item.addClass(updated.visitedTs > 0 ? 'just-visited' : 'just-failed');
-    
+
     setItemClass($item, adset.groupState());
 
     (adset.count() > 1) && bulletIndex($item, adset);
@@ -228,7 +228,7 @@ function setItemClass($item, state) {
     States.map(function(d) {
             $item.removeClass(d);
         }); // remove-all
-        
+
     $item.addClass(state);
 }
 
@@ -268,6 +268,7 @@ function appendMetaTo($div, adset) {
         var $detected = $('<div/>', {
                 class: 'detected-on'
             }).appendTo($li);
+
         appendDetectedTo($detected, ad);
     }
 }
@@ -383,7 +384,7 @@ function appendDisplayTo($div, adset) {
     var $ad = $('<div/>', {
             class: 'ad'
         }).appendTo($div);
-        
+
     $('<span/>', {
 
             class: 'counter',
@@ -403,7 +404,7 @@ function appendDisplayTo($div, adset) {
 
             src: adset.child(0).contentData.src,
 
-            onerror: "this.onerror=null; this.width=80; this.height=40; " + 
+            onerror: "this.onerror=null; this.width=80; this.height=40; " +
                 "this.alt='unable to load image'; this.src='img/placeholder.svg'",
 
         }).appendTo($ad);
@@ -487,17 +488,17 @@ function appendBulletsTo($div, adset) {
     if (count > 1) {
 
         var $bullets = $('<div/>', { class: 'bullets' }).appendTo($div);
-        
-        var adHeight = adset.child(0).contentType === 'text' ? 
+
+        var adHeight = adset.child(0).contentType === 'text' ?
             $div.height() : $div.find('img').height();
-        
+
         // TODO: add height of image to <ul> height:
-        // DO WE NEED TO SCALE HERE?    
+        // DO WE NEED TO SCALE HERE?
         var $ul = $('<ul/>', { height: adHeight }).appendTo($bullets);
-        
+
         //var scaledHeight = Zooms[zoomIdx] / 100;
         //log('img-height: '+adHeight+ " div.height: "+$div.height()+ " scaled: "+scaledHeight));
-        
+
         // add items based on count/state
         for (var i = 0; i < adset.count(); i++) {
 
@@ -616,6 +617,8 @@ function enableLightbox() {
     $('.item').click(function(e) {
 
             e.stopPropagation();
+
+            var $this = $(this);
             lightboxMode(this);
         });
 
@@ -709,7 +712,7 @@ function storeViewState(store) {
         viewState.zoomIdx = zoomIdx;
         viewState.left = dm.style.marginLeft;
         viewState.top = dm.style.marginTop;
-        
+
     } else { // restore
 
         setZoom(zoomIdx = viewState.zoomIdx);
@@ -771,6 +774,12 @@ function lightboxMode(selected) {
 
         var inspectedGid = parseInt($selected.attr('data-gid'));
         selectedAdSet = findAdSetByGid(inspectedGid); // throws
+
+        // lazy-create the meta data for the adset (#61)
+        if (!$selected.children('div.meta').length) {
+          
+          appendMetaTo($selected, selectedAdSet);
+        }
 
         $selected.addClass('inspected').siblings().removeClass('inspected');
 
@@ -988,7 +997,7 @@ function addInterfaceHandlers(ads) {
 
     $(document).click(function(e) {
 
-            if (e.which == 1) // Left-button only                
+            if (e.which == 1) // Left-button only
                 lightboxMode(false);
         });
 
@@ -1005,7 +1014,7 @@ function addInterfaceHandlers(ads) {
         dm.addEventListener('dragstart', dragStart, false);
         dm.addEventListener('dragover', dragOver, false);
         dm.addEventListener('dragend', dragEnd, false);
-        
+
     } else {
 
         log("NO #CONTAINER!");
@@ -1064,7 +1073,7 @@ function addInterfaceHandlers(ads) {
                         var ids = selectedAdSet.childIds(),
                             $item = findItemDivByGid(selectedAdSet.gid);
 
-                        // remove the adset item from the DOM    
+                        // remove the adset item from the DOM
                         $item.remove();
 
                         // remove each ad from the full-adset
@@ -1097,15 +1106,15 @@ function addInterfaceHandlers(ads) {
                 $(".custom-menu").hide(100); // close context-menu
             });
     }
-    
+
     $("body").mousewheel(function(e, delta) {
-    
+
             if ($('#container').hasClass('lightbox')) {
-            
+
                 lightboxMode(false);
                 return;
             }
-    
+
             if (delta > 0) // scrolling mousewheel outward
                 zoomIn();
             else
@@ -1158,7 +1167,7 @@ function repack() {
         $container = $('#container');
 
     setTimeout(function() { if (!done) $('#loading-img').show(); }, 2000);
-    
+
     showAlert(visible ? false : 'no ads found');
 
     var loader = imagesLoaded($container, function() {
@@ -1175,7 +1184,7 @@ function repack() {
 
                 storeItemLayout($items);
                 positionAds($items);
-            } 
+            }
             else if (visible == 1) {
 
                 $items.css({ // center single
@@ -1186,15 +1195,15 @@ function repack() {
 
                 storeItemLayout($items);
             }
-            
+
             done = true;
-            $('#loading-img').hide();       
+            $('#loading-img').hide();
         });
-        
+
     /*var countImages = $('#container.item img').size();
-    
+
     loader.on( 'progress', function(inst, image) {
-    
+
         var result = image.isLoaded ? 'loaded' : 'broken';
         var countLoadedImages = $('##container.item img.loaded').size();
         var per = 100 * (countLoadedImages / countImages) + '%';

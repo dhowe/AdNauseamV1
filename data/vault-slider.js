@@ -20,7 +20,7 @@ const customTimeFormat = d3.time.format.multi([
 function createSlider(relayout) {
 
     //log('Vault-Slider.createSlider: '+gAds.length);
-    
+
     if (!gAds) return;
 
     // clear all the old svg
@@ -29,21 +29,21 @@ function createSlider(relayout) {
 
 	// setting up the position of the chart
 	var iconW = 100, width;
-	
+
 	try {
-	
-	   width = parseInt( d3.select("#stage").style("width") ) - 
+
+	   width = parseInt( d3.select("#stage").style("width") ) -
 	       (margin.left + margin.right + iconW);
     }
     catch (e) {
-        
+
         throw Error("[D3] NO STAGE (page-not-ready?)");
     }
 
   	// finding the first and last ad
 	var minDate = d3.min(gAds, function(d) { return d.foundTs; }),
 		maxDate = d3.max(gAds, function(d) { return d.foundTs; });
-		
+
    // mapping the scales
    var xScale = d3.time.scale()
         .domain([minDate, maxDate])
@@ -108,73 +108,73 @@ function createSlider(relayout) {
 	gBrush.selectAll("rect")
 		.attr("height", 49)
 		.attr("y", -50);
-    
+
     // cases: 1) no-gAdSets=first time, 2) filter+layout, 3) only-slider
     var fSets = runFilter(bExtent);
-    if (relayout) 
+    if (relayout)
         doLayout(fSets);
     else
-        computeStats(fSets);      
+        computeStats(fSets);
 
-    
+
 	// ---------------------------- functions ------------------------------
-	
-    
+
+
     // this is called on a brushend and on createSlider
 	function runFilter(ext) {
-        
+
         //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
-        
+
         //if (ext[0] !== gMin || ext[1] !== gMax) { // dont rebuild
 
 	    gMin = ext[0], gMax = ext[1];
-	    
+
         if (gAds.length !== 1 && gMax - gMin <= 1) {
-        
+
             //log('vault.js::ignore-micro: '+ext[0]+","+ext[1]);
             return; // fix for gh #100
         }
-        	
+
 		var filtered = dateFilter(gMin, gMax);
-		
+
 		// only create the adsets once, else filter
 		if (!gAdSets)
             return (gAdSets = createAdSets(filtered));
-		else 
-            return filterAdSets(filtered);            
+		else
+            return filterAdSets(filtered);
 	}
 
     function filterAdSets(ads) {
 
         //log('vault-slider.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
-        
+
         var sets = [];
         for (var i=0, j = ads.length; i<j; i++) {
-    
+
             for (var k=0, l = gAdSets.length; k<l; k++) {
-                
+
                 if (gAdSets[k].childIdxForId(ads[i].id) > -1) {
-                    
+
                     if (sets.indexOf(gAdSets[k]) < 0)
                         sets.push(gAdSets[k]);
                 }
             }
         }
-        
+
         return sets;
     }
 
     function computeMinDateFor(ads, min) {
-        
-        if (ads && ads.length) { 
-            
+
+        if (ads && ads.length) {
+
             ads.sort(byField('-foundTs')); // or slice?
             var subset = ads.slice(0, MaxStartNum);
             return subset[subset.length-1].foundTs;
         }
         return min;
     }
-    
+
 	function dateFilter(min, max) {
 
 		//log('dateFilter: min='+min+', max='+max);

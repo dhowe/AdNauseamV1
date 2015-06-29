@@ -1,7 +1,18 @@
-var logJSON = self.options && self.options.logJSON;
+self.port && self.port.on('show-log', function(payLoad) {
+	
+	// console.log("logJSON from log.js: ", payLoad);
+	printLog(payLoad);
+});
 
-self.port && self.port.on('show-log', showLog);
-
-function showLog() {
-	console.log("logJSON from log.js", logJSON);
+function printLog(log) {
+	
+	for (var i in log) {
+		
+		if ( i == 0 && ( log[i].i == 0 ) )
+			$('#content').html("");
+			
+		$('#content').append( log[i].msg + "</br>" );
+		
+		window.scrollTo(0, document.body.scrollHeight);
+	}
 }

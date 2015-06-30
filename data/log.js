@@ -35,9 +35,12 @@ function deleteExtraChars(text) {
 
 function addLogEntry(log) {
 	
-	// delete excessive log entry
+	// delete extra log entry
 	if ( $('#content').children().length > 100 )
 		$('#content').find(":first-child").remove();
+	// delete "no log available" message
+	else if ( $('#content').children().length == 0 )
+		$('#content').html("");
 
 	var $entry = $('<span>', {
 

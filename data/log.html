@@ -18,7 +18,7 @@
 				$("#content").text('no log available');
 				
 				// call addon to clear simple-storage
-				self.port && self.port.emit("clear-log");
+				// self.port && self.port.emit("clear-log");
 			});
 		});
 	</script>
@@ -30,5 +30,6 @@
 		<div id='content' class="logtext" data-l10n-id="adn.log.noLog">
 			no log available
 		</div>
+		<div id='logFilePath'></div>
 	</body>
 </html>

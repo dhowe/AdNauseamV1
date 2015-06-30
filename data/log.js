@@ -6,6 +6,10 @@ self.port && self.port.on('add-log-entry', function(payLoad) {
 	
 	addLogEntry(payLoad);
 });
+self.port && self.port.on('add-log-path', function(payLoad) {
+	
+	addLogPath(payLoad);
+});
 
 function initLog(log) {
 	
@@ -43,4 +47,13 @@ function addLogEntry(log) {
 	$('#content').prepend($entry);
 	
 	$entry.fadeIn(2500);
+}
+
+function addLogPath(url) {
+	
+	$('<a>', {
+		text: 'Log File',
+		href: url,
+		target: 'logFile'
+	}).appendTo('#logFilePath');
 }

@@ -1,15 +1,6 @@
-self.port && self.port.on('show-log', function(payLoad) {
-	
-	initLog(payLoad);
-});
-self.port && self.port.on('add-log-entry', function(payLoad) {
-	
-	addLogEntry(payLoad);
-});
-self.port && self.port.on('add-log-path', function(payLoad) {
-	
-	addLogPath(payLoad);
-});
+self.port && self.port.on('show-log', function(payLoad) { initLog(payLoad); });
+self.port && self.port.on('add-log-entry', function(payLoad) { addLogEntry(payLoad); });
+self.port && self.port.on('add-log-path', function(payLoad) { addLogPath(payLoad); });
 
 function initLog(log) {
 	
@@ -18,34 +9,28 @@ function initLog(log) {
 		if ( i == 0 && ( log[i].i == 0 ) )
 			$('#content').html("");
 			
-		var $entry = $('<span>', {
-
-			text: deleteExtraChars(log[i].msg)
-		}).append("</br>");
+		var $entry = $('<div>' + convertWhiteSpace(log[i].msg) + '</div');
 		
 		$('#content').prepend( $entry );
 	}
 }
 
-function deleteExtraChars(text) {
+function convertWhiteSpace(text) {
 	
-	// needs better handling of the Option entry
-	return text.replace(/\n(.*)/g, "");
+	// Uses 4 '&emsp;' as a Tab char
+	return text.replace(/\n/g, "<br>").replace(/\t/g, "&emsp;&emsp;&emsp;&emsp;");
 }
 
 function addLogEntry(log) {
 	
-	// delete extra log entry
+	// Delete extra log entry
 	if ( $('#content').children().length > 100 )
 		$('#content').find(":first-child").remove();
-	// delete "no log available" message
+	// Delete "no log available" message
 	else if ( $('#content').children().length == 0 )
 		$('#content').html("");
 
-	var $entry = $('<span>', {
-
-		text: deleteExtraChars(log[log.length - 1].msg)
-	}).append("</br>").hide();
+	var $entry = $('<div>' + convertWhiteSpace(log[log.length - 1].msg) + '</div>').hide();
 
 	$('#content').prepend($entry);
 	

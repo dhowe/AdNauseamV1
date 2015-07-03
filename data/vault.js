@@ -66,7 +66,7 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 /* createSlider -> runFilter -> doLayout */
 
 function layoutAds(json) {
-
+    
     gAds = json.data; // store
 
     //log('vault.js::layoutAds -> '+gAds.length);

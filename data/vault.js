@@ -66,6 +66,8 @@ self.port && self.port.on('set-current', setCurrent); // ad attempt
 /* createSlider -> runFilter -> doLayout */
 
 function layoutAds(json) {
+    
+    var t0 = performance.now();
 
     gAds = json.data; // store
 
@@ -76,6 +78,10 @@ function layoutAds(json) {
     createSlider(true);
 
     setCurrent(json);
+    
+    var t1 = performance.now();
+    
+    console.log("Time took: ", ( t1 - t0 ), " ms");
 }
 
 function updateAd(json) {

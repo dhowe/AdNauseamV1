@@ -1,8 +1,21 @@
+
+@font-face {
+    font-family: BebasNeue;
+    src: url('font/bebasneue_regular-webfont.eot');
+    src: url('font/bebasneue_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('font/bebasneue_regular-webfont.woff2') format('woff2'),
+         url('font/bebasneue_regular-webfont.woff') format('woff'),
+         url('font/bebasneue_regular-webfont.ttf') format('truetype'),
+         url('font/bebasneue_regular-webfont.svg#bebas_neue_regularregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 html {
 	height: 100%;
 }
 
 body {
+	width:100%;
 	height: 100%;
 	background: #000 url(img/gray_grid.png);
 	color: #4C4D4C;
@@ -13,13 +26,12 @@ body {
 * {
 	transition: opacity 0.5s ease;
 }
-
 a {
   text-decoration: none;
 }
 
 #logo{
-
+	
 	position: absolute;
 	left: 10px;
 	top: 10px;
@@ -27,30 +39,31 @@ a {
 	margin: 8px 10px;
 }
 
+#title{
+    font-family: 'BebasNeue';
+	position: absolute;
+	left: 30px;
+	top:80px;
+	color:#B144F2;
+
+}
+
 
 #logo a {
-	width: 75px;
-	height: 75px;
-	background: url(img/adn_black.png);
+	width: 90px;
+	height: 90px;
+	background: url(img/log.png);
 	background-size: 100%;
-	opacity: 0.8;
 	display: block;
 	text-decoration: none;
 }
 
-.logtime {
-}
-
-.logtext {
-}
-
-.logentry {
-}
 
 .logdiv {
 	position: absolute;
 	top: 132px;
 	left: 15px;
+	padding-bottom: 3rem;
 	font-size: 12px;
 	color: #999;
 	text-shadow: 1px  1px 2px #000,
@@ -59,25 +72,63 @@ a {
 				 1px -1px 2px #000;
 }
 
+.logentry{
+	margin:0 20px 10px 0.5rem;
+	width:100%;
+    float: left;
+    padding-right: 1rem;
+}
+.logtime,.logtext{
+	position: relative;
+	float:left;
+}
+.logtime{
+	font-weight: 300;
+	color:#BAD2ED;
+	margin: 0 0 5px 0;
+	max-width:180px;
+	width:30%;
+	padding-right:10px;
+}
+.logtext{
+	width:70%;
+	max-width:700px;
+	word-wrap: break-word;
+}
+.logtext a{
+	color:#3E9AF8;
+	text-shadow:none !important;
+}
+
 #logpath {
 	position: fixed;
 	bottom: 0px;
+	width:100%;
+	background-color: black;
+	padding:10px 0 10px 25px;
 }
-
+#logpath a{
+	text-decoration: none;
+	color:#3E9AF8;
+}
+#logpath a:hover{
+	text-decoration: underline;
+}
 #settings {
   height: 450px;
-  font-family: bebas_neue_regularregular;
+  font-family: 'BebasNeue';
   width: 100%;
   color: #aaa;
 }
 #settings header a.close {
   display: inline-block;
+  text-decoration: none;
   color: #777;
   width: 90px;
   height: 100px;
   float: right;
   padding-top:30px;
-  font-family: bebas_neue_regularregular;
+  font-family: 'BebasNeue';
   font-size: 40px;
   text-align: center;
 }
@@ -89,4 +140,10 @@ a {
   width: 130px;
   padding:20px;
   color: #0076FF;
+}
+
+
+#logpath {
+	position: fixed;
+	bottom: 0px;
 }

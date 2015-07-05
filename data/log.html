@@ -2,34 +2,43 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>AdNauseam Log</title>
+		<title>AdNauseam Session Log</title>
 		<link rel="stylesheet" href="log.css">
 		<script src="lib/jquery-2.1.4.min.js"></script>
-		<link rel="icon" type="image/png" href="img/icon-32.png">	
+		<script src="../lib/config.js"></script>
+		<link rel="icon" type="image/png" href="img/icon-32.png">
 	</head>
 	<script>
 		$(document).ready(function() {
- 
- 			$('#clear-log-button').click(function(e) {
+			console.log('ready: ',TEST_MODE);
+			if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
 
-				e.preventDefault(); // no click
-				
-				// trigger closing of settings
-				$("#content").text('no log available');
-				
-				// call addon to clear simple-storage
-				// self.port && self.port.emit("clear-log");
-			});
+				console.log('loading');
+				// load addon-injected js here for testing
+				$.when(
+					$.getScript( "./dynlog.js" ),
+					$.getScript( "./log.js" ),
+					$.Deferred(function( deferred ) {
+							$( deferred.resolve );
+					})).done(function() {
+						console.log('running');
+						initLog(json);
+					});
+			}
 		});
 	</script>
 	<body>
-		<div id="logo"><a href="#"></a></div>				
-		<div class="clearb">
-		<a href="" id="clear-log-button">c</a>
+		<div id="logo"><a href="#"></a></div>
+		<div id="settings" class="page hide">
+			<header class="">
+				<a href="#" id ="settings-close" class="settings close">&#10006;</a>
+			</header>
 		</div>
-		<div id='content' class="logtext" data-l10n-id="adn.log.noLog">
+		<div id='content' class="logdiv" data-l10n-id="adn.log.noLog">
 			no log available
 		</div>
-		<div id='logFilePath'></div>
+		<div id="logpath">
+			<a target="logFile" href="file:///Users/name/path/to/ADN-Prof/adnauseam-log.txt">view full log</a>
+		</div>
 	</body>
 </html>

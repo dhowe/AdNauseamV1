@@ -14,8 +14,12 @@ body {
 	transition: opacity 0.5s ease;
 }
 
+a {
+  text-decoration: none;
+}
+
 #logo{
-	
+
 	position: absolute;
 	left: 10px;
 	top: 10px;
@@ -23,13 +27,6 @@ body {
 	margin: 8px 10px;
 }
 
-#clear.button{
-	z-index: 2000;
-	bottom: 0;
-	position: absolute;
-	right: 25%;
-	margin: 8px 10px;
-}
 
 #logo a {
 	width: 75px;
@@ -41,33 +38,16 @@ body {
 	text-decoration: none;
 }
 
-.clearb {
-	position: absolute;
-	top: 10px;
-	left: 95%;
-	border: 2px solid #818181;
-	border-radius: 12px;
-	height: 20px;
-	width: 16px;
-	background: #000;
-	z-index: 100;
-}
-
-.clearb a {
-	line-height: 18px;
-	display: block;
-	height: 21px;
-	text-align: center;
-	color: #818181;
-	text-decoration: none;
-	overflow: hidden;
-}
-
-.clearb a:hover {
-	color: #fff;
+.logtime {
 }
 
 .logtext {
+}
+
+.logentry {
+}
+
+.logdiv {
 	position: absolute;
 	top: 132px;
 	left: 15px;
@@ -79,7 +59,34 @@ body {
 				 1px -1px 2px #000;
 }
 
-#logFilePath {
+#logpath {
 	position: fixed;
 	bottom: 0px;
+}
+
+#settings {
+  height: 450px;
+  font-family: bebas_neue_regularregular;
+  width: 100%;
+  color: #aaa;
+}
+#settings header a.close {
+  display: inline-block;
+  color: #777;
+  width: 90px;
+  height: 100px;
+  float: right;
+  padding-top:30px;
+  font-family: bebas_neue_regularregular;
+  font-size: 40px;
+  text-align: center;
+}
+#settings header a.close:hover{
+  color: #0076FF;
+}
+#settings header h2 {
+  display: inline-block;
+  width: 130px;
+  padding:20px;
+  color: #0076FF;
 }

@@ -15,12 +15,23 @@ function initLog(log) {
 	}
 }
 
-function formatEntry(entry) { // TODO: convert to jquery style (see vault.js)
-
-	return $('<div class="logentry"><span class="logtime">[' +
-		new Date(entry.time).toUTCString() + '] </span>' +
-		'<span class="logtext">' + convertSpace(entry.text) +
-		'</span></div>');
+function formatEntry(entry) {
+		
+	var $entry = $('<div/>', { class: 'logentry' });
+	
+	$('<span/>', {
+		
+		class: 'logtime',
+		html: ('[' + new Date(entry.time).toUTCString() + '] ')
+	}).appendTo($entry);
+	
+	$('<span/>', {
+		
+		class: 'logtext',
+		html: convertSpace(entry.text)
+	}).appendTo($entry);
+	
+	return $entry;
 }
 
 function convertSpace(text) {
@@ -31,7 +42,6 @@ function convertSpace(text) {
 		return '';
 	}
 
-	// Uses 4 '&emsp;' as a Tab char
 	return text.replace(/\n/g, BR).replace(/\t/g, TAB);
 }
 

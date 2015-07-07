@@ -8,7 +8,7 @@ function initLog(log) {
 
 	clearDefaultMsg();
 
-	var $div = $('<div id="logview">');
+	var $div = $('<div/>', { id: 'logview' });
 	for (var i in log) {
 
 		$('#content').prepend(formatEntry(log[i]));
@@ -16,22 +16,29 @@ function initLog(log) {
 }
 
 function formatEntry(entry) {
-		
+
 	var $entry = $('<div/>', { class: 'logentry' });
-	
+
 	$('<span/>', {
-		
+
 		class: 'logtime',
-		html: ('[' + new Date(entry.time).toUTCString() + '] ')
+		html: formatDateStamp(entry.time)
+
 	}).appendTo($entry);
-	
+
 	$('<span/>', {
-		
+
 		class: 'logtext',
 		html: convertSpace(entry.text)
+
 	}).appendTo($entry);
-	
+
 	return $entry;
+}
+
+function formatDateStamp(ds) {
+
+	return '[' + new Date(ds).toUTCString() + '] ';
 }
 
 function convertSpace(text) {
@@ -70,7 +77,7 @@ function addLogPath(url) {
 	}).appendTo('#logpath');
 }
 
-// Delete "no log available" page message before printing logJSON
+// Remove "no log available" message before showing log
 function clearDefaultMsg() {
 
 	if ($('#content').children().length == 0)

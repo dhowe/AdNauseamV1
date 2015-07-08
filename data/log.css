@@ -18,8 +18,8 @@ body {
 	width:100%;
 	height: 100%;
 	background: #000 url(img/gray_grid.png);
-	color: #4C4D4C;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #4C4D4C;
 	margin: 0;
 }
 
@@ -31,11 +31,10 @@ a {
 }
 
 #logo{
-	
+
 	position: absolute;
 	left: 10px;
-	top: 10px;
-
+	top: 0px;
 	margin: 8px 10px;
 }
 
@@ -43,11 +42,9 @@ a {
     font-family: 'BebasNeue';
 	position: absolute;
 	left: 30px;
-	top:80px;
+	top:70px;
 	color:#B144F2;
-
 }
-
 
 #logo a {
 	width: 90px;
@@ -65,7 +62,7 @@ a {
 	left: 15px;
 	padding-bottom: 3rem;
 	font-size: 12px;
-	color: #999;
+	color: #ddd;
 	text-shadow: 1px  1px 2px #000,
 				-1px  1px 2px #000,
 				-1px -1px 2px #000,
@@ -73,7 +70,7 @@ a {
 }
 
 .logentry{
-	margin:0 20px 10px 0.5rem;
+	margin:0 20px 5px 0.5rem;
 	width:100%;
     float: left;
     padding-right: 1rem;
@@ -100,18 +97,19 @@ a {
 	text-shadow:none !important;
 }
 
-#logpath {
+#viewfull {
 	position: fixed;
 	bottom: 0px;
 	width:100%;
 	background-color: black;
 	padding:10px 0 10px 25px;
+	font-size: 14px;
 }
-#logpath a{
+#viewfull a{
 	text-decoration: none;
-	color:#3E9AF8;
+	color:#B04DEF;
 }
-#logpath a:hover{
+#viewfull a:hover{
 	text-decoration: underline;
 }
 #settings {
@@ -140,10 +138,4 @@ a {
   width: 130px;
   padding:20px;
   color: #0076FF;
-}
-
-
-#logpath {
-	position: fixed;
-	bottom: 0px;
 }

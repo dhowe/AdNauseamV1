@@ -1,12 +1,24 @@
-self.port && self.port.on('show-log', function(payLoad) { initLog(payLoad); });
-self.port && self.port.on('add-log-entry', function(payLoad) { addLogEntry(payLoad); });
-self.port && self.port.on('add-log-path', function(payLoad) { addLogPath(payLoad); });
+self.port && self.port.on('show-log', function(payLoad) {
+  initLog(payLoad);
+});
+self.port && self.port.on('add-log-entry', function(payLoad) {
+  addLogEntry(payLoad);
+});
+self.port && self.port.on('add-log-path', function(payLoad) {
+  addLogPath(payLoad);
+});
 
-const TAB = '&emsp;&emsp;&emsp;&emsp;', BR = '<br/>';
+const TAB = '', BR = '<br/>';
 
 function initLog(log) {
 
 	clearDefaultMsg();
+
+	$('#x-close-button').click(function(e) {
+
+		e.preventDefault();
+		self.port && self.port.emit("close-log");
+	});
 
 	var $div = $('<div/>', { id: 'logview' });
 	for (var i in log) {
@@ -68,13 +80,7 @@ function addLogEntry(log) {
 
 function addLogPath(url) {
 
-	$('<a>', {
-
-		href: url,
-		text: 'Log File',
-		target: 'logFile'
-
-	}).appendTo('#logpath');
+	$('#logpath').attr('href', url);
 }
 
 // Remove "no log available" message before showing log

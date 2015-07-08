@@ -10,10 +10,9 @@
 	</head>
 	<script>
 		$(document).ready(function() {
-			console.log('ready: ',TEST_MODE);
+
 			if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
 
-				console.log('loading');
 				// load addon-injected js here for testing
 				$.when(
 					$.getScript( "./dynlog.js" ),
@@ -21,25 +20,22 @@
 					$.Deferred(function( deferred ) {
 							$( deferred.resolve );
 					})).done(function() {
-						console.log('running');
 						initLog(json);
 					});
 			}
 		});
 	</script>
 	<body>
-		<div id="logo"><a href="#"></a></div>	
-		<h3 id="title"> SessionLog</h3>	
+		<div id="logo"><a href="#"></a></div>
+		<h3 id="title"> SessionLog</h3>
 		<div id="settings" class="page hide">
 			<header class="">
-				<a id ="settings-close" class="settings close" href="JavaScript:window.close()">&#10006;</a>
+				<a id ="x-close-button" class="settings close" href="JavaScript:window.close()">&#10006;</a>
 			</header>
 		</div>
-		<div id='content' class="logdiv" data-l10n-id="adn.log.noLog">
-            no log available
-		</div>
-		<div id="logpath">
-			<a target="logFile" href="file:///Users/name/path/to/ADN-Prof/adnauseam-log.txt">view full log</a>
+		<div id='content' class="logdiv" data-l10n-id="adn.log.noLog">No log available</div>
+		<div id="viewfull">
+			<a id="logpath" target="logFile" data-l10n-id="adn.log.viewFullLog" href="">View full log</a>
 		</div>
 	</body>
 </html>

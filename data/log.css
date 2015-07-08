@@ -1,12 +1,12 @@
 
 @font-face {
     font-family: BebasNeue;
-    src: url('font/bebasneue_regular-webfont.eot');
-    src: url('font/bebasneue_regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('font/bebasneue_regular-webfont.woff2') format('woff2'),
-         url('font/bebasneue_regular-webfont.woff') format('woff'),
+    /*src: url('font/bebasneue_regular-webfont.eot');*/
+    src: /*url('font/bebasneue_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('font/bebasneue_regular-webfont.woff2') format('woff2'),*/
+         url('font/bebasneue_regular-webfont.woff')/* format('woff'),
          url('font/bebasneue_regular-webfont.ttf') format('truetype'),
-         url('font/bebasneue_regular-webfont.svg#bebas_neue_regularregular') format('svg');
+         url('font/bebasneue_regular-webfont.svg#bebas_neue_regularregular') format('svg')*/;
     font-weight: normal;
     font-style: normal;
 }
@@ -114,7 +114,7 @@ a {
 }
 #settings {
   height: 450px;
-  font-family: 'BebasNeue';
+  /*font-family: 'BebasNeue';*/
   width: 100%;
   color: #aaa;
 }
@@ -126,7 +126,7 @@ a {
   height: 100px;
   float: right;
   padding-top:30px;
-  font-family: 'BebasNeue';
+  /*font-family: 'BebasNeue';*/
   font-size: 40px;
   text-align: center;
 }

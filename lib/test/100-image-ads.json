@@ -1,0 +1,2659 @@
+[
+  {
+    "id": 153,
+    "title": "temasek review",
+    "attempts": 0,
+    "visitedTs": 1436334434869,
+    "foundTs": 1436334426182,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/91/ad.409129/184x90_Left.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=dddacf34/1791a7a2&camp=Temasek_2011695_HPTO_INT&ad=Temasek_Intl_left&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D13837998%26PluID%3D0%26ord%3D2015.07.08.05.46.58",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://temasekreview.com.sg/"
+    ],
+    "resolvedTargetUrl": "http://temasekreview.com.sg/"
+  },
+  {
+    "id": 152,
+    "title": "temasek review",
+    "attempts": 0,
+    "visitedTs": 1436334444735,
+    "foundTs": 1436334425981,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/91/ad.409130/184x90_Right.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=10f67346/cd43bab0&camp=Temasek_2011695_HPTO_INT&ad=Temasek_Intl_right&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D13932388%26PluID%3D0%26ord%3D2015.07.08.05.46.58",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://temasekreview.com.sg/"
+    ],
+    "resolvedTargetUrl": "http://temasekreview.com.sg/"
+  },
+  {
+    "id": 151,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436334425806,
+    "foundTs": 1436334422368,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408405/CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&sn2=2282d459/e5eabddb&sn1=7e841997/1b9dc122&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D408405%26page%3Dwww.nytimes.com/networkredirect%26pos%3DBigAdGoogle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+  },
+  {
+    "id": 149,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436069033127,
+    "foundTs": 1436069030089,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408405/CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&sn2=2282d459/e5eabddb&sn1=7e841997/1b9dc122&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D408405%26page%3Dwww.nytimes.com/networkredirect%26pos%3DBigAdGoogle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+  },
+  {
+    "id": 148,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436069042751,
+    "foundTs": 1436069029640,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408402/CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=7728711e/e3930ad4&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408402%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 147,
+    "title": "Tribeca Luxury Apartments for Rent | 50 Murray Street",
+    "attempts": 0,
+    "visitedTs": 1436071033847,
+    "foundTs": 1436069029624,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/56/ad.395600/50Murraylogo.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dbf3bfd1/883dfa9e&camp=HMOD_Clipper_Equities_50Murray_July_2008624&ad=HPMod_ClipperEquities50Murray_0123_0129-ADX&goto=http%3A%2F%2F50murray%2Ecom%2Flanding%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DNYT%26utm%5Fcampaign%3DHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+    ],
+    "resolvedTargetUrl": "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+  },
+  {
+    "id": 146,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1436071068663,
+    "foundTs": 1436069029620,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/56/ad.395600/50Murray.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dbf3bfd1/883dfa9e&camp=HMOD_Clipper_Equities_50Murray_July_2008624&ad=HPMod_ClipperEquities50Murray_0123_0129-ADX&goto=http%3A%2F%2F50murray%2Ecom%2Flanding%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DNYT%26utm%5Fcampaign%3DHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 145,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436071075041,
+    "foundTs": 1436069029598,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/87/ad.408715/CRS-6486_INYT-Refresh_970x90_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=c39abed/bb261b86&camp=inyt2015_970x90_digi_usd_evergreen_4L9U6&ad=CRS-6486_INYT-Refresh_970x90_USD_4L9U6&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D280526%26adxa%3D408715%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280526&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280526&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 144,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436071084874,
+    "foundTs": 1436069029417,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7a5899ca/7ed6c864&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 143,
+    "title": "Web-based Project Management & Planning Software | GetApp",
+    "attempts": 0,
+    "visitedTs": 1436071099033,
+    "foundTs": 1436069027048,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/3168073789012649708"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CRBGJnayYVaXjFoXP9AW0poagAq7Oy7QH3uSnnoAC65yT1WYQASDI1vUZYNkCoAGalqPIA8gBAqkC1IUinf2hsj6oAwHIA8EEqgR7T9DUrwqHfsB8vjpMi4yZvQlCzjSUnOKi3fa0PWAIn9_qdHb0mqtCoaqyvFRS9ifZC7tsd7VI0XWaJLzN7vuAN9yeMJTqYhRqiuLsB022HX7VUIxV7MvdGlOc0dY_DcG6Gf3WUc6XsypL4gmNjQFaSkqFwjDJ0gB52tIbiAYBoAYCgAfO6dw3qAemvhvYBwE&num=1&cid=5GhnoUsmRQ3_vPmPgV0QfVQ-&sig=AOD64_1Y-l7rytTHA6MOMsKpgQMImdXzUg&client=ca-pub-4177862836555934&adurl=http://www.getapp.com/p/sem/project-management-planning-software%3Fcamp%3Dadw_remarketing",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "https://www.getapp.com/p/sem/project-management-planning-software?camp=adw_remarketing&gclid=CMXiqNuVw8YCFdgRvQoduaQEuQ"
+    ],
+    "resolvedTargetUrl": "https://www.getapp.com/p/sem/project-management-planning-software?camp=adw_remarketing&gclid=CMXiqNuVw8YCFdgRvQoduaQEuQ"
+  },
+  {
+    "id": 141,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436009974721,
+    "foundTs": 1436009965493,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408402/CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=7728711e/e3930ad4&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408402%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 140,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436009984520,
+    "foundTs": 1436009965448,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/87/ad.408715/CRS-6486_INYT-Refresh_970x90_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=c39abed/bb261b86&camp=inyt2015_970x90_digi_usd_evergreen_4L9U6&ad=CRS-6486_INYT-Refresh_970x90_USD_4L9U6&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D280526%26adxa%3D408715%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280526&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280526&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 139,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436009994449,
+    "foundTs": 1436009965268,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7a5899ca/7ed6c864&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 138,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436010004600,
+    "foundTs": 1436009959925,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408405/CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&sn2=2282d459/e5eabddb&sn1=7e841997/1b9dc122&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D408405%26page%3Dwww.nytimes.com/networkredirect%26pos%3DBigAdGoogle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+  },
+  {
+    "id": 137,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1436010042719,
+    "foundTs": 1436009958558,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/89/ad.398968/CRS_3713_Twitter_googleplay_728x90_ER1.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=TopLeader&sn2=4bc2d8a8/8bd79438&sn1=717fcca8/4d08dfb&camp=nyt2015_728x90_twitter&ad=CRS_3713_Twitter_728x90_blue_bird&goto=https%3A%2F%2Ftwitter%2Ecom%2Fnytimes",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 136,
+    "title": "Web-based Project Management & Planning Software | GetApp",
+    "attempts": 0,
+    "visitedTs": 1436010064122,
+    "foundTs": 1436009958159,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/3168073789012649708"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CbROS4sWXVdOkGcK18gXz7Z2oDK7Oy7QH3uSnnoAC65yT1WYQASDI1vUZYNkCoAGalqPIA8gBAqkC1IUinf2hsj6oAwHIA8EEqgR4T9Ckh-TjoZ5b9so7E3MIDmdXnKi6CJ5nkh1666xS84Kj6BeHuRdvew6OI8yftyJtgt5-ehPseeTEanvADyt7-_WfpcfvBHbpatnQIUNDWAu4gafzcS2geopfhkHps-PcRA2olhLcFXb8dv8dnRPauCKc4ysyBskyiAYBoAYCgAfO6dw3qAemvhvYBwE&num=1&cid=5GhPmm84gZKK4JFqUNovKGUc&sig=AOD64_02BEtbGaAqUUuZABuOaN4uICA8tw&client=ca-pub-4177862836555934&adurl=http://www.getapp.com/p/sem/project-management-planning-software%3Fcamp%3Dadw_remarketing",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "https://www.getapp.com/p/sem/project-management-planning-software?camp=adw_remarketing&gclid=CMrW7aiywcYCFQEIvAodkagPqA"
+    ],
+    "resolvedTargetUrl": "https://www.getapp.com/p/sem/project-management-planning-software?camp=adw_remarketing&gclid=CMrW7aiywcYCFQEIvAodkagPqA"
+  },
+  {
+    "id": 134,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435992981567,
+    "foundTs": 1435992977145,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408402/CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=7728711e/e3930ad4&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408402%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 133,
+    "title": "Tribeca Luxury Apartments for Rent | 50 Murray Street",
+    "attempts": 0,
+    "visitedTs": 1435992996057,
+    "foundTs": 1435992977129,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/56/ad.395600/50Murraylogo.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dbf3bfd1/883dfa9e&camp=HMOD_Clipper_Equities_50Murray_July_2008624&ad=HPMod_ClipperEquities50Murray_0123_0129-ADX&goto=http%3A%2F%2F50murray%2Ecom%2Flanding%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DNYT%26utm%5Fcampaign%3DHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+    ],
+    "resolvedTargetUrl": "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+  },
+  {
+    "id": 132,
+    "title": "Tribeca Luxury Apartments for Rent | 50 Murray Street",
+    "attempts": 0,
+    "visitedTs": 1436009945158,
+    "foundTs": 1435992977125,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/56/ad.395600/50Murray.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dbf3bfd1/883dfa9e&camp=HMOD_Clipper_Equities_50Murray_July_2008624&ad=HPMod_ClipperEquities50Murray_0123_0129-ADX&goto=http%3A%2F%2F50murray%2Ecom%2Flanding%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DNYT%26utm%5Fcampaign%3DHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+    ],
+    "resolvedTargetUrl": "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+  },
+  {
+    "id": 131,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436009955437,
+    "foundTs": 1435992977104,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/87/ad.408715/CRS-6486_INYT-Refresh_970x90_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=13ff54eb/31216245&camp=inyt2015_970x90_digi_usd_4L9U6&ad=CRS-6486_INYT-Refresh_970x90_USD_4L9U6&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D280525%26adxa%3D408715%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280525&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280525&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 130,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1436010075520,
+    "foundTs": 1435992976987,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7a5899ca/7ed6c864&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 128,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435991031766,
+    "foundTs": 1435991019612,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408405/CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&sn2=2282d459/e5eabddb&sn1=7e841997/1b9dc122&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D408405%26page%3Dwww.nytimes.com/networkredirect%26pos%3DBigAdGoogle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=www.nytimes.com/networkredirect&pos=BigAdGoogle&campaignId=4L9R8"
+  },
+  {
+    "id": 127,
+    "title": "Cooking with the New York Times - NYT Cooking",
+    "attempts": 0,
+    "visitedTs": 1435991376385,
+    "foundTs": 1435991018376,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/28/ad.402828/CRS_5182_cookingforiphone_728x90_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=TopLeader&sn2=4bc2d8a8/8bd79438&sn1=5b1f17ef/14ca5e13&camp=nyt2015_728x90_cookingapp&ad=CRS_5182_cookingforiphone_728x90&goto=http%3A%2F%2Fcooking%2Enytimes%2Ecom%2F",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "http://cooking.nytimes.com/"
+    ],
+    "resolvedTargetUrl": "http://cooking.nytimes.com/"
+  },
+  {
+    "id": 126,
+    "title": "申請家居寬頻上網及家居電話 - 自選登記站 | 香港寛頻 HKBN",
+    "attempts": 0,
+    "visitedTs": 1435991385499,
+    "foundTs": 1435991017959,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/3995674094744039334"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=Cx3306XuXVayNDsqE9gWg0bjwDKC8kpIHuLfxz54CFBABIMjW9Rlg2QKgAeDx0c4DyAEDqQLm7ilNr0-BPqgDAcgDwQSqBJQBT9DQZHtqoYQdzzN4LaAIHH9kvviaDm7zJWjWbQxsuiVMU8fSIn5xLZSQLyTH56pE_RVQBXgnDEZEzly6S368to56F6uBEYZACz8Qq0kFjkhP1L4Im87VCpaJd4coX44XVe1wDGyP3WqfH7zRjjc5sMAyKXMOpwSiSl_HDSlL1S3hDxVFQwEYzt9JD_Dj3cgkRLh8vIgGAaAGA4AHiI6uMagHpr4b2AcB&num=1&cid=5GiP5mbJxWV3w8_e-4M58YQU&sig=AOD64_3pVUiDsZqxR_THE3ar3WES54Meuw&client=ca-pub-4177862836555934&adurl=https://apply.hkbn.net/broadband/orp_chkcoverage_new.jsp%3FparamName%3Dplan_discount%26ag%3Dicv%26utm_campaign%3Dplan_discount%26utm_source%3Dadnetwork_ic_zh%26utm_medium%3Ddisplay%26utm_content%3D728x90%26utm_term%3D",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "https://apply.hkbn.net/broadband/orp_chkcoverage_new.jsp?paramName=plan_discount&ag=icv&utm_campaign=plan_discount&utm_source=adnetwork_ic_zh&utm_medium=display&utm_content=728x90&utm_term="
+    ],
+    "resolvedTargetUrl": "https://apply.hkbn.net/broadband/orp_chkcoverage_new.jsp?paramName=plan_discount&ag=icv&utm_campaign=plan_discount&utm_source=adnetwork_ic_zh&utm_medium=display&utm_content=728x90&utm_term="
+  },
+  {
+    "id": 125,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435991020309,
+    "foundTs": 1435991015816,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408402/CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=7728711e/e3930ad4&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408402%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 124,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435991395803,
+    "foundTs": 1435991015740,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/87/ad.408715/CRS-6486_INYT-Refresh_970x90_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=13ff54eb/31216245&camp=inyt2015_970x90_digi_usd_4L9U6&ad=CRS-6486_INYT-Refresh_970x90_USD_4L9U6&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D280525%26adxa%3D408715%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280525&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280525&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 123,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435991405617,
+    "foundTs": 1435991014537,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7a5899ca/7ed6c864&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 123,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435991405617,
+    "foundTs": 1435991014537,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7a5899ca/7ed6c864&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/?WT.z_jog=1&hF=f&vS=undefined",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 122,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435990499774,
+    "foundTs": 1435990491611,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408402/CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=e7aba2a/8ed990a0&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D408402%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 121,
+    "title": "Tribeca Luxury Apartments for Rent | 50 Murray Street",
+    "attempts": 0,
+    "visitedTs": 1435990514367,
+    "foundTs": 1435990491588,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/56/ad.395600/50Murraylogo.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dbf3bfd1/883dfa9e&camp=HMOD_Clipper_Equities_50Murray_July_2008624&ad=HPMod_ClipperEquities50Murray_0123_0129-ADX&goto=http%3A%2F%2F50murray%2Ecom%2Flanding%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DNYT%26utm%5Fcampaign%3DHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+    ],
+    "resolvedTargetUrl": "http://50murray.com/landing/?utm_source=NYT&utm_medium=NYT&utm_campaign=HPM"
+  },
+  {
+    "id": 120,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1435990548701,
+    "foundTs": 1435990491584,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/56/ad.395600/50Murray.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dbf3bfd1/883dfa9e&camp=HMOD_Clipper_Equities_50Murray_July_2008624&ad=HPMod_ClipperEquities50Murray_0123_0129-ADX&goto=http%3A%2F%2F50murray%2Ecom%2Flanding%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DNYT%26utm%5Fcampaign%3DHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 119,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435990554834,
+    "foundTs": 1435990491556,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/87/ad.408715/CRS-6486_INYT-Refresh_970x90_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=13ff54eb/31216245&camp=inyt2015_970x90_digi_usd_4L9U6&ad=CRS-6486_INYT-Refresh_970x90_USD_4L9U6&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D280525%26adxa%3D408715%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280525&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=280525&adxa=408715&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 118,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435990565276,
+    "foundTs": 1435990491391,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=8ab88295/456d17e3&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 117,
+    "title": "Cooking with the New York Times - NYT Cooking",
+    "attempts": 0,
+    "visitedTs": 1435990576309,
+    "foundTs": 1435990488936,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/28/ad.402828/CRS_5182_cookingforiphone_728x90_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=TopLeader&sn2=4bc2d8a8/8bd79438&sn1=5b1f17ef/14ca5e13&camp=nyt2015_728x90_cookingapp&ad=CRS_5182_cookingforiphone_728x90&goto=http%3A%2F%2Fcooking%2Enytimes%2Ecom%2F",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://cooking.nytimes.com/"
+    ],
+    "resolvedTargetUrl": "http://cooking.nytimes.com/"
+  },
+  {
+    "id": 116,
+    "title": "mysale.hk - Join",
+    "attempts": 0,
+    "visitedTs": 1435990493378,
+    "foundTs": 1435990488276,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/14621559469996860361"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CLo7913mXVYbXM4u38AXA86nICIHS1-4GucqaxLgC2cz93wUQASDI1vUZYNkCoAGPjo_SA8gBAqkC2E_um1xDqT6oAwHIA8EEqgR4T9D1aljvVbS7RZVON05NLeXHGNpJh5p-QAK4xOPnUjMxi7xf8Nhe0VlkFn86dz-lOixOfNauCekTZyDhxRRV2_gkozi4YHv0nNLX45OklNyZJEJqP82oUrTcx_-vjC42-Cz_TK6b9ZeKi1lvziLyNvHu7UDeWFF_iAYBoAYCgAfZ8fAtqAemvhvYBwE&num=1&cid=5GjyKBNafCmqguTJUy4qBzT2&sig=AOD64_3-8Ku9a9P6g1rhq1vtkxOKM0oXlg&client=ca-pub-4177862836555934&adurl=http://www.mysale.hk/join.aspx%3Freferredby%3Dc2c_HK_EN_display_topics_all%26mkwid%3Dc6JwJc7sE_dc%26pcrid%3D83867174161%26pkw%3D%26pmt%3D",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "https://www.mysale.hk/join.aspx?referredby=c2c_HK_EN_display_topics_all&mkwid=c6JwJc7sE_dc&pcrid=83867174161&pkw=&pmt=&gclid=CPzF6rfpwMYCFRMJvAodVgQPig"
+    ],
+    "resolvedTargetUrl": "https://www.mysale.hk/join.aspx?referredby=c2c_HK_EN_display_topics_all&mkwid=c6JwJc7sE_dc&pcrid=83867174161&pkw=&pmt=&gclid=CPzF6rfpwMYCFRMJvAodVgQPig"
+  },
+  {
+    "id": 114,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1435723162334,
+    "foundTs": 1435723123855,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/29/ad.402933/CRS-4995_TimesJourneys_NewCatalog_ER1_728x90_retina_myanmar.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/networkredirect&pos=TopLeader&sn2=4bc2d8a8/8bd79438&sn1=13ab4a5b/b2c215dd&camp=nyt2015_728x90_timesjourneys&ad=CRS-4995_TimesJourneys_New_728x90_myanmar.jpg&goto=http%3A%2F%2Funbouncepages%2Ecom%2Ftimes%2Djourneys%2Dbrochure%2Dnovember%2D2014%2F",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 113,
+    "title": "CleanMyMac 3 - Optimization, Maintenance and Speed Up of your Mac in only one app",
+    "attempts": 0,
+    "visitedTs": 1435723174255,
+    "foundTs": 1435723123114,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/5876837737473732699"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=Cr9PucmWTVZmaNIan9AWY4JCIA4aD2JsFhp7Xv9gB65yT1WYQASDI1vUZYNkCoAHXw7DiA8gBAqgDAcgDwQSqBHxP0OA8VNHxG6VhrCMZdMoH1bWEozS4yREKunUfHU3ksZ6cKkP635i5lJgoxfPFLjwr-gd8zQLfDaMhTHijavwFdnkh-i6cWTAdA5Zsdax3KvDCwnvofcbymlXPCB0mbdStHeSvaWlAAo4ULQYf-ZnV3CJdzuJTJ_Zcag5RiAYBoAYCgAfWiYslqAemvhvYBwE&num=1&cid=5GgeFbLxcEz3rIoN_LR6Cp8W&sig=AOD64_1KH5J6Q09RKqCVT74YacgohB4Qvw&client=ca-pub-4177862836555934&adurl=http://tds.macpaw.com/index.php%3F2%26campaign%3Ddisplay_banner_cmm3_optimize_dco_us",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://macpaw.com/landings/land217?campaign=display%5Fbanner%5Fcmm3%5Foptimize%5Fdco%5Fus&utm_source=&utm_medium=&utm_term=&utm_content=&utm_campaign=&gclid=CJCrnsuFucYCFRaXvQodq9sFvQ&siteID=&CJPID=&mpaid="
+    ],
+    "resolvedTargetUrl": "http://macpaw.com/landings/land217?campaign=display%5Fbanner%5Fcmm3%5Foptimize%5Fdco%5Fus&utm_source=&utm_medium=&utm_term=&utm_content=&utm_campaign=&gclid=CJCrnsuFucYCFRaXvQodq9sFvQ&siteID=&CJPID=&mpaid="
+  },
+  {
+    "id": 112,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435723125053,
+    "foundTs": 1435723120250,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408402/CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=7728711e/e3930ad4&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Left_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408402%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408402&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 111,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435723183654,
+    "foundTs": 1435723120231,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408405/CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=7e841997/1b9dc122&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-6486_INYT-Refresh_300x250_USD_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D408405%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMiddle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=408405&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+  },
+  {
+    "id": 110,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1435723222388,
+    "foundTs": 1435723120209,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/55/ad.395502/WaverlyLogo.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dfb04100/5504fad6&camp=HMOD_Related_OceanAveSouth_2007969&ad=TheWaverlySkyBridgeoverview2&goto=http%3A%2F%2Fwww%2Ewaverlysantamonica%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHP%2520RE%2520Module%26utm%5Fcampaign%3DWaverly2015",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 109,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1435723263488,
+    "foundTs": 1435723120204,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/39/55/ad.395502/TheWaverlySkyBridgeoverview2.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=dfb04100/5504fad6&camp=HMOD_Related_OceanAveSouth_2007969&ad=TheWaverlySkyBridgeoverview2&goto=http%3A%2F%2Fwww%2Ewaverlysantamonica%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHP%2520RE%2520Module%26utm%5Fcampaign%3DWaverly2015",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 108,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435723274923,
+    "foundTs": 1435723120180,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408407/CRS-6486_INYT-Refresh_970x44_USD_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=8246222f/cb4bda81&camp=inyt2015_970x44_digi_usd_evergreen_4L9U6&ad=CRS-6486_INYT-Refresh_970x44_USD_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274146%26adxa%3D408407%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274146&adxa=408407&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274146&adxa=408407&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 107,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1435723288363,
+    "foundTs": 1435723120024,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/84/ad.408404/CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7a5899ca/7ed6c864&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-6486_INYT-Refresh_184x90_USD_Right_EO1.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D408404%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=408404&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 105,
+    "title": "Shop Zales - America's diamond store since 1924 - for the best jewelry selection and service",
+    "attempts": 1,
+    "visitedTs": 1434720213645,
+    "foundTs": 1434720184351,
+    "contentData": {
+      "text": "Shop Zales - America's diamond store since 1924 - for the best fine ",
+      "site": "zales.com",
+      "network": "duckduckgo"
+    },
+    "contentType": "text",
+    "targetUrl": "http://ad.ddg.gg/?id=40063X1035282&xs=1&url=http%3A%2F%2Fwww.zales.com%2F&sref=https%3A%2F%2Fduckduckgo.com",
+    "pageTitle": "jewelry at DuckDuckGo",
+    "pageUrl": "https://duckduckgo.com/?q=jewelry&t=ffsb&ia=about",
+    "errors": [],
+    "path": [
+      "http://www.zales.com/"
+    ],
+    "resolvedTargetUrl": "http://www.zales.com/"
+  },
+  {
+    "id": 103,
+    "title": "Savings Accounts & CDs | American Express Personal Savings",
+    "attempts": 0,
+    "visitedTs": 1434042099229,
+    "foundTs": 1434042077144,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/12/ad.401234/Bloomberg_88x31_V2.gif"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/recommendations/module&pos=MostPop&sn2=e755a705/f991e837&sn1=7188b3fe/17438ef5&camp=Amex_Personal_Savings_H1_2015_1983637A&ad=AMEX_88x30_Module_B8439776.115891944&goto=http%3A%2F%2Fad%2Edoubleclick%2Enet%2Fddm%2Fclk%2F287187532%3B115891944%3Bu",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "https://personalsavings.americanexpress.com/index.html"
+    ],
+    "resolvedTargetUrl": "https://personalsavings.americanexpress.com/index.html"
+  },
+  {
+    "id": 102,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1434042137611,
+    "foundTs": 1434042069140,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/24/ad.402436/CRS-5112_Core-Digi-Banners_184x90_retina_Left_SSf.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=36c05cba/b80246a6&camp=nyt2015_184x90_DigiCore_hp_evergreen&ad=CRS-5112_Core-Digi_184x90_L_46Y8W_402436&goto=https%3A%2F%2Fnytimes%2Eactivate%2Eensighten%2Ecom%2Fredirect%3Fpid%3D1%26cw%5Fei%3D3%26ei%3D3%26pa%3D%2D20%26cw%5Fpa%3D%2D20%26sd%3DTopLeft%7C46Y8W%7C402436%7C275042%7C46Y8W%26lei%3D2%26lsi%3D123abc%26url%3Dhttp%253A%2F%2Fwww%2Enytimes%2Ecom%2Fsubscriptions%2FMultiproduct%2Flp5558%2Ehtml%253Fadxc%253D275042%2526adxa%253D402436%2526page%253Dhomepage.nytimes.com/index.html%2526pos%253DTopLeft%2526campaignId%253D46Y8W",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 101,
+    "title": "55 Thompson",
+    "attempts": 0,
+    "visitedTs": 1434042152607,
+    "foundTs": 1434042069113,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/70/ad.407095/55ThompsonJun.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=5813e326/1bca45f9&camp=HMOD_Manhattan_Skyline_June_1969844&ad=Manhattan_Skyline_June_55ThompsonStreet&goto=http%3A%2F%2F55thompson%2Ecom%2F%3Futm%5Fsource%3DNYT%5FHPM%26utm%5Fmedium%3D55Thompson%26utm%5Fcampaign%3DNYT%5FHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://55thompson.com/?utm_source=NYT_HPM&utm_medium=55Thompson&utm_campaign=NYT_HPM"
+    ],
+    "resolvedTargetUrl": "http://55thompson.com/?utm_source=NYT_HPM&utm_medium=55Thompson&utm_campaign=NYT_HPM"
+  },
+  {
+    "id": 100,
+    "title": "UCR — Living the Promise: Home",
+    "attempts": 0,
+    "visitedTs": 1434042166256,
+    "foundTs": 1434042069032,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/71/ad.407109/UCR_homepagebelt_June2015.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMidLeader&sn2=d7053ac7/8385bd14&sn1=80784467/eab58cda&camp=University_of_California-Riverside_1972075&ad=970X90_Riversidehpbelt&goto=http%3A%2F%2Fpromise%2Eucr%2Eedu",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://promise.ucr.edu/"
+    ],
+    "resolvedTargetUrl": "http://promise.ucr.edu/"
+  },
+  {
+    "id": 99,
+    "title": "Food for Tomorrow  · NYT Conferences",
+    "attempts": 0,
+    "visitedTs": 1434042178841,
+    "foundTs": 1434042068979,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/58/ad.405882/CRS-6566-FFT-300x250_retina_ER1.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Box1&sn2=5b35dc29/56a295e7&sn1=1bbec6fd/7a90326&camp=nyt2015_300x250_box1_hp_marketingservices&ad=CRS-6566-FoodForTomorrow-300x250&goto=http%3A%2F%2Fwww%2Enytfoodfortomorrow%2Ecom%2F",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.nytfoodfortomorrow.com/"
+    ],
+    "resolvedTargetUrl": "http://www.nytfoodfortomorrow.com/"
+  },
+  {
+    "id": 98,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1434042194440,
+    "foundTs": 1434042068861,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/24/ad.402437/CRS-5112_Core-Digi-Banners_184x90_retina_Right_SSf.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=f5299160/ae11675f&camp=nyt2015_184x90_DigiCore_hp_evergreen&ad=CRS-5112_Core-Digi_184x90_R_46Y8W_402437&goto=https%3A%2F%2Fnytimes%2Eactivate%2Eensighten%2Ecom%2Fredirect%3Fpid%3D1%26cw%5Fei%3D3%26ei%3D3%26pa%3D%2D20%26cw%5Fpa%3D%2D20%26sd%3DTopRight%7C46Y8W%7C402437%7C275042%7C46Y8W%26lei%3D2%26lsi%3D123abc%26url%3Dhttp%253A%2F%2Fwww%2Enytimes%2Ecom%2Fsubscriptions%2FMultiproduct%2Flp5558%2Ehtml%253Fadxc%253D275042%2526adxa%253D402437%2526page%253Dhomepage.nytimes.com/index.html%2526pos%253DTopRight%2526campaignId%253D46Y8W",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.nytimes.com/subscriptions/Multiproduct/lp5558.html?adxc=275042&adxa=402437&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=46Y8W"
+    ],
+    "resolvedTargetUrl": "http://www.nytimes.com/subscriptions/Multiproduct/lp5558.html?adxc=275042&adxa=402437&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=46Y8W"
+  },
+  {
+    "id": 96,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374057605,
+    "foundTs": 1433373482427,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/3352260793429818130"
+    },
+    "contentType": "img",
+    "targetUrl": "http://googleads.g.doubleclick.net/aclk?sa=L&ai=BhYQOJYtvVamiIcaBManRgxiui8nzAwAAABABIIbKkiA4AFjmvfWc3AFgyeaPi8Ck1BCyAQp3d3cuZXcuY29tugEJZ2ZwX2ltYWdlyAEC2gESaHR0cDovL3d3dy5ldy5jb20vwAIC4AIA6gIRLzg0ODQvY20uZW53L2hvbWX4Av_RHpAD4AOYA-ADqAMByAOZBNAEkE7gBAGQBgGgBhTYBwE&num=0&cid=5GhjR_Twz4AMq9hlQKzNaxTF&sig=AOD64_05OlaV1-7iBSld66mcEKguhrH90w&client=ca-pub-9429333939093255&adurl=http://shop.ew.com/storefront/%3Fxid%3Dewdotcom300250",
+    "pageTitle": "Entertainment Weekly's EW.com | Entertainment News | TV News | TV Shows | Movie, Music and DVD Reviews",
+    "pageUrl": "http://www.ew.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 95,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374098448,
+    "foundTs": 1433373481578,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/805999385742171893"
+    },
+    "contentType": "img",
+    "targetUrl": "https://googleads.g.doubleclick.net/aclk?sa=L&ai=BShHMKItvVb-9A8SP3AGwg4LgCv6_p8UHAAAAEAEgorqwCDgAWNbZo_eYAmDJ5o-LwKTUELIBE3d3dy50aGVzdHJhbmdlci5jb226AQlnZnBfaW1hZ2XIAQLaARtodHRwOi8vd3d3LnRoZXN0cmFuZ2VyLmNvbS_AAgLgAgDqAiAvMTA0NzkyNi9TdHJhbmdlcl9Ib21lX1NpZGViYXJfM_gC_9EegAMBkAPgA5gDrAKoAwHIA5kE4AQBkAYBoAYU2AcB&num=0&cid=5GjqZxZyb8jzFYKM_ADVGAcU&sig=AOD64_2dXvPLXTBGpsRD75Ti043RKaHqwQ&client=ca-pub-0969663119487598&adurl=http://www.careforseattle.org",
+    "pageTitle": "The Stranger, Seattle's Only Newspaper",
+    "pageUrl": "http://www.thestranger.com/",
+    "errors": [
+      {
+        "url": "https://www.youtube.com/embed/zGNOy7N-CcI?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      },
+      {
+        "url": "https://www.youtube.com/embed/l8HUyk84mlk?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      },
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 95,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374098448,
+    "foundTs": 1433373481578,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/805999385742171893"
+    },
+    "contentType": "img",
+    "targetUrl": "https://googleads.g.doubleclick.net/aclk?sa=L&ai=BShHMKItvVb-9A8SP3AGwg4LgCv6_p8UHAAAAEAEgorqwCDgAWNbZo_eYAmDJ5o-LwKTUELIBE3d3dy50aGVzdHJhbmdlci5jb226AQlnZnBfaW1hZ2XIAQLaARtodHRwOi8vd3d3LnRoZXN0cmFuZ2VyLmNvbS_AAgLgAgDqAiAvMTA0NzkyNi9TdHJhbmdlcl9Ib21lX1NpZGViYXJfM_gC_9EegAMBkAPgA5gDrAKoAwHIA5kE4AQBkAYBoAYU2AcB&num=0&cid=5GjqZxZyb8jzFYKM_ADVGAcU&sig=AOD64_2dXvPLXTBGpsRD75Ti043RKaHqwQ&client=ca-pub-0969663119487598&adurl=http://www.careforseattle.org",
+    "pageTitle": "The Stranger, Seattle's Only Newspaper",
+    "pageUrl": "http://www.thestranger.com/",
+    "errors": [
+      {
+        "url": "https://www.youtube.com/embed/zGNOy7N-CcI?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      },
+      {
+        "url": "https://www.youtube.com/embed/l8HUyk84mlk?version=3&rel=1&fs=1&showsearch=0&showinfo=1&iv_load_policy=1&wmode=transparent",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      },
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 94,
+    "title": "Care for Seattle",
+    "attempts": 0,
+    "visitedTs": 1433374103754,
+    "foundTs": 1433373481559,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/12525175164740650667"
+    },
+    "contentType": "img",
+    "targetUrl": "https://googleads.g.doubleclick.net/aclk?sa=L&ai=BYoRpKItvVb69A8SP3AGwg4LgCt6eqp8HAAAAEAEgorqwCDgAWM6hlcKMAmDJ5o-LwKTUELIBE3d3dy50aGVzdHJhbmdlci5jb226AQlnZnBfaW1hZ2XIAQLaARtodHRwOi8vd3d3LnRoZXN0cmFuZ2VyLmNvbS_AAgLgAgDqAiAvMTA0NzkyNi9TdHJhbmdlcl9Ib21lX1NpZGViYXJfMvgC_9EegAMBkAPgA5gDrAKoAwHIA5kE4AQBkAYBoAYU2AcB&num=0&cid=5Gga2IAwFVLbDgKSBHzlRUdp&sig=AOD64_1RsoJhCX864Hb_bErwhJ6MzfwwqA&client=ca-pub-0969663119487598&adurl=http://info.genejuarezacademy.com/ads/",
+    "pageTitle": "The Stranger, Seattle's Only Newspaper",
+    "pageUrl": "http://www.thestranger.com/",
+    "errors": [],
+    "path": [
+      "http://www.careforseattle.org/"
+    ],
+    "resolvedTargetUrl": "http://www.careforseattle.org/"
+  },
+  {
+    "id": 93,
+    "title": "PNB | Promotion | Pacific Northwest Ballet",
+    "attempts": 0,
+    "visitedTs": 1433374121773,
+    "foundTs": 1433373481539,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/8033238178770342215"
+    },
+    "contentType": "img",
+    "targetUrl": "https://googleads.g.doubleclick.net/aclk?sa=L&ai=BVk3bKItvVb29A8SP3AGwg4LgCuawnsUHAAAAEAEgorqwCDgAWNbS4JqWAmDJ5o-LwKTUELIBE3d3dy50aGVzdHJhbmdlci5jb226AQlnZnBfaW1hZ2XIAQPaARtodHRwOi8vd3d3LnRoZXN0cmFuZ2VyLmNvbS_AAgLgAgDqAiAvMTA0NzkyNi9TdHJhbmdlcl9Ib21lX1NpZGViYXJfMfgC_9EegAMBkAPgA5gDrAKoAwHIA5kE4AQBkAYBoAYU2AcB&num=0&cid=5GjoAu8V9F_Hw3iyKsvOa2VV&sig=AOD64_1Qxpfic294fvXBPqtJl5rdsv8yiQ&client=ca-pub-0969663119487598&adurl=http://www.pnb.org/promo/stranger%3Futm_source%3DSTRANGER%26utm_medium%3Dbanner%26utm_campaign%3Dcarmina",
+    "pageTitle": "The Stranger, Seattle's Only Newspaper",
+    "pageUrl": "http://www.thestranger.com/",
+    "errors": [],
+    "path": [
+      "https://www.pnb.org/promo/stranger?utm_source=STRANGER&utm_medium=banner&utm_campaign=carmina"
+    ],
+    "resolvedTargetUrl": "https://www.pnb.org/promo/stranger?utm_source=STRANGER&utm_medium=banner&utm_campaign=carmina"
+  },
+  {
+    "id": 92,
+    "title": "Capitol Hill Block Party",
+    "attempts": 0,
+    "visitedTs": 1433374149972,
+    "foundTs": 1433373481513,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/1159268877533585090"
+    },
+    "contentType": "img",
+    "targetUrl": "https://googleads.g.doubleclick.net/aclk?sa=L&ai=B2jtnKItvVbu9A8SP3AGwg4LgCt6GuMUHAAAAEAEgorqwCDgAWOb21ImZAmDJ5o-LwKTUELIBE3d3dy50aGVzdHJhbmdlci5jb226AQlnZnBfaW1hZ2XIAQLaARtodHRwOi8vd3d3LnRoZXN0cmFuZ2VyLmNvbS_AAgLgAgDqAhovMTA0NzkyNi9TdHJhbmdlcl9Ib21lX1RvcPgC_9EegAMBkAPgA5gDrAKoAwHIA5kE4AQBkAYBoAYU2AcB&num=0&cid=5Gi-tseESBdrwWSUzG4cHqIg&sig=AOD64_0CTN9HkP6wD5J8mXzhFvgvdlLh8A&client=ca-pub-0969663119487598&adurl=http://capitolhillblockparty.com/",
+    "pageTitle": "The Stranger, Seattle's Only Newspaper",
+    "pageUrl": "http://www.thestranger.com/",
+    "errors": [],
+    "path": [
+      "http://capitolhillblockparty.com/"
+    ],
+    "resolvedTargetUrl": "http://capitolhillblockparty.com/"
+  },
+  {
+    "id": 91,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374185623,
+    "foundTs": 1433373476703,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/10293784321501524847"
+    },
+    "contentType": "img",
+    "targetUrl": "http://googleads.g.doubleclick.net/aclk?sa=L&ai=BRUQXHYtvVavAA4iDMd-qg-gOxvKD5AUAAAAQASCGypIgOABYntbr7rIBYMnmj4vApNQQsgEKd3d3LmV3LmNvbboBCWdmcF9pbWFnZcgBAtoBEmh0dHA6Ly93d3cuZXcuY29tL8ACAuACAOoCES84NDg0L2NtLmVudy9ob21l-AL_0R6QA-ADmAPgA6gDAcgDmQTQBJBO4AQBkAYBoAYU2AcB&num=0&cid=5GiaO0bHYaAH8A0nHhFYbtYA&sig=AOD64_32X-AA4n7LSzwgTlLV1eheep0mEw&client=ca-pub-9429333939093255&adurl=http://shop.ew.com/storefront/%3Fxid%3Dewdotcom612",
+    "pageTitle": "Entertainment Weekly's EW.com | Entertainment News | TV News | TV Shows | Movie, Music and DVD Reviews",
+    "pageUrl": "http://www.ew.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 90,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374220656,
+    "foundTs": 1433373476643,
+    "contentData": {
+      "src": "http://ientry.rotator.hadj1.adjuggler.net/servlet/ajrotator/1417180/0/vc?z=ientry&dim=1417182&kw=&click="
+    },
+    "contentType": "img",
+    "targetUrl": "http://ientry.rotator.hadj1.adjuggler.net/servlet/ajrotator/1417180/0/cc?z=ientry",
+    "pageTitle": "WebProNews - Breaking News in Tech, Search, Social, & Business",
+    "pageUrl": "http://www.webpronews.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 89,
+    "title": "An Evening With Harry Connick, Jr.\n Popular Artists Series&nbsp;\n - Friday, September 04, 2015 - 7:00 PM |\n\n\n        Boston Symphony Orchestra | bso.org",
+    "attempts": 0,
+    "visitedTs": 1433374234128,
+    "foundTs": 1433373466773,
+    "contentData": {
+      "src": "http://cdn.flashtalking.com/xre/122/1220486/1031664/image/1031664.gif?235790165"
+    },
+    "contentType": "img",
+    "targetUrl": "http://a.rfihub.com/acs/256_0_c3Q9aHRtbCZhYT0xNzA1NjUzLDE0MDIxOTYzLDc2NDQ0NywyNjQwNTc0Nyw2MTc2NSw1NDQxOTEsOTZkOTRhYTY2MGMwMDJhYjk0NjllZTBmYmUxMzVlZDUscCw3NTg1LDIzMTk5MywxMzcyMTc1OSwxNTk0NDEsMzc2ODMxJm10PTEmcmI9NjQmcmU9MzQ3MDEmaGNpPSZ1dWlkPTY5MjIxNzMzNzgzNTQxODkyMyZkaT0mZGM9MyZkaXNyYz0whttp://servedby.flashtalking.com/click/3/48593;1220486;1031664;210;0/?ft_section=64&g=2710A763A379C9&random=246151956&ft_width=300&ft_height=250&url=http://www.bso.org/Performance/Detail/73532/?utm_source=norbella&utm_medium=display&utm_campaign=harryconnickjrtwd2015",
+    "pageTitle": "MediaTakeOut.com™ 2014",
+    "pageUrl": "http://mediatakeout.com/",
+    "errors": [],
+    "path": [
+      "http://www.bso.org/Performance/Detail/73532/?utm_source=norbella&utm_medium=display&utm_campaign=harryconnickjrtwd2015"
+    ],
+    "resolvedTargetUrl": "http://www.bso.org/Performance/Detail/73532/?utm_source=norbella&utm_medium=display&utm_campaign=harryconnickjrtwd2015"
+  },
+  {
+    "id": 88,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374270705,
+    "foundTs": 1433373464023,
+    "contentData": {
+      "src": "http://s0.2mdn.net/3071236/5_HaltAndCatchFireS2_728x90_static.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://adclick.g.doubleclick.net/aclk?sa=L&ai=BtqFrF4tvVdeDAYiDMd-qg-gOhbmZ5wYAAAAQASAAOABYhZinnvABYMnmj4vApNQQggEXY2EtcHViLTUxNzM0MzA1NTk2NTUzOTmyAQ93d3cudnVsdHVyZS5jb226AQlnZnBfaW1hZ2XIAQnaARdodHRwOi8vd3d3LnZ1bHR1cmUuY29tL5gCzmPAAgLgAgDqAhk0MDg4L255bS52dWx0dXJlL2hvbWVwYWdl-AL_0R6QA-ADmAPgA6gDAeAEAZAGAaAGHtgHAA&num=0&cid=5Gj5jRXwg2dgRmi0odfwkk_B&sig=AOD64_0UaidlWmyDKX-gxRm2hbTV-0DTpg&client=ca-pub-5173430559655399&adurl=http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsuhMXgc84mDeVe9X7n_SG2tBIMqKQlsb8e9ooaW2K2UoN5NbGmWNMyBuBxoKAPNbg6Nj1uYdU8Ex3fEw0R-4qgpac3mpVzk7Y9aHxNGnjFCsK-P4vqoCViUWRhExP9hZhzalNR2gmM&sig=Cg0ArKJSzIxZTr10lxwLEAE&adurl=http://www.amc.com/shows/halt-and-catch-fire/video-extras/season-02/episode-00/trailer-nerd-street-halt-and-catch-fire-season-2-premiere",
+    "pageTitle": "Vulture - Entertainment News - Celebrity News, TV Recaps, Movies, Music, Art, Books, Theater",
+    "pageUrl": "http://www.vulture.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 87,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433374305756,
+    "foundTs": 1433373463643,
+    "contentData": {
+      "src": "http://s0.2mdn.net/3071236/5_HaltAndCatchFireS2_300x250_static.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://adclick.g.doubleclick.net/aclk?sa=L&ai=BfpcmFItvVczvJ5WAMbDYlqAFhbmZ5wYAAAAQASAAOABYvZGnnvABYMnmj4vApNQQggEXY2EtcHViLTUxNzM0MzA1NTk2NTUzOTmyAQ93d3cudnVsdHVyZS5jb226AQlnZnBfaW1hZ2XIAQnaARdodHRwOi8vd3d3LnZ1bHR1cmUuY29tL5gCzmPAAgLgAgDqAhk0MDg4L255bS52dWx0dXJlL2hvbWVwYWdl-AL_0R6QA-ADmAPgA6gDAeAEAZAGAaAGHtgHAA&num=0&cid=5Ghzsi8cR30P6gcAEo_y8HMP&sig=AOD64_0_znMBQhv1SlPh0WGG3BNEWciUWg&client=ca-pub-5173430559655399&adurl=http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsvu3L4kFArU7pI3nyBGJTyXN8PufF4Wna2wdCdVkiARWTACoN-JvHEtFXz086oC120_bj3oSyXkhOtWW8qz1f9gRk81PIGPneFYLdiXToR3wPi_uYKrTJqOrbP44ZXj8251zPRdNe4&sig=Cg0ArKJSzK73cbW-EWUDEAE&adurl=http://www.amc.com/shows/halt-and-catch-fire/video-extras/season-02/episode-00/trailer-nerd-street-halt-and-catch-fire-season-2-premiere",
+    "pageTitle": "Vulture - Entertainment News - Celebrity News, TV Recaps, Movies, Music, Art, Books, Theater",
+    "pageUrl": "http://www.vulture.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 86,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433375439801,
+    "foundTs": 1433373463637,
+    "contentData": {
+      "src": "https://s0.2mdn.net/3071236/5_HaltAndCatchFireS2_300x600_static.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsu4V0753JpoDFgsXQaKWiwUWp3pmurpJkNFI7YX1VI8S_kScTJtyTxy3R0vmuKbmwjSxxyTnxJjjNj_agASOlf9MHZJifSMHgW32w_f869bIWqYSd_9VHaJAaprzeFZcAht-fGwezs&sig=Cg0ArKJSzHKzT1Tm3sVZEAE&adurl=http://www.amc.com/shows/halt-and-catch-fire/video-extras/season-02/episode-00/trailer-nerd-street-halt-and-catch-fire-season-2-premiere",
+    "pageTitle": "Vulture - Entertainment News - Celebrity News, TV Recaps, Movies, Music, Art, Books, Theater",
+    "pageUrl": "http://www.vulture.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 85,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433473549530,
+    "foundTs": 1433373454661,
+    "contentData": {
+      "src": "http://speed.pointroll.com/PointRoll/Media/Banners/TysonFoods/1301641/EastDefense_728x90.jpg?PRAd=2069061&PRCID=2069061&PRplcmt=2590749&PRPID=2590749"
+    },
+    "contentType": "img",
+    "targetUrl": "http://clk.pointroll.com/bc/?a=2069061&c=1&i=A5170500-6D43-6852-0311-FC2001AB0101&clickurl=http://mpc.mxptint.net/9S1SD4B77FES2737SF5DDS2D8S5ASC0DSB336C1_6D3BB3A8_5A90A75SD12_6D3BB309_139C533%3Fhttp://r.mxptint.net%3Fhttp://www.tyson.com/Promotions/Crispy-Chicken-Strips.aspx",
+    "pageTitle": "ZAM",
+    "pageUrl": "http://www.zam.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 84,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526178139,
+    "foundTs": 1433373454653,
+    "contentData": {
+      "src": "http://speed.pointroll.com/PointRoll/Media/Banners/TysonFoods/1301641/EastDefense_728x90.jpg?PRAd=2069061&PRCID=2069061&PRplcmt=2590749&PRPID=2590749"
+    },
+    "contentType": "img",
+    "targetUrl": "http://clk.pointroll.com/bc/?a=2069061&c=1&i=A5170500-6D43-6852-0311-FC2001AB0101&clickurl=http://mpc.mxptint.net/9S1SD4B77FES2737SF5DDS2D8S5ASC0DSB336C1_6D3BB3A8_5A90A75SD12_6D3BB309_139C533%3Fhttp://r.mxptint.net%3Fhttp://www.tyson.com/Promotions/Crispy-Chicken-Strips.aspx",
+    "pageTitle": "ZAM",
+    "pageUrl": "http://www.zam.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 83,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526208279,
+    "foundTs": 1433373454643,
+    "contentData": {
+      "src": "http://speed.pointroll.com/PointRoll/Media/Banners/TysonFoods/1301641/EastDefense_728x90.jpg?PRAd=2069061&PRCID=2069061&PRplcmt=2590749&PRPID=2590749"
+    },
+    "contentType": "img",
+    "targetUrl": "http://clk.pointroll.com/bc/?a=2069061&c=1&i=A5170500-6D43-6852-0311-FC2001AB0101&clickurl=http://mpc.mxptint.net/9S1SD4B77FES2737SF5DDS2D8S5ASC0DSB336C1_6D3BB3A8_5A90A75SD12_6D3BB309_139C533%3Fhttp://r.mxptint.net%3Fhttp://www.tyson.com/Promotions/Crispy-Chicken-Strips.aspx",
+    "pageTitle": "ZAM",
+    "pageUrl": "http://www.zam.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 83,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526208279,
+    "foundTs": 1433373454643,
+    "contentData": {
+      "src": "http://speed.pointroll.com/PointRoll/Media/Banners/TysonFoods/1301641/EastDefense_728x90.jpg?PRAd=2069061&PRCID=2069061&PRplcmt=2590749&PRPID=2590749"
+    },
+    "contentType": "img",
+    "targetUrl": "http://clk.pointroll.com/bc/?a=2069061&c=1&i=A5170500-6D43-6852-0311-FC2001AB0101&clickurl=http://mpc.mxptint.net/9S1SD4B77FES2737SF5DDS2D8S5ASC0DSB336C1_6D3BB3A8_5A90A75SD12_6D3BB309_139C533%3Fhttp://r.mxptint.net%3Fhttp://www.tyson.com/Promotions/Crispy-Chicken-Strips.aspx",
+    "pageTitle": "ZAM",
+    "pageUrl": "http://www.zam.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 82,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526248345,
+    "foundTs": 1433373454115,
+    "contentData": {
+      "src": "http://s0.2mdn.net/ads/richmedia/studio/pv2/36329422/20150414115347935/15_RAM15_KentuckyDerby_300x600_ITFLS_default.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://ad.doubleclick.net/activity;src=2587596;met=1;v=1;pid=117218372;aid=290344715;ko=0;cid=62540535;rid=62420535;rv=1;cs=b;eid1=2296914;ecn1=1;etm1=0;_dc_redir=url?http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsvNCxns_X_6Knoo1Aev2iqrEnyMSYtx9_MziePCnzqR6-0TemS4KRgATtmv0fQxRiE2fqO9nN1GYe7Rlu_Fw2HJDCRVImW7rrQde_vxZMadO-hPbBFyxImO1tSrZedvsM8E5PSUmNLYdNK9&sig=Cg0ArKJSzH1Zz83hdiZhEAE&adurl=http://oascentral.thepostgame.com/RealMedia/ads/click_lx.ads/thepostgame.com/homepage/main/L29/2082738541/TopRight/SMV/RAM_BuiltToRun_Homepage/RAM_BuiltToRun_TopRight.html/796d332b556c567669754d4141394e49%3Fhttp://www.ramtrucks.com/en/ram_1500/?bid=8661442&sid=1089575&pid=117218372&adid=290344715&cid=62540535&buytype=LF&TR=1&channel=display#laramie_limited",
+    "pageTitle": "Homepage | ThePostGame",
+    "pageUrl": "http://www.thepostgame.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 81,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526283383,
+    "foundTs": 1433373452971,
+    "contentData": {
+      "src": "http://s0.2mdn.net/ads/richmedia/studio/pv2/36329420/20150414120429949/15_RAM15_KentuckyDerby_300x250_ITFLS_default.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://ad.doubleclick.net/activity;src=2587596;met=1;v=1;pid=117217884;aid=290353640;ko=0;cid=62535859;rid=62415859;rv=1;cs=l;eid1=2296914;ecn1=1;etm1=0;_dc_redir=url?http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsvQ1nJ8PfFg52yqf_FgKH1FHnPlidj-0Mzvl5VlAWtg0ZN57YYoGU1yngKXSrCENqmmnXa2GZDEQ1uLdaGVHnEs9ssIZsiK6yCw5Phti91xsgTxyqvK6HN1smCoqCZwMmO3DGGUy0PmgeCB&sig=Cg0ArKJSzKljqXBFCLOWEAE&adurl=http://oascentral.thepostgame.com/RealMedia/ads/click_lx.ads/thepostgame.com/homepage/main/L29/44389734/BottomRight/SMV/RAM_BuiltToRun_Homepage/RAM_BuiltToRun_BottomRight.html/796d332b556c567669754d4141394e49%3Fhttp://www.ramtrucks.com/en/ram_1500/?bid=8661442&sid=1089575&pid=117217884&adid=290353640&cid=62535859&buytype=LF&TR=1&channel=display#laramie_limited",
+    "pageTitle": "Homepage | ThePostGame",
+    "pageUrl": "http://www.thepostgame.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 80,
+    "title": "Harry's - Quality Men’s Shaving Products. Fair Prices. Simple.",
+    "attempts": 0,
+    "visitedTs": 1433526301436,
+    "foundTs": 1433373447940,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/12003101525909049559"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CkLMqwopvVf3vCcmP3AHMtoPwArT30s4GnN78jYsClr2e1y8QASDXrOceYMmGgIDAJKABzJHm3gPIAQLgAgCoAwHIA5kEqgSQAU_QpPt5UTL19zQE2KcEojXjgRTSdc1Wsxutpy2XxfXDVEFcSKe3zASl6i-Nal_XZnS6VqqfzOKlYlV4dVDXckAPZxxZPjYP7apa0ZzEsbpIYim8AvxVrpAtaPATF3nlXzy-Y09q1uFrcwUTFi6iXVu3xPYwpXACLohPJnvDuLuGCQzsX13aXIlMXI2KoxOb0uAEAYgGAaAGAoAHnO6ZIagHpr4b2AcB&num=1&cid=5GixLFh86V02VEEQ0q7DW7xi&sig=AOD64_2rmAY5d91o4atmmmtPlRCZfZvAng&client=ca-pub-0645463875155257&adurl=https://www.harrys.com/%3Fhh%3Drethink--7ee3cbf9ba67cf7cfb75e481cd7f37e57778eab8",
+    "pageTitle": "FanSided - Sports News, Entertainment, Lifestyle & Technology - 300+ Sites",
+    "pageUrl": "http://fansided.com/",
+    "errors": [],
+    "path": [
+      "https://www.harrys.com/?hh=rethink--7ee3cbf9ba67cf7cfb75e481cd7f37e57778eab8&gclid=CNPf4MmN-cUCFVWPHwodTpcAZQ"
+    ],
+    "resolvedTargetUrl": "https://www.harrys.com/?hh=rethink--7ee3cbf9ba67cf7cfb75e481cd7f37e57778eab8&gclid=CNPf4MmN-cUCFVWPHwodTpcAZQ"
+  },
+  {
+    "id": 79,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526328434,
+    "foundTs": 1433373423477,
+    "contentData": {
+      "src": "http://ad.doubleclick.net/ddm/ad/N6092.289638.SPORTSMEDIAVENTURES/B8661442.117207571;sz=1x1;ord=374592195?%27"
+    },
+    "contentType": "img",
+    "targetUrl": "http://oascentral.thepostgame.com/RealMedia/ads/click_lx.ads/thepostgame.com/homepage/main/L29/374592195/Position1/SMV/RAM_BuiltToRun_Homepage/RAM_BuiltToRun_Wallpaper.html/796d332b556c567669754d4141394e49?http://ad.doubleclick.net/ddm/clk/290344511;117207571;v",
+    "pageTitle": "Homepage | ThePostGame",
+    "pageUrl": "http://www.thepostgame.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 78,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526373495,
+    "foundTs": 1433373423390,
+    "contentData": {
+      "src": "http://imagec17.247realmedia.com/RealMedia/ads/Creatives/SMV/RAM_BuiltToRun_Homepage/RAM15_KentuckyDerby_970x70.jpg/1431110670"
+    },
+    "contentType": "img",
+    "targetUrl": "http://oascentral.thepostgame.com/RealMedia/ads/click_lx.ads/thepostgame.com/homepage/main/L29/1602959718/Top/SMV/RAM_BuiltToRun_Homepage/RAM_BuiltToRun_Top.html/796d332b556c567669754d4141394e49?http://ad.doubleclick.net/ddm/clk/290344511;117220336;p",
+    "pageTitle": "Homepage | ThePostGame",
+    "pageUrl": "http://www.thepostgame.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 77,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526413683,
+    "foundTs": 1433373404796,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/366124093342208959"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CTWPe14pvVceqKpGN3AHh6IDwA9Cgt9EFiLuLk6gC-L6Yz2wQASD0g7kbYMmGgIDAJKAB9JqC-QPIAQLgAgCoAwHIA5kEqgSRAU_QGHNxZ5FeX-Uu0piQAWZV-wsU3SQyea4SRXS98FCdsN7lR9nHyPdEKcoM65eAG0fFgni89VLQcc6DTfrIRgxkdtHGxHhC8wAR5WVi-iWlkxS5jfaOvmwGXjQ_cJQB1hQ1Gzq_bgKXJhSltFiplYDSh7veOznhr1tZlv0e6u0iC5dt45ycdoRgjg_dHyOUWJ3gBAGIBgGgBgKAB_Tk_QaoB6a-G9gHAQ&num=1&cid=5Gi-LYHSYLwQ-BpJc4l6hUKM&sig=AOD64_0BqxgFZCvbvdjWkwRK-qDFYtT5Pw&client=ca-pub-3844877863303739&adurl=http://www.comparecards.com/low-interest%3Fk%3Dccr300VSTb%26aw_cam%3D01_Remarketing%26aw_adg%3Dvisit_image%26aw_med%3Dcontent%26aw_pla%3Darstechnica.com%26aw_cre%3D79541979768%26aw_tar%3Dboomuserlist%253A%253A79128%26aw_key%3D",
+    "pageTitle": "Ars Technica",
+    "pageUrl": "http://arstechnica.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 77,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526413683,
+    "foundTs": 1433373404796,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/366124093342208959"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CTWPe14pvVceqKpGN3AHh6IDwA9Cgt9EFiLuLk6gC-L6Yz2wQASD0g7kbYMmGgIDAJKAB9JqC-QPIAQLgAgCoAwHIA5kEqgSRAU_QGHNxZ5FeX-Uu0piQAWZV-wsU3SQyea4SRXS98FCdsN7lR9nHyPdEKcoM65eAG0fFgni89VLQcc6DTfrIRgxkdtHGxHhC8wAR5WVi-iWlkxS5jfaOvmwGXjQ_cJQB1hQ1Gzq_bgKXJhSltFiplYDSh7veOznhr1tZlv0e6u0iC5dt45ycdoRgjg_dHyOUWJ3gBAGIBgGgBgKAB_Tk_QaoB6a-G9gHAQ&num=1&cid=5Gi-LYHSYLwQ-BpJc4l6hUKM&sig=AOD64_0BqxgFZCvbvdjWkwRK-qDFYtT5Pw&client=ca-pub-3844877863303739&adurl=http://www.comparecards.com/low-interest%3Fk%3Dccr300VSTb%26aw_cam%3D01_Remarketing%26aw_adg%3Dvisit_image%26aw_med%3Dcontent%26aw_pla%3Darstechnica.com%26aw_cre%3D79541979768%26aw_tar%3Dboomuserlist%253A%253A79128%26aw_key%3D",
+    "pageTitle": "Ars Technica",
+    "pageUrl": "http://arstechnica.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 77,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526413683,
+    "foundTs": 1433373404796,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/366124093342208959"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CTWPe14pvVceqKpGN3AHh6IDwA9Cgt9EFiLuLk6gC-L6Yz2wQASD0g7kbYMmGgIDAJKAB9JqC-QPIAQLgAgCoAwHIA5kEqgSRAU_QGHNxZ5FeX-Uu0piQAWZV-wsU3SQyea4SRXS98FCdsN7lR9nHyPdEKcoM65eAG0fFgni89VLQcc6DTfrIRgxkdtHGxHhC8wAR5WVi-iWlkxS5jfaOvmwGXjQ_cJQB1hQ1Gzq_bgKXJhSltFiplYDSh7veOznhr1tZlv0e6u0iC5dt45ycdoRgjg_dHyOUWJ3gBAGIBgGgBgKAB_Tk_QaoB6a-G9gHAQ&num=1&cid=5Gi-LYHSYLwQ-BpJc4l6hUKM&sig=AOD64_0BqxgFZCvbvdjWkwRK-qDFYtT5Pw&client=ca-pub-3844877863303739&adurl=http://www.comparecards.com/low-interest%3Fk%3Dccr300VSTb%26aw_cam%3D01_Remarketing%26aw_adg%3Dvisit_image%26aw_med%3Dcontent%26aw_pla%3Darstechnica.com%26aw_cre%3D79541979768%26aw_tar%3Dboomuserlist%253A%253A79128%26aw_key%3D",
+    "pageTitle": "Ars Technica",
+    "pageUrl": "http://arstechnica.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 76,
+    "title": "cloud_engineers1",
+    "attempts": 0,
+    "visitedTs": 1433526420816,
+    "foundTs": 1433373404578,
+    "contentData": {
+      "src": "http://s1.2mdn.net/viewad/4361691/All_Clouds_Have_Engineers_anim_ad_updated-728x90.gif"
+    },
+    "contentType": "img",
+    "targetUrl": "http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsvzoX2dlereM0qdZNMU5TRHwNwAMw6cQSBvgIC42EMKyKk98cJRhO_-JrTQYJN8qTXT334hul_IClvQMo-IFPNkPym6_qIPyaLw_sPRyH1UqA-Klr0Bev8uvSxx1bl73qZPkJOm834J20ojZC0QiznfT7Us_gGX9xTPbMHhcRGAX53W8xO0f2HmlgHWnQ4swXVL8MpK9lqpbxfmHFWu1eKb0QFCiIWP6B3Cbe5Dw4E4BD0WKeA6fLMbtobyZYYn7wkzVl6vmL4upTnTDRXWci1BijoAGPA17yTSsDH5pmIy8lKdXa4TARU_ais74bmieLOSnTrvH3zRGML7-4AB8Jd6T7UMBQk0sISzakYFiKSGm45DrlXlJZ3_zoENzZk1nuLunE9Blmg7FRK2DK-q_-WQXhYdGfuEJ7oYtiUarGE8VvEi9_x0I2AI0t1-BcJ6wyvOnyQoemc_dEcycOEL0qYcoR326sLBwTRqfqq7jOWMQz8R3hk4v1OMph7KgXrmFLdwWxYnrZoITwKGTvB8vBMPv-xavBqwD_r2N1MybOKs1abfWIWsAim3MtIJfsacN1XPHE3rZFFDMZ03_fRKErLBdIdYRjVdRQh3lYFHxResYxavgfeiHsRB3s0tW7n9Hl_8G2cy8LJHrJbg3QJlScKc4M5KiNVNEXobj_Q29zbChrIvug&sig=Cg0ArKJSzJLi_B8vMg1J&adurl=http://pages.rackspace.com/cloudengineers/%3Fcm_mmc%3Dcloud-_-displaynam-_-gdn-_-managedplacements_allcloudslightblue",
+    "pageTitle": "Ars Technica",
+    "pageUrl": "http://arstechnica.com/",
+    "errors": [],
+    "path": [
+      "http://pages.rackspace.com/cloudengineers/?cm_mmc=cloud-_-displaynam-_-gdn-_-managedplacements_allcloudslightblue&gclid=CMfk6oeO-cUCFYaRHwodnWYAcA"
+    ],
+    "resolvedTargetUrl": "http://pages.rackspace.com/cloudengineers/?cm_mmc=cloud-_-displaynam-_-gdn-_-managedplacements_allcloudslightblue&gclid=CMfk6oeO-cUCFYaRHwodnWYAcA"
+  },
+  {
+    "id": 75,
+    "title": "Condé Nast - Provocative, Influential, Award-winning Content",
+    "attempts": 0,
+    "visitedTs": 1433526438346,
+    "foundTs": 1433373404357,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/16492257464219697026"
+    },
+    "contentType": "img",
+    "targetUrl": "http://googleads.g.doubleclick.net/aclk?sa=L&ai=BcpN914pvVea3JteG3QHEiIDADO-kxIsHAAAAEAEgt-O4IDgAWJ_z1arhAWDJ5o-LwKTUELIBD2Fyc3RlY2huaWNhLmNvbboBCWdmcF9pbWFnZcgBAtoBF2h0dHA6Ly9hcnN0ZWNobmljYS5jb20vwAIC4AIA6gIXLzMzNzkvYXJzLmRhcnQvaG9tZXBhZ2X4Av_RHoADAZAD4AOYA-ADqAMByAOZBOAEAZAGAaAGFNgHAQ&num=0&cid=5Gg7XHG7NyYHPST7_h86Zm1G&sig=AOD64_0Y8am4xE9TI9sif5qdQ8zcm9W-wA&client=ca-pub-3464071882374873&adurl=http://www.condenast.com",
+    "pageTitle": "Ars Technica",
+    "pageUrl": "http://arstechnica.com/",
+    "errors": [],
+    "path": [
+      "http://www.condenast.com/"
+    ],
+    "resolvedTargetUrl": "http://www.condenast.com/"
+  },
+  {
+    "id": 74,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526495460,
+    "foundTs": 1433373400147,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/15705226709665857746"
+    },
+    "contentType": "img",
+    "targetUrl": "http://googleads.g.doubleclick.net/aclk?sa=L&ai=Bzna61IpvVcK5KsiEMeicgeAF4cfMugQAAAAQASCZwckGOABY8az_2oMBYMnmj4vApNQQsgEUc2VhcmNoZW5naW5lbGFuZC5jb226AQlnZnBfaW1hZ2XIAQLaARxodHRwOi8vc2VhcmNoZW5naW5lbGFuZC5jb20vwAIC4AIA6gIfLzEwMzgyNTkvU0VMLUxvd2VyLVNpZGViYXItQ3ViZfgC_9EekAPgA5gD4AOoAwHIA5kE0ASQTuAEAZAGAaAGFNgHAQ&num=0&cid=5GgNTu-CLvhKEZnkA5HLowNx&sig=AOD64_2u4sl4etR8QybApwTeICcEsgOd5g&client=ca-pub-1398480499397022&adurl=http://searchmarketingexpo.com/%3Futm_source%3Dtdm-sel-banner-smx%26utm_medium%3Dbanner%26utm_campaign%3Dsmx-home",
+    "pageTitle": "Search Engine Land | Must Read News About SEO, SEM & Search Engines",
+    "pageUrl": "http://searchengineland.com/",
+    "errors": [
+      {
+        "url": "http://www.youtube.com/embed/NJmvjEkHZvE?enablejsapi=1&origin=http://searchmarketingexpo.com",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      },
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 73,
+    "title": "Search Marketing Expo - SMX East 2015: New York City - Sept. 29-Oct. 1, 2015 - Search Marketing Expo",
+    "attempts": 1,
+    "visitedTs": 1433526527285,
+    "foundTs": 1433373400122,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/3019628092289621647"
+    },
+    "contentType": "img",
+    "targetUrl": "http://googleads.g.doubleclick.net/aclk?sa=L&ai=B4u_R1IpvVcC5KsiEMeicgeAFqf66jQcAAAAQASCZwckGOABYmabah5kCYMnmj4vApNQQsgEUc2VhcmNoZW5naW5lbGFuZC5jb226AQlnZnBfaW1hZ2XIAQLaARxodHRwOi8vc2VhcmNoZW5naW5lbGFuZC5jb20vwAIC4AIA6gIULzEwMzgyNTkvU2lkZWJhckN1YmX4Av_RHpAD4AOYA-ADqAMByAOZBNAEkE7gBAGQBgGgBhTYBwE&num=0&cid=5GhMuSDBuGYiYFL_4_V_3suR&sig=AOD64_1yS2Z52IBUXPlBI_uk3QO1_I0wNQ&client=ca-pub-1398480499397022&adurl=http://searchmarketingexpo.com/east/%3Futm_source%3Dsel%26utm_medium%3Ddisplay%26utm_campaign%3Dsmx%2Beast%2B2015%26utm_content%3D300x250",
+    "pageTitle": "Search Engine Land | Must Read News About SEO, SEM & Search Engines",
+    "pageUrl": "http://searchengineland.com/",
+    "errors": [
+      {
+        "url": "http://www.youtube.com/embed/NJmvjEkHZvE?enablejsapi=1&origin=http://searchmarketingexpo.com",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      }
+    ],
+    "path": [
+      "http://searchmarketingexpo.com/east/?utm_source=sel&utm_medium=display&utm_campaign=smx+east+2015&utm_content=300x250"
+    ],
+    "resolvedTargetUrl": "http://searchmarketingexpo.com/east/?utm_source=sel&utm_medium=display&utm_campaign=smx+east+2015&utm_content=300x250"
+  },
+  {
+    "id": 72,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526589571,
+    "foundTs": 1433373400101,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/3758013423908021686"
+    },
+    "contentType": "img",
+    "targetUrl": "http://googleads.g.doubleclick.net/aclk?sa=L&ai=Bf0pY1IpvVb-5KsiEMeicgeAF-f-UtQYAAAAQASCZwckGOABY-aWP7OcBYMnmj4vApNQQsgEUc2VhcmNoZW5naW5lbGFuZC5jb226AQlnZnBfaW1hZ2XIAQLaARxodHRwOi8vc2VhcmNoZW5naW5lbGFuZC5jb20vwAIC4AIA6gIYLzEwMzgyNTkvU0VMLUxlYWRlcmJvYXJk-AL_0R6QA-ADmAPgA6gDAcgDmQTQBJBO4AQBkAYBoAYU2AcB&num=0&cid=5GhKJRH88ab9UYkASEDOs5DB&sig=AOD64_1Tz_KcHjHjWElyopygRsbMst26xw&client=ca-pub-1398480499397022&adurl=http://downloads.digitalmarketingdepot.com/MIR_1409_CallAnlytc_landingpage.html%3Futm_source%3Dml-sel%26utm_medium%3Ddisplay%26utm_content%3D728x90",
+    "pageTitle": "Search Engine Land | Must Read News About SEO, SEM & Search Engines",
+    "pageUrl": "http://searchengineland.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 71,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526630998,
+    "foundTs": 1433373376082,
+    "contentData": {
+      "src": "http://s0.2mdn.net/1181183/1-espn_mlb_2015_970x66_backup.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsuDOV6GBjBZLffKX1EimPdjTblAxvh6A56W-4J6lN6iou3Q85PyqtCrNewjoanaEg3TljDNJqaNToZ0jCN92mWkCGITkPloE8zZYa_24JXnsC9PX1VyyZ4aoEoWHNgJeaWdt7OKdPnpcQv9LA&sig=Cg0ArKJSzEkHrvp1nggoEAE&adurl=http://adserver.adtechus.com/adlink/5452/3351767/0/2892/AdId%3D6853897%3BBnId%3D1%3Bitime%3D373365354%3Bkey%3Dkey1%2Bkey2%2Bkey3%2Bkey4%3Blink%3Dhttp://espn.go.com/mlb/schedule",
+    "pageTitle": "Sporting News - Beyond the Score",
+    "pageUrl": "http://www.sportingnews.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 70,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526652734,
+    "foundTs": 1433373342527,
+    "contentData": {
+      "src": "http://s0.2mdn.net/ads/richmedia/studio/pv2/33933842/20141023022415604/fallback.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://ad.doubleclick.net/activity;src=4472870;met=1;v=1;pid=112045916;aid=285033012;ko=0;cid=59650536;rid=59539411;rv=2;cs=b;eid1=1957432;ecn1=1;etm1=0;_dc_redir=url?http://adclick.g.doubleclick.net/pcs/click?xai=AKAOjstkOqwrT-xgQuj7HNk3vi0-3S-ka9RSeZ3-y5SIibLB4DdxdMRrIKROJO3I9mWou_WbPAMDVqZ4UC7PR2L33vdcFzDg7Tr40GFZsiwJVUtU6ln26zR2CS3wlQ8j9sBIJzfLcXvs-g&sig=Cg0ArKJSzHAVmzse7IOPEAE&adurl=http://a.rfihub.com/acs/256_0_c3Q9aHRtbCZhYT0xNzA0NzM5LDE0MDAxMzI3LDc2MzM1MywyNjM5MDczMywzMTg5MSwzMDMwNzksYzY5NmMwNTZkMjIzNDQxNmQ1NDUzYzk0ZGY4NGJjYzAscCw4MjU1LDEwODUxMywxMzcxMzc3MywxNTkyMjcsMzc2MzM3Jm10PTEmcmI9NjQmcmU9MzQ0ODMmaGNpPSZ1dWlkPTY5MjIxNzMzNzgzNTQxODkyMyZkaT0mZGM9MyZkaXNyYz0whttps://www.heathrowexpress.com/",
+    "pageTitle": "MediaTakeOut.com™ 2014",
+    "pageUrl": "http://mediatakeout.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 69,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433373342028,
+    "foundTs": 1433373283411,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/12/ad.401234/Bloomberg_88x31_V2.gif"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=www.nytimes.com/recommendations/module&pos=MostPop&sn2=e755a705/f991e837&sn1=7188b3fe/17438ef5&camp=Amex_Personal_Savings_H1_2015_1983637A&ad=AMEX_88x30_Module_B8439776.115891944&goto=http%3A%2F%2Fad%2Edoubleclick%2Enet%2Fddm%2Fclk%2F287187532%3B115891944%3Bu",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 68,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526679686,
+    "foundTs": 1433373257459,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/jingzhun/2014/jingdong/7601000505jd.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://clk.optaim.com/event.ng/Type=click&FlightID=201405&TargetID=sohu&Values=36f41775,66382769,4e67bb40,00339437&AdID=3420784",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 67,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526714850,
+    "foundTs": 1433373240321,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/static/logo4.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.iac-i.org/privacy",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 66,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526768681,
+    "foundTs": 1433373240312,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/static/logo4.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.iac-i.org/privacy",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 65,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526830155,
+    "foundTs": 1433373238780,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/default/1x1.gif"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.sohu.com",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 64,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526891152,
+    "foundTs": 1433373238517,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/static/logo4.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.iac-i.org/privacy",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 63,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433526949942,
+    "foundTs": 1433373238512,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/static/logo4.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.iac-i.org/privacy",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 62,
+    "title": "搜狐-中国最大的门户网站",
+    "attempts": 0,
+    "visitedTs": 1433526969565,
+    "foundTs": 1433373237998,
+    "contentData": {
+      "src": "http://images.sohu.com/bill/default/1x1.gif"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.sohu.com",
+    "pageTitle": "搜狐-中国最大的门户网站",
+    "pageUrl": "http://www.sohu.com/",
+    "errors": [],
+    "path": [
+      "http://www.sohu.com/"
+    ],
+    "resolvedTargetUrl": "http://www.sohu.com/"
+  },
+  {
+    "id": 61,
+    "title": "DestinyDB - Destiny Leaderboards, Items, Stats, Events, Bounties, Forums and More!",
+    "attempts": 2,
+    "visitedTs": 1433527008434,
+    "foundTs": 1433373220991,
+    "contentData": {
+      "src": "http://zam.zamimg.com/i/promos/destinydb-mini.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.destinydb.com/",
+    "pageTitle": "ZAM",
+    "pageUrl": "http://www.zam.com/",
+    "errors": [],
+    "path": [
+      "http://www.destinydb.com/"
+    ],
+    "resolvedTargetUrl": "http://www.destinydb.com/"
+  },
+  {
+    "id": 60,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433527067997,
+    "foundTs": 1433373220982,
+    "contentData": {
+      "src": "http://zam.zamimg.com/i/promos/hh-mini.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.hearthhead.com/decks?filter=set-14-min=1",
+    "pageTitle": "ZAM",
+    "pageUrl": "http://www.zam.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 58,
+    "title": "bossini Online Shop - Shop clothes for Men, Ladies, Kids Boys and Girls",
+    "attempts": 0,
+    "visitedTs": 1432516910940,
+    "foundTs": 1432516903507,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/536219771849947163"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CSsfUJ3liVaSbLsKY9gX4jYGAAreZwYAIz8Pmy68BwI23ARABIMjW9Rlg2QKgAeG-vNMDyAECqQK59KMyfFCBPqgDAcgDwQSqBH9P0HlDf7LgE5mjQAXlcQcnZETsStPiKeKiiSNUO9VnOz3B8EO9Y6FRHndjNri3p7WWCoJTjGURzv71TVCLW7AUqxbMfuw0hKAgu9xoh0uZf5SQC4gSpxBtpSjdef3tPk3j3UpSRF55okLzRwqOHU9A1_HFK_YtjMispH6AVE-QiAYBoAYCgAeHwcMsqAemvhvYBwE&num=1&cid=5GhUlRgdXX--2wDjf79LexNm&sig=AOD64_1inRivQbXQWo5xYMAc9dnWU3adOQ&client=ca-pub-4177862836555934&adurl=https://www.bossini.com/en/register",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "https://www.bossini.com/en/register?gclid=CN22wKvd28UCFUpwvAodOL4Apg"
+    ],
+    "resolvedTargetUrl": "https://www.bossini.com/en/register?gclid=CN22wKvd28UCFUpwvAodOL4Apg"
+  },
+  {
+    "id": 57,
+    "title": "Hong Kong's Trusted Property Agency | OKAY.com",
+    "attempts": 0,
+    "visitedTs": 1432516920168,
+    "foundTs": 1432516903150,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/11544980248323453456"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=Cn4AUJ3liVbj7Fse39gXBs4HgDL6ggZMGhrH7rtEBh-CivcABEAEgyNb1GWDZAqAB6oKbyQPIAQOpArn0ozJ8UIE-qAMByAPBBKoEe0_Q7hMX2fsUKTpznowSHZ89xGfD69YY2YGifO4QUAp6hpog0K6-6wqQknoBrDE5-fknhr7oBorXVu9kPjs-MOJHVyEfarv-TpyWPBi96zv7dNh1YmbMHVl2CccWmAUM6O5_eWJualaCmQ1O1SHhBiV8lIB4FVDv_4EjUogGAaAGA4AH_vzkNqgHpr4b2AcB&num=1&cid=5Gg_imS49gmDyA6iKrXdFvnY&sig=AOD64_1vjzcKEbn3Wmxe_qAznFM8MEtrRg&client=ca-pub-4177862836555934&adurl=http://www.okay.com/%3Futm_source%3DGDN%26utm_medium%3Dcpc%26utm_campaign%3Dview_properties_728_90_en_interest%26utm_nooveride%3D1",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.okay.com/?utm_source=GDN&utm_medium=cpc&utm_campaign=view_properties_728_90_en_interest&utm_nooveride=1"
+    ],
+    "resolvedTargetUrl": "http://www.okay.com/?utm_source=GDN&utm_medium=cpc&utm_campaign=view_properties_728_90_en_interest&utm_nooveride=1"
+  },
+  {
+    "id": 56,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516930027,
+    "foundTs": 1432516902124,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401325/CRS-5246_INYT_Refresh_USD_300x250_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=8d4975a0/56676383&camp=inyt2015_300x250_digi_usd_4L9R8&ad=CRS-5246_INYT_Refresh_USD_300x250_DM.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274369%26adxa%3D401325%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMiddle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274369&adxa=401325&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274369&adxa=401325&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+  },
+  {
+    "id": 55,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433280113284,
+    "foundTs": 1432516901715,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401319/CRS-5426_INYT_184x90_retina_left_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=910e9aae/ccc75220&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-5426_INYT_184x90_retina_left_ER4.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D401319%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401319&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401319&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 54,
+    "title": "Luxury Condominiums in Murray Hill | Corinthian Collection",
+    "attempts": 0,
+    "visitedTs": 1433280544093,
+    "foundTs": 1432516901680,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/22/ad.402225/Corinthian-logoHPM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=9761255/fe2fa9b0&camp=HMOD_CIM_Group_Corinthian_May_1990114&ad=Corinthian-HPM040315&goto=http%3A%2F%2Fcorinthiancollection%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHomepageModule%26utm%5Fcampaign%3DNYTHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://corinthiancollection.com/?utm_source=NYT&utm_medium=HomepageModule&utm_campaign=NYTHPM"
+    ],
+    "resolvedTargetUrl": "http://corinthiancollection.com/?utm_source=NYT&utm_medium=HomepageModule&utm_campaign=NYTHPM"
+  },
+  {
+    "id": 53,
+    "title": "Luxury Condominiums in Murray Hill | Corinthian Collection",
+    "attempts": 0,
+    "visitedTs": 1433360574653,
+    "foundTs": 1432516901674,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/22/ad.402225/Corinthian-HPM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=9761255/fe2fa9b0&camp=HMOD_CIM_Group_Corinthian_May_1990114&ad=Corinthian-HPM040315&goto=http%3A%2F%2Fcorinthiancollection%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHomepageModule%26utm%5Fcampaign%3DNYTHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://corinthiancollection.com/?utm_source=NYT&utm_medium=HomepageModule&utm_campaign=NYTHPM"
+    ],
+    "resolvedTargetUrl": "http://corinthiancollection.com/?utm_source=NYT&utm_medium=HomepageModule&utm_campaign=NYTHPM"
+  },
+  {
+    "id": 53,
+    "title": "Luxury Condominiums in Murray Hill | Corinthian Collection",
+    "attempts": 0,
+    "visitedTs": 1433360574653,
+    "foundTs": 1432516901674,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/22/ad.402225/Corinthian-HPM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=9761255/fe2fa9b0&camp=HMOD_CIM_Group_Corinthian_May_1990114&ad=Corinthian-HPM040315&goto=http%3A%2F%2Fcorinthiancollection%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHomepageModule%26utm%5Fcampaign%3DNYTHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://corinthiancollection.com/?utm_source=NYT&utm_medium=HomepageModule&utm_campaign=NYTHPM"
+    ],
+    "resolvedTargetUrl": "http://corinthiancollection.com/?utm_source=NYT&utm_medium=HomepageModule&utm_campaign=NYTHPM"
+  },
+  {
+    "id": 52,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360583236,
+    "foundTs": 1432516901649,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401321/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=33d8364a/478af174&camp=inyt2015_970x44_digi_usd_4L9U6&ad=CRS-5246_INYT_usd_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274074%26adxa%3D401321%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274074&adxa=401321&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274074&adxa=401321&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 51,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360593079,
+    "foundTs": 1432516901460,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401320/CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=6e2eb444/58d3eea5&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D401320%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401320&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401320&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 50,
+    "title": "Hong Kong's Trusted Property Agency | OKAY.com",
+    "attempts": 0,
+    "visitedTs": 1432516861243,
+    "foundTs": 1432516852324,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/13077799025210328442"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=Cxgc59HhiVeflJcSA9gX9mILACr6ggZMG7rP7rtEBh-CivcABEAEgyNb1GWDZAqAB6oKbyQPIAQOpArn0ozJ8UIE-qAMByAPBBKoEe0_QAl5qDOyP7RPKyOtiuGRaeA1QEh1gxeyFAQ-a46ZwMfVkWJJJkxH4fdULw2zkNz5OD_CjsNNMPwXTcbbV6nccUk-_0k3Fz-lDOKz6-PWBMN41rSl6loDi0mF3Kzpn17gry7KiOqtAJm4GJallble3qayCF37-NKPNBogGAaAGA4AH_vzkNqgHpr4b2AcB&num=1&cid=5GioV2vcmS2sXobpUpE2oRxr&sig=AOD64_0mZ3FlE8NDaiO6B9t0-umVIaN4OA&client=ca-pub-4177862836555934&adurl=http://www.okay.com/%3Futm_source%3DGDN%26utm_medium%3Dcpc%26utm_campaign%3Dbegin_search_300_250_en_interest%26utm_nooveride%3D1",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.okay.com/?utm_source=GDN&utm_medium=cpc&utm_campaign=begin_search_300_250_en_interest&utm_nooveride=1"
+    ],
+    "resolvedTargetUrl": "http://www.okay.com/?utm_source=GDN&utm_medium=cpc&utm_campaign=begin_search_300_250_en_interest&utm_nooveride=1"
+  },
+  {
+    "id": 49,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516870886,
+    "foundTs": 1432516851030,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401325/CRS-5246_INYT_Refresh_USD_300x250_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=8d4975a0/56676383&camp=inyt2015_300x250_digi_usd_4L9R8&ad=CRS-5246_INYT_Refresh_USD_300x250_DM.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274369%26adxa%3D401325%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMiddle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274369&adxa=401325&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274369&adxa=401325&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+  },
+  {
+    "id": 48,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516878180,
+    "foundTs": 1432516850710,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401319/CRS-5426_INYT_184x90_retina_left_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=910e9aae/ccc75220&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-5426_INYT_184x90_retina_left_ER4.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D401319%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401319&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401319&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 47,
+    "title": "Unable to visit",
+    "attempts": 1,
+    "visitedTs": -1432516900915,
+    "foundTs": 1432516850675,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/38/24/ad.382412/15renwick.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=7dd9ee93/e3337094&camp=HMOD_Core_Group_15_Renwick_2001218&ad=15RenwickSO14Dis.15renwick&goto=http%3A%2F%2F15renwick%2Ecom%2F%3Futm%5Fsource%3DNYTimes%2Ecom%2520Homepage%2520Module%26utm%5Fmedium%3DBanner%26utm%5Fcampaign%3D15%2520Renwick",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 46,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433360637612,
+    "foundTs": 1432516850669,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/38/24/ad.382412/15renwick_nytimes.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=7dd9ee93/e3337094&camp=HMOD_Core_Group_15_Renwick_2001218&ad=15RenwickSO14Dis.15renwick&goto=http%3A%2F%2F15renwick%2Ecom%2F%3Futm%5Fsource%3DNYTimes%2Ecom%2520Homepage%2520Module%26utm%5Fmedium%3DBanner%26utm%5Fcampaign%3D15%2520Renwick",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 45,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360643339,
+    "foundTs": 1432516850645,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401610/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=64724860/4378d7c2&camp=inyt2015_970x44_digi_usd_evergreen_4L9U6&ad=CRS-5246_INYT_usd3_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274146%26adxa%3D401610%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274146&adxa=401610&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274146&adxa=401610&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 44,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360653133,
+    "foundTs": 1432516850600,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401321/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMidLeader&sn2=d7053ac7/8385bd14&sn1=e2e7d1b3/58e793a7&camp=inyt2015_970x44_hpbelt_digi_usd_4L9U6&ad=CRS-5246_INYT_usd_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274075%26adxa%3D401321%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMidLeader%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274075&adxa=401321&page=homepage.nytimes.com/index.html&pos=HPMidLeader&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274075&adxa=401321&page=homepage.nytimes.com/index.html&pos=HPMidLeader&campaignId=4L9U6"
+  },
+  {
+    "id": 43,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360663127,
+    "foundTs": 1432516850461,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401320/CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=6e2eb444/58d3eea5&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D401320%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401320&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401320&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 42,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516825196,
+    "foundTs": 1432516820628,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401609/CRS-5246_INYT_Refresh_USD_300x250_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=25ebd021/2c3ed908&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-5246_INYT_Refresh_USD3_300x250_DM.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D401609%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMiddle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=401609&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=401609&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+  },
+  {
+    "id": 41,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516835085,
+    "foundTs": 1432516820117,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401319/CRS-5426_INYT_184x90_retina_left_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=910e9aae/ccc75220&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-5426_INYT_184x90_retina_left_ER4.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D401319%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401319&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401319&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 40,
+    "title": "AKA SUTTON PLACE-CONDOMINIUM OWNERSHIP FOR THE GLOBAL CITIZEN",
+    "attempts": 0,
+    "visitedTs": 1432516851868,
+    "foundTs": 1432516820083,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/60/ad.406022/plain_aka.png"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=79510100/6d675d53&camp=HMOD_AKA_Display_May_2003918&ad=AKA_May_188x194&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D13362614%26PluID%3D0%26ord%3D%25%25GMTTIME%25%25",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.akasuttonplace.com/?utm_source=nyt&utm_medium=module&utm_campaign=hpmodule"
+    ],
+    "resolvedTargetUrl": "http://www.akasuttonplace.com/?utm_source=nyt&utm_medium=module&utm_campaign=hpmodule"
+  },
+  {
+    "id": 39,
+    "title": "Luxury Furnished New York City Condos | AKA Sutton Place | Luxury 2 Bedroom Condos Manhattan",
+    "attempts": 0,
+    "visitedTs": 1433360681845,
+    "foundTs": 1432516820077,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/60/ad.406022/SuttonPlace.jpeg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=79510100/6d675d53&camp=HMOD_AKA_Display_May_2003918&ad=AKA_May_188x194&goto=http%3A%2F%2Fbs%2Eserving%2Dsys%2Ecom%2FBurstingPipe%2FadServer%2Ebs%3Fcn%3Dtf%26c%3D20%26mc%3Dclick%26pli%3D13362614%26PluID%3D0%26ord%3D%25%25GMTTIME%25%25",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.akasuttonplace.com/?utm_source=nyt&utm_medium=module&utm_campaign=hpmodule"
+    ],
+    "resolvedTargetUrl": "http://www.akasuttonplace.com/?utm_source=nyt&utm_medium=module&utm_campaign=hpmodule"
+  },
+  {
+    "id": 38,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360688670,
+    "foundTs": 1432516820057,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401321/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=33d8364a/478af174&camp=inyt2015_970x44_digi_usd_4L9U6&ad=CRS-5246_INYT_usd_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274074%26adxa%3D401321%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274074&adxa=401321&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274074&adxa=401321&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 37,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360698150,
+    "foundTs": 1432516820012,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401321/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMidLeader&sn2=d7053ac7/8385bd14&sn1=e2e7d1b3/58e793a7&camp=inyt2015_970x44_hpbelt_digi_usd_4L9U6&ad=CRS-5246_INYT_usd_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274075%26adxa%3D401321%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMidLeader%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274075&adxa=401321&page=homepage.nytimes.com/index.html&pos=HPMidLeader&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274075&adxa=401321&page=homepage.nytimes.com/index.html&pos=HPMidLeader&campaignId=4L9U6"
+  },
+  {
+    "id": 36,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360708167,
+    "foundTs": 1432516819875,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401320/CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=6e2eb444/58d3eea5&camp=inyt2015_184x90_digi_usd_4L9QY&ad=CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274072%26adxa%3D401320%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401320&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274072&adxa=401320&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 35,
+    "title": "Elements Phone Pocket - Slim Leather Wallets by Bellroy",
+    "attempts": 0,
+    "visitedTs": 1432516797602,
+    "foundTs": 1432516792603,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/14854707960174950915"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CzqcCuHhiVaH7M8jH9AW1n4GwDdP8iP4Hq6if1ZoBwI23ARABIMjW9Rlg2QKgAd3f68sDyAECqQLFFpiT5DmqPqgDAcgDwQSqBH1P0PYk-zKvZimSoAVTrFMvDJ2HRdN3ewObHT1hKs1mEyZTG_jlL1InhydOKPbXKLnxMWivhgRMG1wRylAdGvF0mzTFFevjmy7xEmHkQmv5BD4uoRfkFl9_Rv9Vek42LvIJX8DXSpQJj4UVNxcrKZdkVGJ8lU0z-7YoqFIl-ogGAaAGAoAHi6CUNKgHpr4b2AcB&num=1&cid=5GgKKzjefTrOEFQABV6IEKb8&sig=AOD64_3d2nwBJnHVLuBla3nDeXKPMWjXcA&client=ca-pub-4177862836555934&adurl=http://bellroy.com/wallets/elements-phone-pocket",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://bellroy.com/wallets/elements-phone-pocket?gclid=CP-HmPXc28UCFQ8IvAodAV8AdQ"
+    ],
+    "resolvedTargetUrl": "http://bellroy.com/wallets/elements-phone-pocket?gclid=CP-HmPXc28UCFQ8IvAodAV8AdQ"
+  },
+  {
+    "id": 34,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516805097,
+    "foundTs": 1432516791874,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401609/CRS-5246_INYT_Refresh_USD_300x250_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=25ebd021/2c3ed908&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-5246_INYT_Refresh_USD3_300x250_DM.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D401609%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMiddle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=401609&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=401609&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+  },
+  {
+    "id": 33,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516816439,
+    "foundTs": 1432516791688,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401612/CRS-5426_INYT_184x90_retina_left_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=ee1fb10f/2913c59a&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-5426_INYT_184x90_retina_left3_ER4.jpg&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D401612%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.inyt.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=401612&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://www.inyt.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=401612&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 32,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433360747708,
+    "foundTs": 1432516791652,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/58/ad.405801/NYT-Ad-9.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=b78be669/33ebbde1&camp=HMOD_Lang_Architecture_HudsonWoods_1991936&ad=Hudson_Woods_188x194&goto=http%3A%2F%2Fhudsonwoods%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHPM%26utm%5Fcampaign%3DNYTHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 31,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360753228,
+    "foundTs": 1432516791634,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401321/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=33d8364a/478af174&camp=inyt2015_970x44_digi_usd_4L9U6&ad=CRS-5246_INYT_usd_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274074%26adxa%3D401321%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274074&adxa=401321&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274074&adxa=401321&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 30,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360763218,
+    "foundTs": 1432516791590,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/13/ad.401321/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMidLeader&sn2=d7053ac7/8385bd14&sn1=e2e7d1b3/58e793a7&camp=inyt2015_970x44_hpbelt_digi_usd_4L9U6&ad=CRS-5246_INYT_usd_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274075%26adxa%3D401321%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMidLeader%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274075&adxa=401321&page=homepage.nytimes.com/index.html&pos=HPMidLeader&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274075&adxa=401321&page=homepage.nytimes.com/index.html&pos=HPMidLeader&campaignId=4L9U6"
+  },
+  {
+    "id": 29,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360775475,
+    "foundTs": 1432516791460,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401613/CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7ba5b16e/38ce6439&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-5246_INYT_usd3_184x90_right_retina_ER4.jpg&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D401613%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.inyt.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=401613&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://www.inyt.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=401613&page=homepage.nytimes.com/index.html&pos=TopRight&campaignId=4L9QY"
+  },
+  {
+    "id": 28,
+    "title": "Elements Phone Pocket - Slim Leather Wallets by Bellroy",
+    "attempts": 0,
+    "visitedTs": 1432516784624,
+    "foundTs": 1432516766290,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/1873346796126505495"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CYKa4nXhiVazBBoOm9AWAoIDoDtP8iP4Hi7uf1ZoBwI23ARABIMjW9Rlg2QKgAd3f68sDyAECqQLFFpiT5DmqPqgDAcgDwQSqBH5P0LMdncQpN9p2JHCfMPfqkQ-qmN67dCdoPJz-5Z4Ryl0Iw7o1ro_Go7jth2ZRyGeJewH2a8-ICFbD3rNaPIrGJG3M7SSCLwfArlJ4PBAxQVaQIl_x87xAORVTnl1xhhibPhoBM0KROLiKF8kcUE7NQqcaDCEks1-lQ8n1MyWIBgGgBgKAB4uglDSoB6a-G9gHAQ&num=1&cid=5GgaAt6zqmD6-maCCd9w88AF&sig=AOD64_2PfFxVFKDlqzfu8tGbGCrJIBY4jw&client=ca-pub-4177862836555934&adurl=http://bellroy.com/wallets/elements-phone-pocket",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://bellroy.com/wallets/elements-phone-pocket?gclid=COi1_e3c28UCFcIIvAodNqwAag"
+    ],
+    "resolvedTargetUrl": "http://bellroy.com/wallets/elements-phone-pocket?gclid=COi1_e3c28UCFcIIvAodNqwAag"
+  },
+  {
+    "id": 27,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1432516768816,
+    "foundTs": 1432516761898,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401609/CRS-5246_INYT_Refresh_USD_300x250_DM.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPMiddle&sn2=3c2d9ccb/93cc59e&sn1=25ebd021/2c3ed908&camp=inyt2015_300x250_digi_usd_evergreen_4L9R8&ad=CRS-5246_INYT_Refresh_USD3_300x250_DM.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274145%26adxa%3D401609%26page%3Dhomepage.nytimes.com/index.html%26pos%3DHPMiddle%26campaignId%3D4L9R8",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=401609&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274145&adxa=401609&page=homepage.nytimes.com/index.html&pos=HPMiddle&campaignId=4L9R8"
+  },
+  {
+    "id": 26,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360783248,
+    "foundTs": 1432516761711,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401612/CRS-5426_INYT_184x90_retina_left_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopLeft&sn2=ab8a95f5/87622a3f&sn1=ee1fb10f/2913c59a&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-5426_INYT_184x90_retina_left3_ER4.jpg&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D401612%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopLeft%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://www.inyt.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=401612&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+    ],
+    "resolvedTargetUrl": "http://www.inyt.com/subscriptions/inyt/lp87JWF.html?adxc=274149&adxa=401612&page=homepage.nytimes.com/index.html&pos=TopLeft&campaignId=4L9QY"
+  },
+  {
+    "id": 25,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433360822785,
+    "foundTs": 1432516761677,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/58/ad.405801/NYT-Ad-9.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=HPmodule-RE2&sn2=d1cdc681/5274a2cb&sn1=b78be669/33ebbde1&camp=HMOD_Lang_Architecture_HudsonWoods_1991936&ad=Hudson_Woods_188x194&goto=http%3A%2F%2Fhudsonwoods%2Ecom%2F%3Futm%5Fsource%3DNYT%26utm%5Fmedium%3DHPM%26utm%5Fcampaign%3DNYTHPM",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 24,
+    "title": "The New York Times: Get a Digital Subscription",
+    "attempts": 0,
+    "visitedTs": 1433360829631,
+    "foundTs": 1432516761654,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401610/CRS-5246_INYT_usd_970X44_retina_ER3.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=Top&sn2=4ae2a1a8/f0b66a39&sn1=64724860/4378d7c2&camp=inyt2015_970x44_digi_usd_evergreen_4L9U6&ad=CRS-5246_INYT_usd3_970X44_retina_ER3.jpg&goto=http%3A%2F%2Finternational%2Enytimes%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274146%26adxa%3D401610%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTop%26campaignId%3D4L9U6",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [],
+    "path": [
+      "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274146&adxa=401610&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+    ],
+    "resolvedTargetUrl": "http://international.nytimes.com/subscriptions/inyt/lp87JWF.html?adxc=274146&adxa=401610&page=homepage.nytimes.com/index.html&pos=Top&campaignId=4L9U6"
+  },
+  {
+    "id": 23,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433373210587,
+    "foundTs": 1432516760038,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/14854707960174950915"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CfDWKmHhiVZznC4XO9AWFrIAI0_yI_gerqJ_VmgHAjbcBEAEgyNb1GWDZAqAB3d_rywPIAQKpAsUWmJPkOao-qAMByAPBBKoEfU_Qe3EgJnVE0aLoi-AC7N2hS7OLcVcrRmBjfj4oUV2joVhUfAisr4ruggx7niiVXFyRrK9l4SvKnl5WkfIFTsEpgTYeiG1w6Jjmf8W1SoR37_FYjCMT4W4Y7sSKwuf8BRbCISBA9unc7qkIYoP7dyo0yx0R28KCmxXB-8ueiAYBoAYCgAeLoJQ0qAemvhvYBwE&num=1&cid=5GiswY6uxgWpTcLU7W2piV3u&sig=AOD64_2EqoOWceIGj4T4Ti-Z5yjx0v5fAQ&client=ca-pub-4177862836555934&adurl=http://bellroy.com/wallets/elements-phone-pocket",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 23,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433373220944,
+    "foundTs": 1432516760038,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/14854707960174950915"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CfDWKmHhiVZznC4XO9AWFrIAI0_yI_gerqJ_VmgHAjbcBEAEgyNb1GWDZAqAB3d_rywPIAQKpAsUWmJPkOao-qAMByAPBBKoEfU_Qe3EgJnVE0aLoi-AC7N2hS7OLcVcrRmBjfj4oUV2joVhUfAisr4ruggx7niiVXFyRrK9l4SvKnl5WkfIFTsEpgTYeiG1w6Jjmf8W1SoR37_FYjCMT4W4Y7sSKwuf8BRbCISBA9unc7qkIYoP7dyo0yx0R28KCmxXB-8ueiAYBoAYCgAeLoJQ0qAemvhvYBwE&num=1&cid=5GiswY6uxgWpTcLU7W2piV3u&sig=AOD64_2EqoOWceIGj4T4Ti-Z5yjx0v5fAQ&client=ca-pub-4177862836555934&adurl=http://bellroy.com/wallets/elements-phone-pocket",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 23,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433527097357,
+    "foundTs": 1432516760038,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/14854707960174950915"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CfDWKmHhiVZznC4XO9AWFrIAI0_yI_gerqJ_VmgHAjbcBEAEgyNb1GWDZAqAB3d_rywPIAQKpAsUWmJPkOao-qAMByAPBBKoEfU_Qe3EgJnVE0aLoi-AC7N2hS7OLcVcrRmBjfj4oUV2joVhUfAisr4ruggx7niiVXFyRrK9l4SvKnl5WkfIFTsEpgTYeiG1w6Jjmf8W1SoR37_FYjCMT4W4Y7sSKwuf8BRbCISBA9unc7qkIYoP7dyo0yx0R28KCmxXB-8ueiAYBoAYCgAeLoJQ0qAemvhvYBwE&num=1&cid=5GiswY6uxgWpTcLU7W2piV3u&sig=AOD64_2EqoOWceIGj4T4Ti-Z5yjx0v5fAQ&client=ca-pub-4177862836555934&adurl=http://bellroy.com/wallets/elements-phone-pocket",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 23,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433527108457,
+    "foundTs": 1432516760038,
+    "contentData": {
+      "src": "http://pagead2.googlesyndication.com/simgad/14854707960174950915"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=CfDWKmHhiVZznC4XO9AWFrIAI0_yI_gerqJ_VmgHAjbcBEAEgyNb1GWDZAqAB3d_rywPIAQKpAsUWmJPkOao-qAMByAPBBKoEfU_Qe3EgJnVE0aLoi-AC7N2hS7OLcVcrRmBjfj4oUV2joVhUfAisr4ruggx7niiVXFyRrK9l4SvKnl5WkfIFTsEpgTYeiG1w6Jjmf8W1SoR37_FYjCMT4W4Y7sSKwuf8BRbCISBA9unc7qkIYoP7dyo0yx0R28KCmxXB-8ueiAYBoAYCgAeLoJQ0qAemvhvYBwE&num=1&cid=5GiswY6uxgWpTcLU7W2piV3u&sig=AOD64_2EqoOWceIGj4T4Ti-Z5yjx0v5fAQ&client=ca-pub-4177862836555934&adurl=http://bellroy.com/wallets/elements-phone-pocket",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 22,
+    "title": "Unable to visit",
+    "attempts": 3,
+    "visitedTs": -1433527156791,
+    "foundTs": 1432516757750,
+    "contentData": {
+      "src": "http://graphics8.nytimes.com/adx/images/ADS/40/16/ad.401613/CRS-5246_INYT_usd_184x90_right_retina_ER4.jpg"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=7ba5b16e/38ce6439&camp=inyt2015_184x90_digi_usd_evergreen_4L9QY&ad=CRS-5246_INYT_usd3_184x90_right_retina_ER4.jpg&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp87JWF%2Ehtml%3Fadxc%3D274149%26adxa%3D401613%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D4L9QY",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      "Timeout after 3 tries"
+    ],
+    "path": [
+      null
+    ],
+    "resolvedTargetUrl": null
+  },
+  {
+    "id": 21,
+    "title": "Boxful - Storage Made Simple",
+    "attempts": 0,
+    "visitedTs": 1432516699337,
+    "foundTs": 1432516694113,
+    "contentData": {
+      "src": "https://tpc.googlesyndication.com/simgad/5486480586333270438"
+    },
+    "contentType": "img",
+    "targetUrl": "http://www.googleadservices.com/pagead/aclk?sa=L&ai=Cd7XXVnhiVYOcFJXJ9AXf6ICoC-DG2LkGqMHngKMCwI23ARABIMjW9Rlg2QKgAdi--88DyAEDqQK59KMyfFCBPqgDAcgDwQSqBHtP0OUyCXOm--1YccJwilxp4vCCk9TVARxnM7S6rKLgE1xFOSN-NeMqg88R_EHSo2cAhYB9PEtYjfAtZwnJfRikODLuBMKCZ_t8v0PzfqsMgpzEt7gcHHcEes9zX71gQoXmN44oo9NiHIA3cQtQ2d6ntggcouLBOgTsJm2IBgGgBgOAB5DBhDCoB6a-G9gHAQ&num=1&cid=5Gh56Q3RoLnheaXL4BF-_2kM&sig=AOD64_0t1t48dsmetGGI0GFQmC5L04VPCQ&client=ca-pub-4177862836555934&adurl=http://www.boxful.com",
+    "pageTitle": "The New York Times - Breaking News, World News & Multimedia",
+    "pageUrl": "http://www.nytimes.com/",
+    "errors": [
+      {
+        "url": "https://www.youtube.com/embed/Fj7L8jCJCc0?enablejsapi=1",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      },
+      {
+        "url": "https://www.youtube.com/embed/Fj7L8jCJCc0?enablejsapi=1",
+        "error": "/(itunes\\.apple|appstore|youtube|vimeo)\\.com/i"
+      }
+    ],
+    "path": [
+      "https://www.boxful.com/en/?gclid=CKqwjsfc28UCFQ1xvAod9EAAYA"
+    ],
+    "resolvedTargetUrl": "https://www.boxful.com/en/?gclid=CKqwjsfc28UCFQ1xvAod9EAAYA"
+  }
+]

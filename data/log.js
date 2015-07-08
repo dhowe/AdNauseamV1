@@ -50,7 +50,7 @@ function formatEntry(entry) {
 
 function formatDateStamp(ds) {
 
-	return '[' + new Date(ds).toUTCString() + '] ';
+	return '[' + ds + '] ';
 }
 
 function convertSpace(text) {

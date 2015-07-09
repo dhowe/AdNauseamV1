@@ -7,15 +7,14 @@
 		<script src="lib/jquery-2.1.4.min.js"></script>
 		<script src="../lib/config.js"></script>
 		<link rel="icon" type="image/png" href="img/icon-32.png">
-	</head>
+
 	<script>
 		$(document).ready(function() {
-
 			if ( typeof TEST_MODE != 'undefined' && TEST_MODE ) {
 
 				// load addon-injected js here for testing
 				$.when(
-					$.getScript( "./dynlog.js" ),
+					$.getScript( "./testlog.js" ),
 					$.getScript( "./log.js" ),
 					$.Deferred(function( deferred ) {
 							$( deferred.resolve );
@@ -25,6 +24,7 @@
 			}
 		});
 	</script>
+	</head>
 	<body>
 		<div id="logo"><a href="#"></a></div>
 		<h3 id="title"> SessionLog</h3>

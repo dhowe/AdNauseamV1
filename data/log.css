@@ -55,7 +55,6 @@ a {
 	text-decoration: none;
 }
 
-
 .logdiv {
 	position: absolute;
 	top: 132px;
@@ -83,8 +82,7 @@ a {
 	font-weight: 300;
 	color:#BAD2ED;
 	margin: 0 0 5px 0;
-	max-width:190px;
-	width:30%;
+	min-width:180px;
 	padding-right:10px;
 }
 .logtext{

@@ -119,77 +119,77 @@ function createSlider(relayout) {
 
 	// ---------------------------- functions ------------------------------
 
-
-    // this is called on a brushend and on createSlider
+  // this is called on a brushend and on createSlider
 	function runFilter(ext) {
 
-        //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
+    //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
 
-        //if (ext[0] !== gMin || ext[1] !== gMax) { // dont rebuild
+    //if (ext[0] !== gMin || ext[1] !== gMax) { // dont rebuild
 
-	    gMin = ext[0], gMax = ext[1];
+    gMin = ext[0], gMax = ext[1];
 
-        if (gAds.length !== 1 && gMax - gMin <= 1) {
+    if (gAds.length !== 1 && gMax - gMin <= 1) {
 
-            //log('vault.js::ignore-micro: '+ext[0]+","+ext[1]);
-            return; // fix for gh #100
-        }
+      //log('vault.js::ignore-micro: '+ext[0]+","+ext[1]);
+      return; // fix for gh #100
+    }
 
-		var filtered = dateFilter(gMin, gMax);
+    var filtered = dateFilter(gMin, gMax);
 
-		// only create the adsets once, else filter
-		if (!gAdSets)
-            return (gAdSets = createAdSets(filtered));
-		else
-            return filterAdSets(filtered);
+    // only create the adsets once, else filter
+    if (!gAdSets)
+      return (gAdSets = createAdSets(filtered));
+    else
+      return filterAdSets(filtered);
 	}
 
-    function filterAdSets(ads) {
+  function filterAdSets(ads) {
 
-        //log('vault-slider.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
+    log('vault-slider.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
+    //log(viewState);
 
-        var sets = [];
-        for (var i=0, j = ads.length; i<j; i++) {
+    var sets = [];
+    for (var i = 0, j = ads.length; i < j; i++) {
 
-            for (var k=0, l = gAdSets.length; k<l; k++) {
+      for (var k = 0, l = gAdSets.length; k < l; k++) {
 
-                if (gAdSets[k].childIdxForId(ads[i].id) > -1) {
+        if (gAdSets[k].childIdxForId(ads[i].id) > -1) {
 
-                    if (sets.indexOf(gAdSets[k]) < 0)
-                        sets.push(gAdSets[k]);
-                }
-            }
+          if (sets.indexOf(gAdSets[k]) < 0)
+            sets.push(gAdSets[k]);
         }
-
-        return sets;
+      }
     }
+    return sets;
+  }
 
-    function computeMinDateFor(ads, min) {
+  function computeMinDateFor(ads, min) {
 
-        if (ads && ads.length) {
+    if (ads && ads.length) {
 
-            ads.sort(byField('-foundTs')); // or slice?
-            var subset = ads.slice(0, MaxStartNum);
-            return subset[subset.length-1].foundTs;
-        }
-        return min;
+      ads.sort(byField('-foundTs')); // or slice?
+      var subset = ads.slice(0, MaxStartNum);
+      return subset[subset.length - 1].foundTs;
     }
+    return min;
+  }
 
 	function dateFilter(min, max) {
 
-		//log('dateFilter: min='+min+', max='+max);
+	  //log('dateFilter: min='+min+', max='+max);
 
-		var filtered = [];
+	  var filtered = [];
 
-		for (var i=0, j = gAds.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
+    // NOTE: always need to start from full-set (all) here
+	  for (var i = 0, j = gAds.length; i < j; i++) {
 
-			if (!(gAds[i].foundTs < min || gAds[i].foundTs > max)) {
+	    if (!(gAds[i].foundTs < min || gAds[i].foundTs > max)) {
 
-                filtered.push(gAds[i]);
-			}
-		}
+	      filtered.push(gAds[i]);
+	    }
+	  }
 
-		return filtered;
+	  return filtered;
 	}
 
 	function brushstart() { }

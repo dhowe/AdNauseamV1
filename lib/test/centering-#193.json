@@ -1,0 +1,58 @@
+{
+    "http://www.nytimes.com/": [
+    {
+        "id": 8,
+        "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+        "contentType": "img",
+        "contentData": {
+            "src": "http://s0.2mdn.net/viewad/3163348/300x250_Data-Storytelling-verD.jpg"
+        },
+        "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+        "pageUrl": "http://www.nytimes.com/",
+        "foundTs": 1407052450784,
+        "visitedTs": -1,
+        "title": "Visited Ad Title",
+        "pageTitle": "Page Title",
+        "path": [],
+        "errors": []
+    },
+    {
+        "COMMENT": "DUP OF #8",
+        "id": 12,
+        "hashKey": "http://www.nytimes.com//http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png",
+        "contentType": "img",
+        "contentData": {
+            "src": "http://graphics8.nytimes.com/adx/images/ADS/37/52/ad.375201/INYT_ears_12_week.png?b=c"
+        },
+        "targetUrl": "http://www.nytimes.com/adx/bin/adx_click.html?type=goto&opzn&page=homepage.nytimes.com/index.html&pos=TopRight&sn2=361d9a2f/d5c54928&sn1=c91b301d/dec6c053&camp=inyt2014_184x90_jun_test_var2_47UWJ&ad=47UWJ_right_184x90_jun_test_var2&goto=http%3A%2F%2Fwww%2Einyt%2Ecom%2Fsubscriptions%2Finyt%2Flp3LWQ3%2Ehtml%3Fadxc%3D249413%26adxa%3D375201%26page%3Dhomepage.nytimes.com/index.html%26pos%3DTopRight%26campaignId%3D47UWJ",
+        "pageUrl": "http://www.nytimes.com/",
+        "foundTs": 1407052450789,
+        "visitedTs": -1,
+        "title": "Visited Ad Title",
+        "pageTitle": "Page Title",
+        "path": [],
+        "errors": []
+    },
+    {
+      "id": 105,
+      "title": "Shop Zales - America's diamond store since 1924 - for the best jewelry selection and service",
+      "attempts": 1,
+      "visitedTs": 1434720213645,
+      "foundTs": 1434720184351,
+      "contentData": {
+        "text": "Shop Zales - America's diamond store since 1924 - for the best fine ",
+        "site": "zales.com",
+        "network": "duckduckgo"
+      },
+      "contentType": "text",
+      "targetUrl": "http://ad.ddg.gg/?id=40063X1035282&xs=1&url=http%3A%2F%2Fwww.zales.com%2F&sref=https%3A%2F%2Fduckduckgo.com",
+      "pageTitle": "jewelry at DuckDuckGo",
+      "pageUrl": "https://duckduckgo.com/?q=jewelry&t=ffsb&ia=about",
+      "errors": [],
+      "path": [
+        "http://www.zales.com/"
+      ],
+      "resolvedTargetUrl": "http://www.zales.com/"
+    }
+    ]
+}

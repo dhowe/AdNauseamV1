@@ -16,11 +16,7 @@ const LogoURL = 'http://dhowe.github.io/AdNauseam/',
 var zoomStyle, zoomIdx = 0,
   animatorId, animateMs = 2000,
   resizeId, selectedAdSet,
-  viewState = {
-    zoomIdx: 0,
-    left: '-5000px',
-    top: '-5000px'
-  };
+  viewState = {};
 
 var locale = self.options && self.options.locale; // localization
 
@@ -377,7 +373,13 @@ function appendDisplayTo($div, adset) {
   }).appendTo($ad);
 
   // fix for #291
-  $img.load(function() { $img.attr('data-height', $(this).height()); });
+  $img.load(function() {
+
+    // cache the dimensions of the img-item AFTER load
+    var $this = $(this);
+    $div.attr('data-width', $this.width());
+    $div.attr('data-height', $this.height());
+  });
 }
 
 function appendTextDisplayTo($pdiv, adset) {
@@ -429,6 +431,10 @@ function appendTextDisplayTo($pdiv, adset) {
     text: ad.contentData.text
 
   }).appendTo($div);
+
+  // cache the dimensions of the text-item
+  $pdiv.attr('data-width', $div.width());
+  $pdiv.attr('data-height', $div.height());
 }
 
 function indexCounterText(adset) {
@@ -462,8 +468,7 @@ function appendBulletsTo($div, adset) {
     var $bullets = $('<div/>', { class: 'bullets' }).appendTo($div);
 
     // find the height of the image for bullet layout (#291)
-    var adHeight = adset.child(0).contentType === 'text' ?
-      $div.height() : +$div.find('img').attr('data-height');
+    var adHeight = $div.attr('data-height');
 
     //console.log($div.find('img').height(), '?=', adHeight);
 
@@ -533,6 +538,7 @@ function sinceTime(adsets) {
 
 function dragStart(e) {
 
+  // TODO: change to jquery, https://stackoverflow.com/questions/17697382/ondragstart-event-with-jquery
   var style = window.getComputedStyle(document.querySelector('#container'), null),
     x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
     y = parseInt(style.getPropertyValue("margin-top"), 10) - e.clientY;
@@ -544,6 +550,7 @@ function dragStart(e) {
 
 function dragOver(e) {
 
+  // TODO: change to jquery, https://stackoverflow.com/questions/17697382/ondragstart-event-with-jquery
   var offset = e.dataTransfer.getData("text/plain").split(','),
     dm = document.querySelector('#container');
 
@@ -609,10 +616,10 @@ function enableLightbox() {
         var inspectedGid = parseInt($this.attr('data-gid'));
         selectedAdSet = findAdSetByGid(inspectedGid); // throws
 
-        // Show contextmenu
+        // show custom contextmenu
         $(".custom-menu").finish().toggle(100).
 
-        // In the right position (the mouse)
+        // in correct position (according to mouse)
         css({
           top: (e.pageY - 25) + "px",
           left: e.pageX + "px"
@@ -666,32 +673,23 @@ function storeItemLayout($items) {
   $items.each(function(i) {
 
     var $this = $(this),
-      off = $this.offset();
+      off = $this.offset(),
+      iw = $this.attr('data-width'),
+      ih = $this.attr('data-height');
 
-    // offsets of item-corner from window center
-    $this.attr('data-offx', (cx - off.left));
-    $this.attr('data-offy', (cy - off.top));
+    if (!(iw && ih && iw.length && ih.length)) {
+
+      console.error('No dimensions for item', $this.attr('data-gid'));
+      return;
+    }
+
+    // store offset of item-center from window-center
+    $this.attr('data-offx', (off.left - cx) + (parseInt(iw) / 2));
+    $this.attr('data-offy', (off.top  - cy) + (parseInt(ih) / 2));
+
+    //var gid = $this.attr('data-gid');
+    //console.log(gid+':',$this.attr('data-offx'), $this.attr('data-offy'));
   });
-}
-
-function storeViewState(store) {
-
-  var dm = document.querySelector('#container');
-
-  if (store) {
-
-    //log('storeViewState()');
-
-    viewState.zoomIdx = zoomIdx;
-    viewState.left = dm.style.marginLeft;
-    viewState.top = dm.style.marginTop;
-
-  } else { // restore
-
-    setZoom(zoomIdx = viewState.zoomIdx);
-    dm.style.marginLeft = viewState.left;
-    dm.style.marginTop = viewState.top;
-  }
 }
 
 function centerZoom($ele) {
@@ -703,16 +701,20 @@ function centerZoom($ele) {
     // compute target positions for transform
     var dm, margin = 10,
       metaOffset = 110,
-      center = -5000,
+      center = -5000,         // TODO: is this always correct?
       ww = $(window).width(),
       wh = $(window).height(),
-      offx = parseInt($ele.attr('data-offx')),
-      offy = parseInt($ele.attr('data-offy')),
-      isText = $ele.find('.item-text-div').length,
-      iw = (isText ? $ele.find('.item-text-div') : $ele.find('img')).width(),
-      ih = (isText ? $ele.find('.item-text-div') : $ele.find('img')).height(),
-      mleft = (center + offx - iw / 2),
-      mtop = (center + offy - ih / 2);
+      offy = parseInt($ele.attr('data-offy'));
+
+    // now compute the centered position based on item-offset
+    var mleft = center - parseInt($ele.attr('data-offx'));
+    var mtop = center - parseInt($ele.attr('data-offy'));
+
+
+    // can these 2 be removed?
+    var iw = parseInt($ele.attr('data-width'));
+    var ih = parseInt($ele.attr('data-height'));
+
 
     // make sure left/bottom corner of meta-data is onscreen (#180)
     if (iw > ww - (metaOffset * 2 + margin)) {
@@ -737,6 +739,28 @@ function centerZoom($ele) {
   } else { // restore zoom-state
 
     storeViewState(false);
+  }
+}
+
+function storeViewState(store) {
+
+  var $dm = $('#container');
+
+  if (store) {
+
+    viewState.zoomIdx = zoomIdx;
+    viewState.left = $dm.css('margin-left');
+    viewState.top = $dm.css('margin-top');
+
+    //console.log('store: ',viewState);
+
+  } else { // restore
+
+    setZoom(zoomIdx = viewState.zoomIdx);
+    $dm.css('margin-left', viewState.left);
+    $dm.css('margin-top', viewState.top);
+
+    //console.log('restore: ',viewState);
   }
 }
 
@@ -1090,7 +1114,10 @@ function addInterfaceHandlers(ads) {
 
 function createAdSets(ads) { // once per layout
 
+  storeViewState(true);
+
   log('Vault-Slider.createAdSets: ' + ads.length + '/' + gAds.length + ' ads');
+  //log(viewState);
 
   var key, ad, hash = {},
     adsets = [];
@@ -1109,6 +1136,7 @@ function createAdSets(ads) { // once per layout
       // new: add a hash entry
       hash[key] = new AdSet(ad);
       adsets.push(hash[key]);
+
     } else {
 
       // dup: add as child
@@ -1175,7 +1203,9 @@ function repack() {
 
       var p = new Packery('#container', {
         centered: {
+
           y: 5000
+
         }, // centered half min-height
         itemSelector: '.item',
         gutter: 1
@@ -1183,6 +1213,7 @@ function repack() {
 
       storeItemLayout($items);
       positionAds($items);
+
     } else if (visible == 1) {
 
       $items.css({ // center single

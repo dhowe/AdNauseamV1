@@ -21,6 +21,8 @@ body {
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	color: #4C4D4C;
 	margin: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 * {

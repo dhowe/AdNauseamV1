@@ -216,7 +216,7 @@ section p a:visited {
 
 .wrapper {
   width: 940px;
-  margin: -210px auto 0;
+  margin: -250px auto 0;
   position: relative;
 }
 
@@ -413,7 +413,7 @@ header h2{
     /*filter: blur(4px);*/
   }
 
-  #logo           {left: 376px; top: 301px;}
+  #logo           {left: 376px; top: 311px;}
   .subpage        {top:255px !important;}
   #tagline        {left: 429px; top: 473px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p1             {left: 429px; top: 570px; -webkit-animation-delay: 0ms; animation-delay: 0ms}

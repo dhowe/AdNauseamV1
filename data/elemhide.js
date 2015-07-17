@@ -15,7 +15,7 @@ var admatchers = [
         handler: googleText,
         name: 'adsense-1',
         domain: googleRegex
-        
+
     }, // adsense-top
     {
         selector: '#bottomads',
@@ -56,7 +56,7 @@ var admatchers = [
         waitfor: 'tr:nth-child(even)',
         handler: ebayText,
         name: 'ebay',
-        domain: /.*\.ebay\.com(\.([a-z]{2}))?$/i 
+        domain: /.*\.ebay\.com(\.([a-z]{2}))?$/i
     }, {
         selector: '[class$=SLL]',
         waitfor: 'div.sllLink.sllAllC',
@@ -87,7 +87,7 @@ var admatchers = [
 		handler: dailymotionText,
 		name: 'dailymotion',
         domain: 'www.dailymotion.com'
-	}, 
+	},
 
     // img-ads ----------------------------------------------------------------
 
@@ -133,19 +133,19 @@ var admatchers = [
     //{ selector: "div[class^=ad]", waitfor: "div.l_qq_com > iframe", handler: qqImg2, name: 'qq2' }
 ];
 
-function imageInAnchor(name, anchor) { 
+function imageInAnchor(name, anchor) {
 
-    // generic handler for image ads with structure <a href="..."><img/></a>  
-       
+    // generic handler for image ads with structure <a href="..."><img/></a>
+
     if (!anchor.length) return;
 
     var targetUrl = anchor.attr('href'),
         imgTag = anchor.find('img'),
         img = imgTag.attr('src');
-        
-    if (!img) 
+
+    if (!img)
         img = anchor.css('background-image').replace('url("', '').replace('")', '');
-    
+
     if (targetUrl.length && img.length) {
 
         if (img !== 'none') {
@@ -153,15 +153,15 @@ function imageInAnchor(name, anchor) {
             var ad = createImgAd(name, img, targetUrl);
             self.port && self.port.emit('parsed-img-ad', ad);
         }
-        
+
     } else {
-    
+
         console.warn('imageInAnchor.fail: ', img, targetUrl);
     }
 }
 
 function dailymotionText(anchor) {
-    
+
     log("dailymotionText()!!!!!!!!!!!!!!!!!!!!!");
 
     var title = anchor.find('.rh10c span'),
@@ -200,7 +200,6 @@ function ebayText(anchor) {
 
 function askText(anchor) {      // for #200
 
-    console.log("askText()");
     var title = anchor.find('a.titleLink');
     var site = anchor.find('a.domainLink');
     var text = anchor.find('a.textLink');
@@ -373,19 +372,19 @@ Try qq nested iframes with:
 function getElem(selector, $root, $collection) {  // not used
     if (!$root) $root = $(document);
     if (!$collection) $collection = $();
-    
+
     // Select all elements matching the selector under the root
     $collection = $collection.add( $root.find(selector) );
-    
+
     // Loop through all frames
     $root.find('iframe,frame').each(function() {
         // Recursively call the function, setting "$root" to the frame's document
         getElem(selector, $(this).contents(), $collection);
     });
-    
+
     return $collection;
 }
-    
+
 // Example:
 var $allImageElements = getElem('img');
 
@@ -394,7 +393,7 @@ AND (in package.json):
     "permissions": {
         "cross-domain-content": ["http://wa.gtimg.com/"]
     },
-    
+
 */
 
 /*  A utility function, for Greasemonkey scripts,
@@ -403,7 +402,7 @@ AND (in package.json):
     Usage example:
 
         waitForKeyElements($,
-            "div.comments", 
+            "div.comments",
             commentCallbackFunction
         );
 
@@ -445,7 +444,7 @@ function waitForKeyElements($,
         targetNodes = $(selectorTxt);
     }
     else {
-    
+
         targetNodes = $(iframeSelector).contents().find(selectorTxt);
     }
 
@@ -518,11 +517,11 @@ function checkElemHideABP() {
 
     return ($(this).css("-moz-binding").indexOf("url(\"about:abp-elemhidehit?") === 0);
 }
-    
+
 if (typeof module == 'undefined' || !module.exports) {
 
     $(function() { // page-is-ready
-            
+
             // check top frame elements
             $("*").filter(checkElemHideABP).each(function(e) {
                 runFilters(this);
@@ -530,23 +529,23 @@ if (typeof module == 'undefined' || !module.exports) {
 
             // check iframe elements
             $("iframe").each(function() {
-            
+
                 var eles;
                 try {
                     //console.log('[Parse-iFrame] id='+$(this).attr('id')+" src="+$(this).attr('src'));
                     eles = $(this).contents().find("*").filter(checkElemHideABP);
-                } 
+                }
                 catch (e) {
                     console.warn('*** [Cross-Domain IFRAME?] '+$(this).attr('src') +" (elem-hides ignored ***)");
                     //alert('*** [Cross-Domain IFRAME] '+$(this).attr('src') +" (elem-hides ignored ***)");
                     return;
                 }
-            
+
                 for(var i=0, len=eles.length; i<len; i++)
                     runFilters(eles[i], this); // pass the iframe
             });
         });
-    
+
 } else { // in Node
 
     module.exports['getMatcher'] = findSelectorByName;
@@ -555,43 +554,43 @@ if (typeof module == 'undefined' || !module.exports) {
 function checkDomain(elemDom, pageDom, name) {
 
     var result = true;
-    
+
     if (elemDom && pageDom) {
-        
-        result = (typeof elemDom === 'string') ? 
+
+        result = (typeof elemDom === 'string') ?
             (elemDom === pageDom) : elemDom.test(pageDom);
     }
-    
+
     // if (!result) console.log("DOMAIN-CHECK-FAIL: "+name + " -> "+ pageDom);
-        
+
     return result;
 }
 
 function runFilters(element, parentFrame) {
 
     //console.log('runFilters: '+$(this).attr('id'), parentFrame);
-    
+
     var doc = document, domain = doc ? doc.domain : null;
-     
+
     for (var i = 0; i < admatchers.length; i++) {
 
-        var data = admatchers[i], 
+        var data = admatchers[i],
             waitSel = data.selector + ' ' + data.waitfor;
 
         if (checkDomain(data.domain, domain, data.name)) {
-        
+
             //console.log('ELEMHIDE-FIRE: ' + data.name);
-            
+
             if ($(element).is(data.selector)) {
 
-                console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
-                     (typeof parentFrame != 'undefined')+', domain: '+domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
-    
+                //console.log('ELEMHIDE-HIT: ' + data.selector + ' waiting-for -> ' + waitSel + ' (iframe: ' +
+                     //(typeof parentFrame != 'undefined')+', domain: '+domain+') '+(parentFrame ? $(parentFrame).prop("tagName") : 'null'));
+
                 try {
                     waitForKeyElements($, waitSel, data.handler, true, parentFrame);
-                } 
+                }
                 catch (e) {
-    
+
                     //console.warn('failed processing text-ad', data);
                     throw e;
                 }

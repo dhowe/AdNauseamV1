@@ -522,29 +522,25 @@ function sinceTime(adsets) {
 
 function dragStart(e) {
 
-  // TODO: change to jquery, https://stackoverflow.com/questions/17697382/ondragstart-event-with-jquery
-  var style = window.getComputedStyle(document.querySelector('#container'), null),
-    x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
-    y = parseInt(style.getPropertyValue("margin-top"), 10) - e.clientY;
+  var x = parseInt($(this).css("margin-left"), 10) - e.originalEvent.clientX,
+    y = parseInt($(this).css("margin-top"), 10) - e.originalEvent.clientY;
 
-  e.dataTransfer.setData("text/plain", x + ',' + y);
+  e.originalEvent.dataTransfer.setData("text/plain", x + ',' + y);
 
-  $('#container').addClass('dragged');
+  $(this).addClass('dragged');
 }
 
 function dragOver(e) {
 
-  // TODO: change to jquery, https://stackoverflow.com/questions/17697382/ondragstart-event-with-jquery
-  var offset = e.dataTransfer.getData("text/plain").split(','),
-    dm = document.querySelector('#container');
+  var offset = e.originalEvent.dataTransfer.getData("text/plain").split(',');
 
-  dm.style.marginLeft = (e.clientX + parseInt(offset[0], 10)) + 'px';
-  dm.style.marginTop = (e.clientY + parseInt(offset[1], 10)) + 'px';
+  $(this).css("marginLeft", e.originalEvent.clientX + parseInt(offset[0], 10));
+  $(this).css("marginTop", e.originalEvent.clientY + parseInt(offset[1], 10));
 }
 
-function dragEnd(e) {
+function dragEnd() {
 
-  $('#container').removeClass('dragged');
+  $(this).removeClass('dragged');
 }
 
 function formatDate(ts) {
@@ -971,16 +967,17 @@ function addInterfaceHandlers(ads) {
   });
 
   /////////// DRAG-STAGE ///////// from: http://jsfiddle.net/robertc/kKuqH/
-
-  var dm = document.querySelector('#container');
-  if (dm) {
-
-    dm.addEventListener('dragstart', dragStart, false);
-    dm.addEventListener('dragover', dragOver, false);
-    dm.addEventListener('dragend', dragEnd, false);
-
-  } else {
-
+  
+  var $container = $('#container');
+  
+  if ($container) {
+    
+    $container.on('dragstart', dragStart);
+    $container.on('dragover', dragOver);
+    $container.on('dragend', dragEnd);
+  }
+  else {
+    
     log("NO #CONTAINER!");
   }
 

@@ -11,6 +11,8 @@ self.port && self.port.on('close-panel', closeSettings);    // close-settings
 
 var adArray;
 
+var locale = self.options && self.options.locale; // localization
+
 function layoutAds(json) {
 
     //console.log('layoutAds: '+json ? json.data : "null");
@@ -389,6 +391,13 @@ function attachMenuTests() {
 
         $('.page').toggleClass('hide');
         $('.settings').toggleClass('hide');
+        
+        if (locale) {
+            $(".question[data-tip='Disable all logging']").attr("data-tip", locale.disableAllLogging);
+            $(".question[data-tip='Disable outgoing referrer']").attr("data-tip", locale.disableOutgoingReferrer);
+            $(".question[data-tip='Clear Ads with browser history']").attr("data-tip", locale.clearAds);
+            $(".question[data-tip='Hide Ad count on icon']").attr("data-tip", locale.hideBadge);
+        }
 
         //self.port && self.port.emit('show-settings');
     });

@@ -701,3 +701,37 @@ input.cmn-toggle-round-flat:checked + label:after {
   margin-left: 30px;
   background-color: #0076FF;
 }
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/::after#Tooltips */
+[data-tip] {
+    cursor: pointer;
+    position: relative;
+    }
+body [data-tip]:after {
+    background-color: #333;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #eee;
+    content: attr(data-tip);
+    font-size: 12px;
+    font-weight: normal;
+    left: 0.5em;
+    line-height: 130%;
+    opacity: 0;
+    padding: 4px 6px;
+    pointer-events: none;
+    position: absolute;
+    right: 0.5em;
+    text-align: left;
+    top: 110%;
+    visibility: hidden;
+    white-space: pre-line;
+    z-index: 20;
+    }
+body [data-tip]:hover:after {
+    opacity: 0.9;
+    position: absolute;
+    transition: visibility 0s 0.3s, opacity 0.2s 0.4s;
+    -webkit-transition: visibility 0s 0.3s, opacity 0.2s 0.4s;
+    visibility: visible;
+    }

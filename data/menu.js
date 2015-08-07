@@ -393,10 +393,8 @@ function attachMenuTests() {
         $('.settings').toggleClass('hide');
         
         if (locale) {
-            $(".question[data-tip='Disable all logging']").attr("data-tip", locale.disableAllLogging);
-            $(".question[data-tip='Disable outgoing referrer']").attr("data-tip", locale.disableOutgoingReferrer);
-            $(".question[data-tip='Clear Ads with browser history']").attr("data-tip", locale.clearAds);
-            $(".question[data-tip='Hide Ad count on icon']").attr("data-tip", locale.hideBadge);
+            for (var key in locale) 
+                $(".question[data-tip='" + key + "']").attr("data-tip", locale[key]);
         }
 
         //self.port && self.port.emit('show-settings');

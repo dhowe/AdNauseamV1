@@ -713,6 +713,7 @@ body [data-tip]:after {
     box-sizing: border-box;
     color: #eee;
     content: attr(data-tip);
+    font-family:Calibri;
     font-size: 12px;
     font-weight: normal;
     left: 0.5em;

@@ -394,7 +394,7 @@ function attachMenuTests() {
         
         if (locale) {
             for (var key in locale) 
-                $(".question[data-tip='" + key + "']").attr("data-tip", locale[key]);
+                $("[data-tip='" + key + "']").attr("data-tip", locale[key]);
         }
 
         //self.port && self.port.emit('show-settings');

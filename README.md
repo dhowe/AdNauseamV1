@@ -43,7 +43,7 @@ If you're not sure where to start, look at the issues labeled [HELP US CODE](htt
     $ git clone https://github.com/dhowe/AdNauseam.git
     ```
 
-2. With an up-to-date version of Firefox, install and activate the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Installation)
+2. With an up-to-date version of Firefox, install and activate the [Firefox Add-On SDK](https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/jpm#Installation) as described [here](https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/jpm#Installation)
 
 3. Create a new Firefox profile by opening the Firefox profile-manager. Note the path for the profile when you create and save it.
 

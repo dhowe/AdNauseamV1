@@ -50,20 +50,20 @@ If you're not sure where to start, look at the issues labeled [HELP US CODE](htt
     ```bash
     $ /Applications/Firefox.app/Contents/MacOS/firefox-bin -P      (on OSX)
     ```
-    
-4. Cd into the AdNauseam folder you downloaded via git, and start Firefox with your new profile via cfx
+
+4. Cd into the AdNauseam folder you downloaded via git, and start Firefox with your new profile via jpm
 
     ```bash
     $ cd /path/to/adnauseam
-    $ cfx run -p path/to/your/new-firefox-profile
+    $ jpm run -p path/to/your/new-firefox-profile
     ```
 
 5. You should now be informed that you need an ad blocker to run AdNauseam, so install [AdBlock Plus](https://addons.mozilla.org/en-US/firefox/addon/adblock-plus/) or [AdBlock Edge](https://addons.mozilla.org/en-Us/firefox/addon/adblock-edge/).
 
 6. Quit the browser after the install, and then re-start Firefox with your profile:
-    
+
     ```bash    
-    $ cfx run -p path/to/your/new-firefox-profile
+    $ jpm run -p path/to/your/new-firefox-profile
     ```
 
-7. You can now browse the web, collecting ads in the AdNauseam menu and advault... Once you have made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)! 
+7. You can now browse the web, collecting ads in the AdNauseam menu and advault... Once you have made some changes, send us your [pull-request](https://help.github.com/articles/creating-a-pull-request/)!

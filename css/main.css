@@ -239,7 +239,7 @@ section p a:visited {
 .languagelist{
   text-align:center;
   list-style-type: none;
-  width:330px;
+  width:400px;
   margin:-2rem auto;
   padding:0;
 }
@@ -492,12 +492,12 @@ header h2{
     top: 343px;
    }
    #PressHeader{
-    left: 357px;
+    left: 375px;
    }
     .languagelist{
   position:absolute;
   top:415px;
-  left:295px;
+  left:275px;
   margin:1rem auto;
   }
   .language{
@@ -535,7 +535,7 @@ header h2{
      padding-right:102px;
    }
    .center{
-    padding-right: 16px;
+    /*padding-right: 16px;*/
    }
 
 }

@@ -1,9 +1,9 @@
 /*jslint browser: true*/
 
 /*global
-    gAds: true, gAdSets: true, self, imagesLoaded, createSlider, log,
+    gAds: true, gAdSets: true, self, imagesLoaded, createSlider,
     warn, targetDomain, alert, rand, error, Type, AdSet, byField,
-    showAlert, Packery, computeHashKey, toAdArray,
+    showAlert, Packery, computeHashKey, toAdArray, log,
     TEXT_MINW, TEXT_MAXW, TEST_APPEND_IDS, TEST_ADS, TEST_MODE, TEST_PAGE
 */
 
@@ -15,12 +15,7 @@ const LogoURL = 'http://dhowe.github.io/AdNauseam/',
 
 var zoomStyle, zoomIdx = 0,
   animatorId, animateMs = 2000,
-  resizeId, selectedAdSet,
-  viewState = {
-    zoomIdx: 0,
-    left: '-5000px',
-    top: '-5000px'
-  };
+  resizeId, selectedAdSet, viewState = {};
 
 var locale = self.options && self.options.locale; // localization
 
@@ -31,14 +26,11 @@ self.port && self.port.on('layout-ads', layoutAds); // refresh all
 self.port && self.port.on('update-ad', updateAd); // update some
 self.port && self.port.on('set-current', setCurrent); // ad attempt
 
-
 /* createSlider -> runFilter -> doLayout */
 
 function layoutAds(json) {
 
   gAds = json.data; // store
-
-  //log('vault.js::layoutAds -> '+gAds.length);
 
   addInterfaceHandlers();
 
@@ -48,8 +40,6 @@ function layoutAds(json) {
 }
 
 function updateAd(json) {
-
-  //log('vault.js::updateAd');
 
   doUpdate(json.update);
 
@@ -61,8 +51,6 @@ function updateAd(json) {
 function setAttempting(current) {
 
   if (!current) return;
-
-  //log('vault.js::setAttempting');
 
   var groupInfo = findAdById(current.id),
     $item;
@@ -89,7 +77,7 @@ function doLayout(adsets) {
 
   //log('Vault.doLayout: '+adsets.length +" ad-sets, total="+numFound(adsets));
 
-  if (!adsets) throw Error("No ads!");
+  adsets = adsets || [];
 
   $('.item').remove();
 
@@ -149,12 +137,7 @@ function layoutAd($div, adset) {
   (adset.child(0).contentType === 'text' ?
     appendTextDisplayTo : appendDisplayTo)($div, adset);
 
-  //appendBulletsTo($div, adset); // only when inspected
-  //appendMetaTo($div, adset);
-
-  var state = adset.groupState();
-  //log('setGroupState: '+$div.length,state);
-  setItemClass($div, state);
+  setItemClass($div, adset.groupState());
 }
 
 function doUpdate(updated) {
@@ -202,7 +185,7 @@ function setItemClass($item, state) {
 
 function appendMetaTo($div, adset) {
 
-  //console.log('appendMetaTo:' + adset.gid);
+  //log('appendMetaTo:' + adset.gid);
   var $meta = $('<div/>', {
     class: 'meta'
   }).appendTo($div);
@@ -304,8 +287,6 @@ function appendTargetTo($target, ad, adset) {
 
 function updateMetaTarget($target, ad) {
 
-  //log("*** updateMetaTarget:"+$target.length);
-
   $target.find('#target-domain').text(targetDomain(ad));
   $target.find('#target-date').text(formatDate(ad.visitedTs));
   var $titleA = $target.find('#target-title').text(ad.title);
@@ -318,7 +299,6 @@ function updateMetaTarget($target, ad) {
  * Shifts meta list to show correct item
  * Updates index-counter for the bullet
  */
-
 function bulletIndex($div, adset) { // adset.index must be updated first
 
   var $bullet = $div.find('.bullet[data-idx=' + (adset.index) + ']'),
@@ -377,7 +357,13 @@ function appendDisplayTo($div, adset) {
   }).appendTo($ad);
 
   // fix for #291
-  $img.load(function() { $img.attr('data-height', $(this).height()); });
+  $img.load(function() {
+
+    // cache the dimensions of the img-item AFTER load
+    var $this = $(this);
+    $div.attr('data-width', $this.width());
+    $div.attr('data-height', $this.height());
+  });
 }
 
 function appendTextDisplayTo($pdiv, adset) {
@@ -429,6 +415,10 @@ function appendTextDisplayTo($pdiv, adset) {
     text: ad.contentData.text
 
   }).appendTo($div);
+
+  // cache the dimensions of the text-item
+  $pdiv.attr('data-width', $div.width());
+  $pdiv.attr('data-height', $div.height());
 }
 
 function indexCounterText(adset) {
@@ -438,7 +428,7 @@ function indexCounterText(adset) {
 
 function appendBulletsTo($div, adset) {
 
-  //console.log('appendBulletsTo: ' + adset.gid);
+  //log('appendBulletsTo: ' + adset.gid);
 
   function hoverOnLi(e) { // on
 
@@ -462,10 +452,9 @@ function appendBulletsTo($div, adset) {
     var $bullets = $('<div/>', { class: 'bullets' }).appendTo($div);
 
     // find the height of the image for bullet layout (#291)
-    var adHeight = adset.child(0).contentType === 'text' ?
-      $div.height() : +$div.find('img').attr('data-height');
+    var adHeight = $div.attr('data-height');
 
-    //console.log($div.find('img').height(), '?=', adHeight);
+    //log($div.find('img').height(), '?=', adHeight);
 
     var $ul = $('<ul/>', { height: adHeight }).appendTo($bullets);
 
@@ -533,27 +522,25 @@ function sinceTime(adsets) {
 
 function dragStart(e) {
 
-  var style = window.getComputedStyle(document.querySelector('#container'), null),
-    x = parseInt(style.getPropertyValue("margin-left"), 10) - e.clientX,
-    y = parseInt(style.getPropertyValue("margin-top"), 10) - e.clientY;
+  var x = parseInt($(this).css("margin-left"), 10) - e.originalEvent.clientX,
+    y = parseInt($(this).css("margin-top"), 10) - e.originalEvent.clientY;
 
-  e.dataTransfer.setData("text/plain", x + ',' + y);
+  e.originalEvent.dataTransfer.setData("text/plain", x + ',' + y);
 
-  $('#container').addClass('dragged');
+  $(this).addClass('dragged');
 }
 
 function dragOver(e) {
 
-  var offset = e.dataTransfer.getData("text/plain").split(','),
-    dm = document.querySelector('#container');
+  var offset = e.originalEvent.dataTransfer.getData("text/plain").split(',');
 
-  dm.style.marginLeft = (e.clientX + parseInt(offset[0], 10)) + 'px';
-  dm.style.marginTop = (e.clientY + parseInt(offset[1], 10)) + 'px';
+  $(this).css("marginLeft", e.originalEvent.clientX + parseInt(offset[0], 10));
+  $(this).css("marginTop", e.originalEvent.clientY + parseInt(offset[1], 10));
 }
 
-function dragEnd(e) {
+function dragEnd() {
 
-  $('#container').removeClass('dragged');
+  $(this).removeClass('dragged');
 }
 
 function formatDate(ts) {
@@ -570,14 +557,12 @@ function formatDate(ts) {
     ];
 
   var pad = function(str) {
-
     var s = String(str);
     return (s.length < 2) ? "0" + s : s;
   };
 
   var meridian = (parseInt(date.getHours() / 12) == 1) ? locale.pm : locale.am;
   var hours = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
-
   return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate() +
     ' ' + date.getFullYear() + ' ' + hours + ':' + pad(date.getMinutes()) +
     meridian.toLowerCase();
@@ -589,9 +574,7 @@ function enableLightbox() {
   $('.item').click(function(e) {
 
     e.stopPropagation();
-
-    var $this = $(this);
-    lightboxMode(this);
+    lightboxMode($(this));
   });
 
   if (EnableContextMenu) {
@@ -609,10 +592,10 @@ function enableLightbox() {
         var inspectedGid = parseInt($this.attr('data-gid'));
         selectedAdSet = findAdSetByGid(inspectedGid); // throws
 
-        // Show contextmenu
+        // show custom contextmenu
         $(".custom-menu").finish().toggle(100).
 
-        // In the right position (the mouse)
+        // in correct position (according to mouse)
         css({
           top: (e.pageY - 25) + "px",
           left: e.pageX + "px"
@@ -622,11 +605,9 @@ function enableLightbox() {
   }
 }
 
-function positionAds(items) { // autozoom
+function computeZoom(items) { // autozoom
 
-  //log('positionAds() :: '+items.length);
-
-  setZoom(zoomIdx = 0, true); // Q: start with previous zoom or 100%?
+  setZoom(zoomIdx = 0, true);
 
   var i = 0,
     percentVis = 0.6,
@@ -647,6 +628,7 @@ function positionAds(items) { // autozoom
         break; // at smallest size, done
 
       i = 0;
+
       continue; // else try next smaller
     }
   }
@@ -654,44 +636,38 @@ function positionAds(items) { // autozoom
   // OK at current size, done
 }
 
-function storeItemLayout($items) {
+function itemPosition($ele) {
 
-  //log('storeItemLayout()');
+  // first set zoom back to 100%
+  setZoom(zoomIdx = 0, true);
 
-  var cx = $(window).width() / 2,
-    cy = $(window).height() / 2;
+  var off = $ele.offset(), // relative to container
+    cx = $(window).width() / 2,
+    cy = $(window).height() / 2.
+    iw = $ele.attr('data-width') || 80,
+    ih = $ele.attr('data-height') || 40;
 
-  if (!$items) throw Error('No items!');
-
-  $items.each(function(i) {
-
-    var $this = $(this),
-      off = $this.offset();
-
-    // offsets of item-corner from window center
-    $this.attr('data-offx', (cx - off.left));
-    $this.attr('data-offy', (cy - off.top));
-  });
-}
-
-function storeViewState(store) {
-
-  var dm = document.querySelector('#container');
-
-  if (store) {
-
-    //log('storeViewState()');
-
-    viewState.zoomIdx = zoomIdx;
-    viewState.left = dm.style.marginLeft;
-    viewState.top = dm.style.marginTop;
-
-  } else { // restore
-
-    setZoom(zoomIdx = viewState.zoomIdx);
-    dm.style.marginLeft = viewState.left;
-    dm.style.marginTop = viewState.top;
+  if (!(iw && ih && iw.length && ih.length)) {
+    warn('No dimensions for item: gid=' +
+      $this.attr('data-gid') + ', using ' + iw + 'x' + ih);
   }
+
+  var $dm = $('#container');
+
+  // compute offset of dragged container
+  var dragoffX = -5000-parseInt($dm.css('margin-left')),
+    dragoffY = -5000-parseInt($dm.css('margin-top'));
+
+  // compute offset of item-center from (dragged) window-center
+  var pos = {
+    left: (off.left - cx) + (iw / 2) + dragoffX,
+    top: (off.top  - cy) + (ih / 2) + dragoffY
+  };
+
+  // now restore zoom to user-selected level
+  setZoom(zoomIdx = viewState.zoomIdx, true);
+
+  return pos;
 }
 
 function centerZoom($ele) {
@@ -701,18 +677,18 @@ function centerZoom($ele) {
     storeViewState(true);
 
     // compute target positions for transform
-    var dm, margin = 10,
-      metaOffset = 110,
-      center = -5000,
+    var dm, margin = 10, metaOffset = 110, center = -5000,
       ww = $(window).width(),
       wh = $(window).height(),
-      offx = parseInt($ele.attr('data-offx')),
-      offy = parseInt($ele.attr('data-offy')),
-      isText = $ele.find('.item-text-div').length,
-      iw = (isText ? $ele.find('.item-text-div') : $ele.find('img')).width(),
-      ih = (isText ? $ele.find('.item-text-div') : $ele.find('img')).height(),
-      mleft = (center + offx - iw / 2),
-      mtop = (center + offy - ih / 2);
+      pos = itemPosition($ele);
+
+    // now compute the centered position based on item-offset
+    var mleft = center - pos.left,
+      mtop = center - pos.top;
+
+    // can these 2 be removed?
+    var iw = parseInt($ele.attr('data-width'));
+    var ih = parseInt($ele.attr('data-height'));
 
     // make sure left/bottom corner of meta-data is onscreen (#180)
     if (iw > ww - (metaOffset * 2 + margin)) {
@@ -729,10 +705,11 @@ function centerZoom($ele) {
     // reset zoom to 100%
     setZoom(zoomIdx = 0);
 
-    // translate to center
-    dm = document.querySelector('#container');
-    dm.style.marginLeft = mleft + 'px';
-    dm.style.marginTop = mtop + 'px';
+    // transition to center
+    $('#container').css({
+        marginLeft: mleft + 'px',
+        marginTop: mtop + 'px'
+      });
 
   } else { // restore zoom-state
 
@@ -740,13 +717,33 @@ function centerZoom($ele) {
   }
 }
 
-function lightboxMode(selected) {
+// stores zoom/drag-offset for container
+function storeViewState(store) {
 
-  if (selected) var $selected = $(selected);
+  var $dm = $('#container');
+
+  if (store) {
+
+    viewState.zoomIdx = zoomIdx;
+    viewState.left = $dm.css('margin-left');
+    viewState.top = $dm.css('margin-top');
+
+  } else { // restore
+
+    setZoom(zoomIdx = viewState.zoomIdx);
+    $dm.css('margin-left', viewState.left);
+    $dm.css('margin-top', viewState.top);
+  }
+}
+
+function lightboxMode($selected) {
 
   if ($selected && !$selected.hasClass('inspected')) {
 
     var inspectedGid = parseInt($selected.attr('data-gid'));
+
+    //log('Inspect.GID: '+inspectedGid);
+
     selectedAdSet = findAdSetByGid(inspectedGid); // throws
 
     // lazy-create the meta data for the adset (#61)
@@ -768,16 +765,15 @@ function lightboxMode(selected) {
     var next = selectedAdSet.nextPending(); // tell the addon
     if (next && self.port) {
 
-      self.port.emit("item-inspected", {
-        "id": next.id
-      });
+      self.port.emit("item-inspected", { "id": next.id });
     }
 
     centerZoom($selected);
 
     $('#container').addClass('lightbox');
 
-  } else if ($('#container').hasClass('lightbox')) {
+  }
+  else if ($('#container').hasClass('lightbox')) {
 
     var $item = $('.item.inspected');
 
@@ -819,8 +815,6 @@ function animateInspector($inspected) {
 }
 
 function findAdById(id) {
-
-  //log('findAdById: '+id);
 
   for (var i = 0, j = gAdSets.length; i < j; i++) {
 
@@ -871,13 +865,17 @@ function attachTests() {
   $.getJSON(TEST_ADS, function(json) {
 
     warn("Vault.js :: Loading test-ads: " + TEST_ADS);
-    if (Type.is(json, Type.O)) json = toAdArray(json); //BC
+
+    if (Type.is(json, Type.O))
+      json = toAdArray(json); //BC
+
     layoutAds({
       data: json,
       page: TEST_PAGE
     }); // currentAd?
 
   }).fail(function(e) {
+
     warn("error(bad-json?):", e);
   });
 }
@@ -925,11 +923,7 @@ function onscreen($this, winW, winH, scale, percentVisible) {
 
   //log('onscreen() :: trying: '+Zooms[zoomIdx]+"%",$this.attr('data-gid'),off.left, minX, maxX);
 
-  if (off.left < minX || off.left > maxX || off.top < minY || off.top > maxY) {
-    return false;
-  }
-
-  return true;
+  return (!(off.left < minX || off.left > maxX || off.top < minY || off.top > maxY));
 }
 
 function openInNewTab(url) {
@@ -973,16 +967,17 @@ function addInterfaceHandlers(ads) {
   });
 
   /////////// DRAG-STAGE ///////// from: http://jsfiddle.net/robertc/kKuqH/
-
-  var dm = document.querySelector('#container');
-  if (dm) {
-
-    dm.addEventListener('dragstart', dragStart, false);
-    dm.addEventListener('dragover', dragOver, false);
-    dm.addEventListener('dragend', dragEnd, false);
-
-  } else {
-
+  
+  var $container = $('#container');
+  
+  if ($container) {
+    
+    $container.on('dragstart', dragStart);
+    $container.on('dragover', dragOver);
+    $container.on('dragend', dragEnd);
+  }
+  else {
+    
     log("NO #CONTAINER!");
   }
 
@@ -1109,6 +1104,7 @@ function createAdSets(ads) { // once per layout
       // new: add a hash entry
       hash[key] = new AdSet(ad);
       adsets.push(hash[key]);
+
     } else {
 
       // dup: add as child
@@ -1174,38 +1170,24 @@ function repack() {
     if (visible > 1) {
 
       var p = new Packery('#container', {
-        centered: {
-          y: 5000
-        }, // centered half min-height
+        centered: { y: 5000 }, // centered at half min-height
         itemSelector: '.item',
         gutter: 1
       });
 
-      storeItemLayout($items);
-      positionAds($items);
-    } else if (visible == 1) {
+      computeZoom($items);
+    }
+    else if (visible == 1) {
 
       $items.css({ // center single
 
         top: (5000 - $items.height() / 2) + 'px',
         left: (5000 - $items.width() / 2) + 'px'
       });
-
-      storeItemLayout($items);
     }
 
     done = true;
+
     $('#loading-img').hide();
   });
-
-  /*var countImages = $('#container.item img').size();
-
-  loader.on( 'progress', function(inst, image) {
-
-      var result = image.isLoaded ? 'loaded' : 'broken';
-      var countLoadedImages = $('##container.item img.loaded').size();
-      var per = 100 * (countLoadedImages / countImages) + '%';
-      console.log(per+"%");
-  });*/
-
 }

@@ -11,6 +11,8 @@ self.port && self.port.on('close-panel', closeSettings);    // close-settings
 
 var adArray;
 
+var locale = self.options && self.options.locale; // localization
+
 function layoutAds(json) {
 
     //console.log('layoutAds: '+json ? json.data : "null");
@@ -389,6 +391,11 @@ function attachMenuTests() {
 
         $('.page').toggleClass('hide');
         $('.settings').toggleClass('hide');
+        
+        if (locale) {
+            for (var key in locale) 
+                $("[data-tip='" + key + "']").attr("data-tip", locale[key]);
+        }
 
         //self.port && self.port.emit('show-settings');
     });

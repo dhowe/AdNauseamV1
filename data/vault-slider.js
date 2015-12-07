@@ -3,201 +3,210 @@
 var gAds, gAdSets, gMin, gMax; // stateful
 
 const margin = { top: 50, right: 40, bottom: 20, left: 20 },
-    format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400;
+  format = d3.time.format("%a %b %d %Y"), MaxStartNum = 400;
 
 // TODO: need to verify that at least one full bar is showing
 const customTimeFormat = d3.time.format.multi([
-        [".%L", function(d)     { return d.getMilliseconds(); }],
-        [":%S", function(d)     { return d.getSeconds(); }],
-        ["%I:%M", function(d)   { return d.getMinutes(); }],
-        ["%I %p", function(d)   { return d.getHours(); }],
-        ["%a %d", function(d)   { return d.getDay() && d.getDate() != 1; }],
-        ["%b %d", function(d)   { return d.getDate() != 1; }],
-        ["%B", function(d)      { return d.getMonth(); }],
-        ["%Y", function()       { return true; }]
+  [".%L", function(d)     { return d.getMilliseconds(); }],
+  [":%S", function(d)     { return d.getSeconds(); }],
+  ["%I:%M", function(d)   { return d.getMinutes(); }],
+  ["%I %p", function(d)   { return d.getHours(); }],
+  ["%a %d", function(d)   { return d.getDay() && d.getDate() != 1; }],
+  ["%b %d", function(d)   { return d.getDate() != 1; }],
+  ["%B", function(d)      { return d.getMonth(); }],
+  ["%Y", function()       { return true; }]
 ]);
 
 function createSlider(relayout) {
 
-    //log('Vault-Slider.createSlider: '+gAds.length);
+  //log('Vault-Slider.createSlider: '+gAds.length);
+  if (!gAds) return;
 
-    if (!gAds) return;
+  // clear all the old svg
+  d3.select("g.parent").selectAll("*").remove();
+  d3.select("svg").remove();
 
-    // clear all the old svg
-    d3.select("g.parent").selectAll("*").remove();
-    d3.select("svg").remove();
+  // setting up the position of the chart
+  var iconW = 100,
+    width;
 
-	// setting up the position of the chart
-	var iconW = 100, width;
+  try {
 
-	try {
+    width = parseInt(d3.select("#stage").style("width")) -
+      (margin.left + margin.right + iconW);
+  } catch (e) {
+    throw Error("[D3] NO STAGE (page-not-ready?)");
+  }
 
-	   width = parseInt( d3.select("#stage").style("width") ) -
-	       (margin.left + margin.right + iconW);
-    }
-    catch (e) {
+  // finding the first and last ad
+  var minDate = d3.min(gAds, function(d) {
+      return d.foundTs;
+    }),
+    maxDate = d3.max(gAds, function(d) {
+      return d.foundTs;
+    });
 
-        throw Error("[D3] NO STAGE (page-not-ready?)");
-    }
+  // mapping the scales
+  var xScale = d3.time.scale()
+    .domain([minDate, maxDate])
+    .range([0, width]);
 
-  	// finding the first and last ad
-	var minDate = d3.min(gAds, function(d) { return d.foundTs; }),
-		maxDate = d3.max(gAds, function(d) { return d.foundTs; });
+  // create an array of dates
+  var map = gAds.map(function(d) {
+    return parseInt(xScale(d.foundTs));
+  });
 
-   // mapping the scales
-   var xScale = d3.time.scale()
-        .domain([minDate, maxDate])
-        .range([0, width]);
+  // setup the histogram layout
+  var histogram = d3.layout.histogram()
+    .bins(120) // how many groups? [dyn] base on width
+    //.bins(width/(barw-barg))     [dyn]
+    (map);
 
-   // create an array of dates
-   var map = gAds.map( function(d) { return parseInt(xScale(d.foundTs)); });
+  // setup the x axis
+  var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .tickFormat(customTimeFormat)
+    .ticks(7); // [dyn]
 
-   // setup the histogram layout
-   var histogram = d3.layout.histogram()
-      .bins(120) // how many groups? [dyn] base on width
-      //.bins(width/(barw-barg))     [dyn]
-      (map);
+  // position the SVG
+  var svg = d3.select("#svgcon")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", /*height +*/ margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-   // setup the x axis
-   var xAxis = d3.svg.axis()
-	      .scale(xScale)
-	      .tickFormat(customTimeFormat)
-	      .ticks(7); // [dyn]
+  // append the x axis
+  svg.append("g") // [ONCE]
+    .attr("class", "x axis")
+    .call(xAxis);
 
-   // position the SVG
-   var svg = d3.select("#svgcon")
-        .append("svg")
-	    .attr("width", width + margin.left + margin.right)
-	    .attr("height", /*height +*/ margin.top + margin.bottom)
-	    .append("g")
-	    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var barw = histogram[0].dx - 1; //relative width
 
-   // append the x axis
-   svg.append("g")                  // [ONCE]
-       .attr("class", "x axis")
-       .call(xAxis);
+  // Create groups for the bars
+  var bars = svg.selectAll(".bar")
+    .data(histogram)
+    .enter()
+    .append("g");
 
-   var barw = histogram[0].dx - 1; //relative width
+  bars.append("line")
+    .attr("x1", function(d) {
+      return d.x + barw / 2;
+    })
+    .attr("y1", -2)
+    .attr("x2", function(d) {
+      return d.x + barw / 2;
+    })
+    .attr("y2", function(d) {
+      return d.y * -3 - 2;
+    })
+    .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc");
 
-   // Create groups for the bars
-   var bars = svg.selectAll(".bar")
-       .data(histogram)
-       .enter()
-       .append("g");
+  // setup the brush
+  var bExtent = [computeMinDateFor(gAds, minDate), maxDate],
+    brush = d3.svg.brush()
+    .x(xScale)
+    .extent(bExtent)
+    .on("brushend", brushend);
 
-	bars.append("line")
-       .attr("x1", function(d) { return d.x + barw/2; })
-       .attr("y1", - 2 )
-       .attr("x2", function(d) { return d.x + barw/2; })
-       .attr("y2", function(d) { return d.y*-3 - 2; })
-       .attr("style", "stroke-width:" + barw + "; stroke-dasharray: 2,1; stroke: #ccc");
+  // add the brush
+  var gBrush = svg.append("g")
+    .attr("class", "brush")
+    .call(brush);
 
-	// setup the brush
-	var bExtent = [ computeMinDateFor(gAds, minDate), maxDate ],
-        brush = d3.svg.brush()
-		.x(xScale)
-		.extent(bExtent)
-	    .on("brushend", brushend);
+  // set the height of the brush to that of the chart
+  gBrush.selectAll("rect")
+    .attr("height", 49)
+    .attr("y", -50);
 
-	// add the brush
-	var gBrush = svg.append("g")
-		.attr("class", "brush")
-		.call(brush);
+  // cases: 1) no-gAdSets=first time, 2) filter+layout, 3) only-slider
 
-	// set the height of the brush to that of the chart
-	gBrush.selectAll("rect")
-		.attr("height", 49)
-		.attr("y", -50);
-
-    // cases: 1) no-gAdSets=first time, 2) filter+layout, 3) only-slider
-    var fSets = runFilter(bExtent);
-    if (relayout)
-        doLayout(fSets);
-    else
-        computeStats(fSets);
-
-
+  // do filter, then call either doLayout or computeStats
+  (relayout ? doLayout : computeStats)(runFilter(bExtent));
 	// ---------------------------- functions ------------------------------
 
+  // this is called on brushend() and createSlider()
+  function runFilter(ext) {
 
-    // this is called on a brushend and on createSlider
-	function runFilter(ext) {
+    //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
 
-        //log('vault.js::runFilter: '+ext[0]+","+ext[1]);
+    gMin = ext[0], gMax = ext[1];
 
-        //if (ext[0] !== gMin || ext[1] !== gMax) { // dont rebuild
+    if (gAds.length !== 1 && gMax - gMin <= 1) {
 
-	    gMin = ext[0], gMax = ext[1];
-
-        if (gAds.length !== 1 && gMax - gMin <= 1) {
-
-            //log('vault.js::ignore-micro: '+ext[0]+","+ext[1]);
-            return; // fix for gh #100
-        }
-
-		var filtered = dateFilter(gMin, gMax);
-
-		// only create the adsets once, else filter
-		if (!gAdSets)
-            return (gAdSets = createAdSets(filtered));
-		else
-            return filterAdSets(filtered);
-	}
-
-    function filterAdSets(ads) {
-
-        //log('vault-slider.filterAdSets: '+ads.length+'/'+ gAds.length+' ads');
-
-        var sets = [];
-        for (var i=0, j = ads.length; i<j; i++) {
-
-            for (var k=0, l = gAdSets.length; k<l; k++) {
-
-                if (gAdSets[k].childIdxForId(ads[i].id) > -1) {
-
-                    if (sets.indexOf(gAdSets[k]) < 0)
-                        sets.push(gAdSets[k]);
-                }
-            }
-        }
-
-        return sets;
+      log('vault-slider::ignore-micro: ' + ext[0] + "," + ext[1]);
+      return; // fix for gh #100
     }
 
-    function computeMinDateFor(ads, min) {
+    var filtered = dateFilter(gMin, gMax);
 
-        if (ads && ads.length) {
+    // only create the adsets once, else filter
+    return gAdSets ? filterAdSets(filtered) :
+      (gAdSets = createAdSets(filtered));
+  }
 
-            ads.sort(byField('-foundTs')); // or slice?
-            var subset = ads.slice(0, MaxStartNum);
-            return subset[subset.length-1].foundTs;
+  function centerContainer() {
+
+    $('#container').addClass('notransition')
+      .css({
+        marginLeft: '-5000px',
+        marginTop: '-5000px'
+      })
+      .removeClass('notransition');
+  }
+
+  function filterAdSets(ads) {
+
+    log('Vault-slider.filterAdSets: ' + ads.length + '/' + gAds.length + ' ads');
+
+    centerContainer(); // recenter on filter
+
+    var sets = [];
+    for (var i = 0, j = ads.length; i < j; i++) {
+      for (var k = 0, l = gAdSets.length; k < l; k++) {
+
+        if (gAdSets[k].childIdxForId(ads[i].id) > -1) {
+
+          if (sets.indexOf(gAdSets[k]) < 0)
+            sets.push(gAdSets[k]);
         }
-        return min;
+      }
+    }
+    return sets;
+  }
+
+  function computeMinDateFor(ads, min) {
+
+    if (ads && ads.length) {
+
+      ads.sort(byField('-foundTs')); // or slice?
+      var subset = ads.slice(0, MaxStartNum);
+      return subset[subset.length - 1].foundTs;
+    }
+    return min;
+  }
+
+  function dateFilter(min, max) {
+
+    //log('dateFilter: min='+min+', max='+max);
+
+    var filtered = [];
+
+    // NOTE: always need to start from full-set (all) here
+    for (var i = 0, j = gAds.length; i < j; i++) {
+
+      if (!(gAds[i].foundTs < min || gAds[i].foundTs > max)) {
+
+        filtered.push(gAds[i]);
+      }
     }
 
-	function dateFilter(min, max) {
+    return filtered;
+  }
 
-		//log('dateFilter: min='+min+', max='+max);
+  function brushend() {
 
-		var filtered = [];
-
-		for (var i=0, j = gAds.length; i<j; i++) { // NOTE: always need to start from full-set (all) here
-
-			if (!(gAds[i].foundTs < min || gAds[i].foundTs > max)) {
-
-                filtered.push(gAds[i]);
-			}
-		}
-
-		return filtered;
-	}
-
-	function brushstart() { }
-
-	function brushmove() { }
-
-	function brushend() {
-
-        doLayout(runFilter(d3.event.target.extent()));
-	}
+    var filtered = runFilter(d3.event.target.extent());
+    filtered && doLayout(filtered);
+  }
 }

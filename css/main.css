@@ -210,6 +210,10 @@ section p a:visited {
   max-width: 200px;
 }
 
+#how-to-install li {
+  margin-bottom: 0.5em;
+}
+
 #how-to-install a {
   color: #3E9AF8;
 }
@@ -421,7 +425,7 @@ header h2{
   #p3             {left: 429px; top: 1230px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p4             {left: 50px;  top: 80px; width:1000px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #install        {left: 620px; top: 475px; -webkit-animation-delay: 800ms; animation-delay: 800ms}
-  #how-to-install {left: 718px; top: 555px;  -webkit-animation-delay: 900ms; animation-delay: 900ms}
+  #how-to-install {left: 718px; top: 560px;  -webkit-animation-delay: 900ms; animation-delay: 900ms}
   #helen          {left: 150px;  top: 501px; -webkit-animation-delay: 1000ms; animation-delay: 1000ms}
   #pressblock     {left: 760px; top: 730px; -webkit-animation-delay: 1200ms; animation-delay: 1200ms}
   #contact        {left: 272px; top: 620px; -webkit-animation-delay: 1400ms; animation-delay: 1400ms}

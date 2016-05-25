@@ -425,17 +425,16 @@ header h2{
   #p3             {left: 429px; top: 1230px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #p4             {left: 50px;  top: 80px; width:1000px; -webkit-animation-delay: 0ms; animation-delay: 0ms}
   #install        {left: 620px; top: 475px; -webkit-animation-delay: 800ms; animation-delay: 800ms}
-  #how-to-install {left: 718px; top: 560px;  -webkit-animation-delay: 900ms; animation-delay: 900ms}
+  #chrome         {left: 718px; top: 565px; -webkit-animation-delay: 900ms; animation-delay: 900ms}
   #helen          {left: 150px;  top: 501px; -webkit-animation-delay: 1000ms; animation-delay: 1000ms}
-  #pressblock     {left: 760px; top: 730px; -webkit-animation-delay: 1200ms; animation-delay: 1200ms}
+  #pressblock     {left: 760px; top: 615px; -webkit-animation-delay: 1200ms; animation-delay: 1200ms}
   #contact        {left: 272px; top: 620px; -webkit-animation-delay: 1400ms; animation-delay: 1400ms}
   #source         {left: 109px; top: 856px; -webkit-animation-delay: 1600ms; animation-delay: 1600ms}
   #daniel         {left: 4px;   top: 620px; -webkit-animation-delay: 1800ms; animation-delay: 1800ms}
   #mushon         {left: 150px;  top: 736px; -webkit-animation-delay: 2000ms; animation-delay: 2000ms}
-  #essay          {left: 199px; top: 1512px; -webkit-animation-delay: 2200ms; animation-delay: 2200ms}
+  #book           {left: 199px; top: 1512px; -webkit-animation-delay: 2200ms; animation-delay: 2200ms}
   #symposium      {left: 428px; top: 1700px; -webkit-animation-delay: 2400ms; animation-delay: 2400ms}
-  #chrome         {left: 113px; top: 925px; -webkit-animation-delay: 3000ms; animation-delay: 3000ms}
-  #twitter        {left: 428px; top: 910px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
+  #twitter        {left: 760px; top: 870px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
   #facebook       {left: 779px; top: 1250px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
   #faq            {left: 779px; top: 1320px; -webkit-animation-delay: 2800ms; animation-delay: 2800ms}
   #privacyblock   {left: 779px; top: 1640px; -webkit-animation-delay: 2600ms; animation-delay: 2600ms}
